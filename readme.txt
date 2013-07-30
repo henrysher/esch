@@ -36,4 +36,5 @@ Embedded Esch in C/C++
 
 TBD
 
-.. _R6RS : http://www.r6rs.org
+.. _R6RS  : http://www.r6rs.org
+.. _SCons : http://www.scons.org
