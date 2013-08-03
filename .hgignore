@@ -1,0 +1,5 @@
+\..*\.swp$
+src/\..*\.swp$
+src/.*\.o$
+src/libesch\.a$
+src/.sconsign.dblite
