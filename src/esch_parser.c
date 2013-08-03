@@ -38,50 +38,19 @@
  *
  * +=================================================================+
  */
-#ifndef _ESCH_ESCH_H_
-#define _ESCH_ESCH_H_
+#include "esch.h"
+#include "esch_parser.h"
+#include <stdlib.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-/*
- * This is the only public include file for Esch interpreter. 
- */
-
-enum esch_err
+struct esch_parser_config*
+esch_parser_config_new()
 {
-    ESCH_ERROR_OK = 0,
-};
-struct esch_vm;
-struct esch_parser;
-struct esch_ast;
-struct esch_vm_config;
-struct esch_parser_config;
-
-/* --- VM Configuration --- */
-struct esch_vm_config* esch_vm_config_new();
-void esch_vm_config_delete(struct esch_vm_config* config);
-
-/* --- Parser Configuration --- */
-struct esch_parser_config* esch_parser_config_new();
-void esch_parser_config_delete(struct esch_parser_config* config);
-
-/* --- Esch virtual machine and runtime --- */
-struct esch_vm* esch_vm_new(struct esch_vm_config* config);
-void esch_vm_delete(struct esch_vm* vm);
-enum esch_err esch_vm_execute(struct esch_vm* vm, struct esch_ast* ast);
-
-/* --- Syntax parser --- */
-struct esch_parser* esch_parser_new(struct esch_parser_config* config);
-void esch_parser_delete(struct esch_parser* parser);
-struct esch_ast* esch_parser_parse_src(struct esch_parser* parser, char* src);
-
-/* --- Abstract syntax tree --- */
-void esch_ast_delete(struct esch_ast* ast);
-enum esch_err esch_ast_get_error_status(struct esch_ast* ast);
-
-#ifdef __cplusplus
+    return NULL;
 }
-#endif /* __cplusplus */
-#endif /* _ESCH_ESCH_H_ */
+void
+esch_parser_config_delete(struct esch_parser_config* config);
+struct esch_parser*
+esch_parser_new(struct esch_parser_config* config)
+{
+    return NULL;
+}
