@@ -44,7 +44,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
+#include <stddef.h>
 /*
  * This is the only public include file for Esch interpreter. 
  */
@@ -58,6 +58,17 @@ struct esch_parser;
 struct esch_ast;
 struct esch_vm_config;
 struct esch_parser_config;
+struct each_alloc_config;
+struct esch_alloc;
+struct esch_log;
+
+/* --- Memory allocator --- */
+struct esch_alloc_config* esch_alloc_config_new();
+void esch_alloc_config_delete(struct each_alloc_config* config);
+struct esch_alloc* esch_alloc_new(struct esch_alloc_config* config);
+struct esch_alloc* esch_alloc_delete();
+void* esch_alloc_malloc(struct esch_alloc* alloc, size_t size);
+void esch_alloc_free(struct esch_alloc* alloc, void* ptr);
 
 /* --- VM Configuration --- */
 struct esch_vm_config* esch_vm_config_new();

@@ -1,2 +1,2 @@
 #!/usr/bin/env python
-StaticLibrary('esch', ['esch_vm.c', 'esch_parser.c', 'esch_utils.c'])
+StaticLibrary('esch', ['esch_vm.c', 'esch_parser.c', 'esch_alloc.c'])

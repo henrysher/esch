@@ -38,19 +38,11 @@
  *
  * +=================================================================+
  */
-#ifndef _ESCH_UTILS_H_
-#define _ESCH_UTILS_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
+#include "esch.h"
 #include <stdlib.h>
-
-void* esch_malloc(size_t size);
-void esch_free(void* ptr);
-
-#ifdef __cplusplus
+struct esch_alloc_config*
+esch_alloc_config_new()
+{
+    /* TODO */
+    return NULL;
 }
-#endif /* __cplusplus */
-#endif /* _ESCH_ESCH_H_ */
