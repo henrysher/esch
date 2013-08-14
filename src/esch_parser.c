@@ -42,19 +42,4 @@
 #include "esch_parser.h"
 #include "esch_alloc.h"
 #include <stdlib.h>
-
-struct esch_parser_config*
-esch_parser_config_new()
-{
-    return NULL;
-}
-void
-esch_parser_config_delete(struct esch_parser_config* config)
-{
-}
-
-struct esch_parser*
-esch_parser_new(struct esch_parser_config* config)
-{
-    return NULL;
-}
+/* TODO */

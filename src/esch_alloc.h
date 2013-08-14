@@ -1,5 +1,24 @@
 /* vim:ft=c expandtab tw=72 sw=4
  */
+#ifndef _ESCH_ALLOC_H_
+#define _ESCH_ALLOC_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+struct esch_alloc
+{
+    esch_object base;
+    int allocate_count; /**< How many buffer are allocated. */
+    int deallocate_count; /**< How many buffer are freed. */
+};
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* _ESCH_ALLOC_H_ */
 /*
  * +=================================================================+
  *
@@ -38,24 +57,3 @@
  *
  * +=================================================================+
  */
-#ifndef _ESCH_ALLOC_H_
-#define _ESCH_ALLOC_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-#include <stdlib.h>
-struct esch_alloc_config
-{
-    int version;
-};
-struct esch_alloc
-{
-    int version;
-};
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-#endif /* _ESCH_ESCH_H_ */

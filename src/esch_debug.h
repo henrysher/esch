@@ -1,5 +1,36 @@
 /* vim:ft=c expandtab tw=72 sw=4
  */
+#ifndef _ESCH_DEBUG_H_
+#define _ESCH_DEBUG_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
+#define ESCH_CHECK_NO_LOG(cond, errorcode) { \
+    if (!(cond)) { \
+        ret = errorcode; \
+        goto Exit; \
+    } \
+}
+
+#define ESCH_CHECK(cond, obj, msg, errorcode) { \
+    if (!(cond)) { \
+        esch_log* log = ESCH_OBJECT_GET_LOG(obj); \
+        if (obj != NULL && log != NULL) { \
+            esch_log_error(log, msg, errorcode); \
+        } \
+        ret = errorcode; \
+        goto Exit; \
+    } \
+}
+
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* _ESCH_DEBUG_H_ */
 /*
  * +=================================================================+
  *
@@ -38,7 +69,3 @@
  *
  * +=================================================================+
  */
-#include "esch.h"
-#include "esch_vm.h"
-#include <string.h>
-/* TODO */

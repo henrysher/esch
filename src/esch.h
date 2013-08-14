@@ -49,48 +49,57 @@ extern "C" {
  * This is the only public include file for Esch interpreter. 
  */
 
-enum esch_err
+typedef enum {
+    ESCH_OK                               = 0,
+    ESCH_ERROR_OUT_OF_MEMORY              = 1,
+    ESCH_ERROR_INVALID_PARAMETER          = 2,
+    ESCH_ERROR_INVALID_STATE              = 3,
+} esch_error;
+
+typedef enum {
+    ESCH_TYPE_UNKNOWN          = 0,
+    /* Generic types */
+    ESCH_TYPE_CUSTOMIZED       = 0x10,
+    ESCH_TYPE_ALLOC            = 0x20,
+    ESCH_TYPE_LOG              = 0x30,
+    ESCH_TYPE_PARSER           = 0x40,
+    ESCH_TYPE_VM               = 0xf0,
+
+    ESCH_TYPE_ALLOC_C_DEFAULT  = 0x21,
+    ESCH_TYPE_LOG_PRINTF       = 0x31,
+} esch_type;
+
+typedef struct esch_object         esch_object;
+typedef struct esch_alloc          esch_alloc;
+typedef struct esch_log            esch_log;
+
+/**
+ * The public type info structure. This is the header of all structures
+ * used in Esch. All objects can be casted to esch_object to get type
+ * information.
+ */
+struct esch_object
 {
-    ESCH_ERROR_OK = 0,
+    esch_type   type;       /**< Registered type ID */
+    esch_log*   log;        /**< Log object to write trace/errors.*/
+    esch_alloc* alloc;      /**< Allocator object to manage memory. */
 };
-struct esch_vm;
-struct esch_parser;
-struct esch_ast;
-struct esch_vm_config;
-struct esch_parser_config;
-struct each_alloc_config;
-struct esch_alloc;
-struct esch_log;
+
+#define ESCH_OBJECT(obj)             ((esch_object*)obj)
+#define ESCH_OBJECT_GET_TYPE(obj)    (((esch_object*)obj)->type)
+#define ESCH_OBJECT_GET_LOG(obj)     (((esch_object*)obj)->log)
+#define ESCH_OBJECT_GET_ALLOC(obj)   (((esch_object*)obj)->alloc)
 
 /* --- Memory allocator --- */
-struct esch_alloc_config* esch_alloc_config_new();
-void esch_alloc_config_delete(struct each_alloc_config* config);
-struct esch_alloc* esch_alloc_new(struct esch_alloc_config* config);
-struct esch_alloc* esch_alloc_delete();
-void* esch_alloc_malloc(struct esch_alloc* alloc, size_t size);
-void esch_alloc_free(struct esch_alloc* alloc, void* ptr);
+esch_error esch_alloc_new_c_default(esch_alloc** ret_alloc);
+esch_error esch_alloc_delete(esch_alloc* alloc);
+esch_error esch_alloc_malloc(esch_alloc* alloc, size_t size, void** ret);
+esch_error esch_alloc_free(esch_alloc* alloc, void* ptr);
 
-/* --- VM Configuration --- */
-struct esch_vm_config* esch_vm_config_new();
-void esch_vm_config_delete(struct esch_vm_config* config);
-
-/* --- Parser Configuration --- */
-struct esch_parser_config* esch_parser_config_new();
-void esch_parser_config_delete(struct esch_parser_config* config);
-
-/* --- Esch virtual machine and runtime --- */
-struct esch_vm* esch_vm_new(struct esch_vm_config* config);
-void esch_vm_delete(struct esch_vm* vm);
-enum esch_err esch_vm_execute(struct esch_vm* vm, struct esch_ast* ast);
-
-/* --- Syntax parser --- */
-struct esch_parser* esch_parser_new(struct esch_parser_config* config);
-void esch_parser_delete(struct esch_parser* parser);
-struct esch_ast* esch_parser_parse_src(struct esch_parser* parser, char* src);
-
-/* --- Abstract syntax tree --- */
-void esch_ast_delete(struct esch_ast* ast);
-enum esch_err esch_ast_get_error_status(struct esch_ast* ast);
+/* --- Logger objects -- */
+esch_error esch_log_config_new_printf(esch_log** log);
+esch_error esch_log_config_delete(esch_log* log);
+esch_error esch_log_error(esch_log* log, char* message, esch_error code);
 
 #ifdef __cplusplus
 }
