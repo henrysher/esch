@@ -2,8 +2,9 @@
  */
 #include "esch.h"
 #include "esch_alloc.h"
-#include "esch_debug.h"
 #include <stdlib.h>
+#include <assert.h>
+#include "esch_debug.h"
 
 /**
  * Create a new esch_alloc object. With underlying allocator 
@@ -15,17 +16,18 @@ esch_alloc_new_c_default(esch_alloc** alloc)
 {
     esch_error ret = ESCH_OK;
     esch_alloc* new_obj = NULL;
-
     ESCH_CHECK_NO_LOG(alloc != NULL, ESCH_ERROR_INVALID_PARAMETER);
+
     new_obj = (esch_alloc*)malloc(sizeof(esch_alloc));
-    ESCH_CHECK_NO_LOG(alloc != NULL, ESCH_ERROR_OUT_OF_MEMORY);
+    ESCH_CHECK_NO_LOG(new_obj != NULL, ESCH_ERROR_OUT_OF_MEMORY);
     new_obj->base.type = ESCH_TYPE_ALLOC_C_DEFAULT;
-    new_obj->base.log = NULL;
-    new_obj->base.alloc = NULL;
+    new_obj->base.alloc = new_obj; /* No use */
+    (void)esch_log_new_do_nothing(&(new_obj->base.log));
     new_obj->allocate_count = 0;
     new_obj->deallocate_count = 0;
     (*alloc) = new_obj;
     new_obj = NULL;
+    assert(ESCH_IS_VALID_OBJECT(*alloc));
 Exit:
     if (new_obj != NULL) {
         free(new_obj);
@@ -42,16 +44,30 @@ esch_error
 esch_alloc_delete(esch_alloc* alloc)
 {
     esch_error ret = ESCH_OK;
-
     esch_object* obj = NULL;
-    if (alloc != NULL) {
-        ESCH_CHECK(alloc->allocate_count == alloc->deallocate_count,
-                   alloc,
-                   "Memory leak detected when detroying allocator.",
-                   ESCH_ERROR_INVALID_STATE);
+    esch_alloc* self_alloc = NULL;
+    esch_type self_type = ESCH_TYPE_UNKNOWN;
+
+    if (alloc == NULL) {
+        return ret;
     }
-Exit:
+    ESCH_CHECK_NO_LOG(ESCH_IS_VALID_OBJECT(alloc), ESCH_ERROR_INVALID_PARAMETER);
+    self_alloc = ESCH_OBJECT_GET_ALLOC(alloc);
+    self_type = ESCH_OBJECT_GET_TYPE(alloc);
+    ESCH_CHECK(self_alloc == alloc,
+               alloc,
+               "base.alloc != self on C default alloc",
+               ESCH_ERROR_INVALID_PARAMETER);
+    ESCH_CHECK(self_type == ESCH_TYPE_ALLOC_C_DEFAULT,
+               alloc,
+               "Not ESCH_TYPE_ALLOC_C_DEFAULT",
+               ESCH_ERROR_INVALID_PARAMETER);
+    ESCH_CHECK(alloc->allocate_count == alloc->deallocate_count,
+               alloc,
+               "Memory leak detected when detroying allocator.",
+               ESCH_ERROR_INVALID_STATE);
     free(alloc);
+Exit:
     return ret;
 }
 
@@ -70,6 +86,7 @@ esch_alloc_malloc(esch_alloc* alloc, size_t size, void** ptr)
     ESCH_CHECK_NO_LOG(alloc != NULL, ESCH_ERROR_INVALID_PARAMETER);
     ESCH_CHECK_NO_LOG(size > 0, ESCH_ERROR_INVALID_PARAMETER);
     ESCH_CHECK_NO_LOG(ptr != NULL, ESCH_ERROR_INVALID_PARAMETER);
+    ESCH_CHECK_NO_LOG(ESCH_IS_VALID_OBJECT(alloc), ESCH_ERROR_INVALID_PARAMETER);
 
     new_buffer = malloc(size);
     ESCH_CHECK(new_buffer != NULL, alloc,
@@ -96,6 +113,7 @@ esch_alloc_free(struct esch_alloc* alloc, void* ptr)
 {
     esch_error ret = ESCH_OK;
     ESCH_CHECK_NO_LOG(alloc != NULL, ESCH_ERROR_INVALID_PARAMETER);
+    ESCH_CHECK_NO_LOG(ESCH_IS_VALID_OBJECT(alloc), ESCH_ERROR_INVALID_PARAMETER);
 
     if (ptr != NULL) {
         alloc->allocate_count -= 1;

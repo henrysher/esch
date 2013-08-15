@@ -1,35 +1,34 @@
 /* vim:ft=c expandtab tw=72 sw=4
  */
-#ifndef _ESCH_DEBUG_H_
-#define _ESCH_DEBUG_H_
+#ifndef _ESCH_LOG_H_
+#define _ESCH_LOG_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-#define ESCH_CHECK_NO_LOG(cond, errorcode) { \
-    if (!(cond)) { \
-        ret = errorcode; \
-        goto Exit; \
-    } \
-}
+#include "esch.h"
+#include <stdarg.h>
 
-#define ESCH_CHECK(cond, obj, msg, errorcode) { \
-    if (!(cond)) { \
-        esch_log* log = ESCH_OBJECT_GET_LOG(obj); \
-        assert(log != NULL); \
-        (void)esch_log_error(log, msg); \
-        ret = errorcode; \
-        goto Exit; \
-    } \
-}
+typedef esch_error (*esch_log_error_func)(esch_log* log, char* fmt, va_list args);
 
+esch_error esch_log_error_printf(esch_log* log, char* fmt, va_list args);
+esch_error esch_log_error_do_nothing(esch_log* log, char* fmt, va_list args);
+
+struct esch_log
+{
+    esch_object base;
+    esch_log_error_func log_error;
+};
+
+extern esch_log g_esch_log_printf;
+extern esch_log g_esch_log_do_nothing;
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* _ESCH_DEBUG_H_ */
+#endif /* _ESCH_LOG_H_ */
 /*
  * +=================================================================+
  *

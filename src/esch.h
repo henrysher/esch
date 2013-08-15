@@ -58,15 +58,17 @@ typedef enum {
 
 typedef enum {
     ESCH_TYPE_UNKNOWN          = 0,
+    ESCH_TYPE_MAGIC            = 0xEC,
     /* Generic types */
-    ESCH_TYPE_CUSTOMIZED       = 0x10,
-    ESCH_TYPE_ALLOC            = 0x20,
-    ESCH_TYPE_LOG              = 0x30,
-    ESCH_TYPE_PARSER           = 0x40,
-    ESCH_TYPE_VM               = 0xf0,
+    ESCH_TYPE_CUSTOMIZED       = ESCH_TYPE_MAGIC | 0x10,
+    ESCH_TYPE_ALLOC            = ESCH_TYPE_MAGIC | 0x20,
+    ESCH_TYPE_LOG              = ESCH_TYPE_MAGIC | 0x30,
+    ESCH_TYPE_PARSER           = ESCH_TYPE_MAGIC | 0x40,
+    ESCH_TYPE_VM               = ESCH_TYPE_MAGIC | 0xf0,
 
-    ESCH_TYPE_ALLOC_C_DEFAULT  = 0x21,
-    ESCH_TYPE_LOG_PRINTF       = 0x31,
+    ESCH_TYPE_ALLOC_C_DEFAULT  = ESCH_TYPE_MAGIC | ESCH_TYPE_ALLOC | 1,
+    ESCH_TYPE_LOG_PRINTF       = ESCH_TYPE_MAGIC | ESCH_TYPE_LOG   | 1,
+    ESCH_TYPE_LOG_DO_NOTHING   = ESCH_TYPE_MAGIC | ESCH_TYPE_LOG   | 2,
 } esch_type;
 
 typedef struct esch_object         esch_object;
@@ -85,6 +87,9 @@ struct esch_object
     esch_alloc* alloc;      /**< Allocator object to manage memory. */
 };
 
+#define ESCH_IS_VALID_OBJECT(obj)    (((esch_object*)obj)->type & 0xFF00 && \
+                                      ((esch_object*)obj)->log != NULL && \
+                                      ((esch_object*)obj)->alloc != NULL)
 #define ESCH_OBJECT(obj)             ((esch_object*)obj)
 #define ESCH_OBJECT_GET_TYPE(obj)    (((esch_object*)obj)->type)
 #define ESCH_OBJECT_GET_LOG(obj)     (((esch_object*)obj)->log)
@@ -97,9 +102,10 @@ esch_error esch_alloc_malloc(esch_alloc* alloc, size_t size, void** ret);
 esch_error esch_alloc_free(esch_alloc* alloc, void* ptr);
 
 /* --- Logger objects -- */
-esch_error esch_log_config_new_printf(esch_log** log);
-esch_error esch_log_config_delete(esch_log* log);
-esch_error esch_log_error(esch_log* log, char* message, esch_error code);
+esch_error esch_log_new_do_nothing(esch_log** log);
+esch_error esch_log_new_printf(esch_log** log);
+esch_error esch_log_delete(esch_log* log);
+esch_error esch_log_error(esch_log* log, char* fmt, ...);
 
 #ifdef __cplusplus
 }
