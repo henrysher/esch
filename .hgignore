@@ -2,4 +2,5 @@
 src/\..*\.swp$
 src/.*\.o$
 src/libesch\.a$
+src/esch_utest$
 src/.sconsign.dblite
