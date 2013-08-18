@@ -1,34 +1,30 @@
 /* vim:ft=c expandtab tw=72 sw=4
  */
-#ifndef _ESCH_DEBUG_H_
-#define _ESCH_DEBUG_H_
+#include <esch.h>
+#include <stdio.h>
+#include "esch_utest.h"
+#include "esch_debug.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
+int test_AllocCreateDeleteCDefault()
+{
+    esch_error ret = ESCH_OK;
+    esch_alloc* alloc = NULL;
+    char* str = NULL;
 
-#define ESCH_CHECK_NO_LOG(cond, errorcode) { \
-    if (!(cond)) { \
-        ret = errorcode; \
-        goto Exit; \
-    } \
+    ret = esch_alloc_new_c_default(&alloc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
+
+    ret = esch_alloc_malloc(alloc, sizeof(char) * 100, (void**)(&str));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to allocate memory", ret);
+
+    ret = esch_alloc_free(alloc, str);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to free memory", ret);
+
+    ret = esch_alloc_delete(alloc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete alloc", ret);
+Exit:
+    return ret;
 }
-
-#define ESCH_CHECK(cond, obj, msg, errorcode) { \
-    if (!(cond)) { \
-        esch_log* log = ESCH_OBJECT_GET_LOG(obj); \
-        (void)esch_log_error(log, msg); \
-        ret = errorcode; \
-        goto Exit; \
-    } \
-}
-
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-
-#endif /* _ESCH_DEBUG_H_ */
 /*
  * +=================================================================+
  *
@@ -67,3 +63,4 @@ extern "C" {
  *
  * +=================================================================+
  */
+

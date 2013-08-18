@@ -1,2 +1,22 @@
 #!/usr/bin/env python
-StaticLibrary('esch', ['esch_alloc.c', 'esch_log.c'])
+
+ccflags_debug = [ "-g" ]
+ccflags_release = [ "-O2", "-DNDEBUG" ]
+ccflags = ccflags_release
+
+buildmode = ARGUMENTS.get('mode', 'release')
+if buildmode.upper() == 'DEBUG':
+    ccflags = ccflags_debug
+elif buildmode.upper() == 'RELEASE':
+    ccflags = ccflags_release
+else:
+    print("Warning: Unknown mode = %s, fallback to release", buildmode)
+
+print("Build mode = %s" % buildmode)
+
+env = Environment(CPPPATH=[ '.' ])
+env.Append(CCFLAGS=ccflags)
+utest_files = [ 'utest/esch_t_alloc.c', 'utest/esch_utest.c' ]
+esch = env.StaticLibrary('esch', ['esch_alloc.c', 'esch_log.c'])
+esch_utest = env.Program('esch_utest', utest_files, LIBS=[ 'esch' ], LIBPATH=[ '.' ])
+env.Depends(esch_utest, esch)

@@ -1,12 +1,15 @@
 /* vim:ft=c expandtab tw=72 sw=4
  */
+#include <stdio.h>
+#include <assert.h>
 #include "esch.h"
 #include "esch_alloc.h"
 #include "esch_log.h"
-#include <stdio.h>
-#include <assert.h>
+#include "esch_debug.h"
 
-static esch_alloc g_dummy_alloc = {0};
+static esch_alloc g_dummy_alloc = {
+    { ESCH_TYPE_ALLOC, &g_esch_log_do_nothing, &g_dummy_alloc },
+};
 esch_log g_esch_log_printf = {
     { ESCH_TYPE_LOG_PRINTF, &g_esch_log_printf, &g_dummy_alloc },
     esch_log_error_printf
@@ -93,7 +96,9 @@ Exit:
 esch_error
 esch_log_error_printf(esch_log* log, char* fmt, va_list args)
 {
+    (void)log;
     vprintf(fmt, args);
+    printf("\n");
     return ESCH_OK;
 }
 esch_error

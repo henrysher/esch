@@ -87,7 +87,7 @@ struct esch_object
     esch_alloc* alloc;      /**< Allocator object to manage memory. */
 };
 
-#define ESCH_IS_VALID_OBJECT(obj)    (((esch_object*)obj)->type & 0xFF00 && \
+#define ESCH_IS_VALID_OBJECT(obj)    ((((esch_object*)obj)->type & ESCH_TYPE_MAGIC) && \
                                       ((esch_object*)obj)->log != NULL && \
                                       ((esch_object*)obj)->alloc != NULL)
 #define ESCH_OBJECT(obj)             ((esch_object*)obj)
