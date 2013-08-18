@@ -12,11 +12,11 @@ static esch_alloc g_dummy_alloc = {
 };
 esch_log g_esch_log_printf = {
     { ESCH_TYPE_LOG_PRINTF, &g_esch_log_printf, &g_dummy_alloc },
-    esch_log_error_printf
+    esch_log_error_printf, esch_log_info_printf
 };
 esch_log g_esch_log_do_nothing = {
     { ESCH_TYPE_LOG_DO_NOTHING, &g_esch_log_do_nothing, &g_dummy_alloc },
-    esch_log_error_do_nothing
+    esch_log_message_do_nothing, esch_log_message_do_nothing
 };
 
 /**
@@ -57,6 +57,12 @@ Exit:
     return ret;
 }
 
+/**
+ * Public function to log error.
+ * @param log The log object.
+ * @param fmt Format string follos variable arguments.
+ * @return Error code;
+ */
 esch_error
 esch_log_error(esch_log* log, char* fmt, ...)
 {
@@ -77,6 +83,37 @@ Exit:
     return ret;
 }
 
+/**
+ * Public function to log general information.
+ * @param log The log object.
+ * @param fmt Format string follos variable arguments.
+ * @return Error code;
+ */
+esch_error
+esch_log_info(esch_log* log, char* fmt, ...)
+{
+    esch_error ret = ESCH_OK;
+    va_list ap;
+
+    ESCH_CHECK_NO_LOG(log != NULL, ESCH_ERROR_INVALID_PARAMETER);
+    ESCH_CHECK_NO_LOG(fmt != NULL, ESCH_ERROR_INVALID_PARAMETER);
+    ESCH_CHECK_NO_LOG(ESCH_IS_VALID_OBJECT(log), ESCH_ERROR_INVALID_PARAMETER);
+    ESCH_CHECK_NO_LOG(log == &g_esch_log_do_nothing ||
+                      log == &g_esch_log_printf,
+                     ESCH_ERROR_INVALID_PARAMETER);
+
+    va_start(ap, fmt);
+    ret = log->log_info(log, fmt, ap);
+    va_end(ap);
+Exit:
+    return ret;
+}
+
+/**
+ * Delete a log object.
+ * @param log The log object.
+ * @return Error code;
+ */
 esch_error
 esch_log_delete(esch_log* log)
 {
@@ -93,16 +130,50 @@ Exit:
     return ret;
 }
 
+/**
+ * Function to log error. Belongs to do-printf log.
+ * @param log The log object.
+ * @param fmt Format string follos variable arguments.
+ * @param args Variable length of arguments.
+ * @return Error code;
+ */
 esch_error
 esch_log_error_printf(esch_log* log, char* fmt, va_list args)
 {
     (void)log;
+    printf("[ERROR] ");
     vprintf(fmt, args);
     printf("\n");
     return ESCH_OK;
 }
+
+/**
+ * Function to log error. Belongs to do-printf log.
+ * @param log The log object.
+ * @param fmt Format string follos variable arguments.
+ * @param args Variable length of arguments.
+ * @return Error code;
+ */
 esch_error
-esch_log_error_do_nothing(esch_log* log, char* fmt, va_list args)
+esch_log_info_printf(esch_log* log, char* fmt, va_list args)
+{
+    (void)log;
+    printf("[INFO]  ");
+    vprintf(fmt, args);
+    printf("\n");
+    return ESCH_OK;
+}
+
+
+/**
+ * Function to log any information. Belongs to do-nothing log.
+ * @param log The log object.
+ * @param fmt Format string follos variable arguments.
+ * @param args Variable length of arguments.
+ * @return Error code;
+ */
+esch_error
+esch_log_message_do_nothing(esch_log* log, char* fmt, va_list args)
 {
     (void)log;
     (void)fmt;

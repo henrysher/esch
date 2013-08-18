@@ -23,6 +23,26 @@ extern "C" {
     } \
 }
 
+#define ESCH_CHECK_1(cond, obj, fmt, val1, errorcode) { \
+    if (!(cond)) { \
+        esch_log* log = ESCH_OBJECT_GET_LOG(obj); \
+        (void)esch_log_error(log, fmt, val1); \
+        ret = errorcode; \
+        goto Exit; \
+    } \
+}
+
+#define ESCH_CHECK_2(cond, obj, fmt, val1, val2, errorcode) { \
+    if (!(cond)) { \
+        esch_log* log = ESCH_OBJECT_GET_LOG(obj); \
+        (void)esch_log_error(log, fmt, val1, val2); \
+        ret = errorcode; \
+        goto Exit; \
+    } \
+}
+
+
+
 
 #ifdef __cplusplus
 }

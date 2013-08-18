@@ -106,6 +106,7 @@ esch_error esch_log_new_do_nothing(esch_log** log);
 esch_error esch_log_new_printf(esch_log** log);
 esch_error esch_log_delete(esch_log* log);
 esch_error esch_log_error(esch_log* log, char* fmt, ...);
+esch_error esch_log_info(esch_log* log, char* fmt, ...);
 
 #ifdef __cplusplus
 }

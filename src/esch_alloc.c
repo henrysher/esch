@@ -62,9 +62,11 @@ esch_alloc_delete(esch_alloc* alloc)
                alloc,
                "Not ESCH_TYPE_ALLOC_C_DEFAULT",
                ESCH_ERROR_INVALID_PARAMETER);
-    ESCH_CHECK(alloc->allocate_count == alloc->deallocate_count,
+
+    ESCH_CHECK_2(alloc->allocate_count == alloc->deallocate_count,
                alloc,
-               "Memory leak detected when detroying allocator.",
+               "Memory leak detected. Allocated = %d, deallocated = %d",
+               alloc->allocate_count, alloc->deallocate_count,
                ESCH_ERROR_INVALID_STATE);
     free(alloc);
 Exit:
@@ -116,7 +118,7 @@ esch_alloc_free(struct esch_alloc* alloc, void* ptr)
     ESCH_CHECK_NO_LOG(ESCH_IS_VALID_OBJECT(alloc), ESCH_ERROR_INVALID_PARAMETER);
 
     if (ptr != NULL) {
-        alloc->allocate_count -= 1;
+        alloc->deallocate_count += 1;
     }
 Exit:
     free(ptr);

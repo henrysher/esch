@@ -14,14 +14,23 @@ int test_AllocCreateDeleteCDefault()
     ret = esch_alloc_new_c_default(&alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
 
+    ESCH_OBJECT(alloc)->log = g_testLog; /* No need to free existing log. */
+
     ret = esch_alloc_malloc(alloc, sizeof(char) * 100, (void**)(&str));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to allocate memory", ret);
+
+    /* Try raise an error when memory is leaked*/
+    ret = esch_alloc_delete(alloc);
+    ESCH_TEST_CHECK(ret != ESCH_OK, "Expect memory leak detected but not happening", ret);
+
+    (void)esch_log_info(g_testLog, "Memory leak detect. Now do right thing to free buffer.");
 
     ret = esch_alloc_free(alloc, str);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to free memory", ret);
 
     ret = esch_alloc_delete(alloc);
-    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete alloc", ret);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete alloc object.", ret);
+
 Exit:
     return ret;
 }
