@@ -70,16 +70,27 @@ enum esch_token_type
     ESCH_TOKEN_KEYWORD_CASE,         /**< Keyword: case */
 };
 
-struct esch_token_stream
+struct esch_ast
 {
     esch_object base;
     enum esch_token_type token;
     char* value;
-    struct esch_token_stream* next;
-    struct esch_token_stream* prev;
+
+    char* file_name;
+    int   line_number;
+
+    struct esch_ast* first_child;
+    struct esch_ast* next_sibling;
 };
 
-struct esch_lexer
+struct esch_parser_config
+{
+    esch_object base;
+    esch_alloc* alloc;
+    esch_log*   log;
+}
+
+struct esch_parser
 {
     esch_object base;
 };

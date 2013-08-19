@@ -64,6 +64,8 @@ typedef enum {
     ESCH_TYPE_ALLOC            = ESCH_TYPE_MAGIC | 0x20,
     ESCH_TYPE_LOG              = ESCH_TYPE_MAGIC | 0x30,
     ESCH_TYPE_PARSER           = ESCH_TYPE_MAGIC | 0x40,
+    ESCH_TYPE_PARSER_CONFIG    = ESCH_TYPE_MAGIC | 0x41,
+    ESCH_TYPE_AST              = ESCH_TYPE_MAGIC | 0x42,
     ESCH_TYPE_VM               = ESCH_TYPE_MAGIC | 0xf0,
 
     ESCH_TYPE_ALLOC_C_DEFAULT  = ESCH_TYPE_MAGIC | ESCH_TYPE_ALLOC | 1,
@@ -74,6 +76,7 @@ typedef enum {
 typedef struct esch_object         esch_object;
 typedef struct esch_alloc          esch_alloc;
 typedef struct esch_log            esch_log;
+typedef struct esch_parser_config  esch_parser_config;
 typedef struct esch_parser         esch_parser;
 typedef struct esch_ast            esch_ast;
 
@@ -111,12 +114,16 @@ esch_error esch_log_error(esch_log* log, char* fmt, ...);
 esch_error esch_log_info(esch_log* log, char* fmt, ...);
 
 /* --- Parser --- */
-esch_error esch_parser_new(esch_parser** parser);
-esch_error esch_parser_delete(esch_parser* parser);
-esch_error esch_parser_read(esch_parser* parser, char* input, esch_ast** ast);
-esch_error esch_parser_read_file(esch_parser* parser, char* file, esch_ast** ast);
+esch_error esch_parser_config_new(esch_parser_config** config);
+esch_error esch_parser_config_set_alloc(esch_parser_config* config, esch_alloc* alloc);
+esch_error esch_parser_config_set_log(esch_parser_config* config, esch_alloc* log);
+esch_error esch_parser_config_delete(esch_parser_config* config);
 
-esch_error esch_ast_delete(esch_ast* ast);
+esch_error esch_parser_new(esch_parser_config* config, esch_parser** parser);
+esch_error esch_parser_delete(esch_parser* parser);
+esch_error esch_parser_read(esch_parser* parser, char* input);
+esch_error esch_parser_read_file(esch_parser* parser, char* file);
+esch_error esch_parser_get_ast(esch_parser* parser, esch_ast** ast);
 
 #ifdef __cplusplus
 }
