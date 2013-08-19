@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-ccflags_debug = [ "-g" ]
-ccflags_release = [ "-O2", "-DNDEBUG" ]
+ccflags_common = [ "-std=c89" ]
+ccflags_debug = ccflags_common + [ "-g" ]
+ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
 ccflags = ccflags_debug
 
 buildmode = ARGUMENTS.get('mode', 'release')
