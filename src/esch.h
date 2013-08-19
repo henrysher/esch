@@ -116,7 +116,7 @@ esch_error esch_log_info(esch_log* log, char* fmt, ...);
 /* --- Parser --- */
 esch_error esch_parser_config_new(esch_parser_config** config);
 esch_error esch_parser_config_set_alloc(esch_parser_config* config, esch_alloc* alloc);
-esch_error esch_parser_config_set_log(esch_parser_config* config, esch_alloc* log);
+esch_error esch_parser_config_set_log(esch_parser_config* config, esch_log* log);
 esch_error esch_parser_config_delete(esch_parser_config* config);
 
 esch_error esch_parser_new(esch_parser_config* config, esch_parser** parser);
