@@ -52,8 +52,8 @@ esch_alloc_delete(esch_alloc* alloc)
         return ret;
     }
     ESCH_CHECK_NO_LOG(ESCH_IS_VALID_OBJECT(alloc), ESCH_ERROR_INVALID_PARAMETER);
-    self_alloc = ESCH_OBJECT_GET_ALLOC(alloc);
-    self_type = ESCH_OBJECT_GET_TYPE(alloc);
+    self_alloc = ESCH_OBJECT_ALLOC(alloc);
+    self_type = ESCH_OBJECT_TYPE(alloc);
     ESCH_CHECK(self_alloc == alloc,
                alloc,
                "base.alloc != self on C default alloc",

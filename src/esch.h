@@ -74,6 +74,8 @@ typedef enum {
 typedef struct esch_object         esch_object;
 typedef struct esch_alloc          esch_alloc;
 typedef struct esch_log            esch_log;
+typedef struct esch_parser         esch_parser;
+typedef struct esch_ast            esch_ast;
 
 /**
  * The public type info structure. This is the header of all structures
@@ -87,13 +89,13 @@ struct esch_object
     esch_alloc* alloc;      /**< Allocator object to manage memory. */
 };
 
-#define ESCH_IS_VALID_OBJECT(obj)    ((((esch_object*)obj)->type & ESCH_TYPE_MAGIC) && \
+#define ESCH_IS_VALID_OBJECT(obj)    ((((esch_object*)obj)->type & ESCH_TYPE_MAGIC) == ESCH_TYPE_MAGIC && \
                                       ((esch_object*)obj)->log != NULL && \
                                       ((esch_object*)obj)->alloc != NULL)
 #define ESCH_OBJECT(obj)             ((esch_object*)obj)
-#define ESCH_OBJECT_GET_TYPE(obj)    (((esch_object*)obj)->type)
-#define ESCH_OBJECT_GET_LOG(obj)     (((esch_object*)obj)->log)
-#define ESCH_OBJECT_GET_ALLOC(obj)   (((esch_object*)obj)->alloc)
+#define ESCH_OBJECT_TYPE(obj)    (((esch_object*)obj)->type)
+#define ESCH_OBJECT_LOG(obj)     (((esch_object*)obj)->log)
+#define ESCH_OBJECT_ALLOC(obj)   (((esch_object*)obj)->alloc)
 
 /* --- Memory allocator --- */
 esch_error esch_alloc_new_c_default(esch_alloc** ret_alloc);
@@ -107,6 +109,14 @@ esch_error esch_log_new_printf(esch_log** log);
 esch_error esch_log_delete(esch_log* log);
 esch_error esch_log_error(esch_log* log, char* fmt, ...);
 esch_error esch_log_info(esch_log* log, char* fmt, ...);
+
+/* --- Parser --- */
+esch_error esch_parser_new(esch_parser** parser);
+esch_error esch_parser_delete(esch_parser* parser);
+esch_error esch_parser_read(esch_parser* parser, char* input, esch_ast** ast);
+esch_error esch_parser_read_file(esch_parser* parser, char* file, esch_ast** ast);
+
+esch_error esch_ast_delete(esch_ast* ast);
 
 #ifdef __cplusplus
 }

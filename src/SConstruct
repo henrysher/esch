@@ -2,7 +2,7 @@
 
 ccflags_debug = [ "-g" ]
 ccflags_release = [ "-O2", "-DNDEBUG" ]
-ccflags = ccflags_release
+ccflags = ccflags_debug
 
 buildmode = ARGUMENTS.get('mode', 'release')
 if buildmode.upper() == 'DEBUG':
