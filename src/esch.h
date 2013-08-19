@@ -119,6 +119,13 @@ esch_error esch_parser_config_set_alloc(esch_parser_config* config, esch_alloc* 
 esch_error esch_parser_config_set_log(esch_parser_config* config, esch_log* log);
 esch_error esch_parser_config_delete(esch_parser_config* config);
 
+/* --- 
+ * TODO Add more functions as part of configurations.
+ * 1. Message callback function to keep error information.
+ * 2. Standard library
+ * 3. Search path
+ * --- */
+
 esch_error esch_parser_new(esch_parser_config* config, esch_parser** parser);
 esch_error esch_parser_delete(esch_parser* parser);
 esch_error esch_parser_read(esch_parser* parser, char* input);
