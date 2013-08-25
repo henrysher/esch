@@ -124,7 +124,7 @@ esch_error esch_log_info(esch_log* log, char* fmt, ...);
 
 esch_error esch_parser_new(esch_alloc* alloc, esch_log* log, esch_parser** parser);
 esch_error esch_parser_delete(esch_parser* parser);
-esch_error esch_parser_read(esch_parser* parser, char* input);
+esch_error esch_parser_read_line(esch_parser* parser, char* input);
 esch_error esch_parser_read_file(esch_parser* parser, char* file);
 esch_error esch_parser_get_ast(esch_parser* parser, esch_ast** ast);
 
