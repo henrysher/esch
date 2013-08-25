@@ -115,11 +115,6 @@ esch_error esch_log_error(esch_log* log, char* fmt, ...);
 esch_error esch_log_info(esch_log* log, char* fmt, ...);
 
 /* --- Parser --- */
-esch_error esch_parser_config_new(esch_parser_config** config);
-esch_error esch_parser_config_set_alloc(esch_parser_config* config, esch_alloc* alloc);
-esch_error esch_parser_config_set_log(esch_parser_config* config, esch_log* log);
-esch_error esch_parser_config_delete(esch_parser_config* config);
-
 /* --- 
  * TODO Add more functions as part of configurations.
  * 1. Message callback function to keep error information.
@@ -127,7 +122,7 @@ esch_error esch_parser_config_delete(esch_parser_config* config);
  * 3. Search path
  * --- */
 
-esch_error esch_parser_new(esch_parser_config* config, esch_parser** parser);
+esch_error esch_parser_new(esch_alloc* alloc, esch_log* log, esch_parser** parser);
 esch_error esch_parser_delete(esch_parser* parser);
 esch_error esch_parser_read(esch_parser* parser, char* input);
 esch_error esch_parser_read_file(esch_parser* parser, char* file);

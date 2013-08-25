@@ -14,7 +14,8 @@ extern esch_log* g_testLog;
     ESCH_CHECK(cond, g_testLog, msg, errorcode)
 
 /* test cases */
-int test_AllocCreateDeleteCDefault();
+extern int test_AllocCreateDeleteCDefault();
+extern int test_AllocCreateParser();
 
 #ifdef __cplusplus
 }

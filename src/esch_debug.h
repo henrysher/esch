@@ -6,6 +6,7 @@
 #include "esch.h"
 #include "esch_log.h"
 #include <stdlib.h>
+#include <assert.h>
 
 #ifdef __cplusplus
 extern "C" {
