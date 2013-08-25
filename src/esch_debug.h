@@ -22,7 +22,7 @@ extern "C" {
 #define ESCH_CHECK(cond, obj, msg, errorcode) { \
     if (!(cond)) { \
         esch_log* log = ESCH_OBJECT_LOG(obj); \
-        (void)esch_log_error(log, msg); \
+        (void)esch_log_error(log, "[%s:%d] " msg, __FILE__, __LINE__); \
         ret = errorcode; \
         goto Exit; \
     } \
@@ -31,7 +31,7 @@ extern "C" {
 #define ESCH_CHECK_1(cond, obj, fmt, val1, errorcode) { \
     if (!(cond)) { \
         esch_log* log = ESCH_OBJECT_LOG(obj); \
-        (void)esch_log_error(log, fmt, val1); \
+        (void)esch_log_error(log, "[%s:%d] " fmt, __FILE__, __LINE__, val1); \
         ret = errorcode; \
         goto Exit; \
     } \
@@ -40,7 +40,7 @@ extern "C" {
 #define ESCH_CHECK_2(cond, obj, fmt, val1, val2, errorcode) { \
     if (!(cond)) { \
         esch_log* log = ESCH_OBJECT_LOG(obj); \
-        (void)esch_log_error(log, fmt, val1, val2); \
+        (void)esch_log_error(log, "[%s:%d] " fmt, __FILE__, __LINE__, val1, val2); \
         ret = errorcode; \
         goto Exit; \
     } \
@@ -51,7 +51,7 @@ extern "C" {
         ESCH_CHECK_NO_LOG(cond, ESCH_ERROR_INVALID_PARAMETER)
 #else
 #    define ESCH_CHECK_PARAM_PUBLIC(cond) \
-        ESCH_CHECK(cond, esch_global_log, "Bad parameter"#cond, ESCH_ERROR_INVALID_PARAMETER) 
+        ESCH_CHECK(cond, esch_global_log, "Bad parameter: "#cond, ESCH_ERROR_INVALID_PARAMETER) 
 #endif /* NDEBUG */
 
 #define ESCH_CHECK_PARAM_INTERNAL(cond) assert(cond);
