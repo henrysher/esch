@@ -15,9 +15,13 @@ else:
 
 print("Build mode = %s" % buildmode)
 
+# Library
 env = Environment(CPPPATH=[ '.' ])
 env.Append(CCFLAGS=ccflags)
-utest_files = [ 'utest/esch_t_alloc.c', 'utest/esch_utest.c' ]
-esch = env.StaticLibrary('esch', ['esch_alloc.c', 'esch_log.c'])
-esch_utest = env.Program('esch_utest', utest_files, LIBS=[ 'esch' ], LIBPATH=[ '.' ])
+libesch_src = ['esch_alloc.c', 'esch_log.c', 'esch_parser.h']
+esch = env.StaticLibrary('esch', libesch_src)
+# Unit test
+utest_src = [ 'utest/esch_t_alloc.c', 'utest/esch_utest.c' ]
+esch_utest = env.Program('esch_utest', utest_src, LIBS=[ 'esch' ], LIBPATH=[ '.' ])
+# Dependencies
 env.Depends(esch_utest, esch)
