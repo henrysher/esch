@@ -107,6 +107,7 @@ esch_error esch_alloc_malloc(esch_alloc* alloc, size_t size, void** ret);
 esch_error esch_alloc_free(esch_alloc* alloc, void* ptr);
 
 /* --- Logger objects -- */
+extern esch_log* esch_global_log;
 esch_error esch_log_new_do_nothing(esch_log** log);
 esch_error esch_log_new_printf(esch_log** log);
 esch_error esch_log_delete(esch_log* log);

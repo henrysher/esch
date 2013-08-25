@@ -3,6 +3,10 @@
 #ifndef _ESCH_DEBUG_H_
 #define _ESCH_DEBUG_H_
 
+#include "esch.h"
+#include "esch_log.h"
+#include <stdlib.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -41,8 +45,15 @@ extern "C" {
     } \
 }
 
+#ifdef NDEBUG
+#    define ESCH_CHECK_PARAM_PUBLIC(cond) \
+        ESCH_CHECK_NO_LOG(cond, ESCH_ERROR_INVALID_PARAMETER)
+#else
+#    define ESCH_CHECK_PARAM_PUBLIC(cond) \
+        ESCH_CHECK(cond, esch_global_log, "Bad parameter"#cond, ESCH_ERROR_INVALID_PARAMETER) 
+#endif /* NDEBUG */
 
-
+#define ESCH_CHECK_PARAM_INTERNAL(cond) assert(cond);
 
 #ifdef __cplusplus
 }

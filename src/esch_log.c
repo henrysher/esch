@@ -19,6 +19,9 @@ esch_log g_esch_log_do_nothing = {
     esch_log_message_do_nothing, esch_log_message_do_nothing
 };
 
+/* By default, the global log uses printf(). */
+esch_log* esch_global_log = &g_esch_log_printf;
+
 /**
  * Create a log that print string to use printf().
  * @param log Returned created log object.
