@@ -79,6 +79,7 @@ typedef struct esch_log            esch_log;
 typedef struct esch_parser_config  esch_parser_config;
 typedef struct esch_parser         esch_parser;
 typedef struct esch_ast            esch_ast;
+typedef struct esch_object         esch_config;
 
 /**
  * The public type info structure. This is the header of all structures
@@ -122,7 +123,7 @@ esch_error esch_log_info(esch_log* log, char* fmt, ...);
  * 3. Search path
  * --- */
 
-esch_error esch_parser_new(esch_alloc* alloc, esch_log* log, esch_parser** parser);
+esch_error esch_parser_new(esch_config* config, esch_parser** parser);
 esch_error esch_parser_delete(esch_parser* parser);
 esch_error esch_parser_read_line(esch_parser* parser, char* input);
 esch_error esch_parser_read_file(esch_parser* parser, char* file);
