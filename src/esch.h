@@ -64,8 +64,9 @@ typedef enum {
     ESCH_TYPE_ALLOC            = ESCH_TYPE_MAGIC | 0x20,
     ESCH_TYPE_LOG              = ESCH_TYPE_MAGIC | 0x30,
     ESCH_TYPE_PARSER           = ESCH_TYPE_MAGIC | 0x40,
-    ESCH_TYPE_PARSER_CONFIG    = ESCH_TYPE_MAGIC | 0x41,
     ESCH_TYPE_AST              = ESCH_TYPE_MAGIC | 0x42,
+    ESCH_TYPE_CONFIG           = ESCH_TYPE_MAGIC | 0x50,
+    ESCH_TYPE_STRING           = ESCH_TYPE_MAGIC | 0x60,
     ESCH_TYPE_VM               = ESCH_TYPE_MAGIC | 0xf0,
 
     ESCH_TYPE_ALLOC_C_DEFAULT  = ESCH_TYPE_MAGIC | ESCH_TYPE_ALLOC | 1,
@@ -80,6 +81,10 @@ typedef struct esch_parser_config  esch_parser_config;
 typedef struct esch_parser         esch_parser;
 typedef struct esch_ast            esch_ast;
 typedef struct esch_object         esch_config;
+typedef struct esch_string         esch_string;
+
+typedef char                       esch_utf8_char;
+typedef wchar_t                    esch_unicode;
 
 /**
  * The public type info structure. This is the header of all structures
@@ -100,6 +105,9 @@ struct esch_object
 #define ESCH_OBJECT_TYPE(obj)    (((esch_object*)obj)->type)
 #define ESCH_OBJECT_LOG(obj)     (((esch_object*)obj)->log)
 #define ESCH_OBJECT_ALLOC(obj)   (((esch_object*)obj)->alloc)
+#define ESCH_IS_VALID_CONFIG(obj)    ((((esch_object*)obj)->type == ESCH_TYPE_CONFIG) && \
+                                      ((esch_object*)obj)->log != NULL && \
+                                      ((esch_object*)obj)->alloc != NULL)
 
 /* --- Memory allocator --- */
 esch_error esch_alloc_new_c_default(esch_alloc** ret_alloc);
@@ -114,6 +122,34 @@ esch_error esch_log_new_printf(esch_log** log);
 esch_error esch_log_delete(esch_log* log);
 esch_error esch_log_error(esch_log* log, char* fmt, ...);
 esch_error esch_log_info(esch_log* log, char* fmt, ...);
+
+/* --- String objects --- */
+esch_error esch_string_new_from_utf8(esch_config* config, char* utf8,
+                                     int begin, int end, esch_string** str);
+esch_error esch_string_new(esch_config* config, esch_string* input,
+                           int begin, int end, esch_string** str);
+esch_error esch_string_get_utf8(esch_string* str, char** utf8);
+esch_error esch_string_get_unicode(esch_string* str, esch_unicode** unicode);
+esch_error esch_unicode_is_lu(esch_unicode ch);
+esch_error esch_unicode_is_ll(esch_unicode ch);
+esch_error esch_unicode_is_lt(esch_unicode ch);
+esch_error esch_unicode_is_lm(esch_unicode ch);
+esch_error esch_unicode_is_lo(esch_unicode ch);
+esch_error esch_unicode_is_mn(esch_unicode ch);
+esch_error esch_unicode_is_mc(esch_unicode ch);
+esch_error esch_unicode_is_nd(esch_unicode ch);
+esch_error esch_unicode_is_nl(esch_unicode ch);
+esch_error esch_unicode_is_no(esch_unicode ch);
+esch_error esch_unicode_is_pd(esch_unicode ch);
+esch_error esch_unicode_is_pc(esch_unicode ch);
+esch_error esch_unicode_is_po(esch_unicode ch);
+esch_error esch_unicode_is_sc(esch_unicode ch);
+esch_error esch_unicode_is_sm(esch_unicode ch);
+esch_error esch_unicode_is_sk(esch_unicode ch);
+esch_error esch_unicode_is_so(esch_unicode ch);
+esch_error esch_unicode_is_co(esch_unicode ch);
+esch_error esch_unicode_is_ascii(esch_unicode ch);
+esch_error esch_unicode_is_extended_alphabetic(esch_unicode ch);
 
 /* --- Parser --- */
 /* --- 
