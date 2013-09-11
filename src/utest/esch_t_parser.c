@@ -12,6 +12,8 @@ int test_AllocCreateParser()
     ret = esch_alloc_new_c_default(&alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
 
+    config.alloc = alloc;
+    config.log = NULL;
 
     ret = esch_parser_new(&config, &parser);
     ESCH_TEST_CHECK(ret == ESCH_ERROR_INVALID_PARAMETER, "Failed to create parser - no log", ret);

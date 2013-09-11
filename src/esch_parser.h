@@ -54,9 +54,9 @@ struct esch_parser
 };
 
 #define ESCH_IS_PARSER(obj) \
-    (obj->base.type == ESCH_TYPE_PARSER && \
-     obj->base.alloc != NULL && \
-     obj->base.log != NULL)
+    ((obj)->base.type == ESCH_TYPE_PARSER && \
+     (obj)->base.alloc != NULL && \
+     (obj)->base.log != NULL)
 
 #ifdef __cplusplus
 }
