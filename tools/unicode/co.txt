@@ -1,0 +1,6 @@
+U+E000	<Private Use, First>		view
+U+F8FF	<Private Use, Last>		view
+U+F0000	<Plane 15 Private Use, First>	󰀀	view
+U+FFFFD	<Plane 15 Private Use, Last>	󿿽	view
+U+100000	<Plane 16 Private Use, First>	􀀀	view
+U+10FFFD	<Plane 16 Private Use, Last>	􏿽	view
