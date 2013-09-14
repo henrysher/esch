@@ -7,9 +7,10 @@ int test_parser()
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;
     esch_parser* parser = NULL;
-    esch_config config;
+    esch_config config = { ESCH_TYPE_CONFIG, NULL, NULL };
 
-    ret = esch_alloc_new_c_default(&alloc);
+    config.log = g_testLog;
+    ret = esch_alloc_new_c_default(&config, &alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
 
     config.alloc = alloc;

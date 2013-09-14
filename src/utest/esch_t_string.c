@@ -16,7 +16,8 @@ int test_string()
     char input[] = { 0xe4, 0xbd, 0xa0, 0xe5, 0xa5, 0xbd, 0x0 };
     esch_unicode output[] = { 0x4F60, 0x597D, 0 };
 
-    ret = esch_alloc_new_c_default(&alloc);
+    config.log = g_testLog;
+    ret = esch_alloc_new_c_default(&config, &alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
 
     config.alloc = alloc;

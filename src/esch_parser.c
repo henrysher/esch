@@ -37,7 +37,7 @@ esch_parser_new(esch_config* config, esch_parser** parser)
     new_parser->base.alloc = alloc;
     (*parser) = new_parser;
     new_parser = NULL;
-    assert(ESCH_IS_PARSER(*parser));
+    assert(ESCH_IS_VALID_PARSER(*parser));
 Exit:
     if (new_parser != NULL)
     {
@@ -57,7 +57,7 @@ esch_parser_delete(esch_parser* parser)
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;
     ESCH_CHECK_PARAM_PUBLIC(parser != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_PARSER(parser));
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_PARSER(parser));
 
     alloc = parser->base.alloc;
     esch_alloc_free(alloc, parser);

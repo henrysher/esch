@@ -15,6 +15,12 @@ struct esch_alloc
     int deallocate_count; /**< How many buffer are freed. */
 };
 
+#define ESCH_IS_VALID_ALLOC(obj) \
+    ((((obj)->base.type & ESCH_TYPE_ALLOC) == ESCH_TYPE_ALLOC) && \
+     (obj)->base.alloc != NULL && \
+     (obj)->base.log != NULL && \
+     (obj)->base.alloc == obj)
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

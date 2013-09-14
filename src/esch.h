@@ -111,7 +111,7 @@ struct esch_object
                                       ((esch_object*)obj)->alloc != NULL)
 
 /* --- Memory allocator --- */
-esch_error esch_alloc_new_c_default(esch_alloc** ret_alloc);
+esch_error esch_alloc_new_c_default(esch_config* config, esch_alloc** ret_alloc);
 esch_error esch_alloc_delete(esch_alloc* alloc);
 esch_error esch_alloc_malloc(esch_alloc* alloc, size_t size, void** ret);
 esch_error esch_alloc_free(esch_alloc* alloc, void* ptr);

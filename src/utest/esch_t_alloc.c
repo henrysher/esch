@@ -9,12 +9,12 @@ int test_AllocCreateDeleteCDefault()
 {
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;
+    esch_config config = { ESCH_TYPE_CONFIG, NULL, NULL };
     char* str = NULL;
 
-    ret = esch_alloc_new_c_default(&alloc);
+    config.log = g_testLog;
+    ret = esch_alloc_new_c_default(&config, &alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
-
-    ESCH_OBJECT(alloc)->log = g_testLog; /* No need to free existing log. */
 
     ret = esch_alloc_malloc(alloc, sizeof(char) * 100, (void**)(&str));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to allocate memory", ret);

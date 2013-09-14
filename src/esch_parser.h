@@ -53,7 +53,7 @@ struct esch_parser
     esch_object base;
 };
 
-#define ESCH_IS_PARSER(obj) \
+#define ESCH_IS_VALID_PARSER(obj) \
     ((obj)->base.type == ESCH_TYPE_PARSER && \
      (obj)->base.alloc != NULL && \
      (obj)->base.log != NULL)
