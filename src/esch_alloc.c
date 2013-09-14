@@ -4,6 +4,7 @@
 #include "esch.h"
 #include "esch_alloc.h"
 #include <stdlib.h>
+#include <strings.h>
 #include <assert.h>
 #include "esch_debug.h"
 
