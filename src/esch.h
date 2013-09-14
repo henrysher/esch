@@ -128,8 +128,8 @@ esch_error esch_log_info(esch_log* log, char* fmt, ...);
 esch_error esch_string_new_from_utf8(esch_config* config, char* utf8,
                                      int begin, int end, esch_string** str);
 esch_error esch_string_delete(esch_string* str);
-char* esch_string_get_utf8(esch_string* str);
-esch_unicode* esch_string_get_unicode(esch_string* str);
+char* esch_string_get_utf8_ref(esch_string* str);
+esch_unicode* esch_string_get_unicode_ref(esch_string* str);
 int esch_unicode_is_range_lu(esch_unicode ch);
 int esch_unicode_is_rage_ll(esch_unicode ch);
 int esch_unicode_is_range_lt(esch_unicode ch);

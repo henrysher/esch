@@ -298,7 +298,9 @@ esch_string_delete(esch_string* str)
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;
     if (str == NULL)
+    {
         return ret;
+    }
 
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_STRING(str));
     esch_alloc_free(str->base.alloc, str->utf8);
@@ -307,8 +309,32 @@ esch_string_delete(esch_string* str)
 Exit:
     return ret;
 }
-esch_error esch_string_to_utf8(esch_string* str, char** utf8);
-esch_error esch_string_to_unicode(esch_string* str, esch_unicode** unicode);
+
+/**
+ * Get a reference to UTF-8 string of given string.
+ * @param str Give esch_string object
+ * @return The internal UTF-8 c-string, ending with '\0'.
+ */
+char*
+esch_string_get_utf8_ref(esch_string* str)
+{
+    /* NOTE: For performance consideration, we don't check input. */
+    assert(str != NULL && ESCH_IS_VALID_STRING(str));
+    return str->utf8;
+}
+
+/**
+ * Get a reference to UTF-8 string of given string.
+ * @param str Give esch_string object
+ * @return The internal Unicode c-string, ending with '\0'.
+ */
+esch_unicode*
+esch_string_get_unicode_ref(esch_string* str)
+{
+    /* NOTE: For performance consideration, we don't check input. */
+    assert(str != NULL && ESCH_IS_VALID_STRING(str));
+    return str->unicode;
+}
 
 
 /* DON'T MODIFY: The code below is automatically generated. */

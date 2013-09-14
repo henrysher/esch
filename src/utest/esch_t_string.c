@@ -12,10 +12,12 @@ int test_string()
     esch_parser* parser = NULL;
     esch_config config = { ESCH_TYPE_CONFIG, NULL, NULL };
     esch_string* str = NULL;
+    esch_log* do_nothing = NULL;
     /* Chinese: hello, UTF-8 and Unicode */
     char input[] = { 0xe4, 0xbd, 0xa0, 0xe5, 0xa5, 0xbd, 0x0 };
     esch_unicode output[] = { 0x4F60, 0x597D, 0 };
 
+    (void)esch_log_new_do_nothing(&do_nothing);
     config.log = g_testLog;
     ret = esch_alloc_new_c_default(&config, &alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
@@ -28,13 +30,13 @@ int test_string()
             "Failed to create string - no log", ret);
 
     config.alloc = NULL;
-    config.log = g_testLog;
+    config.log = do_nothing;
     ret = esch_string_new_from_utf8(&config, input, 0, -1, &str);
     ESCH_TEST_CHECK(ret == ESCH_ERROR_INVALID_PARAMETER && str == NULL,
             "Failed to create string - no alloc", ret);
 
     config.alloc = alloc;
-    config.log = g_testLog;
+    config.log = do_nothing;
     /* Check if a full string can be parsed */
     str = NULL;
     ret = esch_string_new_from_utf8(&config, input, 0, -1, &str);
@@ -46,6 +48,14 @@ int test_string()
     ret = ESCH_ERROR_INVALID_STATE;
     ESCH_TEST_CHECK(wcscmp(str->unicode, output) == 0,
             "Unicode conversion error - begin = 0, end = -1", ret);
+    ESCH_TEST_CHECK(wcscmp(str->unicode, esch_string_get_unicode_ref(str)) == 0,
+            "Internal Unicode different - begin = 0, end = -1", ret);
+    ESCH_TEST_CHECK(strcmp(str->utf8, esch_string_get_utf8_ref(str)) == 0,
+            "Internal UTF-8 different - begin = 0, end = -1", ret);
+    ESCH_TEST_CHECK(str->unicode == esch_string_get_unicode_ref(str),
+            "Internal Unicode ref different - begin = 0, end = -1", ret);
+    ESCH_TEST_CHECK(str->utf8 == esch_string_get_utf8_ref(str),
+            "Internal UTF-8 ref different - begin = 0, end = -1", ret);
     ret = esch_string_delete(str);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete string", ret);
     esch_log_info(g_testLog, "[PASSED] Full length test.");

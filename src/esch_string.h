@@ -17,7 +17,9 @@ struct esch_string
 
 #define ESCH_IS_VALID_STRING(obj) \
     ((obj)->base.type == ESCH_TYPE_STRING && \
-     ESCH_IS_VALID_OBJECT(obj))
+     ESCH_IS_VALID_OBJECT(obj) && \
+     (obj)->utf8 != NULL && \
+     (obj)->unicode != NULL)
 
 #ifdef __cplusplus
 }
