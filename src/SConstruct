@@ -19,7 +19,7 @@ print("Build mode = %s" % buildmode)
 env = Environment(CPPPATH=[ '.' ])
 env.Append(CCFLAGS=ccflags)
 libesch_src = ['esch_alloc.c', 'esch_log.c', 'esch_parser.c', \
-               'esch_string.c']
+               'esch_string.c', 'esch_range.c']
 esch = env.StaticLibrary('esch', libesch_src)
 # Unit test
 utest_src = [ 'utest/esch_utest.c', \
