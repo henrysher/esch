@@ -130,8 +130,22 @@ esch_error esch_string_new_from_utf8(esch_config* config, char* utf8,
 esch_error esch_string_delete(esch_string* str);
 char* esch_string_get_utf8_ref(esch_string* str);
 esch_unicode* esch_string_get_unicode_ref(esch_string* str);
+
+int esch_unicode_string_is_valid_identifier(esch_unicode* unicode);
+
+#define esch_unicode_is_ascii(ch) \
+    (((esch_unicode)(ch)) >= 0 && ((esch_unicode)(ch)) < 127 )
+#define esch_unicode_is_digit(ch) ((ch) >= '0' && (ch) <= '9')
+#define esch_unicode_is_alpha(ch) \
+    (((ch) >= 'A' && (ch) <= 'Z') || ((ch) >= 'a' && (ch) <= 'z'))
+#define esch_unicode_is_extended_alphabetic(ch) \
+    ((ch) == '!' || (ch) == '$' || (ch) == '%' || (ch) == '&' || \
+     (ch) == '*' || (ch) == '+' || (ch) == '-' || (ch) == '.' || \
+     (ch) == '/' || (ch) == ':' || (ch) == '<' || (ch) == '=' || \
+     (ch) == '>' || (ch) == '?' || (ch) == '@' || (ch) == '^' || \
+     (ch) == '_' || (ch) == '~')
 int esch_unicode_is_range_lu(esch_unicode ch);
-int esch_unicode_is_rage_ll(esch_unicode ch);
+int esch_unicode_is_range_ll(esch_unicode ch);
 int esch_unicode_is_range_lt(esch_unicode ch);
 int esch_unicode_is_range_lm(esch_unicode ch);
 int esch_unicode_is_range_lo(esch_unicode ch);
@@ -148,8 +162,6 @@ int esch_unicode_is_range_sm(esch_unicode ch);
 int esch_unicode_is_range_sk(esch_unicode ch);
 int esch_unicode_is_range_so(esch_unicode ch);
 int esch_unicode_is_range_co(esch_unicode ch);
-int esch_unicode_is_ascii(esch_unicode ch);
-int esch_unicode_is_extended_alphabetic(esch_unicode ch);
 
 /* --- Parser --- */
 /* --- 

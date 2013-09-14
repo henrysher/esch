@@ -22,6 +22,9 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_string() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_string()");
 
+    ret = test_identifier();
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_identifier() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_identifier()");
 Exit:
     (void)esch_log_delete(g_testLog);
     return ret;

@@ -336,6 +336,64 @@ esch_string_get_unicode_ref(esch_string* str)
     return str->unicode;
 }
 
+int
+esch_unicode_string_is_valid_identifier(esch_unicode* unicode)
+{
+    esch_unicode* ptr = NULL;
+    if (unicode == NULL)
+        return 0;
+
+    /* TODO: Need to convert escape characters. */
+
+    ptr = unicode;
+    /* Always start from non-digital */
+    if (esch_unicode_is_ascii(*ptr))
+    {
+        if (esch_unicode_is_digit(*ptr))
+            return 0;
+    }
+    else if (esch_unicode_is_range_nd(*ptr) ||
+                esch_unicode_is_range_no(*ptr) ||
+                esch_unicode_is_range_nl(*ptr))
+    {
+        return 0;
+    }
+    for (++ptr; *ptr != '\0'; ++ptr)
+    {
+        if (esch_unicode_is_ascii(*ptr))
+        {
+            if (!(esch_unicode_is_digit(*ptr) ||
+                    esch_unicode_is_alpha(*ptr) ||
+                    esch_unicode_is_extended_alphabetic(*ptr)))
+            {
+                return 0;
+            }
+        }
+        else if (!(esch_unicode_is_range_lu(*ptr) ||
+                   esch_unicode_is_range_ll(*ptr) ||
+                   esch_unicode_is_range_lt(*ptr) ||
+                   esch_unicode_is_range_lm(*ptr) ||
+                   esch_unicode_is_range_lo(*ptr) ||
+                   esch_unicode_is_range_mn(*ptr) ||
+                   esch_unicode_is_range_mc(*ptr) ||
+                   esch_unicode_is_range_nd(*ptr) ||
+                   esch_unicode_is_range_nl(*ptr) ||
+                   esch_unicode_is_range_no(*ptr) ||
+                   esch_unicode_is_range_pd(*ptr) ||
+                   esch_unicode_is_range_pc(*ptr) ||
+                   esch_unicode_is_range_po(*ptr) ||
+                   esch_unicode_is_range_sc(*ptr) ||
+                   esch_unicode_is_range_sm(*ptr) ||
+                   esch_unicode_is_range_sk(*ptr) ||
+                   esch_unicode_is_range_so(*ptr) ||
+                   esch_unicode_is_range_co(*ptr)))
+
+        {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 /* DON'T MODIFY: The code below is automatically generated. */
 /* Data source: http://www.fileformat.info/info/unicode/category/index.htm */

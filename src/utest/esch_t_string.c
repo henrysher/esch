@@ -94,3 +94,41 @@ int test_string()
 Exit:
     return ret;
 }
+
+int test_identifier()
+{
+    esch_error ret = ESCH_OK;
+    int val = 0;
+    esch_log* log = NULL;
+    /* Chinese: hello, Unicode */
+    esch_unicode hello[] = { 0x4F60, 0x597D, 0 };
+    /* Chinese: CJK Compat Ideograph, 'you' in Chinese */
+    esch_unicode lo_str[] = { 0x2F804, 0xF9DC, 0 };
+    /* Chinese: CJK Compat Ideograph, 'you' in Chinese, then a number */
+    esch_unicode nl_str[] = { 0x2F804, 0x303A, 0 };
+
+    val = esch_unicode_is_ascii('A');
+    ESCH_TEST_CHECK(val, "'A' should be digit", ESCH_ERROR_INVALID_PARAMETER);
+    val = esch_unicode_is_ascii(128);
+    ESCH_TEST_CHECK(!val, "123 should not be a digit", ESCH_ERROR_INVALID_PARAMETER);
+    val = esch_unicode_is_digit('0');
+    ESCH_TEST_CHECK(val, "0 should be a digit", ESCH_ERROR_INVALID_PARAMETER);
+    val = esch_unicode_is_digit('9');
+    ESCH_TEST_CHECK(val, "9 should be a digit", ESCH_ERROR_INVALID_PARAMETER);
+    val = esch_unicode_is_digit('A');
+    ESCH_TEST_CHECK(!val, "A should not be a digit", ESCH_ERROR_INVALID_PARAMETER);
+    val = esch_unicode_string_is_valid_identifier(hello);
+    ESCH_TEST_CHECK(!val, "'Hello(Chinese)' Should not be identifier",
+            ESCH_ERROR_INVALID_PARAMETER);
+    val = esch_unicode_string_is_valid_identifier(lo_str);
+    ESCH_TEST_CHECK(val, "Lo string should be identifier",
+            ESCH_ERROR_INVALID_PARAMETER);
+    val = esch_unicode_string_is_valid_identifier(L"1ABC");
+    ESCH_TEST_CHECK(!val, "'1ABC' should not be identifier",
+            ESCH_ERROR_INVALID_PARAMETER);
+    val = esch_unicode_string_is_valid_identifier(nl_str);
+    ESCH_TEST_CHECK(val, "Nl string should be identifier",
+            ESCH_ERROR_INVALID_PARAMETER);
+Exit:
+    return ret;
+}
