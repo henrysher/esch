@@ -12,12 +12,19 @@ int test_string()
     esch_parser* parser = NULL;
     esch_config config = { ESCH_TYPE_CONFIG, NULL, NULL };
     esch_string* str = NULL;
+    esch_log* log = NULL;
     esch_log* do_nothing = NULL;
     /* Chinese: hello, UTF-8 and Unicode */
     char input[] = { 0xe4, 0xbd, 0xa0, 0xe5, 0xa5, 0xbd, 0x0 };
     esch_unicode output[] = { 0x4F60, 0x597D, 0 };
 
     (void)esch_log_new_do_nothing(&do_nothing);
+#ifdef NDEBUG
+    log = do_nothing;
+#else
+    log = g_testLog;
+#endif
+
     config.log = g_testLog;
     ret = esch_alloc_new_c_default(&config, &alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
@@ -30,13 +37,13 @@ int test_string()
             "Failed to create string - no log", ret);
 
     config.alloc = NULL;
-    config.log = do_nothing;
+    config.log = log;
     ret = esch_string_new_from_utf8(&config, input, 0, -1, &str);
     ESCH_TEST_CHECK(ret == ESCH_ERROR_INVALID_PARAMETER && str == NULL,
             "Failed to create string - no alloc", ret);
 
     config.alloc = alloc;
-    config.log = do_nothing;
+    config.log = log;
     /* Check if a full string can be parsed */
     str = NULL;
     ret = esch_string_new_from_utf8(&config, input, 0, -1, &str);
