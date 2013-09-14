@@ -2,7 +2,7 @@
 #include "esch_utest.h"
 #include "esch_debug.h"
 
-int test_AllocCreateParser()
+int test_parser()
 {
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;

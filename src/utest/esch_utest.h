@@ -15,7 +15,8 @@ extern esch_log* g_testLog;
 
 /* test cases */
 extern int test_AllocCreateDeleteCDefault();
-extern int test_AllocCreateParser();
+extern int test_parser();
+extern int test_string();
 
 #ifdef __cplusplus
 }

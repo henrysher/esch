@@ -22,7 +22,11 @@ libesch_src = ['esch_alloc.c', 'esch_log.c', 'esch_parser.c', \
                'esch_string.c']
 esch = env.StaticLibrary('esch', libesch_src)
 # Unit test
-utest_src = [ 'utest/esch_t_alloc.c', 'utest/esch_utest.c', 'utest/esch_t_parser.c' ]
+utest_src = [ 'utest/esch_utest.c', \
+              'utest/esch_t_alloc.c', \
+              'utest/esch_t_parser.c', \
+              'utest/esch_t_string.c' \
+            ]
 esch_utest = env.Program('esch_utest', utest_src, LIBS=[ 'esch' ], LIBPATH=[ '.' ])
 # Dependencies
 env.Depends(esch_utest, esch)

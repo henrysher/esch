@@ -1,3 +1,4 @@
+src/tags$
 \..*\.swp$
 src/\..*\.swp$
 src/.*\.o$

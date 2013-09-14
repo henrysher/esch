@@ -50,10 +50,11 @@ extern "C" {
  */
 
 typedef enum {
-    ESCH_OK                               = 0,
-    ESCH_ERROR_OUT_OF_MEMORY              = 1,
-    ESCH_ERROR_INVALID_PARAMETER          = 2,
-    ESCH_ERROR_INVALID_STATE              = 3,
+    ESCH_OK = 0,
+    ESCH_ERROR_NOT_IMPLEMENTED,
+    ESCH_ERROR_OUT_OF_MEMORY,
+    ESCH_ERROR_INVALID_PARAMETER,
+    ESCH_ERROR_INVALID_STATE,
 } esch_error;
 
 typedef enum {
@@ -126,8 +127,7 @@ esch_error esch_log_info(esch_log* log, char* fmt, ...);
 /* --- String objects --- */
 esch_error esch_string_new_from_utf8(esch_config* config, char* utf8,
                                      int begin, int end, esch_string** str);
-esch_error esch_string_new(esch_config* config, esch_string* input,
-                           int begin, int end, esch_string** str);
+esch_error esch_string_delete(esch_string* str);
 esch_error esch_string_get_utf8(esch_string* str, char** utf8);
 esch_error esch_string_get_unicode(esch_string* str, esch_unicode** unicode);
 esch_error esch_unicode_is_lu(esch_unicode ch);

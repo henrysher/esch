@@ -22,8 +22,7 @@ extern "C" {
 
 #define ESCH_CHECK(cond, obj, msg, errorcode) { \
     if (!(cond)) { \
-        esch_log* log = ESCH_OBJECT_LOG(obj); \
-        (void)esch_log_error(log, "[%s:%d] " msg, __FILE__, __LINE__); \
+        (void)esch_log_error(ESCH_OBJECT_LOG(obj), "[%s:%d] " msg, __FILE__, __LINE__); \
         ret = errorcode; \
         goto Exit; \
     } \
@@ -31,8 +30,7 @@ extern "C" {
 
 #define ESCH_CHECK_1(cond, obj, fmt, val1, errorcode) { \
     if (!(cond)) { \
-        esch_log* log = ESCH_OBJECT_LOG(obj); \
-        (void)esch_log_error(log, "[%s:%d] " fmt, __FILE__, __LINE__, val1); \
+        (void)esch_log_error(ESCH_OBJECT_LOG(obj), "[%s:%d] " fmt, __FILE__, __LINE__, val1); \
         ret = errorcode; \
         goto Exit; \
     } \
@@ -40,8 +38,7 @@ extern "C" {
 
 #define ESCH_CHECK_2(cond, obj, fmt, val1, val2, errorcode) { \
     if (!(cond)) { \
-        esch_log* log = ESCH_OBJECT_LOG(obj); \
-        (void)esch_log_error(log, "[%s:%d] " fmt, __FILE__, __LINE__, val1, val2); \
+        (void)esch_log_error(ESCH_OBJECT_LOG(obj), "[%s:%d] " fmt, __FILE__, __LINE__, val1, val2); \
         ret = errorcode; \
         goto Exit; \
     } \

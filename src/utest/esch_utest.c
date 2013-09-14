@@ -14,9 +14,13 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_AllocCreateDeleteCDefault() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_AllocCreateDeleteCDefault()");
 
-    ret = test_AllocCreateParser();
-    ESCH_TEST_CHECK(ret == ESCH_OK, "test_AllocCreateParser() failed", ret);
-    esch_log_info(g_testLog, "[PASSED] test_AllocCreateParser()");
+    ret = test_parser();
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_parser() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_parser()");
+
+    ret = test_string();
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_string() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_string()");
 
 Exit:
     (void)esch_log_delete(g_testLog);
