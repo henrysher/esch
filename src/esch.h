@@ -130,6 +130,8 @@ esch_error esch_string_new_from_utf8(esch_config* config, char* utf8,
 esch_error esch_string_delete(esch_string* str);
 char* esch_string_get_utf8_ref(esch_string* str);
 esch_unicode* esch_string_get_unicode_ref(esch_string* str);
+size_t esch_string_get_utf8_length(esch_string* str);
+size_t esch_string_get_unicode_length(esch_string* str);
 
 int esch_unicode_string_is_valid_identifier(esch_unicode* unicode);
 

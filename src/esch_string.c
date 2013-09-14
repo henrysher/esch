@@ -180,7 +180,8 @@ write_unicode_from_utf8(char* utf8, int begin, int end, esch_unicode* unicode)
 }
 
 static esch_error
-decode_utf8(char* utf8, int begin, int end, esch_config* config, esch_unicode** str)
+decode_utf8(char* utf8, int begin, int end, 
+            esch_config* config, esch_unicode** str, size_t* unicode_len)
 {
     esch_error ret = ESCH_OK;
     int len = 0;
@@ -203,6 +204,7 @@ decode_utf8(char* utf8, int begin, int end, esch_config* config, esch_unicode** 
     ESCH_CHECK(ret == ESCH_OK, log, "Can't malloc new buffer", ret);
     write_unicode_from_utf8(utf8, begin, end, new_str);
     (*str) = new_str;
+    (*unicode_len) = (size_t)len;
     new_str = NULL;
 Exit:
     esch_alloc_free(alloc, new_str);
@@ -237,6 +239,7 @@ esch_string_new_from_utf8(esch_config* config, char* utf8,
     esch_log* log = NULL;
     char* new_utf8 = NULL;
     size_t len = 0;
+    size_t unicode_len = 0;
     esch_unicode* new_unicode = NULL;
     ESCH_CHECK_PARAM_PUBLIC(config != NULL);
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_CONFIG(config));
@@ -267,7 +270,7 @@ esch_string_new_from_utf8(esch_config* config, char* utf8,
     ESCH_CHECK(ret == ESCH_OK, log, "Can't malloc UTF-8", ret);
     (void)strncpy(new_utf8, (utf8 + begin), len);
 
-    ret = decode_utf8(new_utf8, 0, len, config, &new_unicode);
+    ret = decode_utf8(new_utf8, 0, len, config, &new_unicode, &unicode_len);
     ESCH_CHECK(ret == ESCH_OK, log, "Can't decode UTF-8", ret);
 
     new_str->base.type = ESCH_TYPE_STRING;
@@ -275,6 +278,8 @@ esch_string_new_from_utf8(esch_config* config, char* utf8,
     new_str->base.log = log;
     new_str->utf8 = new_utf8;
     new_str->unicode = new_unicode;
+    new_str->utf8_len = len;
+    new_str->unicode_len = unicode_len;
     (*str) = new_str;
 
     new_str = NULL;
@@ -334,6 +339,32 @@ esch_string_get_unicode_ref(esch_string* str)
     /* NOTE: For performance consideration, we don't check input. */
     assert(str != NULL && ESCH_IS_VALID_STRING(str));
     return str->unicode;
+}
+
+/**
+ * Get length of given string in UTF-8 representation.
+ * @param str Give esch_string object
+ * @return Length of string, in UTF-8 representation, '\0' not included.
+ */
+size_t
+esch_string_get_utf8_length(esch_string* str)
+{
+    /* NOTE: For performance consideration, we don't check input. */
+    assert(str != NULL && ESCH_IS_VALID_STRING(str));
+    return str->utf8_len;
+}
+
+/**
+ * Get length of given string in Unicode representation.
+ * @param str Give esch_string object
+ * @return Length of string, in Unicode representation, '\0' not included.
+ */
+size_t
+esch_string_get_unicode_length(esch_string* str)
+{
+    /* NOTE: For performance consideration, we don't check input. */
+    assert(str != NULL && ESCH_IS_VALID_STRING(str));
+    return str->unicode_len;
 }
 
 int

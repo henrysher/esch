@@ -63,6 +63,12 @@ int test_string()
             "Internal Unicode ref different - begin = 0, end = -1", ret);
     ESCH_TEST_CHECK(str->utf8 == esch_string_get_utf8_ref(str),
             "Internal UTF-8 ref different - begin = 0, end = -1", ret);
+
+    ESCH_TEST_CHECK(esch_string_get_utf8_length(str) == strlen(input),
+            "Internal UTF-8 bad length - begin = 0, end = -1", ret);
+    ESCH_TEST_CHECK(esch_string_get_unicode_length(str) == wcslen(output),
+            "Internal UTF-8 bad length - begin = 0, end = -1", ret);
+
     ret = esch_string_delete(str);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete string", ret);
     esch_log_info(g_testLog, "[PASSED] Full length test.");

@@ -13,6 +13,8 @@ struct esch_string
     esch_object base;
     esch_utf8_char* utf8;
     esch_unicode* unicode;
+    size_t utf8_len;
+    size_t unicode_len;
 };
 
 #define ESCH_IS_VALID_STRING(obj) \
