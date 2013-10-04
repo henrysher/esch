@@ -37,7 +37,7 @@ enum esch_token_type
 
 struct esch_ast
 {
-    esch_object base;
+    esch_config base;
     enum esch_token_type token;
     char* value;
 
@@ -50,13 +50,14 @@ struct esch_ast
 
 struct esch_parser
 {
-    esch_object base;
+    esch_config base;
 };
 
 #define ESCH_IS_VALID_PARSER(obj) \
-    ((obj)->base.type == ESCH_TYPE_PARSER && \
-     (obj)->base.alloc != NULL && \
-     (obj)->base.log != NULL)
+    (ESCH_IS_VALID_OBJECT(obj) && \
+     ESCH_GET_TYPE(obj) == ESCH_TYPE_PARSER && \
+     ESCH_GET_ALLOC(obj) != NULL && \
+     ESCH_GET_LOG(obj) != NULL)
 
 #ifdef __cplusplus
 }

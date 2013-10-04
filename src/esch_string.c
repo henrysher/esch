@@ -273,9 +273,9 @@ esch_string_new_from_utf8(esch_config* config, char* utf8,
     ret = decode_utf8(new_utf8, 0, len, config, &new_unicode, &unicode_len);
     ESCH_CHECK(ret == ESCH_OK, log, "Can't decode UTF-8", ret);
 
-    new_str->base.type = ESCH_TYPE_STRING;
-    new_str->base.alloc = alloc;
-    new_str->base.log = log;
+    ESCH_GET_TYPE(new_str) = ESCH_TYPE_STRING;
+    ESCH_GET_ALLOC(new_str) = alloc;
+    ESCH_GET_LOG(new_str) = log;
     new_str->utf8 = new_utf8;
     new_str->unicode = new_unicode;
     new_str->utf8_len = len;
@@ -308,9 +308,9 @@ esch_string_delete(esch_string* str)
     }
 
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_STRING(str));
-    esch_alloc_free(str->base.alloc, str->utf8);
-    esch_alloc_free(str->base.alloc, str->unicode);
-    esch_alloc_free(str->base.alloc, str);
+    esch_alloc_free(ESCH_GET_ALLOC(str), str->utf8);
+    esch_alloc_free(ESCH_GET_ALLOC(str), str->unicode);
+    esch_alloc_free(ESCH_GET_ALLOC(str), str);
 Exit:
     return ret;
 }

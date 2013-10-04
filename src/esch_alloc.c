@@ -25,9 +25,9 @@ esch_alloc_new_c_default(esch_config* config, esch_alloc** alloc)
 
     new_obj = (esch_alloc*)malloc(sizeof(esch_alloc));
     ESCH_CHECK_NO_LOG(new_obj != NULL, ESCH_ERROR_OUT_OF_MEMORY);
-    new_obj->base.type = ESCH_TYPE_ALLOC_C_DEFAULT;
-    new_obj->base.alloc = new_obj; /* No use */
-    new_obj->base.log = config->log;
+    ESCH_GET_TYPE(new_obj) = ESCH_TYPE_ALLOC_C_DEFAULT;
+    ESCH_GET_ALLOC(new_obj) = new_obj; /* No use */
+    ESCH_GET_LOG(new_obj) = config->log;
     new_obj->allocate_count = 0;
     new_obj->deallocate_count = 0;
     (*alloc) = new_obj;
@@ -49,7 +49,7 @@ esch_error
 esch_alloc_delete(esch_alloc* alloc)
 {
     esch_error ret = ESCH_OK;
-    esch_object* obj = NULL;
+    esch_config* obj = NULL;
     esch_alloc* self_alloc = NULL;
     esch_type self_type = ESCH_TYPE_UNKNOWN;
 
@@ -57,8 +57,8 @@ esch_alloc_delete(esch_alloc* alloc)
         return ret;
     }
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_ALLOC(alloc));
-    self_alloc = ESCH_OBJECT_ALLOC(alloc);
-    self_type = ESCH_OBJECT_TYPE(alloc);
+    self_alloc = ESCH_GET_ALLOC(alloc);
+    self_type = ESCH_GET_TYPE(alloc);
     ESCH_CHECK(self_alloc == alloc,
                alloc,
                "base.alloc != self on C default alloc",

@@ -75,13 +75,12 @@ typedef enum {
     ESCH_TYPE_LOG_DO_NOTHING   = ESCH_TYPE_MAGIC | ESCH_TYPE_LOG   | 2,
 } esch_type;
 
-typedef struct esch_object         esch_object;
+typedef struct esch_config         esch_config;
 typedef struct esch_alloc          esch_alloc;
 typedef struct esch_log            esch_log;
 typedef struct esch_parser_config  esch_parser_config;
 typedef struct esch_parser         esch_parser;
 typedef struct esch_ast            esch_ast;
-typedef struct esch_object         esch_config;
 typedef struct esch_string         esch_string;
 
 typedef char                       esch_utf8_char;
@@ -89,26 +88,27 @@ typedef wchar_t                    esch_unicode;
 
 /**
  * The public type info structure. This is the header of all structures
- * used in Esch. All objects can be casted to esch_object to get type
+ * used in Esch. All objects can be casted to esch_config to get type
  * information.
  */
-struct esch_object
+struct esch_config
 {
     esch_type   type;       /**< Registered type ID */
     esch_log*   log;        /**< Log object to write trace/errors.*/
     esch_alloc* alloc;      /**< Allocator object to manage memory. */
 };
+#define ESCH_COMMON_HEADER    esch_config config;
 
-#define ESCH_IS_VALID_OBJECT(obj)    ((((esch_object*)obj)->type & ESCH_TYPE_MAGIC) == ESCH_TYPE_MAGIC && \
-                                      ((esch_object*)obj)->log != NULL && \
-                                      ((esch_object*)obj)->alloc != NULL)
-#define ESCH_OBJECT(obj)             ((esch_object*)obj)
-#define ESCH_OBJECT_TYPE(obj)    (((esch_object*)obj)->type)
-#define ESCH_OBJECT_LOG(obj)     (((esch_object*)obj)->log)
-#define ESCH_OBJECT_ALLOC(obj)   (((esch_object*)obj)->alloc)
-#define ESCH_IS_VALID_CONFIG(obj)    ((((esch_object*)obj)->type == ESCH_TYPE_CONFIG) && \
-                                      ((esch_object*)obj)->log != NULL && \
-                                      ((esch_object*)obj)->alloc != NULL)
+#define ESCH_IS_VALID_OBJECT(obj)    ((((esch_config*)obj)->type & ESCH_TYPE_MAGIC) == ESCH_TYPE_MAGIC && \
+                                     ((esch_config*)obj)->log != NULL && \
+                                      ((esch_config*)obj)->alloc != NULL)
+#define ESCH_GET_CONFIG(obj)         ((esch_config*)obj)
+#define ESCH_GET_TYPE(obj)           (((esch_config*)obj)->type)
+#define ESCH_GET_LOG(obj)            (((esch_config*)obj)->log)
+#define ESCH_GET_ALLOC(obj)          (((esch_config*)obj)->alloc)
+#define ESCH_IS_VALID_CONFIG(obj)    ((((esch_config*)obj)->type == ESCH_TYPE_CONFIG) && \
+                                      ((esch_config*)obj)->log != NULL && \
+                                      ((esch_config*)obj)->alloc != NULL)
 
 /* --- Memory allocator --- */
 esch_error esch_alloc_new_c_default(esch_config* config, esch_alloc** ret_alloc);

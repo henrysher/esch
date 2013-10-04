@@ -19,7 +19,7 @@ esch_error esch_log_message_do_nothing(esch_log* log, char* fmt, va_list args);
 
 struct esch_log
 {
-    esch_object base;
+    esch_config base;
     error_log_func log_error;
     error_log_func log_info;
 };

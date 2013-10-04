@@ -10,16 +10,16 @@ extern "C" {
 
 struct esch_alloc
 {
-    esch_object base;
+    ESCH_COMMON_HEADER
     int allocate_count; /**< How many buffer are allocated. */
     int deallocate_count; /**< How many buffer are freed. */
 };
 
 #define ESCH_IS_VALID_ALLOC(obj) \
-    ((((obj)->base.type & ESCH_TYPE_ALLOC) == ESCH_TYPE_ALLOC) && \
-     (obj)->base.alloc != NULL && \
-     (obj)->base.log != NULL && \
-     (obj)->base.alloc == obj)
+    (((ESCH_GET_TYPE(obj) & ESCH_TYPE_ALLOC) == ESCH_TYPE_ALLOC) && \
+     ESCH_GET_ALLOC(obj) != NULL && \
+     ESCH_GET_LOG(obj) != NULL && \
+     ESCH_GET_ALLOC(obj) == (obj))
 
 #ifdef __cplusplus
 }
