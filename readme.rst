@@ -7,16 +7,20 @@ Esch: Embedded Scheme
 Introduction
 ==============
 
-`Embedded SCHeme` tries to provide an R6RS_ compilant Scheme language
-interpreter. It tries provide two products:
+`Embedded SCHeme` is an implemetation of Scheme interpreter. The goal of
+Esch is to be compilant with R6RS_ standard, But it does not target
+implemeting a full implementation of R6RS_ standard from the first
+version.
 
-* A library, ``libesch.a``. This is a library to provide core features
-  of Scheme interpretation and core library.
-* An executable interpreter, ``esch``. This is the interpreter and
-  debugger to execute given Scheme script.
+The second goal of Esch is to make this implementation small enough to
+be embedded into other programs. The code is written in C to keep
+portability between compilers and operating systems.
 
-Esch is implemented in so called Clean C89, which means it should be
-able to be ported to different operating systems.
+While keeping the two above as committed goals, a third goal here is to
+make Esch a compiler to generate bytecode for different virtual
+machines. For example, it could be really nice to make Esch genreates
+.pyc code so the script can be executed with Python. However, this will
+not be implemented in a near future.
 
 Build Esch
 ============
@@ -30,7 +34,7 @@ C-binding and threading. Esch uses platform-dependent libraries to
 implement dynamic library loading and threading.
 
 Right now Esch supports building only on Mac. Linux and other Unix
-family should be supported but not tested. Windows build support will be
+family OS should be OK but not tested. Windows build support will be
 added later.
 
 To build Esch, make sure to install the following dependencies:
@@ -68,9 +72,18 @@ An output of build result looks like below (assume you are with Unix):
 Now, copy ``src/esch.h`` and ``src/libesch.a`` to your project. Start
 coding.
 
-To debug in Esch, use ``scons mode=debug`` instead of ``scons`` to build
-project. It will remove optimization, enable assertion and add
+To debug Esch code, use ``scons mode=debug`` instead of ``scons`` to build
+project. Debug build removes optimization, enables assertion and adds
 additional logging support.
+
+When everything is done, user gets two binaries:
+
+* A library, ``libesch.a``. This is a library to provide core features
+  of Scheme interpretation and core library.
+* An executable interpreter, ``esch``. This is the interpreter and
+  debugger to execute given Scheme script.
+
+NOTE: The interpreter is currently under implementing.
 
 Run Scheme scripts with Esch
 ===============================
