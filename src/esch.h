@@ -75,16 +75,16 @@ typedef enum {
     ESCH_TYPE_LOG_DO_NOTHING   = ESCH_TYPE_MAGIC | ESCH_TYPE_LOG   | 2,
 } esch_type;
 
-typedef struct esch_config         esch_config;
-typedef struct esch_alloc          esch_alloc;
-typedef struct esch_log            esch_log;
-typedef struct esch_parser_config  esch_parser_config;
-typedef struct esch_parser         esch_parser;
-typedef struct esch_ast            esch_ast;
-typedef struct esch_string         esch_string;
+typedef struct esch_config          esch_config;
+typedef struct esch_alloc           esch_alloc;
+typedef struct esch_log             esch_log;
+typedef struct esch_parser          esch_parser;
+typedef struct esch_parser_callback esch_parser_callback;
+typedef struct esch_ast             esch_ast;
+typedef struct esch_string          esch_string;
 
-typedef char                       esch_utf8_char;
-typedef wchar_t                    esch_unicode;
+typedef char                        esch_utf8_char;
+typedef wchar_t                     esch_unicode;
 
 /**
  * The public type info structure. This is the header of all structures
@@ -99,19 +99,22 @@ struct esch_config
 };
 #define ESCH_COMMON_HEADER    esch_config config;
 
-#define ESCH_IS_VALID_OBJECT(obj)    ((((esch_config*)obj)->type & ESCH_TYPE_MAGIC) == ESCH_TYPE_MAGIC && \
-                                     ((esch_config*)obj)->log != NULL && \
-                                      ((esch_config*)obj)->alloc != NULL)
+#define ESCH_IS_VALID_OBJECT(obj) \
+    ((((esch_config*)obj)->type & ESCH_TYPE_MAGIC) == ESCH_TYPE_MAGIC && \
+     ((esch_config*)obj)->log != NULL && \
+     ((esch_config*)obj)->alloc != NULL)
 #define ESCH_GET_CONFIG(obj)         ((esch_config*)obj)
 #define ESCH_GET_TYPE(obj)           (((esch_config*)obj)->type)
 #define ESCH_GET_LOG(obj)            (((esch_config*)obj)->log)
 #define ESCH_GET_ALLOC(obj)          (((esch_config*)obj)->alloc)
-#define ESCH_IS_VALID_CONFIG(obj)    ((((esch_config*)obj)->type == ESCH_TYPE_CONFIG) && \
-                                      ((esch_config*)obj)->log != NULL && \
-                                      ((esch_config*)obj)->alloc != NULL)
+#define ESCH_IS_VALID_CONFIG(obj) \
+    ((((esch_config*)obj)->type == ESCH_TYPE_CONFIG) && \
+     ((esch_config*)obj)->log != NULL && \
+     ((esch_config*)obj)->alloc != NULL)
 
 /* --- Memory allocator --- */
-esch_error esch_alloc_new_c_default(esch_config* config, esch_alloc** ret_alloc);
+esch_error esch_alloc_new_c_default(esch_config* config,
+                                    esch_alloc** ret_alloc);
 esch_error esch_alloc_delete(esch_alloc* alloc);
 esch_error esch_alloc_malloc(esch_alloc* alloc, size_t size, void** ret);
 esch_error esch_alloc_free(esch_alloc* alloc, void* ptr);
@@ -126,7 +129,8 @@ esch_error esch_log_info(esch_log* log, char* fmt, ...);
 
 /* --- String objects --- */
 esch_error esch_string_new_from_utf8(esch_config* config, char* utf8,
-                                     int begin, int end, esch_string** str);
+                                     int begin, int end,
+                                     esch_string** str);
 esch_error esch_string_delete(esch_string* str);
 char* esch_string_get_utf8_ref(esch_string* str);
 esch_unicode* esch_string_get_unicode_ref(esch_string* str);
@@ -166,18 +170,21 @@ int esch_unicode_is_range_so(esch_unicode ch);
 int esch_unicode_is_range_co(esch_unicode ch);
 
 /* --- Parser --- */
+esch_error esch_parser_new(esch_config* config, esch_parser** parser);
+esch_error esch_parser_delete(esch_parser* parser);
+esch_error esch_parser_register_callback(esch_parser* parser,
+                                         esch_parser_callback* cb);
+esch_error esch_parser_remove_callback(esch_parser* parser,
+                                       esch_parser_callback* cb);
+esch_error esch_parser_read_line(esch_parser* parser, char* input);
+esch_error esch_parser_read_file(esch_parser* parser, char* file);
+
 /* --- 
  * TODO Add more functions as part of configurations.
  * 1. Message callback function to keep error information.
  * 2. Standard library
  * 3. Search path
  * --- */
-
-esch_error esch_parser_new(esch_config* config, esch_parser** parser);
-esch_error esch_parser_delete(esch_parser* parser);
-esch_error esch_parser_read_line(esch_parser* parser, char* input);
-esch_error esch_parser_read_file(esch_parser* parser, char* file);
-esch_error esch_parser_get_ast(esch_parser* parser, esch_ast** ast);
 
 #ifdef __cplusplus
 }
