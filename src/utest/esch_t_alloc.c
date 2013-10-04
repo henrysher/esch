@@ -5,7 +5,7 @@
 #include "esch_utest.h"
 #include "esch_debug.h"
 
-int test_AllocCreateDeleteCDefault()
+esch_error test_AllocCreateDeleteCDefault()
 {
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;

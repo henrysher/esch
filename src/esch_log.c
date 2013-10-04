@@ -67,7 +67,7 @@ Exit:
  * @return Error code;
  */
 esch_error
-esch_log_error(esch_log* log, char* fmt, ...)
+esch_log_error(esch_log* log, const char* fmt, ...)
 {
     esch_error ret = ESCH_OK;
     va_list ap;
@@ -93,7 +93,7 @@ Exit:
  * @return Error code;
  */
 esch_error
-esch_log_info(esch_log* log, char* fmt, ...)
+esch_log_info(esch_log* log, const char* fmt, ...)
 {
     esch_error ret = ESCH_OK;
     va_list ap;
@@ -141,7 +141,7 @@ Exit:
  * @return Error code;
  */
 esch_error
-esch_log_error_printf(esch_log* log, char* fmt, va_list args)
+esch_log_error_printf(esch_log* log, const char* fmt, va_list args)
 {
     (void)log;
     printf("[ERROR] ");
@@ -158,7 +158,7 @@ esch_log_error_printf(esch_log* log, char* fmt, va_list args)
  * @return Error code;
  */
 esch_error
-esch_log_info_printf(esch_log* log, char* fmt, va_list args)
+esch_log_info_printf(esch_log* log, const char* fmt, va_list args)
 {
     (void)log;
     printf("[INFO]  ");
@@ -176,7 +176,7 @@ esch_log_info_printf(esch_log* log, char* fmt, va_list args)
  * @return Error code;
  */
 esch_error
-esch_log_message_do_nothing(esch_log* log, char* fmt, va_list args)
+esch_log_message_do_nothing(esch_log* log, const char* fmt, va_list args)
 {
     (void)log;
     (void)fmt;

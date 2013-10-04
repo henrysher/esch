@@ -5,7 +5,7 @@
 #include <wchar.h>
 #include <string.h>
 
-int test_string()
+esch_error test_string()
 {
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;
@@ -101,7 +101,7 @@ Exit:
     return ret;
 }
 
-int test_identifier()
+esch_error test_identifier()
 {
     esch_error ret = ESCH_OK;
     int val = 0;

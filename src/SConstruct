@@ -1,19 +1,38 @@
 #!/usr/bin/env scons
 # vim:ft=python
-ccflags_common = [ "-std=c89" ]
-ccflags_debug = ccflags_common + [ "-g" ]
-ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
-ccflags = ccflags_debug
+import re
+gcc_check = re.compile(r'gcc')
+gxx_check = re.compile(r'g\+\+')
+clangxx_check = re.compile(r'clang\+\+')
+clang_check = re.compile(r'clang')
 
 compiler = ARGUMENTS.get('cc', None)
 buildmode = ARGUMENTS.get('mode', 'release')
+
+ccflags_common  = []
+ccflags_debug   = []
+ccflags_release = []
+if compiler is not None:
+    if gxx_check.search(compiler) is not None:
+        ccflags_debug = ccflags_common + [ "-g" ]
+        ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
+    elif gcc_check.search(compiler) is not None:
+        ccflags_common = [ "-std=c89" ]
+        ccflags_debug = ccflags_common + [ "-g" ]
+        ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
+    elif clangxx_check.search(compiler) is not None:
+        ccflags_debug = ccflags_common + [ "-g" ]
+        ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
+    elif clang_check.search(compiler) is not None:
+        ccflags_debug = ccflags_common + [ "-g" ]
+        ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
+
 if buildmode.upper() == 'DEBUG':
     ccflags = ccflags_debug
 elif buildmode.upper() == 'RELEASE':
     ccflags = ccflags_release
 else:
     print("Warning: Unknown mode = %s, fallback to release", buildmode)
-
 print("Build mode = %s" % buildmode)
 
 # Library

@@ -124,8 +124,8 @@ extern esch_log* esch_global_log;
 esch_error esch_log_new_do_nothing(esch_log** log);
 esch_error esch_log_new_printf(esch_log** log);
 esch_error esch_log_delete(esch_log* log);
-esch_error esch_log_error(esch_log* log, char* fmt, ...);
-esch_error esch_log_info(esch_log* log, char* fmt, ...);
+esch_error esch_log_error(esch_log* log, const char* fmt, ...);
+esch_error esch_log_info(esch_log* log, const char* fmt, ...);
 
 /* --- String objects --- */
 esch_error esch_string_new_from_utf8(esch_config* config, char* utf8,
@@ -137,7 +137,7 @@ esch_unicode* esch_string_get_unicode_ref(esch_string* str);
 size_t esch_string_get_utf8_length(esch_string* str);
 size_t esch_string_get_unicode_length(esch_string* str);
 
-int esch_unicode_string_is_valid_identifier(esch_unicode* unicode);
+int esch_unicode_string_is_valid_identifier(const esch_unicode* unicode);
 
 #define esch_unicode_is_ascii(ch) \
     (((esch_unicode)(ch)) >= 0 && ((esch_unicode)(ch)) < 127 )

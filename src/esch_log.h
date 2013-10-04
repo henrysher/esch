@@ -11,11 +11,14 @@
 extern "C" {
 #endif /* __cplusplus */
 
-typedef esch_error (*error_log_func)(esch_log* log, char* fmt, va_list args);
+typedef esch_error (*error_log_func)(esch_log*, const char*, va_list);
 
-esch_error esch_log_error_printf(esch_log* log, char* fmt, va_list args);
-esch_error esch_log_info_printf(esch_log* log, char* fmt, va_list args);
-esch_error esch_log_message_do_nothing(esch_log* log, char* fmt, va_list args);
+esch_error esch_log_error_printf(esch_log* log,
+                                 const char* fmt, va_list args);
+esch_error esch_log_info_printf(esch_log* log,
+                                const char* fmt, va_list args);
+esch_error esch_log_message_do_nothing(esch_log* log,
+                                       const char* fmt, va_list args);
 
 struct esch_log
 {

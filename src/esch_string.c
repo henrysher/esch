@@ -367,9 +367,9 @@ esch_string_get_unicode_length(esch_string* str)
 }
 
 int
-esch_unicode_string_is_valid_identifier(esch_unicode* unicode)
+esch_unicode_string_is_valid_identifier(const esch_unicode* unicode)
 {
-    esch_unicode* ptr = NULL;
+    const esch_unicode* ptr = NULL;
     if (unicode == NULL)
         return 0;
 
