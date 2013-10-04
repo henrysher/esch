@@ -4,6 +4,8 @@
 #ifndef _ESCH_VM_H_
 #define _ESCH_VM_H_
 
+#include "esch.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

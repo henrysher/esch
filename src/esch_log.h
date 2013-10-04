@@ -4,12 +4,12 @@
 #ifndef _ESCH_LOG_H_
 #define _ESCH_LOG_H_
 
+#include "esch.h"
+#include <stdarg.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
-
-#include "esch.h"
-#include <stdarg.h>
 
 typedef esch_error (*error_log_func)(esch_log* log, char* fmt, va_list args);
 

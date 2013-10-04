@@ -4,7 +4,6 @@
 #ifndef _ESCH_DEBUG_H_
 #define _ESCH_DEBUG_H_
 
-#include "esch.h"
 #include "esch_log.h"
 #include <stdlib.h>
 #include <assert.h>

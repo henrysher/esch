@@ -3,7 +3,6 @@
 /* See Copyright notice in esch.h */
 #include <stdio.h>
 #include <assert.h>
-#include "esch.h"
 #include "esch_alloc.h"
 #include "esch_log.h"
 #include "esch_debug.h"

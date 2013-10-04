@@ -3,7 +3,7 @@
 /* See Copyright notice in esch.h */
 #ifndef _ESCH_ALLOC_H_
 #define _ESCH_ALLOC_H_
-
+#include "esch.h"
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

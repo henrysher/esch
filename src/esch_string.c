@@ -1,12 +1,11 @@
 /* vim:ft=c expandtab tw=72 sw=4
  */
 /* See Copyright notice in esch.h */
-#include "esch.h"
+#include <assert.h>
+#include <string.h>
 #include "esch_string.h"
 #include "esch_log.h"
 #include "esch_debug.h"
-#include <assert.h>
-#include <string.h>
 
 enum esch_unicode_parse_state
 {

@@ -1,11 +1,10 @@
 /* vim:ft=c expandtab tw=72 sw=4
  */
 /* See Copyright notice in esch.h */
-#include "esch.h"
-#include "esch_alloc.h"
 #include <stdlib.h>
 #include <strings.h>
 #include <assert.h>
+#include "esch_alloc.h"
 #include "esch_debug.h"
 
 /**
