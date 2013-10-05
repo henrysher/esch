@@ -12,45 +12,25 @@ extern "C" {
 
 enum esch_token_type
 {
-    ESCH_TOKEN_UNKNOWN        = 0,   /**< Unknown identifier (something wrong) */
-    ESCH_TOKEN_IDENTIFIER     = 1,   /**< Identifier */
-    ESCH_TOKEN_NUMBER,               /**< Number */
-    ESCH_TOKEN_STRING,               /**< String */
-    ESCH_TOKEN_SYMBOL,               /**< Symbol */
-    ESCH_TOKEN_LEFT_BRACKET,         /**< Left bracket, "(" */
-    ESCH_TOKEN_RIGHT_BRACKET,        /**< Right bracket, ")" */
-    ESCH_TOKEN_KEYWORD_DEFINE,       /**< Keyword: define */
-    ESCH_TOKEN_KEYWORD_IF,           /**< Keyword: if     */
-    ESCH_TOKEN_KEYWORD_LET,          /**< Keyword: let    */
-    ESCH_TOKEN_KEYWORD_LET_S,        /**< Keyword: let*   */
-    ESCH_TOKEN_KEYWORD_SET_B,        /**< Keyword: set!   */
-    ESCH_TOKEN_KEYWORD_BEGIN,        /**< Keyword: begin  */
-    ESCH_TOKEN_KEYWORD_LAMBDA,       /**< Keyword: lambda */
-    ESCH_TOKEN_KEYWORD_TRUE,         /**< Keyword: #t     */
-    ESCH_TOKEN_KEYWORD_FALSE,        /**< Keyword: #f     */
-    ESCH_TOKEN_KEYWORD_PACKAGE,      /**< Keyword: package */
-    ESCH_TOKEN_KEYWORD_IMPORT,       /**< Keyword: import */
-    ESCH_TOKEN_KEYWORD_EXPORT,       /**< Keyword: export */
-    ESCH_TOKEN_KEYWORD_DEFAULT_SYNTAX,  /**< Keyword: define-syntax */
-    ESCH_TOKEN_KEYWORD_CASE,         /**< Keyword: case */
+    ESCH_TOKEN_UNKNOWN        = 0,       /**< Unknown identifier */
+    ESCH_TOKEN_IDENTIFIER     = 1,       /**< Identifier */
+    ESCH_TOKEN_STRING,                   /**< String */
+    ESCH_TOKEN_SYMBOL,                   /**< Symbol */
+    ESCH_TOKEN_LEFT_BRACKET,             /**< Left bracket: ( */
+    ESCH_TOKEN_RIGHT_BRACKET,            /**< Right bracket: ) */
+    ESCH_TOKEN_LEFT_SQUARE_BRACKET,      /**< Left bracket: [ */
+    ESCH_TOKEN_RIGHT_SQUARE_BRACKET,     /**< Right bracket: ] */
 };
 
-struct esch_ast
-{
-    esch_config base;
-    enum esch_token_type token;
-    char* value;
-
-    char* file_name;
-    int   line_number;
-
-    struct esch_ast* first_child;
-    struct esch_ast* next_sibling;
-};
-
+/*
+ * We don't need to set a separated lexical analyzer for Scheme, as the
+ * syntax is... well, almost no syntax. In all cases, it should be able
+ * for us to determine a lexical element by looking ahead of at most
+ * three characters.
+ */
 struct esch_parser
 {
-    esch_config base;
+    ESCH_COMMON_HEADER;
 };
 
 #define ESCH_IS_VALID_PARSER(obj) \

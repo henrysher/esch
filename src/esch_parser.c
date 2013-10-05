@@ -31,9 +31,9 @@ esch_parser_new(esch_config* config, esch_parser** parser)
     ret = esch_alloc_malloc(alloc, sizeof(esch_parser), (void**)&new_parser);
     ESCH_CHECK(ret == ESCH_OK, esch_global_log, "Can't malloc for parser", ret);
 
-    new_parser->base.type = ESCH_TYPE_PARSER;
-    new_parser->base.log = log;
-    new_parser->base.alloc = alloc;
+    ESCH_GET_TYPE(new_parser) = ESCH_TYPE_PARSER;
+    ESCH_GET_LOG(new_parser) = log;
+    ESCH_GET_ALLOC(new_parser) = alloc;
     (*parser) = new_parser;
     new_parser = NULL;
     assert(ESCH_IS_VALID_PARSER(*parser));
@@ -58,7 +58,7 @@ esch_parser_delete(esch_parser* parser)
     ESCH_CHECK_PARAM_PUBLIC(parser != NULL);
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_PARSER(parser));
 
-    alloc = parser->base.alloc;
+    alloc = ESCH_GET_ALLOC(parser);
     esch_alloc_free(alloc, parser);
 Exit:
     return ret;

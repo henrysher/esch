@@ -10,7 +10,7 @@ esch_error test_string()
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;
     esch_parser* parser = NULL;
-    esch_config config = { ESCH_TYPE_CONFIG, NULL, NULL };
+    esch_config config = { ESCH_TYPE_UNKNOWN, NULL, NULL };
     esch_string* str = NULL;
     esch_log* log = NULL;
     esch_log* do_nothing = NULL;

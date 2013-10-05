@@ -9,7 +9,7 @@ esch_error test_parser()
     esch_log* do_nothing = NULL;
     esch_alloc* alloc = NULL;
     esch_parser* parser = NULL;
-    esch_config config = { ESCH_TYPE_CONFIG, NULL, NULL };
+    esch_config config = { ESCH_TYPE_UNKNOWN, NULL, NULL };
 
     (void)esch_log_new_do_nothing(&do_nothing);
 #ifdef NDEBUG
