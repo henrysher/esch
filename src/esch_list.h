@@ -11,7 +11,7 @@ extern "C" {
 struct esch_list_element
 {
     struct esch_list* owner;
-    void* object;
+    void* data;
     int prev_index;
     int next_index;
 };
@@ -19,18 +19,23 @@ struct esch_list_element
 struct esch_list
 {
     ESCH_COMMON_HEADER;
-    enum esch_type element_type;
-    bool enforce_same_type;
-    int size;
-    esch_list_element** elements;
+    size_t size;
+    size_t slots;
+    esch_list_element* elements;
     esch_list_element* first;
     esch_list_element* last;
 };
 
 #define ESCH_IS_VALID_LIST(obj) \
     (ESCH_GET_TYPE(obj) == ESCH_TYPE_LIST && \
-     ESCH_IS_VALID_OBJECT(OBJ) && \
+     ESCH_IS_VALID_OBJECT(obj) && \
      ((esch_list*)obj)->elements != NULL)
+
+/*
+ * To make memory allocation efficient, we create 8 elements by default.
+ * XXX The settings may be configurable in the furture.
+ */
+#define ESCH_LIST_INITIAL_ELEMENTS 8
 
 #ifdef __cplusplus
 }

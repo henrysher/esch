@@ -8,6 +8,11 @@ clang_check = re.compile(r'clang')
 
 compiler = ARGUMENTS.get('cc', None)
 buildmode = ARGUMENTS.get('mode', 'release')
+if compiler is None:
+    env = Environment(CPPPATH=[ '.' ])
+    compiler = env['CC']
+else:
+    env = Environment(CPPPATH=[ '.' ], CC=compiler)
 
 ccflags_common  = []
 ccflags_debug   = []
@@ -33,14 +38,10 @@ elif buildmode.upper() == 'RELEASE':
     ccflags = ccflags_release
 else:
     print("Warning: Unknown mode = %s, fallback to release", buildmode)
-print("Build mode = %s" % buildmode)
+print("Build mode = %s, compiler = %s" % (buildmode, compiler))
+env.Append(CCFLAGS=ccflags)
 
 # Library
-if compiler is None:
-    env = Environment(CPPPATH=[ '.' ])
-else:
-    env = Environment(CPPPATH=[ '.' ], CC=compiler)
-env.Append(CCFLAGS=ccflags)
 libesch_src = ['esch_alloc.c', 'esch_log.c', 'esch_parser.c', \
                'esch_string.c', 'esch_range.c', 'esch_list.c' ]
 esch = env.StaticLibrary('esch', libesch_src)
@@ -48,7 +49,8 @@ esch = env.StaticLibrary('esch', libesch_src)
 utest_src = [ 'utest/esch_utest.c', \
               'utest/esch_t_alloc.c', \
               'utest/esch_t_parser.c', \
-              'utest/esch_t_string.c' \
+              'utest/esch_t_string.c', \
+              'utest/esch_t_list.c' \
             ]
 esch_utest = env.Program('esch_utest', utest_src, LIBS=[ 'esch' ], \
                          LIBPATH=[ '.' ])

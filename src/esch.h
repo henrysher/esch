@@ -110,9 +110,8 @@ struct esch_config
 #define ESCH_GET_LOG(obj)            (((esch_config*)obj)->log)
 #define ESCH_GET_ALLOC(obj)          (((esch_config*)obj)->alloc)
 #define ESCH_IS_VALID_CONFIG(obj) \
-    ((((esch_config*)obj)->type != ESCH_TYPE_UNKNOWN) && \
-     ((esch_config*)obj)->log != NULL && \
-     ((esch_config*)obj)->alloc != NULL)
+     (((esch_config*)obj)->log != NULL && \
+      ((esch_config*)obj)->alloc != NULL)
 
 /* --- Memory allocator --- */
 esch_error esch_alloc_new_c_default(esch_config* config,
@@ -183,10 +182,9 @@ int esch_unicode_is_range_co(esch_unicode ch);
  * can be stored. The list accepts only the same type.
  *
  */
-esch_error esch_list_new(esch_config* config, int enforce_same_type,
-                         esch_list** list);
-esch_error esch_list_delete(esch_list** list);
-esch_error esch_list_get_size(esch_list** list, int** size);
+esch_error esch_list_new(esch_config* config, esch_list** list);
+esch_error esch_list_delete(esch_list* list);
+esch_error esch_list_get_size(esch_list* list, size_t* size);
 esch_error esch_list_get_first(esch_list** list, esch_list_element** first);
 esch_error esch_list_get_by_index(esch_list** list, int index,
                                   esch_list_element** first);

@@ -25,6 +25,10 @@ int main(int argc, char* argv[])
     ret = test_identifier();
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_identifier() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_identifier()");
+
+    ret = test_list();
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_list() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_list()");
 Exit:
     (void)esch_log_delete(g_testLog);
     return ret;
