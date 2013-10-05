@@ -66,8 +66,8 @@ typedef enum {
     ESCH_TYPE_LOG              = ESCH_TYPE_MAGIC | 0x30,
     ESCH_TYPE_PARSER           = ESCH_TYPE_MAGIC | 0x40,
     ESCH_TYPE_AST              = ESCH_TYPE_MAGIC | 0x42,
-    ESCH_TYPE_CONFIG           = ESCH_TYPE_MAGIC | 0x50,
-    ESCH_TYPE_STRING           = ESCH_TYPE_MAGIC | 0x60,
+    ESCH_TYPE_STRING           = ESCH_TYPE_MAGIC | 0x50,
+    ESCH_TYPE_LIST             = ESCH_TYPE_MAGIC | 0x51,
     ESCH_TYPE_VM               = ESCH_TYPE_MAGIC | 0xf0,
 
     ESCH_TYPE_ALLOC_C_DEFAULT  = ESCH_TYPE_MAGIC | ESCH_TYPE_ALLOC | 1,
@@ -82,6 +82,8 @@ typedef struct esch_parser          esch_parser;
 typedef struct esch_parser_callback esch_parser_callback;
 typedef struct esch_ast             esch_ast;
 typedef struct esch_string          esch_string;
+typedef struct esch_list            esch_list;
+typedef struct esch_list_element    esch_list_element;
 
 typedef char                        esch_utf8_char;
 typedef wchar_t                     esch_unicode;
@@ -108,7 +110,7 @@ struct esch_config
 #define ESCH_GET_LOG(obj)            (((esch_config*)obj)->log)
 #define ESCH_GET_ALLOC(obj)          (((esch_config*)obj)->alloc)
 #define ESCH_IS_VALID_CONFIG(obj) \
-    ((((esch_config*)obj)->type == ESCH_TYPE_CONFIG) && \
+    ((((esch_config*)obj)->type != ESCH_TYPE_UNKNOWN) && \
      ((esch_config*)obj)->log != NULL && \
      ((esch_config*)obj)->alloc != NULL)
 
@@ -168,6 +170,37 @@ int esch_unicode_is_range_sm(esch_unicode ch);
 int esch_unicode_is_range_sk(esch_unicode ch);
 int esch_unicode_is_range_so(esch_unicode ch);
 int esch_unicode_is_range_co(esch_unicode ch);
+
+/* --- List --- */
+/* XXX
+ * This is a list used by both Scheme list and array. So it supports
+ * accessors for both. However, do not try to access same list object in
+ * both ways.
+ *
+ * The list accepts only valid esch_ objects.
+ *
+ * The list takes esch_config::type to determine what kinds of object
+ * can be stored. The list accepts only the same type.
+ *
+ */
+esch_error esch_list_new(esch_config* config, int enforce_same_type,
+                         esch_list** list);
+esch_error esch_list_delete(esch_list** list);
+esch_error esch_list_get_size(esch_list** list, int** size);
+esch_error esch_list_get_first(esch_list** list, esch_list_element** first);
+esch_error esch_list_get_by_index(esch_list** list, int index,
+                                  esch_list_element** first);
+esch_error esch_list_insert_element(esch_list_element node,
+                                    void* element,
+                                    esch_list_element** new_element);
+esch_error esch_list_insert_element_array(esch_list** list,
+                                          void** data, int size,
+                                          esch_list_element** node);
+esch_error esch_list_get_next(esch_list_element* node,
+                              esch_list_element** next);
+esch_error esch_list_get_prev(esch_list_element* node, 
+                              esch_list_element** prev);
+esch_error esch_list_remove_element(esch_list_element* element);
 
 /* --- Parser --- */
 esch_error esch_parser_new(esch_config* config, esch_parser** parser);
