@@ -178,9 +178,6 @@ int esch_unicode_is_range_co(esch_unicode ch);
  *
  * The list accepts only valid esch_ objects.
  *
- * The list takes esch_config::type to determine what kinds of object
- * can be stored. The list accepts only the same type.
- *
  */
 esch_error esch_list_new(esch_config* config, esch_list** list);
 esch_error esch_list_delete(esch_list* list);
