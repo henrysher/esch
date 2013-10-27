@@ -19,6 +19,7 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
   - List
   - Characters
   - Numbers
+  - Lambda
 
 * Create callback based parser object.
   - Can I do single-pass compiler?
