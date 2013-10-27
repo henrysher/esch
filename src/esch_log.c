@@ -8,7 +8,7 @@
 #include "esch_debug.h"
 
 static esch_alloc g_dummy_alloc = {
-    { ESCH_TYPE_ALLOC, &g_esch_log_do_nothing, &g_dummy_alloc },
+    { ESCH_TYPE_ALLOC_DUMMY, &g_esch_log_do_nothing, &g_dummy_alloc },
 };
 esch_log g_esch_log_printf = {
     { ESCH_TYPE_LOG_PRINTF, &g_esch_log_printf, &g_dummy_alloc },

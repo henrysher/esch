@@ -43,7 +43,8 @@ env.Append(CCFLAGS=ccflags)
 
 # Library
 libesch_src = ['esch_alloc.c', 'esch_log.c', 'esch_parser.c', \
-               'esch_string.c', 'esch_range.c', 'esch_list.c' ]
+               'esch_string.c', 'esch_range.c', 'esch_list.c', \
+               'esch_object.c' ]
 esch = env.StaticLibrary('esch', libesch_src)
 # Unit test
 utest_src = [ 'utest/esch_utest.c', \

@@ -59,23 +59,29 @@ typedef enum {
 
 typedef enum {
     ESCH_TYPE_UNKNOWN          = 0,
-    ESCH_TYPE_MAGIC            = 0xEC,
+    ESCH_TYPE_MAGIC            = 0xEC00,
     /* Generic types */
-    ESCH_TYPE_CUSTOMIZED       = ESCH_TYPE_MAGIC | 0x10,
-    ESCH_TYPE_ALLOC            = ESCH_TYPE_MAGIC | 0x20,
-    ESCH_TYPE_LOG              = ESCH_TYPE_MAGIC | 0x30,
-    ESCH_TYPE_PARSER           = ESCH_TYPE_MAGIC | 0x40,
-    ESCH_TYPE_AST              = ESCH_TYPE_MAGIC | 0x42,
-    ESCH_TYPE_STRING           = ESCH_TYPE_MAGIC | 0x50,
-    ESCH_TYPE_LIST             = ESCH_TYPE_MAGIC | 0x51,
-    ESCH_TYPE_VM               = ESCH_TYPE_MAGIC | 0xf0,
+    ESCH_TYPE_NO_DELETE        = ESCH_TYPE_MAGIC | 0x10,
+    ESCH_TYPE_PRIMITIVE        = ESCH_TYPE_MAGIC | 0x20,
+    ESCH_TYPE_CONTAINER        = ESCH_TYPE_MAGIC | 0x30,
 
-    ESCH_TYPE_ALLOC_C_DEFAULT  = ESCH_TYPE_MAGIC | ESCH_TYPE_ALLOC | 1,
-    ESCH_TYPE_LOG_PRINTF       = ESCH_TYPE_MAGIC | ESCH_TYPE_LOG   | 1,
-    ESCH_TYPE_LOG_DO_NOTHING   = ESCH_TYPE_MAGIC | ESCH_TYPE_LOG   | 2,
+    ESCH_TYPE_CHAR_AS_STRING   = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 1,
+    ESCH_TYPE_STRING           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 2,
+    ESCH_TYPE_SYMBOL           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 3,
+    ESCH_TYPE_NUMBER           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 4,
+    ESCH_TYPE_LIST             = ESCH_TYPE_MAGIC | ESCH_TYPE_CONTAINER | 1,
+
+    ESCH_TYPE_ALLOC_DUMMY      = ESCH_TYPE_MAGIC | ESCH_TYPE_NO_DELETE | 1,
+    ESCH_TYPE_ALLOC_C_DEFAULT  = ESCH_TYPE_MAGIC | ESCH_TYPE_NO_DELETE | 2,
+    ESCH_TYPE_LOG_PRINTF       = ESCH_TYPE_MAGIC | ESCH_TYPE_NO_DELETE | 3,
+    ESCH_TYPE_LOG_DO_NOTHING   = ESCH_TYPE_MAGIC | ESCH_TYPE_NO_DELETE | 4,
+
+    ESCH_TYPE_PARSER           = ESCH_TYPE_MAGIC | 0x60,
+    ESCH_TYPE_VM               = ESCH_TYPE_MAGIC | 0xf0,
 } esch_type;
 
-typedef struct esch_config          esch_config;
+typedef struct esch_object          esch_object;
+typedef struct esch_object          esch_config; /* Alias only */
 typedef struct esch_alloc           esch_alloc;
 typedef struct esch_log             esch_log;
 typedef struct esch_parser          esch_parser;
@@ -83,38 +89,51 @@ typedef struct esch_parser_callback esch_parser_callback;
 typedef struct esch_ast             esch_ast;
 typedef struct esch_string          esch_string;
 typedef struct esch_list            esch_list;
-typedef struct esch_list_element    esch_list_element;
+typedef struct esch_list_node       esch_list_node;
 
 typedef char                        esch_utf8_char;
 typedef wchar_t                     esch_unicode;
 
 /**
  * The public type info structure. This is the header of all structures
- * used in Esch. All objects can be casted to esch_config to get type
+ * used in Esch. All objects can be casted to esch_object to get type
  * information.
  */
-struct esch_config
+struct esch_object
 {
     esch_type   type;       /**< Registered type ID */
     esch_log*   log;        /**< Log object to write trace/errors.*/
     esch_alloc* alloc;      /**< Allocator object to manage memory. */
 };
-#define ESCH_COMMON_HEADER    esch_config config;
+#define ESCH_COMMON_HEADER    esch_object header;
+
+#define ESCH_GET_CONFIG(obj)         ((esch_object*)obj)
+#define ESCH_GET_TYPE(obj)           (((esch_object*)obj)->type)
+#define ESCH_GET_LOG(obj)            (((esch_object*)obj)->log)
+#define ESCH_GET_ALLOC(obj)          (((esch_object*)obj)->alloc)
 
 #define ESCH_IS_VALID_OBJECT(obj) \
-    ((((esch_config*)obj)->type & ESCH_TYPE_MAGIC) == ESCH_TYPE_MAGIC && \
-     ((esch_config*)obj)->log != NULL && \
-     ((esch_config*)obj)->alloc != NULL)
-#define ESCH_GET_CONFIG(obj)         ((esch_config*)obj)
-#define ESCH_GET_TYPE(obj)           (((esch_config*)obj)->type)
-#define ESCH_GET_LOG(obj)            (((esch_config*)obj)->log)
-#define ESCH_GET_ALLOC(obj)          (((esch_config*)obj)->alloc)
+    ((ESCH_GET_TYPE(obj) & ESCH_TYPE_MAGIC) == ESCH_TYPE_MAGIC && \
+     ESCH_GET_LOG(obj) != NULL && \
+     ESCH_GET_ALLOC(obj) != NULL)
+
 #define ESCH_IS_VALID_CONFIG(obj) \
-     (((esch_config*)obj)->log != NULL && \
-      ((esch_config*)obj)->alloc != NULL)
+     (ESCH_GET_LOG(obj) != NULL && \
+      ESCH_GET_ALLOC(obj) != NULL)
+
+#define ESCH_IS_NO_DELETE(obj) \
+    ((ESCH_GET_TYPE(obj) & ESCH_TYPE_NO_DELETE) == ESCH_TYPE_NO_DELETE)
+#define ESCH_IS_PRIMITIVE(obj) \
+    ((ESCH_GET_TYPE(obj) & ESCH_TYPE_PRIMITIVE) == ESCH_TYPE_PRIMITIVE)
+#define ESCH_IS_CONTAINER(obj) \
+    ((ESCH_GET_TYPE(obj) & ESCH_TYPE_CONTAINER) == ESCH_TYPE_CONTAINER)
+
+
+/* --- Common object --- */
+esch_error esch_object_delete(esch_object* data);
 
 /* --- Memory allocator --- */
-esch_error esch_alloc_new_c_default(esch_config* config,
+esch_error esch_alloc_new_c_default(esch_object* config,
                                     esch_alloc** ret_alloc);
 esch_error esch_alloc_delete(esch_alloc* alloc);
 esch_error esch_alloc_malloc(esch_alloc* alloc, size_t size, void** ret);
@@ -129,7 +148,7 @@ esch_error esch_log_error(esch_log* log, const char* fmt, ...);
 esch_error esch_log_info(esch_log* log, const char* fmt, ...);
 
 /* --- String objects --- */
-esch_error esch_string_new_from_utf8(esch_config* config, char* utf8,
+esch_error esch_string_new_from_utf8(esch_object* config, char* utf8,
                                      int begin, int end,
                                      esch_string** str);
 esch_error esch_string_delete(esch_string* str);
@@ -179,23 +198,29 @@ int esch_unicode_is_range_co(esch_unicode ch);
  * The list accepts only valid esch_ objects.
  *
  */
-esch_error esch_list_new(esch_config* config, esch_list** list);
+esch_error esch_list_new(esch_config* config, size_t initial_length,
+                         esch_list** lst);
 esch_error esch_list_delete(esch_list* list);
-esch_error esch_list_get_size(esch_list* list, size_t* size);
-esch_error esch_list_get_first(esch_list** list, esch_list_element** first);
-esch_error esch_list_get_by_index(esch_list** list, int index,
-                                  esch_list_element** first);
-esch_error esch_list_insert_element(esch_list_element node,
-                                    void* element,
-                                    esch_list_element** new_element);
-esch_error esch_list_insert_element_array(esch_list** list,
-                                          void** data, int size,
-                                          esch_list_element** node);
-esch_error esch_list_get_next(esch_list_element* node,
-                              esch_list_element** next);
-esch_error esch_list_get_prev(esch_list_element* node, 
-                              esch_list_element** prev);
-esch_error esch_list_remove_element(esch_list_element* element);
+esch_error esch_list_delete_list_and_data(esch_list* list);
+esch_error esch_list_get_length(esch_list* list, size_t* length);
+esch_error esch_list_get_by_index(esch_list* list,
+                                  int index,
+                                  esch_list_node** node);
+esch_error esch_list_get_first(esch_list* list, esch_list_node** node);
+esch_error esch_list_get_next(esch_list_node* node,
+                              esch_list_node* next);
+esch_error esch_list_get_prev(esch_list_node* item, 
+                              esch_list_node* node);
+esch_error esch_list_prepend(esch_list* list, esch_object* data);
+esch_error esch_list_append(esch_list* list, esch_object* data);
+
+/* I will not allow we create a new externally. */
+esch_error esch_list_node_get_data(esch_list_node* node, void** data);
+esch_error esch_list_node_delete(esch_list_node* node);
+
+/* --- TODO Number -- */
+/* --- TODO Complex -- */
+/* --- TODO Real -- */
 
 /* --- Parser --- */
 esch_error esch_parser_new(esch_config* config, esch_parser** parser);

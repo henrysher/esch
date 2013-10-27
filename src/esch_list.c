@@ -5,104 +5,161 @@
 /**
  * Create a new list.
  * @param config Basic configuration.
- * @param lst Newly create list.
+ * @param list Newly create list.
  * @return Return code.
  */
 esch_error
-esch_list_new(esch_config* config, esch_list** lst)
+esch_list_new(esch_config* config, size_t initial_length, esch_list** list)
 {
     esch_error ret = ESCH_OK;
-    esch_list* new_lst = NULL;
+    esch_list* new_list = NULL;
     esch_alloc* alloc = NULL;
     esch_log* log = NULL;
-    int idx = 0;
+    size_t node_idx = 0;
+    size_t nblocks = 0;
+    size_t blocks = 0;
+    esch_list_node* new_block = NULL;
+
     ESCH_CHECK_PARAM_PUBLIC(config != NULL);
     ESCH_CHECK_PARAM_PUBLIC(config->alloc != NULL);
     ESCH_CHECK_PARAM_PUBLIC(config->log != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(lst != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(list != NULL);
 
     alloc = config->alloc;
     log = config->log;
-    ret = esch_alloc_malloc(alloc, sizeof(esch_list), (void**)&new_lst);
+    ret = esch_alloc_malloc(alloc, sizeof(esch_list), (void**)&new_list);
     ESCH_CHECK(ret == ESCH_OK, log, "Can't malloc list", ret);
-    ESCH_GET_TYPE(new_lst) = ESCH_TYPE_LIST;
-    ESCH_GET_ALLOC(new_lst) = alloc;
-    ESCH_GET_LOG(new_lst) = log;
-    new_lst->slots = ESCH_LIST_INITIAL_ELEMENTS;
-    new_lst->size = 0;
-    new_lst->first = NULL;
-    new_lst->last = NULL;
+    ESCH_GET_TYPE(new_list) = ESCH_TYPE_LIST;
+    ESCH_GET_ALLOC(new_list) = alloc;
+    ESCH_GET_LOG(new_list) = log;
+    new_list->length = 0; /* No element is really assigned */
+    new_list->node_block_head = NULL;
+    new_list->first_node = NULL; /* No node is allocated */
+    new_list->last_node = NULL;
 
-    ret = esch_alloc_malloc(alloc,
-            ESCH_LIST_INITIAL_ELEMENTS * sizeof(esch_list_element),
-            (void**)&(new_lst->elements));
-    ESCH_CHECK(ret == ESCH_OK, log, "Can't malloc list elements", ret);
-    for(idx = 0; idx < new_lst->slots; ++idx)
+    if (initial_length > 0)
     {
-        new_lst->elements[idx].owner = new_lst;
-        new_lst->elements[idx].data = NULL;
-        new_lst->elements[idx].prev_index = 0;
-        new_lst->elements[idx].next_index = 0;
+        blocks = (initial_length / ESCH_LIST_NODES_PER_BLOCK) +
+            ((initial_length % ESCH_LIST_NODES_PER_BLOCK) == 0? 0: 1);
     }
-    (*lst) = new_lst;
-    new_lst = NULL;
-Exit:
-    if (new_lst)
+    else
     {
-        esch_list_delete(new_lst);
+        // Default blocks
+        blocks = 1;
+    }
+
+    /* Now, create a linked list. */
+    new_block = NULL;
+    for(nblocks = 0; nblocks < blocks; ++nblocks)
+    {
+        ret = esch_alloc_malloc(alloc,
+                ESCH_LIST_NODES_PER_BLOCK * sizeof(esch_list_node),
+                (void*)(&new_block));
+        ESCH_CHECK(ret == ESCH_OK, log, "Can't malloc list nodes", ret);
+        new_block[0].owner = new_list;
+        new_block[0].data = NULL;
+        new_block[0].prev = NULL;
+        new_block[0].next = &new_block[1];
+        for(node_idx = 1; node_idx < ESCH_LIST_NODES_PER_BLOCK - 1; ++node_idx)
+        {
+            new_block[node_idx].owner = new_list;
+            new_block[node_idx].data = NULL;
+            new_block[node_idx].prev = &new_block[node_idx - 1];
+            new_block[node_idx].next = &new_block[node_idx + 1];
+        }
+        new_block[node_idx].owner = new_list;
+        new_block[node_idx].data = NULL;
+        new_block[node_idx].prev = &new_block[node_idx -1];
+        /* Add to linked list. */
+        new_block[node_idx].next = new_list->node_block_head;
+        new_list->node_block_head = new_block;
+    }
+
+    (*list) = new_list;
+    new_list = NULL;
+Exit:
+    if (new_list)
+    {
+        esch_list_delete(new_list);
     }
     return ret;
 }
 
 /**
- * Delete a list.
- * @param lst List to be deleted.
+ * Delete a list, internal use only.
+ * @param list List to be deleted.
+ * @param delete_data Determine if data should be deleted as well.
  * @return Return code.
  */
-esch_error
-esch_list_delete(esch_list* lst)
+static esch_error
+esch_list_do_delete(esch_list* list, int delete_data)
 {
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;
-    if (lst == NULL)
+    esch_list_node* node_head = NULL;
+    esch_list_node* next_head = NULL;
+    size_t block_idx = 0;
+    if (list == NULL)
     {
         return ret;
     }
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_LIST(lst));
-    alloc = ESCH_GET_ALLOC(lst);
-    esch_alloc_free(alloc, lst->elements);
-    esch_alloc_free(alloc, lst);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_LIST(list));
+    alloc = ESCH_GET_ALLOC(list);
+    node_head = list->node_block_head;
+    while(node_head != NULL)
+    {
+        next_head = node_head[ESCH_LIST_NODES_PER_BLOCK - 1].next;
+        if (delete_data)
+        {
+            for(block_idx = 0;
+                    block_idx < ESCH_LIST_NODES_PER_BLOCK; ++block_idx)
+            {
+                (void)esch_object_delete(node_head[block_idx].data);
+            }
+        }
+        esch_alloc_free(alloc, node_head);
+        node_head = next_head;
+    }
+    esch_alloc_free(alloc, list);
 Exit:
     return ret;
+}
+
+/**
+ * Delete a list but keep all data exist.
+ * @param list List to be deleted.
+ * @return Return code.
+ */
+esch_error
+esch_list_delete(esch_list* list)
+{
+    return esch_list_do_delete(list, 0);
+}
+
+/**
+ * Delete a list, as well as all data held in the list.
+ * @param list List to be deleted.
+ * @return Return code.
+ */
+esch_error
+esch_list_delete_list_and_data(esch_list* list)
+{
+    return esch_list_do_delete(list, 1);
 }
 /**
  * Get element count of specified list.
- * @param lst Given list.
+ * @param list Given list.
  * @param size Size of list. 
  */
 esch_error
-esch_list_get_size(esch_list* lst, size_t* size)
+esch_list_get_length(esch_list* list, size_t* length)
 {
     esch_error ret = ESCH_OK;
-    ESCH_CHECK_PARAM_PUBLIC(lst != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(size != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_LIST(lst));
-    (*size) = lst->size;
+    ESCH_CHECK_PARAM_PUBLIC(list != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(length != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_LIST(list));
+    (*length) = list->length;
 Exit:
     return ret;
 }
-esch_error esch_list_get_first(esch_list** lst, esch_list_element** first);
-esch_error esch_list_get_by_index(esch_list** lst, int index,
-                                  esch_list_element** first);
-esch_error esch_list_insert_element(esch_list_element node,
-                                    void* element,
-                                    esch_list_element** new_element);
-esch_error esch_list_insert_element_array(esch_list** lst,
-                                          void** data, int size,
-                                          esch_list_element** node);
-esch_error esch_list_get_next(esch_list_element* node,
-                              esch_list_element** next);
-esch_error esch_list_get_prev(esch_list_element* node, 
-                              esch_list_element** prev);
-esch_error esch_list_remove_element(esch_list_element* element);
 

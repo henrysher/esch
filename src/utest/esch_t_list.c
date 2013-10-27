@@ -23,19 +23,19 @@ test_list()
 
     config.alloc = alloc;
     config.log = NULL;
-    ret = esch_list_new(&config, &lst);
+    ret = esch_list_new(&config, 0, &lst);
     ESCH_TEST_CHECK(ret == ESCH_ERROR_INVALID_PARAMETER && lst == NULL,
                     "Failed to create log - no log", ret);
 
     config.alloc = NULL;
     config.log = log;
-    ret = esch_list_new(&config, &lst);
+    ret = esch_list_new(&config, 0, &lst);
     ESCH_TEST_CHECK(ret == ESCH_ERROR_INVALID_PARAMETER && lst == NULL,
                     "Failed to create log - no alloc", ret);
 
     config.alloc = alloc;
     config.log = log;
-    ret = esch_list_new(&config, &lst);
+    ret = esch_list_new(&config, 0, &lst);
     ESCH_TEST_CHECK(ret == ESCH_OK && lst != NULL,
                     "Failed to create log - no alloc", ret);
 
