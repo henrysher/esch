@@ -39,7 +39,7 @@ test_list()
     ESCH_TEST_CHECK(ret == ESCH_OK && lst != NULL,
                     "Failed to create log - no alloc", ret);
 
-    ret = esch_list_delete(lst);
+    ret = esch_list_delete(lst, ESCH_FALSE);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete list.", ret);
 
     ret = esch_alloc_delete(alloc);

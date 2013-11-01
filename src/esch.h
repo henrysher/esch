@@ -49,6 +49,9 @@ extern "C" {
  * This is the only public include file for Esch interpreter. 
  */
 
+#define ESCH_FALSE 0
+#define ESCH_TRUE !(ESCH_FALSE)
+
 typedef enum {
     ESCH_OK = 0,
     ESCH_ERROR_NOT_IMPLEMENTED,
@@ -65,6 +68,7 @@ typedef enum {
     ESCH_TYPE_PRIMITIVE        = ESCH_TYPE_MAGIC | 0x20,
     ESCH_TYPE_CONTAINER        = ESCH_TYPE_MAGIC | 0x30,
 
+    /* Concret types */
     ESCH_TYPE_CHAR_AS_STRING   = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 1,
     ESCH_TYPE_STRING           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 2,
     ESCH_TYPE_SYMBOL           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 3,
@@ -76,6 +80,7 @@ typedef enum {
     ESCH_TYPE_LOG_PRINTF       = ESCH_TYPE_MAGIC | ESCH_TYPE_NO_DELETE | 3,
     ESCH_TYPE_LOG_DO_NOTHING   = ESCH_TYPE_MAGIC | ESCH_TYPE_NO_DELETE | 4,
 
+    /* Will be deleted */
     ESCH_TYPE_PARSER           = ESCH_TYPE_MAGIC | 0x60,
     ESCH_TYPE_VM               = ESCH_TYPE_MAGIC | 0xf0,
 } esch_type;
@@ -105,6 +110,7 @@ struct esch_object
     esch_log*   log;        /**< Log object to write trace/errors.*/
     esch_alloc* alloc;      /**< Allocator object to manage memory. */
 };
+
 #define ESCH_COMMON_HEADER    esch_object header;
 
 #define ESCH_GET_CONFIG(obj)         ((esch_object*)obj)
@@ -127,10 +133,6 @@ struct esch_object
     ((ESCH_GET_TYPE(obj) & ESCH_TYPE_PRIMITIVE) == ESCH_TYPE_PRIMITIVE)
 #define ESCH_IS_CONTAINER(obj) \
     ((ESCH_GET_TYPE(obj) & ESCH_TYPE_CONTAINER) == ESCH_TYPE_CONTAINER)
-
-
-/* --- Common object --- */
-esch_error esch_object_delete(esch_object* data);
 
 /* --- Memory allocator --- */
 esch_error esch_alloc_new_c_default(esch_object* config,
@@ -200,8 +202,7 @@ int esch_unicode_is_range_co(esch_unicode ch);
  */
 esch_error esch_list_new(esch_config* config, size_t initial_length,
                          esch_list** lst);
-esch_error esch_list_delete(esch_list* list);
-esch_error esch_list_delete_list_and_data(esch_list* list);
+esch_error esch_list_delete(esch_list* list, int delete_data);
 esch_error esch_list_get_length(esch_list* list, size_t* length);
 esch_error esch_list_get_by_index(esch_list* list,
                                   int index,

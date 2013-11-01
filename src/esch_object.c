@@ -1,6 +1,7 @@
 #include "esch.h"
 
 typedef esch_error (*esch_object_delete_func)(esch_object*);
+typedef esch_error (*esch_container_delete_func)(esch_object*, int);
 
 static esch_object_delete_func
 primitive_delete_func_table[] =
@@ -12,15 +13,15 @@ primitive_delete_func_table[] =
     NULL, /* ESCH_TYPE_NUMBER */
     NULL
 };
-static esch_object_delete_func
+static esch_container_delete_func
 container_delete_func_table[] =
 {
     NULL,
-    (esch_object_delete_func)esch_list_delete, /* ESCH_TYPE_LIST */
+    (esch_container_delete_func)esch_list_delete, /* ESCH_TYPE_LIST */
     NULL
 };
 
-esch_error esch_object_delete(esch_object* data)
+esch_error esch_object_delete(esch_object* data, int delete_data)
 {
     esch_error ret = ESCH_OK;
     size_t idx = 0;
@@ -43,7 +44,7 @@ esch_error esch_object_delete(esch_object* data)
     else if (ESCH_IS_CONTAINER(data))
     {
         idx = (ESCH_GET_TYPE(data) & 0xF);
-        return container_delete_func_table[idx](data);
+        return container_delete_func_table[idx](data, delete_data);
     }
     else
     {

@@ -1,6 +1,7 @@
 #include "esch.h"
 #include "esch_list.h"
 #include "esch_debug.h"
+#include "esch_object.h"
 
 /**
  * Create a new list.
@@ -80,19 +81,19 @@ esch_list_new(esch_config* config, size_t initial_length, esch_list** list)
 Exit:
     if (new_list)
     {
-        esch_list_delete(new_list);
+        esch_list_delete(new_list, ESCH_FALSE);
     }
     return ret;
 }
 
 /**
- * Delete a list, internal use only.
+ * Delete a list.
  * @param list List to be deleted.
  * @param delete_data Determine if data should be deleted as well.
  * @return Return code.
  */
-static esch_error
-esch_list_do_delete(esch_list* list, int delete_data)
+esch_error
+esch_list_delete(esch_list* list, int delete_data)
 {
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;
@@ -114,7 +115,8 @@ esch_list_do_delete(esch_list* list, int delete_data)
             for(block_idx = 0;
                     block_idx < ESCH_LIST_NODES_PER_BLOCK; ++block_idx)
             {
-                (void)esch_object_delete(node_head[block_idx].data);
+                (void)esch_object_delete(node_head[block_idx].data,
+                                         delete_data);
             }
         }
         esch_alloc_free(alloc, node_head);
@@ -125,27 +127,6 @@ Exit:
     return ret;
 }
 
-/**
- * Delete a list but keep all data exist.
- * @param list List to be deleted.
- * @return Return code.
- */
-esch_error
-esch_list_delete(esch_list* list)
-{
-    return esch_list_do_delete(list, 0);
-}
-
-/**
- * Delete a list, as well as all data held in the list.
- * @param list List to be deleted.
- * @return Return code.
- */
-esch_error
-esch_list_delete_list_and_data(esch_list* list)
-{
-    return esch_list_do_delete(list, 1);
-}
 /**
  * Get element count of specified list.
  * @param list Given list.
