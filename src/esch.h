@@ -107,8 +107,8 @@ typedef wchar_t                     esch_unicode;
 struct esch_object
 {
     esch_type   type;       /**< Registered type ID */
-    esch_log*   log;        /**< Log object to write trace/errors.*/
     esch_alloc* alloc;      /**< Allocator object to manage memory. */
+    esch_log*   log;        /**< Log object to write trace/errors.*/
 };
 
 #define ESCH_COMMON_HEADER    esch_object header;

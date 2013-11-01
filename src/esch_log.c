@@ -8,14 +8,14 @@
 #include "esch_debug.h"
 
 static esch_alloc g_dummy_alloc = {
-    { ESCH_TYPE_ALLOC_DUMMY, &g_esch_log_do_nothing, &g_dummy_alloc },
+    { ESCH_TYPE_ALLOC_DUMMY, &g_dummy_alloc, &g_esch_log_do_nothing },
 };
 esch_log g_esch_log_printf = {
-    { ESCH_TYPE_LOG_PRINTF, &g_esch_log_printf, &g_dummy_alloc },
+    { ESCH_TYPE_LOG_PRINTF, &g_dummy_alloc, &g_esch_log_printf },
     esch_log_error_printf, esch_log_info_printf
 };
 esch_log g_esch_log_do_nothing = {
-    { ESCH_TYPE_LOG_DO_NOTHING, &g_esch_log_do_nothing, &g_dummy_alloc },
+    { ESCH_TYPE_LOG_DO_NOTHING, &g_dummy_alloc, &g_esch_log_do_nothing },
     esch_log_message_do_nothing, esch_log_message_do_nothing
 };
 
