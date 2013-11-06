@@ -1,4 +1,6 @@
 #include "esch.h"
+#include "esch_config.h"
+#include "esch_object.h"
 
 typedef esch_error (*esch_object_delete_func)(esch_object*);
 typedef esch_error (*esch_container_delete_func)(esch_object*, int);

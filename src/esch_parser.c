@@ -5,6 +5,7 @@
 #include "esch_alloc.h"
 #include "esch_log.h"
 #include "esch_debug.h"
+#include "esch_config.h"
 
 /**
  * Create a new esch_parser object.
@@ -22,11 +23,11 @@ esch_parser_new(esch_config* config, esch_parser** parser)
     esch_log* log = NULL;
     ESCH_CHECK_PARAM_PUBLIC(config != NULL);
     ESCH_CHECK_PARAM_PUBLIC(parser != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(config->alloc != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(config->log != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_INTERNAL_CONFIG_GET_ALLOC(config) != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_INTERNAL_CONFIG_GET_LOG(config) != NULL);
 
-    alloc = config->alloc;
-    log = config->log;
+    alloc = ESCH_INTERNAL_CONFIG_GET_ALLOC(config);
+    log = ESCH_INTERNAL_CONFIG_GET_LOG(config);
 
     ret = esch_alloc_malloc(alloc, sizeof(esch_parser), (void**)&new_parser);
     ESCH_CHECK(ret == ESCH_OK, esch_global_log, "Can't malloc for parser", ret);

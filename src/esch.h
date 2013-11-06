@@ -61,7 +61,16 @@ typedef enum {
     ESCH_ERROR_OUT_OF_MEMORY,
     ESCH_ERROR_INVALID_PARAMETER,
     ESCH_ERROR_INVALID_STATE,
+    ESCH_ERROR_CONFIG_NOT_FOUND,
+    ESCH_ERROR_CONFIG_BAD_VALUE_TYPE
 } esch_error;
+
+typedef enum {
+    ESCH_CONFIG_VALUE_TYPE_UNKNOWN = 0,
+    ESCH_CONFIG_VALUE_TYPE_INTEGER,
+    ESCH_CONFIG_VALUE_TYPE_STRING,
+    ESCH_CONFIG_VALUE_TYPE_OBJECT,
+} esch_config_value_type;
 
 typedef enum {
     ESCH_TYPE_UNKNOWN          = 0,
@@ -90,7 +99,7 @@ typedef enum {
 } esch_type;
 
 typedef struct esch_object          esch_object;
-typedef struct esch_config          esch_config; /* Alias only */
+typedef struct esch_config          esch_config;
 typedef struct esch_alloc           esch_alloc;
 typedef struct esch_log             esch_log;
 typedef struct esch_parser          esch_parser;
@@ -138,7 +147,7 @@ esch_error esch_log_error(esch_log* log, const char* fmt, ...);
 esch_error esch_log_info(esch_log* log, const char* fmt, ...);
 
 /* --- String objects --- */
-esch_error esch_string_new_from_utf8(esch_object* config, char* utf8,
+esch_error esch_string_new_from_utf8(esch_config* config, char* utf8,
                                      int begin, int end,
                                      esch_string** str);
 esch_error esch_string_delete(esch_string* str);

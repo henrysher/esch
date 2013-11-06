@@ -22,12 +22,12 @@ esch_list_new(esch_config* config, size_t initial_length, esch_list** list)
     esch_list_node* new_block = NULL;
 
     ESCH_CHECK_PARAM_PUBLIC(config != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(config->alloc != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(config->log != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_INTERNAL_CONFIG_GET_ALLOC(config) != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_INTERNAL_CONFIG_GET_LOG(config) != NULL);
     ESCH_CHECK_PARAM_PUBLIC(list != NULL);
 
-    alloc = config->alloc;
-    log = config->log;
+    alloc = ESCH_INTERNAL_CONFIG_GET_ALLOC(config);
+    log = ESCH_INTERNAL_CONFIG_GET_LOG(config);
     ret = esch_alloc_malloc(alloc, sizeof(esch_list), (void**)&new_list);
     ESCH_CHECK(ret == ESCH_OK, log, "Can't malloc list", ret);
     ESCH_GET_TYPE(new_list) = ESCH_TYPE_LIST;

@@ -1,11 +1,12 @@
 /* vim:ft=c expandtab tw=72 sw=4
  */
 /* See Copyright notice in esch.h */
-#include <assert.h>
-#include <string.h>
 #include "esch_string.h"
 #include "esch_log.h"
 #include "esch_debug.h"
+#include "esch_config.h"
+#include <assert.h>
+#include <string.h>
 
 enum esch_unicode_parse_state
 {
@@ -191,8 +192,8 @@ decode_utf8(char* utf8, int begin, int end,
     esch_alloc* alloc = NULL;
     esch_log* log = NULL;
 
-    alloc = config->alloc;
-    log = config->log;
+    alloc = ESCH_INTERNAL_CONFIG_GET_ALLOC(config);
+    log = ESCH_INTERNAL_CONFIG_GET_LOG(config);
 
     len = utf8_get_unicode_len(utf8, begin, end, &bad_index);
     ESCH_CHECK_1(len >= 0, log, "Bad Unicode at index %d", bad_index,
@@ -244,6 +245,8 @@ esch_string_new_from_utf8(esch_config* config, char* utf8,
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_CONFIG(config));
     ESCH_CHECK_PARAM_PUBLIC(utf8 != NULL);
     ESCH_CHECK_PARAM_PUBLIC(str != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_INTERNAL_CONFIG_GET_ALLOC(config) != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_INTERNAL_CONFIG_GET_LOG(config) != NULL);
 
     if (begin == 0 && end < 0)
     {
@@ -259,8 +262,8 @@ esch_string_new_from_utf8(esch_config* config, char* utf8,
         ESCH_CHECK(ret, log, "Invalid length", ret);
     }
 
-    alloc = config->alloc;
-    log = config->log;
+    alloc = ESCH_INTERNAL_CONFIG_GET_ALLOC(config);
+    log = ESCH_INTERNAL_CONFIG_GET_LOG(config);
 
     ret = esch_alloc_malloc(alloc, sizeof(esch_string), (void**)&new_str);
     ESCH_CHECK(ret == ESCH_OK, log, "Can't malloc for string", ret);

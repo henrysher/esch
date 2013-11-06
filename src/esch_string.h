@@ -5,6 +5,7 @@
 #define _ESCH_STRING_H_
 
 #include "esch.h"
+#include "esch_object.h"
 
 #ifdef __cplusplus
 extern "C" {

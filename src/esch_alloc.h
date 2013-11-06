@@ -4,6 +4,7 @@
 #ifndef _ESCH_ALLOC_H_
 #define _ESCH_ALLOC_H_
 #include "esch.h"
+#include "esch_object.h"
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

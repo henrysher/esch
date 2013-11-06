@@ -11,7 +11,6 @@ esch_error test_AllocCreateDeleteCDefault()
     esch_alloc* alloc = NULL;
     esch_log* log = NULL;
     esch_log* do_nothing = NULL;
-    esch_config config = { ESCH_TYPE_UNKNOWN, NULL, NULL };
     char* str = NULL;
 
     (void)esch_log_new_do_nothing(&do_nothing);
@@ -21,8 +20,7 @@ esch_error test_AllocCreateDeleteCDefault()
     log = g_testLog;
 #endif
 
-    config.log = log;
-    ret = esch_alloc_new_c_default(&config, &alloc);
+    ret = esch_alloc_new_c_default(g_testLog, &alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
 
     ret = esch_alloc_malloc(alloc, sizeof(char) * 100, (void**)(&str));

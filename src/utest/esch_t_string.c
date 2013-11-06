@@ -10,7 +10,7 @@ esch_error test_string()
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;
     esch_parser* parser = NULL;
-    esch_config config = { ESCH_TYPE_UNKNOWN, NULL, NULL };
+    esch_config* config = NULL;
     esch_string* str = NULL;
     esch_log* log = NULL;
     esch_log* do_nothing = NULL;
@@ -25,28 +25,35 @@ esch_error test_string()
     log = g_testLog;
 #endif
 
-    config.log = g_testLog;
-    ret = esch_alloc_new_c_default(&config, &alloc);
+    ret = esch_alloc_new_c_default(g_testLog, &alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
 
-    config.alloc = alloc;
-    config.log = NULL;
+    ret = esch_config_set_data(config, ESCH_CONFIG_ALLOC_KEY, alloc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:alloc:obj", ret);
+    ret = esch_config_set_data(config, ESCH_CONFIG_LOG_KEY, NULL);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:NULL", ret);
 
-    ret = esch_string_new_from_utf8(&config, input, 0, -1, &str);
+    ret = esch_string_new_from_utf8(config, input, 0, -1, &str);
     ESCH_TEST_CHECK(ret == ESCH_ERROR_INVALID_PARAMETER && str == NULL,
             "Failed to create string - no log", ret);
 
-    config.alloc = NULL;
-    config.log = log;
-    ret = esch_string_new_from_utf8(&config, input, 0, -1, &str);
+    ret = esch_config_set_data(config, ESCH_CONFIG_ALLOC_KEY, NULL);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:alloc:NULL", ret);
+    ret = esch_config_set_data(config, ESCH_CONFIG_LOG_KEY, log);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:obj", ret);
+
+    ret = esch_string_new_from_utf8(config, input, 0, -1, &str);
     ESCH_TEST_CHECK(ret == ESCH_ERROR_INVALID_PARAMETER && str == NULL,
             "Failed to create string - no alloc", ret);
 
-    config.alloc = alloc;
-    config.log = log;
+    ret = esch_config_set_data(config, ESCH_CONFIG_ALLOC_KEY, alloc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:alloc:obj", ret);
+    ret = esch_config_set_data(config, ESCH_CONFIG_LOG_KEY, log);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:obj", ret);
+
     /* Check if a full string can be parsed */
     str = NULL;
-    ret = esch_string_new_from_utf8(&config, input, 0, -1, &str);
+    ret = esch_string_new_from_utf8(config, input, 0, -1, &str);
     ESCH_TEST_CHECK(ret == ESCH_OK && str != NULL,
             "Failed to create string - begin = 0, end = -1", ret);
     ret = ESCH_ERROR_INVALID_STATE;
@@ -75,7 +82,7 @@ esch_error test_string()
 
     /* Check if a sub string can be parsed */
     str = NULL;
-    ret = esch_string_new_from_utf8(&config, input, 3, 6, &str);
+    ret = esch_string_new_from_utf8(config, input, 3, 6, &str);
     ESCH_TEST_CHECK(ret == ESCH_OK && str != NULL,
             "Failed to create string - begin = 3, end = 6", ret);
     ret = ESCH_ERROR_INVALID_STATE;
@@ -90,13 +97,17 @@ esch_error test_string()
 
     /* Check if a bad string can be detected. */
     str = NULL;
-    ret = esch_string_new_from_utf8(&config, input, 1, 5, &str);
+    ret = esch_string_new_from_utf8(config, input, 1, 5, &str);
     ESCH_TEST_CHECK(ret != ESCH_OK && str == NULL,
             "Unexpected: create bad string - begin = 1, end = 5", ret);
     esch_log_info(g_testLog, "[PASSED] Bad string test.");
 
+    ret = esch_config_delete(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete config object.", ret);
+
     ret = esch_alloc_delete(alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete alloc object.", ret);
+
 Exit:
     return ret;
 }
