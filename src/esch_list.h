@@ -10,6 +10,8 @@ extern "C" {
 
 struct esch_list_node
 {
+    /* XXX Never allow a common header to avoid inserting a node to
+     * another list. */
     struct esch_list* owner;
     esch_object* data;
     esch_list_node* prev;
@@ -43,7 +45,7 @@ struct esch_list
  * To make memory allocation efficient, we create 16 nodes by default.
  * XXX The settings may be configurable in the furture.
  */
-#define ESCH_LIST_NODES_PER_BLOCK 16
+#define ESCH_LIST_NODES_PER_BLOCK 64
 
 #ifdef __cplusplus
 }
