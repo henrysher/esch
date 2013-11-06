@@ -52,6 +52,9 @@ extern "C" {
 #define ESCH_FALSE 0
 #define ESCH_TRUE !(ESCH_FALSE)
 
+const char* ESCH_CONFIG_ALLOC_KEY;
+const char* ESCH_CONFIG_LOG_KEY;
+
 typedef enum {
     ESCH_OK = 0,
     ESCH_ERROR_NOT_IMPLEMENTED,
@@ -69,10 +72,11 @@ typedef enum {
     ESCH_TYPE_CONTAINER        = ESCH_TYPE_MAGIC | 0x30,
 
     /* Concret types */
-    ESCH_TYPE_CHAR_AS_STRING   = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 1,
-    ESCH_TYPE_STRING           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 2,
-    ESCH_TYPE_SYMBOL           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 3,
-    ESCH_TYPE_NUMBER           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 4,
+    ESCH_TYPE_CONFIG           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 1,
+    ESCH_TYPE_CHAR_AS_STRING   = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 2,
+    ESCH_TYPE_STRING           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 3,
+    ESCH_TYPE_SYMBOL           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 4,
+    ESCH_TYPE_NUMBER           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 5,
     ESCH_TYPE_LIST             = ESCH_TYPE_MAGIC | ESCH_TYPE_CONTAINER | 1,
 
     ESCH_TYPE_ALLOC_DUMMY      = ESCH_TYPE_MAGIC | ESCH_TYPE_NO_DELETE | 1,
@@ -86,7 +90,7 @@ typedef enum {
 } esch_type;
 
 typedef struct esch_object          esch_object;
-typedef struct esch_object          esch_config; /* Alias only */
+typedef struct esch_config          esch_config; /* Alias only */
 typedef struct esch_alloc           esch_alloc;
 typedef struct esch_log             esch_log;
 typedef struct esch_parser          esch_parser;
@@ -99,49 +103,33 @@ typedef struct esch_list_node       esch_list_node;
 typedef char                        esch_utf8_char;
 typedef wchar_t                     esch_unicode;
 
-/**
- * The public type info structure. This is the header of all structures
- * used in Esch. All objects can be casted to esch_object to get type
- * information.
+/* --- Configuration --- */
+esch_error esch_config_new(esch_alloc* alloc, esch_config** config);
+esch_error esch_config_delete(esch_config* config);
+esch_error esch_config_get_int(esch_config* config, const char* key, int* value);
+esch_error esch_config_set_int(esch_config* config, const char* key, int value);
+esch_error esch_config_get_str(esch_config* config, const char* key, char** value);
+esch_error esch_config_set_str(esch_config* config, const char* key, char* value);
+esch_error esch_config_get_data(esch_config* config, const char* key, void* data);
+esch_error esch_config_set_data(esch_config* config, const char* key, void* data);
+
+/*
+ * The configuration keys are pre-defined within configuration. List:
+ * 1. key = "config:alloc", value = esch_alloc
+ * 2. key = "config:log", value = esch_log
  */
-struct esch_object
-{
-    esch_type   type;       /**< Registered type ID */
-    esch_alloc* alloc;      /**< Allocator object to manage memory. */
-    esch_log*   log;        /**< Log object to write trace/errors.*/
-};
-
-#define ESCH_COMMON_HEADER    esch_object header;
-
-#define ESCH_GET_CONFIG(obj)         ((esch_object*)obj)
-#define ESCH_GET_TYPE(obj)           (((esch_object*)obj)->type)
-#define ESCH_GET_LOG(obj)            (((esch_object*)obj)->log)
-#define ESCH_GET_ALLOC(obj)          (((esch_object*)obj)->alloc)
-
-#define ESCH_IS_VALID_OBJECT(obj) \
-    ((ESCH_GET_TYPE(obj) & ESCH_TYPE_MAGIC) == ESCH_TYPE_MAGIC && \
-     ESCH_GET_LOG(obj) != NULL && \
-     ESCH_GET_ALLOC(obj) != NULL)
-
-#define ESCH_IS_VALID_CONFIG(obj) \
-     (ESCH_GET_LOG(obj) != NULL && \
-      ESCH_GET_ALLOC(obj) != NULL)
-
-#define ESCH_IS_NO_DELETE(obj) \
-    ((ESCH_GET_TYPE(obj) & ESCH_TYPE_NO_DELETE) == ESCH_TYPE_NO_DELETE)
-#define ESCH_IS_PRIMITIVE(obj) \
-    ((ESCH_GET_TYPE(obj) & ESCH_TYPE_PRIMITIVE) == ESCH_TYPE_PRIMITIVE)
-#define ESCH_IS_CONTAINER(obj) \
-    ((ESCH_GET_TYPE(obj) & ESCH_TYPE_CONTAINER) == ESCH_TYPE_CONTAINER)
+/* --------------------- */
 
 /* --- Memory allocator --- */
-esch_error esch_alloc_new_c_default(esch_object* config,
+/* Default C alloc does not depend on esch_config. */
+esch_error esch_alloc_new_c_default(esch_log* log,
                                     esch_alloc** ret_alloc);
 esch_error esch_alloc_delete(esch_alloc* alloc);
 esch_error esch_alloc_malloc(esch_alloc* alloc, size_t size, void** ret);
 esch_error esch_alloc_free(esch_alloc* alloc, void* ptr);
 
 /* --- Logger objects -- */
+/* Do nothing log and printf log do not depend on esch_config. */
 extern esch_log* esch_global_log;
 esch_error esch_log_new_do_nothing(esch_log** log);
 esch_error esch_log_new_printf(esch_log** log);
