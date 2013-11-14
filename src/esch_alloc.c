@@ -15,12 +15,16 @@
  * @return Error code.
  */
 esch_error
-esch_alloc_new_c_default(esch_log* log, esch_alloc** alloc)
+esch_alloc_new_c_default(esch_config* config, esch_alloc** alloc)
 {
     esch_error ret = ESCH_OK;
+    esch_log* log = NULL;
     esch_alloc* new_obj = NULL;
     ESCH_CHECK_PARAM_PUBLIC(alloc != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(log != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(config != NULL);
+
+    ret = esch_config_get_data(config, ESCH_CONFIG_KEY_LOG, (void**)&log);
+    ESCH_CHECK_NO_LOG(log != NULL, ESCH_ERROR_INVALID_PARAMETER);
 
     new_obj = (esch_alloc*)malloc(sizeof(esch_alloc));
     ESCH_CHECK_NO_LOG(new_obj != NULL, ESCH_ERROR_OUT_OF_MEMORY);

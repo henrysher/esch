@@ -33,7 +33,7 @@ struct esch_config
 #define ESCH_IS_VALID_CONFIG(obj) \
     (((ESCH_GET_TYPE(obj) == ESCH_TYPE_CONFIG)) \
      && \
-     ESCH_GET_ALLOC(obj) != NULL && \
+     ESCH_GET_ALLOC(obj) == NULL && \
      ESCH_GET_LOG(obj) != NULL)
 
 #define ESCH_INTERNAL_CONFIG_GET_ALLOC(cfg) \

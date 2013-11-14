@@ -52,8 +52,13 @@ extern "C" {
 #define ESCH_FALSE 0
 #define ESCH_TRUE !(ESCH_FALSE)
 
-const char* ESCH_CONFIG_ALLOC_KEY;
-const char* ESCH_CONFIG_LOG_KEY;
+/*
+ * The configuration keys are pre-defined within configuration. List:
+ * 1. key = "config:alloc", value = esch_alloc
+ * 2. key = "config:log", value = esch_log
+ */
+const char* ESCH_CONFIG_KEY_ALLOC;
+const char* ESCH_CONFIG_KEY_LOG;
 
 typedef enum {
     ESCH_OK = 0,
@@ -114,7 +119,7 @@ typedef char                        esch_utf8_char;
 typedef wchar_t                     esch_unicode;
 
 /* --- Configuration --- */
-esch_error esch_config_new(esch_alloc* alloc, esch_config** config);
+esch_error esch_config_new(esch_config** config);
 esch_error esch_config_delete(esch_config* config);
 esch_error esch_config_get_int(esch_config* config, const char* key, int* value);
 esch_error esch_config_set_int(esch_config* config, const char* key, int value);
@@ -123,14 +128,9 @@ esch_error esch_config_set_str(esch_config* config, const char* key, char* value
 esch_error esch_config_get_data(esch_config* config, const char* key, void* data);
 esch_error esch_config_set_data(esch_config* config, const char* key, void* data);
 
-/*
- * The configuration keys are pre-defined within configuration. List:
- * 1. key = "config:alloc", value = esch_alloc
- * 2. key = "config:log", value = esch_log
- */
 /* --- Memory allocator --- */
 /* Default C alloc does not depend on esch_config. */
-esch_error esch_alloc_new_c_default(esch_log* log,
+esch_error esch_alloc_new_c_default(esch_config* config,
                                     esch_alloc** ret_alloc);
 esch_error esch_alloc_delete(esch_alloc* alloc);
 esch_error esch_alloc_malloc(esch_alloc* alloc, size_t size, void** ret);
