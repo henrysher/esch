@@ -374,18 +374,24 @@ esch_unicode_string_is_valid_identifier(const esch_unicode* unicode)
         return 0;
 
     /* TODO: Need to convert escape characters. */
+    /* TODO: A known failure on unicode point > 65536 from Windows.
+     * Windows uses 16-bit wchar_t, which does not represent all Unicode
+     * points. It causes failures in unicode string tests. */
 
     ptr = unicode;
     /* Always start from non-digital */
     if (esch_unicode_is_ascii(*ptr))
     {
         if (esch_unicode_is_digit(*ptr))
+        {
             return 0;
+        }
     }
     else if (esch_unicode_is_range_nd(*ptr) ||
                 esch_unicode_is_range_no(*ptr) ||
                 esch_unicode_is_range_nl(*ptr))
     {
+        printf("!!%x\n", *ptr);
         return 0;
     }
     for (++ptr; *ptr != '\0'; ++ptr)

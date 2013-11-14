@@ -1,2604 +1,5412 @@
-/* vim:ft=c expandtab tw=72 sw=4
- */
-/* See Copyright notice in esch.h */
-#include "esch.h"
-
 /* DON'T MODIFY: The code below is automatically generated. */
 /* Data source: http://www.fileformat.info/info/unicode/category/index.htm */
+#include "esch.h"
+static int
+esch_unicode_range_co_low_bound[] = 
+{
+    0xe000, 
+    0xf8ff, 
+    0xf0000, 
+    0xffffd, 
+    0x100000, 
+    0x10fffd, 
+};
+static int
+esch_unicode_range_co_up_bound[] = 
+{
+    0xe000, 
+    0xf8ff, 
+    0xf0000, 
+    0xffffd, 
+    0x100000, 
+    0x10fffd, 
+};
 int
 esch_unicode_is_range_co(esch_unicode ch)
 {
-    if (ch >= 0xe000 && ch <= 0xe000) { return 1; }
-    else if (ch >= 0xf8ff && ch <= 0xf8ff) { return 1; }
-    else if (ch >= 0xf0000 && ch <= 0xf0000) { return 1; }
-    else if (ch >= 0xffffd && ch <= 0xffffd) { return 1; }
-    else if (ch >= 0x100000 && ch <= 0x100000) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_co_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_co_low_bound[n] && ch <= esch_unicode_range_co_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_ll_low_bound[] = 
+{
+    0x61, 
+    0xb5, 
+    0xdf, 
+    0xf8, 
+    0x101, 
+    0x103, 
+    0x105, 
+    0x107, 
+    0x109, 
+    0x10b, 
+    0x10d, 
+    0x10f, 
+    0x111, 
+    0x113, 
+    0x115, 
+    0x117, 
+    0x119, 
+    0x11b, 
+    0x11d, 
+    0x11f, 
+    0x121, 
+    0x123, 
+    0x125, 
+    0x127, 
+    0x129, 
+    0x12b, 
+    0x12d, 
+    0x12f, 
+    0x131, 
+    0x133, 
+    0x135, 
+    0x137, 
+    0x13a, 
+    0x13c, 
+    0x13e, 
+    0x140, 
+    0x142, 
+    0x144, 
+    0x146, 
+    0x148, 
+    0x14b, 
+    0x14d, 
+    0x14f, 
+    0x151, 
+    0x153, 
+    0x155, 
+    0x157, 
+    0x159, 
+    0x15b, 
+    0x15d, 
+    0x15f, 
+    0x161, 
+    0x163, 
+    0x165, 
+    0x167, 
+    0x169, 
+    0x16b, 
+    0x16d, 
+    0x16f, 
+    0x171, 
+    0x173, 
+    0x175, 
+    0x177, 
+    0x17a, 
+    0x17c, 
+    0x17e, 
+    0x183, 
+    0x185, 
+    0x188, 
+    0x18c, 
+    0x192, 
+    0x195, 
+    0x199, 
+    0x19e, 
+    0x1a1, 
+    0x1a3, 
+    0x1a5, 
+    0x1a8, 
+    0x1aa, 
+    0x1ad, 
+    0x1b0, 
+    0x1b4, 
+    0x1b6, 
+    0x1b9, 
+    0x1bd, 
+    0x1c6, 
+    0x1c9, 
+    0x1cc, 
+    0x1ce, 
+    0x1d0, 
+    0x1d2, 
+    0x1d4, 
+    0x1d6, 
+    0x1d8, 
+    0x1da, 
+    0x1dc, 
+    0x1df, 
+    0x1e1, 
+    0x1e3, 
+    0x1e5, 
+    0x1e7, 
+    0x1e9, 
+    0x1eb, 
+    0x1ed, 
+    0x1ef, 
+    0x1f3, 
+    0x1f5, 
+    0x1f9, 
+    0x1fb, 
+    0x1fd, 
+    0x1ff, 
+    0x201, 
+    0x203, 
+    0x205, 
+    0x207, 
+    0x209, 
+    0x20b, 
+    0x20d, 
+    0x20f, 
+    0x211, 
+    0x213, 
+    0x215, 
+    0x217, 
+    0x219, 
+    0x21b, 
+    0x21d, 
+    0x21f, 
+    0x221, 
+    0x223, 
+    0x225, 
+    0x227, 
+    0x229, 
+    0x22b, 
+    0x22d, 
+    0x22f, 
+    0x231, 
+    0x233, 
+    0x23c, 
+    0x23f, 
+    0x242, 
+    0x247, 
+    0x249, 
+    0x24b, 
+    0x24d, 
+    0x24f, 
+    0x295, 
+    0x371, 
+    0x373, 
+    0x377, 
+    0x37b, 
+    0x390, 
+    0x3ac, 
+    0x3d0, 
+    0x3d5, 
+    0x3d9, 
+    0x3db, 
+    0x3dd, 
+    0x3df, 
+    0x3e1, 
+    0x3e3, 
+    0x3e5, 
+    0x3e7, 
+    0x3e9, 
+    0x3eb, 
+    0x3ed, 
+    0x3ef, 
+    0x3f5, 
+    0x3f8, 
+    0x3fb, 
+    0x430, 
+    0x461, 
+    0x463, 
+    0x465, 
+    0x467, 
+    0x469, 
+    0x46b, 
+    0x46d, 
+    0x46f, 
+    0x471, 
+    0x473, 
+    0x475, 
+    0x477, 
+    0x479, 
+    0x47b, 
+    0x47d, 
+    0x47f, 
+    0x481, 
+    0x48b, 
+    0x48d, 
+    0x48f, 
+    0x491, 
+    0x493, 
+    0x495, 
+    0x497, 
+    0x499, 
+    0x49b, 
+    0x49d, 
+    0x49f, 
+    0x4a1, 
+    0x4a3, 
+    0x4a5, 
+    0x4a7, 
+    0x4a9, 
+    0x4ab, 
+    0x4ad, 
+    0x4af, 
+    0x4b1, 
+    0x4b3, 
+    0x4b5, 
+    0x4b7, 
+    0x4b9, 
+    0x4bb, 
+    0x4bd, 
+    0x4bf, 
+    0x4c2, 
+    0x4c4, 
+    0x4c6, 
+    0x4c8, 
+    0x4ca, 
+    0x4cc, 
+    0x4ce, 
+    0x4d1, 
+    0x4d3, 
+    0x4d5, 
+    0x4d7, 
+    0x4d9, 
+    0x4db, 
+    0x4dd, 
+    0x4df, 
+    0x4e1, 
+    0x4e3, 
+    0x4e5, 
+    0x4e7, 
+    0x4e9, 
+    0x4eb, 
+    0x4ed, 
+    0x4ef, 
+    0x4f1, 
+    0x4f3, 
+    0x4f5, 
+    0x4f7, 
+    0x4f9, 
+    0x4fb, 
+    0x4fd, 
+    0x4ff, 
+    0x501, 
+    0x503, 
+    0x505, 
+    0x507, 
+    0x509, 
+    0x50b, 
+    0x50d, 
+    0x50f, 
+    0x511, 
+    0x513, 
+    0x515, 
+    0x517, 
+    0x519, 
+    0x51b, 
+    0x51d, 
+    0x51f, 
+    0x521, 
+    0x523, 
+    0x525, 
+    0x527, 
+    0x561, 
+    0x1d00, 
+    0x1d6b, 
+    0x1d79, 
+    0x1e01, 
+    0x1e03, 
+    0x1e05, 
+    0x1e07, 
+    0x1e09, 
+    0x1e0b, 
+    0x1e0d, 
+    0x1e0f, 
+    0x1e11, 
+    0x1e13, 
+    0x1e15, 
+    0x1e17, 
+    0x1e19, 
+    0x1e1b, 
+    0x1e1d, 
+    0x1e1f, 
+    0x1e21, 
+    0x1e23, 
+    0x1e25, 
+    0x1e27, 
+    0x1e29, 
+    0x1e2b, 
+    0x1e2d, 
+    0x1e2f, 
+    0x1e31, 
+    0x1e33, 
+    0x1e35, 
+    0x1e37, 
+    0x1e39, 
+    0x1e3b, 
+    0x1e3d, 
+    0x1e3f, 
+    0x1e41, 
+    0x1e43, 
+    0x1e45, 
+    0x1e47, 
+    0x1e49, 
+    0x1e4b, 
+    0x1e4d, 
+    0x1e4f, 
+    0x1e51, 
+    0x1e53, 
+    0x1e55, 
+    0x1e57, 
+    0x1e59, 
+    0x1e5b, 
+    0x1e5d, 
+    0x1e5f, 
+    0x1e61, 
+    0x1e63, 
+    0x1e65, 
+    0x1e67, 
+    0x1e69, 
+    0x1e6b, 
+    0x1e6d, 
+    0x1e6f, 
+    0x1e71, 
+    0x1e73, 
+    0x1e75, 
+    0x1e77, 
+    0x1e79, 
+    0x1e7b, 
+    0x1e7d, 
+    0x1e7f, 
+    0x1e81, 
+    0x1e83, 
+    0x1e85, 
+    0x1e87, 
+    0x1e89, 
+    0x1e8b, 
+    0x1e8d, 
+    0x1e8f, 
+    0x1e91, 
+    0x1e93, 
+    0x1e95, 
+    0x1e9f, 
+    0x1ea1, 
+    0x1ea3, 
+    0x1ea5, 
+    0x1ea7, 
+    0x1ea9, 
+    0x1eab, 
+    0x1ead, 
+    0x1eaf, 
+    0x1eb1, 
+    0x1eb3, 
+    0x1eb5, 
+    0x1eb7, 
+    0x1eb9, 
+    0x1ebb, 
+    0x1ebd, 
+    0x1ebf, 
+    0x1ec1, 
+    0x1ec3, 
+    0x1ec5, 
+    0x1ec7, 
+    0x1ec9, 
+    0x1ecb, 
+    0x1ecd, 
+    0x1ecf, 
+    0x1ed1, 
+    0x1ed3, 
+    0x1ed5, 
+    0x1ed7, 
+    0x1ed9, 
+    0x1edb, 
+    0x1edd, 
+    0x1edf, 
+    0x1ee1, 
+    0x1ee3, 
+    0x1ee5, 
+    0x1ee7, 
+    0x1ee9, 
+    0x1eeb, 
+    0x1eed, 
+    0x1eef, 
+    0x1ef1, 
+    0x1ef3, 
+    0x1ef5, 
+    0x1ef7, 
+    0x1ef9, 
+    0x1efb, 
+    0x1efd, 
+    0x1eff, 
+    0x1f10, 
+    0x1f20, 
+    0x1f30, 
+    0x1f40, 
+    0x1f50, 
+    0x1f60, 
+    0x1f70, 
+    0x1f80, 
+    0x1f90, 
+    0x1fa0, 
+    0x1fb0, 
+    0x1fb6, 
+    0x1fbe, 
+    0x1fc2, 
+    0x1fc6, 
+    0x1fd0, 
+    0x1fd6, 
+    0x1fe0, 
+    0x1ff2, 
+    0x1ff6, 
+    0x210a, 
+    0x210e, 
+    0x2113, 
+    0x212f, 
+    0x2134, 
+    0x2139, 
+    0x213c, 
+    0x2146, 
+    0x214e, 
+    0x2184, 
+    0x2c30, 
+    0x2c61, 
+    0x2c65, 
+    0x2c68, 
+    0x2c6a, 
+    0x2c6c, 
+    0x2c71, 
+    0x2c73, 
+    0x2c76, 
+    0x2c81, 
+    0x2c83, 
+    0x2c85, 
+    0x2c87, 
+    0x2c89, 
+    0x2c8b, 
+    0x2c8d, 
+    0x2c8f, 
+    0x2c91, 
+    0x2c93, 
+    0x2c95, 
+    0x2c97, 
+    0x2c99, 
+    0x2c9b, 
+    0x2c9d, 
+    0x2c9f, 
+    0x2ca1, 
+    0x2ca3, 
+    0x2ca5, 
+    0x2ca7, 
+    0x2ca9, 
+    0x2cab, 
+    0x2cad, 
+    0x2caf, 
+    0x2cb1, 
+    0x2cb3, 
+    0x2cb5, 
+    0x2cb7, 
+    0x2cb9, 
+    0x2cbb, 
+    0x2cbd, 
+    0x2cbf, 
+    0x2cc1, 
+    0x2cc3, 
+    0x2cc5, 
+    0x2cc7, 
+    0x2cc9, 
+    0x2ccb, 
+    0x2ccd, 
+    0x2ccf, 
+    0x2cd1, 
+    0x2cd3, 
+    0x2cd5, 
+    0x2cd7, 
+    0x2cd9, 
+    0x2cdb, 
+    0x2cdd, 
+    0x2cdf, 
+    0x2ce1, 
+    0x2ce3, 
+    0x2cec, 
+    0x2cee, 
+    0x2cf3, 
+    0x2d00, 
+    0x2d27, 
+    0x2d2d, 
+    0xa641, 
+    0xa643, 
+    0xa645, 
+    0xa647, 
+    0xa649, 
+    0xa64b, 
+    0xa64d, 
+    0xa64f, 
+    0xa651, 
+    0xa653, 
+    0xa655, 
+    0xa657, 
+    0xa659, 
+    0xa65b, 
+    0xa65d, 
+    0xa65f, 
+    0xa661, 
+    0xa663, 
+    0xa665, 
+    0xa667, 
+    0xa669, 
+    0xa66b, 
+    0xa66d, 
+    0xa681, 
+    0xa683, 
+    0xa685, 
+    0xa687, 
+    0xa689, 
+    0xa68b, 
+    0xa68d, 
+    0xa68f, 
+    0xa691, 
+    0xa693, 
+    0xa695, 
+    0xa697, 
+    0xa723, 
+    0xa725, 
+    0xa727, 
+    0xa729, 
+    0xa72b, 
+    0xa72d, 
+    0xa72f, 
+    0xa733, 
+    0xa735, 
+    0xa737, 
+    0xa739, 
+    0xa73b, 
+    0xa73d, 
+    0xa73f, 
+    0xa741, 
+    0xa743, 
+    0xa745, 
+    0xa747, 
+    0xa749, 
+    0xa74b, 
+    0xa74d, 
+    0xa74f, 
+    0xa751, 
+    0xa753, 
+    0xa755, 
+    0xa757, 
+    0xa759, 
+    0xa75b, 
+    0xa75d, 
+    0xa75f, 
+    0xa761, 
+    0xa763, 
+    0xa765, 
+    0xa767, 
+    0xa769, 
+    0xa76b, 
+    0xa76d, 
+    0xa76f, 
+    0xa771, 
+    0xa77a, 
+    0xa77c, 
+    0xa77f, 
+    0xa781, 
+    0xa783, 
+    0xa785, 
+    0xa787, 
+    0xa78c, 
+    0xa78e, 
+    0xa791, 
+    0xa793, 
+    0xa7a1, 
+    0xa7a3, 
+    0xa7a5, 
+    0xa7a7, 
+    0xa7a9, 
+    0xa7fa, 
+    0xfb00, 
+    0xfb13, 
+    0xff41, 
+    0x10428, 
+    0x1d41a, 
+    0x1d44e, 
+    0x1d456, 
+    0x1d482, 
+    0x1d4b6, 
+    0x1d4bb, 
+    0x1d4bd, 
+    0x1d4c5, 
+    0x1d4ea, 
+    0x1d51e, 
+    0x1d552, 
+    0x1d586, 
+    0x1d5ba, 
+    0x1d5ee, 
+    0x1d622, 
+    0x1d656, 
+    0x1d68a, 
+    0x1d6c2, 
+    0x1d6dc, 
+    0x1d6fc, 
+    0x1d716, 
+    0x1d736, 
+    0x1d750, 
+    0x1d770, 
+    0x1d78a, 
+    0x1d7aa, 
+    0x1d7c4, 
+    0x1d7cb, 
+};
+static int
+esch_unicode_range_ll_up_bound[] = 
+{
+    0x7a, 
+    0xb5, 
+    0xf6, 
+    0xff, 
+    0x101, 
+    0x103, 
+    0x105, 
+    0x107, 
+    0x109, 
+    0x10b, 
+    0x10d, 
+    0x10f, 
+    0x111, 
+    0x113, 
+    0x115, 
+    0x117, 
+    0x119, 
+    0x11b, 
+    0x11d, 
+    0x11f, 
+    0x121, 
+    0x123, 
+    0x125, 
+    0x127, 
+    0x129, 
+    0x12b, 
+    0x12d, 
+    0x12f, 
+    0x131, 
+    0x133, 
+    0x135, 
+    0x138, 
+    0x13a, 
+    0x13c, 
+    0x13e, 
+    0x140, 
+    0x142, 
+    0x144, 
+    0x146, 
+    0x149, 
+    0x14b, 
+    0x14d, 
+    0x14f, 
+    0x151, 
+    0x153, 
+    0x155, 
+    0x157, 
+    0x159, 
+    0x15b, 
+    0x15d, 
+    0x15f, 
+    0x161, 
+    0x163, 
+    0x165, 
+    0x167, 
+    0x169, 
+    0x16b, 
+    0x16d, 
+    0x16f, 
+    0x171, 
+    0x173, 
+    0x175, 
+    0x177, 
+    0x17a, 
+    0x17c, 
+    0x180, 
+    0x183, 
+    0x185, 
+    0x188, 
+    0x18d, 
+    0x192, 
+    0x195, 
+    0x19b, 
+    0x19e, 
+    0x1a1, 
+    0x1a3, 
+    0x1a5, 
+    0x1a8, 
+    0x1ab, 
+    0x1ad, 
+    0x1b0, 
+    0x1b4, 
+    0x1b6, 
+    0x1ba, 
+    0x1bf, 
+    0x1c6, 
+    0x1c9, 
+    0x1cc, 
+    0x1ce, 
+    0x1d0, 
+    0x1d2, 
+    0x1d4, 
+    0x1d6, 
+    0x1d8, 
+    0x1da, 
+    0x1dd, 
+    0x1df, 
+    0x1e1, 
+    0x1e3, 
+    0x1e5, 
+    0x1e7, 
+    0x1e9, 
+    0x1eb, 
+    0x1ed, 
+    0x1f0, 
+    0x1f3, 
+    0x1f5, 
+    0x1f9, 
+    0x1fb, 
+    0x1fd, 
+    0x1ff, 
+    0x201, 
+    0x203, 
+    0x205, 
+    0x207, 
+    0x209, 
+    0x20b, 
+    0x20d, 
+    0x20f, 
+    0x211, 
+    0x213, 
+    0x215, 
+    0x217, 
+    0x219, 
+    0x21b, 
+    0x21d, 
+    0x21f, 
+    0x221, 
+    0x223, 
+    0x225, 
+    0x227, 
+    0x229, 
+    0x22b, 
+    0x22d, 
+    0x22f, 
+    0x231, 
+    0x239, 
+    0x23c, 
+    0x240, 
+    0x242, 
+    0x247, 
+    0x249, 
+    0x24b, 
+    0x24d, 
+    0x293, 
+    0x2af, 
+    0x371, 
+    0x373, 
+    0x377, 
+    0x37d, 
+    0x390, 
+    0x3ce, 
+    0x3d1, 
+    0x3d7, 
+    0x3d9, 
+    0x3db, 
+    0x3dd, 
+    0x3df, 
+    0x3e1, 
+    0x3e3, 
+    0x3e5, 
+    0x3e7, 
+    0x3e9, 
+    0x3eb, 
+    0x3ed, 
+    0x3f3, 
+    0x3f5, 
+    0x3f8, 
+    0x3fc, 
+    0x45f, 
+    0x461, 
+    0x463, 
+    0x465, 
+    0x467, 
+    0x469, 
+    0x46b, 
+    0x46d, 
+    0x46f, 
+    0x471, 
+    0x473, 
+    0x475, 
+    0x477, 
+    0x479, 
+    0x47b, 
+    0x47d, 
+    0x47f, 
+    0x481, 
+    0x48b, 
+    0x48d, 
+    0x48f, 
+    0x491, 
+    0x493, 
+    0x495, 
+    0x497, 
+    0x499, 
+    0x49b, 
+    0x49d, 
+    0x49f, 
+    0x4a1, 
+    0x4a3, 
+    0x4a5, 
+    0x4a7, 
+    0x4a9, 
+    0x4ab, 
+    0x4ad, 
+    0x4af, 
+    0x4b1, 
+    0x4b3, 
+    0x4b5, 
+    0x4b7, 
+    0x4b9, 
+    0x4bb, 
+    0x4bd, 
+    0x4bf, 
+    0x4c2, 
+    0x4c4, 
+    0x4c6, 
+    0x4c8, 
+    0x4ca, 
+    0x4cc, 
+    0x4cf, 
+    0x4d1, 
+    0x4d3, 
+    0x4d5, 
+    0x4d7, 
+    0x4d9, 
+    0x4db, 
+    0x4dd, 
+    0x4df, 
+    0x4e1, 
+    0x4e3, 
+    0x4e5, 
+    0x4e7, 
+    0x4e9, 
+    0x4eb, 
+    0x4ed, 
+    0x4ef, 
+    0x4f1, 
+    0x4f3, 
+    0x4f5, 
+    0x4f7, 
+    0x4f9, 
+    0x4fb, 
+    0x4fd, 
+    0x4ff, 
+    0x501, 
+    0x503, 
+    0x505, 
+    0x507, 
+    0x509, 
+    0x50b, 
+    0x50d, 
+    0x50f, 
+    0x511, 
+    0x513, 
+    0x515, 
+    0x517, 
+    0x519, 
+    0x51b, 
+    0x51d, 
+    0x51f, 
+    0x521, 
+    0x523, 
+    0x525, 
+    0x527, 
+    0x587, 
+    0x1d2b, 
+    0x1d77, 
+    0x1d9a, 
+    0x1e01, 
+    0x1e03, 
+    0x1e05, 
+    0x1e07, 
+    0x1e09, 
+    0x1e0b, 
+    0x1e0d, 
+    0x1e0f, 
+    0x1e11, 
+    0x1e13, 
+    0x1e15, 
+    0x1e17, 
+    0x1e19, 
+    0x1e1b, 
+    0x1e1d, 
+    0x1e1f, 
+    0x1e21, 
+    0x1e23, 
+    0x1e25, 
+    0x1e27, 
+    0x1e29, 
+    0x1e2b, 
+    0x1e2d, 
+    0x1e2f, 
+    0x1e31, 
+    0x1e33, 
+    0x1e35, 
+    0x1e37, 
+    0x1e39, 
+    0x1e3b, 
+    0x1e3d, 
+    0x1e3f, 
+    0x1e41, 
+    0x1e43, 
+    0x1e45, 
+    0x1e47, 
+    0x1e49, 
+    0x1e4b, 
+    0x1e4d, 
+    0x1e4f, 
+    0x1e51, 
+    0x1e53, 
+    0x1e55, 
+    0x1e57, 
+    0x1e59, 
+    0x1e5b, 
+    0x1e5d, 
+    0x1e5f, 
+    0x1e61, 
+    0x1e63, 
+    0x1e65, 
+    0x1e67, 
+    0x1e69, 
+    0x1e6b, 
+    0x1e6d, 
+    0x1e6f, 
+    0x1e71, 
+    0x1e73, 
+    0x1e75, 
+    0x1e77, 
+    0x1e79, 
+    0x1e7b, 
+    0x1e7d, 
+    0x1e7f, 
+    0x1e81, 
+    0x1e83, 
+    0x1e85, 
+    0x1e87, 
+    0x1e89, 
+    0x1e8b, 
+    0x1e8d, 
+    0x1e8f, 
+    0x1e91, 
+    0x1e93, 
+    0x1e9d, 
+    0x1e9f, 
+    0x1ea1, 
+    0x1ea3, 
+    0x1ea5, 
+    0x1ea7, 
+    0x1ea9, 
+    0x1eab, 
+    0x1ead, 
+    0x1eaf, 
+    0x1eb1, 
+    0x1eb3, 
+    0x1eb5, 
+    0x1eb7, 
+    0x1eb9, 
+    0x1ebb, 
+    0x1ebd, 
+    0x1ebf, 
+    0x1ec1, 
+    0x1ec3, 
+    0x1ec5, 
+    0x1ec7, 
+    0x1ec9, 
+    0x1ecb, 
+    0x1ecd, 
+    0x1ecf, 
+    0x1ed1, 
+    0x1ed3, 
+    0x1ed5, 
+    0x1ed7, 
+    0x1ed9, 
+    0x1edb, 
+    0x1edd, 
+    0x1edf, 
+    0x1ee1, 
+    0x1ee3, 
+    0x1ee5, 
+    0x1ee7, 
+    0x1ee9, 
+    0x1eeb, 
+    0x1eed, 
+    0x1eef, 
+    0x1ef1, 
+    0x1ef3, 
+    0x1ef5, 
+    0x1ef7, 
+    0x1ef9, 
+    0x1efb, 
+    0x1efd, 
+    0x1f07, 
+    0x1f15, 
+    0x1f27, 
+    0x1f37, 
+    0x1f45, 
+    0x1f57, 
+    0x1f67, 
+    0x1f7d, 
+    0x1f87, 
+    0x1f97, 
+    0x1fa7, 
+    0x1fb4, 
+    0x1fb7, 
+    0x1fbe, 
+    0x1fc4, 
+    0x1fc7, 
+    0x1fd3, 
+    0x1fd7, 
+    0x1fe7, 
+    0x1ff4, 
+    0x1ff7, 
+    0x210a, 
+    0x210f, 
+    0x2113, 
+    0x212f, 
+    0x2134, 
+    0x2139, 
+    0x213d, 
+    0x2149, 
+    0x214e, 
+    0x2184, 
+    0x2c5e, 
+    0x2c61, 
+    0x2c66, 
+    0x2c68, 
+    0x2c6a, 
+    0x2c6c, 
+    0x2c71, 
+    0x2c74, 
+    0x2c7b, 
+    0x2c81, 
+    0x2c83, 
+    0x2c85, 
+    0x2c87, 
+    0x2c89, 
+    0x2c8b, 
+    0x2c8d, 
+    0x2c8f, 
+    0x2c91, 
+    0x2c93, 
+    0x2c95, 
+    0x2c97, 
+    0x2c99, 
+    0x2c9b, 
+    0x2c9d, 
+    0x2c9f, 
+    0x2ca1, 
+    0x2ca3, 
+    0x2ca5, 
+    0x2ca7, 
+    0x2ca9, 
+    0x2cab, 
+    0x2cad, 
+    0x2caf, 
+    0x2cb1, 
+    0x2cb3, 
+    0x2cb5, 
+    0x2cb7, 
+    0x2cb9, 
+    0x2cbb, 
+    0x2cbd, 
+    0x2cbf, 
+    0x2cc1, 
+    0x2cc3, 
+    0x2cc5, 
+    0x2cc7, 
+    0x2cc9, 
+    0x2ccb, 
+    0x2ccd, 
+    0x2ccf, 
+    0x2cd1, 
+    0x2cd3, 
+    0x2cd5, 
+    0x2cd7, 
+    0x2cd9, 
+    0x2cdb, 
+    0x2cdd, 
+    0x2cdf, 
+    0x2ce1, 
+    0x2ce4, 
+    0x2cec, 
+    0x2cee, 
+    0x2cf3, 
+    0x2d25, 
+    0x2d27, 
+    0x2d2d, 
+    0xa641, 
+    0xa643, 
+    0xa645, 
+    0xa647, 
+    0xa649, 
+    0xa64b, 
+    0xa64d, 
+    0xa64f, 
+    0xa651, 
+    0xa653, 
+    0xa655, 
+    0xa657, 
+    0xa659, 
+    0xa65b, 
+    0xa65d, 
+    0xa65f, 
+    0xa661, 
+    0xa663, 
+    0xa665, 
+    0xa667, 
+    0xa669, 
+    0xa66b, 
+    0xa66d, 
+    0xa681, 
+    0xa683, 
+    0xa685, 
+    0xa687, 
+    0xa689, 
+    0xa68b, 
+    0xa68d, 
+    0xa68f, 
+    0xa691, 
+    0xa693, 
+    0xa695, 
+    0xa697, 
+    0xa723, 
+    0xa725, 
+    0xa727, 
+    0xa729, 
+    0xa72b, 
+    0xa72d, 
+    0xa731, 
+    0xa733, 
+    0xa735, 
+    0xa737, 
+    0xa739, 
+    0xa73b, 
+    0xa73d, 
+    0xa73f, 
+    0xa741, 
+    0xa743, 
+    0xa745, 
+    0xa747, 
+    0xa749, 
+    0xa74b, 
+    0xa74d, 
+    0xa74f, 
+    0xa751, 
+    0xa753, 
+    0xa755, 
+    0xa757, 
+    0xa759, 
+    0xa75b, 
+    0xa75d, 
+    0xa75f, 
+    0xa761, 
+    0xa763, 
+    0xa765, 
+    0xa767, 
+    0xa769, 
+    0xa76b, 
+    0xa76d, 
+    0xa76f, 
+    0xa778, 
+    0xa77a, 
+    0xa77c, 
+    0xa77f, 
+    0xa781, 
+    0xa783, 
+    0xa785, 
+    0xa787, 
+    0xa78c, 
+    0xa78e, 
+    0xa791, 
+    0xa793, 
+    0xa7a1, 
+    0xa7a3, 
+    0xa7a5, 
+    0xa7a7, 
+    0xa7a9, 
+    0xa7fa, 
+    0xfb06, 
+    0xfb17, 
+    0xff5a, 
+    0x1044f, 
+    0x1d433, 
+    0x1d454, 
+    0x1d467, 
+    0x1d49b, 
+    0x1d4b9, 
+    0x1d4bb, 
+    0x1d4c3, 
+    0x1d4cf, 
+    0x1d503, 
+    0x1d537, 
+    0x1d56b, 
+    0x1d59f, 
+    0x1d5d3, 
+    0x1d607, 
+    0x1d63b, 
+    0x1d66f, 
+    0x1d6a5, 
+    0x1d6da, 
+    0x1d6e1, 
+    0x1d714, 
+    0x1d71b, 
+    0x1d74e, 
+    0x1d755, 
+    0x1d788, 
+    0x1d78f, 
+    0x1d7c2, 
+    0x1d7c9, 
+    0x1d7cb, 
+};
 int
 esch_unicode_is_range_ll(esch_unicode ch)
 {
-    if (ch >= 0x61 && ch <= 0x7a) { return 1; }
-    else if (ch >= 0xb5 && ch <= 0xb5) { return 1; }
-    else if (ch >= 0xdf && ch <= 0xf6) { return 1; }
-    else if (ch >= 0xf8 && ch <= 0xff) { return 1; }
-    else if (ch >= 0x101 && ch <= 0x101) { return 1; }
-    else if (ch >= 0x103 && ch <= 0x103) { return 1; }
-    else if (ch >= 0x105 && ch <= 0x105) { return 1; }
-    else if (ch >= 0x107 && ch <= 0x107) { return 1; }
-    else if (ch >= 0x109 && ch <= 0x109) { return 1; }
-    else if (ch >= 0x10b && ch <= 0x10b) { return 1; }
-    else if (ch >= 0x10d && ch <= 0x10d) { return 1; }
-    else if (ch >= 0x10f && ch <= 0x10f) { return 1; }
-    else if (ch >= 0x111 && ch <= 0x111) { return 1; }
-    else if (ch >= 0x113 && ch <= 0x113) { return 1; }
-    else if (ch >= 0x115 && ch <= 0x115) { return 1; }
-    else if (ch >= 0x117 && ch <= 0x117) { return 1; }
-    else if (ch >= 0x119 && ch <= 0x119) { return 1; }
-    else if (ch >= 0x11b && ch <= 0x11b) { return 1; }
-    else if (ch >= 0x11d && ch <= 0x11d) { return 1; }
-    else if (ch >= 0x11f && ch <= 0x11f) { return 1; }
-    else if (ch >= 0x121 && ch <= 0x121) { return 1; }
-    else if (ch >= 0x123 && ch <= 0x123) { return 1; }
-    else if (ch >= 0x125 && ch <= 0x125) { return 1; }
-    else if (ch >= 0x127 && ch <= 0x127) { return 1; }
-    else if (ch >= 0x129 && ch <= 0x129) { return 1; }
-    else if (ch >= 0x12b && ch <= 0x12b) { return 1; }
-    else if (ch >= 0x12d && ch <= 0x12d) { return 1; }
-    else if (ch >= 0x12f && ch <= 0x12f) { return 1; }
-    else if (ch >= 0x131 && ch <= 0x131) { return 1; }
-    else if (ch >= 0x133 && ch <= 0x133) { return 1; }
-    else if (ch >= 0x135 && ch <= 0x135) { return 1; }
-    else if (ch >= 0x137 && ch <= 0x138) { return 1; }
-    else if (ch >= 0x13a && ch <= 0x13a) { return 1; }
-    else if (ch >= 0x13c && ch <= 0x13c) { return 1; }
-    else if (ch >= 0x13e && ch <= 0x13e) { return 1; }
-    else if (ch >= 0x140 && ch <= 0x140) { return 1; }
-    else if (ch >= 0x142 && ch <= 0x142) { return 1; }
-    else if (ch >= 0x144 && ch <= 0x144) { return 1; }
-    else if (ch >= 0x146 && ch <= 0x146) { return 1; }
-    else if (ch >= 0x148 && ch <= 0x149) { return 1; }
-    else if (ch >= 0x14b && ch <= 0x14b) { return 1; }
-    else if (ch >= 0x14d && ch <= 0x14d) { return 1; }
-    else if (ch >= 0x14f && ch <= 0x14f) { return 1; }
-    else if (ch >= 0x151 && ch <= 0x151) { return 1; }
-    else if (ch >= 0x153 && ch <= 0x153) { return 1; }
-    else if (ch >= 0x155 && ch <= 0x155) { return 1; }
-    else if (ch >= 0x157 && ch <= 0x157) { return 1; }
-    else if (ch >= 0x159 && ch <= 0x159) { return 1; }
-    else if (ch >= 0x15b && ch <= 0x15b) { return 1; }
-    else if (ch >= 0x15d && ch <= 0x15d) { return 1; }
-    else if (ch >= 0x15f && ch <= 0x15f) { return 1; }
-    else if (ch >= 0x161 && ch <= 0x161) { return 1; }
-    else if (ch >= 0x163 && ch <= 0x163) { return 1; }
-    else if (ch >= 0x165 && ch <= 0x165) { return 1; }
-    else if (ch >= 0x167 && ch <= 0x167) { return 1; }
-    else if (ch >= 0x169 && ch <= 0x169) { return 1; }
-    else if (ch >= 0x16b && ch <= 0x16b) { return 1; }
-    else if (ch >= 0x16d && ch <= 0x16d) { return 1; }
-    else if (ch >= 0x16f && ch <= 0x16f) { return 1; }
-    else if (ch >= 0x171 && ch <= 0x171) { return 1; }
-    else if (ch >= 0x173 && ch <= 0x173) { return 1; }
-    else if (ch >= 0x175 && ch <= 0x175) { return 1; }
-    else if (ch >= 0x177 && ch <= 0x177) { return 1; }
-    else if (ch >= 0x17a && ch <= 0x17a) { return 1; }
-    else if (ch >= 0x17c && ch <= 0x17c) { return 1; }
-    else if (ch >= 0x17e && ch <= 0x180) { return 1; }
-    else if (ch >= 0x183 && ch <= 0x183) { return 1; }
-    else if (ch >= 0x185 && ch <= 0x185) { return 1; }
-    else if (ch >= 0x188 && ch <= 0x188) { return 1; }
-    else if (ch >= 0x18c && ch <= 0x18d) { return 1; }
-    else if (ch >= 0x192 && ch <= 0x192) { return 1; }
-    else if (ch >= 0x195 && ch <= 0x195) { return 1; }
-    else if (ch >= 0x199 && ch <= 0x19b) { return 1; }
-    else if (ch >= 0x19e && ch <= 0x19e) { return 1; }
-    else if (ch >= 0x1a1 && ch <= 0x1a1) { return 1; }
-    else if (ch >= 0x1a3 && ch <= 0x1a3) { return 1; }
-    else if (ch >= 0x1a5 && ch <= 0x1a5) { return 1; }
-    else if (ch >= 0x1a8 && ch <= 0x1a8) { return 1; }
-    else if (ch >= 0x1aa && ch <= 0x1ab) { return 1; }
-    else if (ch >= 0x1ad && ch <= 0x1ad) { return 1; }
-    else if (ch >= 0x1b0 && ch <= 0x1b0) { return 1; }
-    else if (ch >= 0x1b4 && ch <= 0x1b4) { return 1; }
-    else if (ch >= 0x1b6 && ch <= 0x1b6) { return 1; }
-    else if (ch >= 0x1b9 && ch <= 0x1ba) { return 1; }
-    else if (ch >= 0x1bd && ch <= 0x1bf) { return 1; }
-    else if (ch >= 0x1c6 && ch <= 0x1c6) { return 1; }
-    else if (ch >= 0x1c9 && ch <= 0x1c9) { return 1; }
-    else if (ch >= 0x1cc && ch <= 0x1cc) { return 1; }
-    else if (ch >= 0x1ce && ch <= 0x1ce) { return 1; }
-    else if (ch >= 0x1d0 && ch <= 0x1d0) { return 1; }
-    else if (ch >= 0x1d2 && ch <= 0x1d2) { return 1; }
-    else if (ch >= 0x1d4 && ch <= 0x1d4) { return 1; }
-    else if (ch >= 0x1d6 && ch <= 0x1d6) { return 1; }
-    else if (ch >= 0x1d8 && ch <= 0x1d8) { return 1; }
-    else if (ch >= 0x1da && ch <= 0x1da) { return 1; }
-    else if (ch >= 0x1dc && ch <= 0x1dd) { return 1; }
-    else if (ch >= 0x1df && ch <= 0x1df) { return 1; }
-    else if (ch >= 0x1e1 && ch <= 0x1e1) { return 1; }
-    else if (ch >= 0x1e3 && ch <= 0x1e3) { return 1; }
-    else if (ch >= 0x1e5 && ch <= 0x1e5) { return 1; }
-    else if (ch >= 0x1e7 && ch <= 0x1e7) { return 1; }
-    else if (ch >= 0x1e9 && ch <= 0x1e9) { return 1; }
-    else if (ch >= 0x1eb && ch <= 0x1eb) { return 1; }
-    else if (ch >= 0x1ed && ch <= 0x1ed) { return 1; }
-    else if (ch >= 0x1ef && ch <= 0x1f0) { return 1; }
-    else if (ch >= 0x1f3 && ch <= 0x1f3) { return 1; }
-    else if (ch >= 0x1f5 && ch <= 0x1f5) { return 1; }
-    else if (ch >= 0x1f9 && ch <= 0x1f9) { return 1; }
-    else if (ch >= 0x1fb && ch <= 0x1fb) { return 1; }
-    else if (ch >= 0x1fd && ch <= 0x1fd) { return 1; }
-    else if (ch >= 0x1ff && ch <= 0x1ff) { return 1; }
-    else if (ch >= 0x201 && ch <= 0x201) { return 1; }
-    else if (ch >= 0x203 && ch <= 0x203) { return 1; }
-    else if (ch >= 0x205 && ch <= 0x205) { return 1; }
-    else if (ch >= 0x207 && ch <= 0x207) { return 1; }
-    else if (ch >= 0x209 && ch <= 0x209) { return 1; }
-    else if (ch >= 0x20b && ch <= 0x20b) { return 1; }
-    else if (ch >= 0x20d && ch <= 0x20d) { return 1; }
-    else if (ch >= 0x20f && ch <= 0x20f) { return 1; }
-    else if (ch >= 0x211 && ch <= 0x211) { return 1; }
-    else if (ch >= 0x213 && ch <= 0x213) { return 1; }
-    else if (ch >= 0x215 && ch <= 0x215) { return 1; }
-    else if (ch >= 0x217 && ch <= 0x217) { return 1; }
-    else if (ch >= 0x219 && ch <= 0x219) { return 1; }
-    else if (ch >= 0x21b && ch <= 0x21b) { return 1; }
-    else if (ch >= 0x21d && ch <= 0x21d) { return 1; }
-    else if (ch >= 0x21f && ch <= 0x21f) { return 1; }
-    else if (ch >= 0x221 && ch <= 0x221) { return 1; }
-    else if (ch >= 0x223 && ch <= 0x223) { return 1; }
-    else if (ch >= 0x225 && ch <= 0x225) { return 1; }
-    else if (ch >= 0x227 && ch <= 0x227) { return 1; }
-    else if (ch >= 0x229 && ch <= 0x229) { return 1; }
-    else if (ch >= 0x22b && ch <= 0x22b) { return 1; }
-    else if (ch >= 0x22d && ch <= 0x22d) { return 1; }
-    else if (ch >= 0x22f && ch <= 0x22f) { return 1; }
-    else if (ch >= 0x231 && ch <= 0x231) { return 1; }
-    else if (ch >= 0x233 && ch <= 0x239) { return 1; }
-    else if (ch >= 0x23c && ch <= 0x23c) { return 1; }
-    else if (ch >= 0x23f && ch <= 0x240) { return 1; }
-    else if (ch >= 0x242 && ch <= 0x242) { return 1; }
-    else if (ch >= 0x247 && ch <= 0x247) { return 1; }
-    else if (ch >= 0x249 && ch <= 0x249) { return 1; }
-    else if (ch >= 0x24b && ch <= 0x24b) { return 1; }
-    else if (ch >= 0x24d && ch <= 0x24d) { return 1; }
-    else if (ch >= 0x24f && ch <= 0x293) { return 1; }
-    else if (ch >= 0x295 && ch <= 0x2af) { return 1; }
-    else if (ch >= 0x371 && ch <= 0x371) { return 1; }
-    else if (ch >= 0x373 && ch <= 0x373) { return 1; }
-    else if (ch >= 0x377 && ch <= 0x377) { return 1; }
-    else if (ch >= 0x37b && ch <= 0x37d) { return 1; }
-    else if (ch >= 0x390 && ch <= 0x390) { return 1; }
-    else if (ch >= 0x3ac && ch <= 0x3ce) { return 1; }
-    else if (ch >= 0x3d0 && ch <= 0x3d1) { return 1; }
-    else if (ch >= 0x3d5 && ch <= 0x3d7) { return 1; }
-    else if (ch >= 0x3d9 && ch <= 0x3d9) { return 1; }
-    else if (ch >= 0x3db && ch <= 0x3db) { return 1; }
-    else if (ch >= 0x3dd && ch <= 0x3dd) { return 1; }
-    else if (ch >= 0x3df && ch <= 0x3df) { return 1; }
-    else if (ch >= 0x3e1 && ch <= 0x3e1) { return 1; }
-    else if (ch >= 0x3e3 && ch <= 0x3e3) { return 1; }
-    else if (ch >= 0x3e5 && ch <= 0x3e5) { return 1; }
-    else if (ch >= 0x3e7 && ch <= 0x3e7) { return 1; }
-    else if (ch >= 0x3e9 && ch <= 0x3e9) { return 1; }
-    else if (ch >= 0x3eb && ch <= 0x3eb) { return 1; }
-    else if (ch >= 0x3ed && ch <= 0x3ed) { return 1; }
-    else if (ch >= 0x3ef && ch <= 0x3f3) { return 1; }
-    else if (ch >= 0x3f5 && ch <= 0x3f5) { return 1; }
-    else if (ch >= 0x3f8 && ch <= 0x3f8) { return 1; }
-    else if (ch >= 0x3fb && ch <= 0x3fc) { return 1; }
-    else if (ch >= 0x430 && ch <= 0x45f) { return 1; }
-    else if (ch >= 0x461 && ch <= 0x461) { return 1; }
-    else if (ch >= 0x463 && ch <= 0x463) { return 1; }
-    else if (ch >= 0x465 && ch <= 0x465) { return 1; }
-    else if (ch >= 0x467 && ch <= 0x467) { return 1; }
-    else if (ch >= 0x469 && ch <= 0x469) { return 1; }
-    else if (ch >= 0x46b && ch <= 0x46b) { return 1; }
-    else if (ch >= 0x46d && ch <= 0x46d) { return 1; }
-    else if (ch >= 0x46f && ch <= 0x46f) { return 1; }
-    else if (ch >= 0x471 && ch <= 0x471) { return 1; }
-    else if (ch >= 0x473 && ch <= 0x473) { return 1; }
-    else if (ch >= 0x475 && ch <= 0x475) { return 1; }
-    else if (ch >= 0x477 && ch <= 0x477) { return 1; }
-    else if (ch >= 0x479 && ch <= 0x479) { return 1; }
-    else if (ch >= 0x47b && ch <= 0x47b) { return 1; }
-    else if (ch >= 0x47d && ch <= 0x47d) { return 1; }
-    else if (ch >= 0x47f && ch <= 0x47f) { return 1; }
-    else if (ch >= 0x481 && ch <= 0x481) { return 1; }
-    else if (ch >= 0x48b && ch <= 0x48b) { return 1; }
-    else if (ch >= 0x48d && ch <= 0x48d) { return 1; }
-    else if (ch >= 0x48f && ch <= 0x48f) { return 1; }
-    else if (ch >= 0x491 && ch <= 0x491) { return 1; }
-    else if (ch >= 0x493 && ch <= 0x493) { return 1; }
-    else if (ch >= 0x495 && ch <= 0x495) { return 1; }
-    else if (ch >= 0x497 && ch <= 0x497) { return 1; }
-    else if (ch >= 0x499 && ch <= 0x499) { return 1; }
-    else if (ch >= 0x49b && ch <= 0x49b) { return 1; }
-    else if (ch >= 0x49d && ch <= 0x49d) { return 1; }
-    else if (ch >= 0x49f && ch <= 0x49f) { return 1; }
-    else if (ch >= 0x4a1 && ch <= 0x4a1) { return 1; }
-    else if (ch >= 0x4a3 && ch <= 0x4a3) { return 1; }
-    else if (ch >= 0x4a5 && ch <= 0x4a5) { return 1; }
-    else if (ch >= 0x4a7 && ch <= 0x4a7) { return 1; }
-    else if (ch >= 0x4a9 && ch <= 0x4a9) { return 1; }
-    else if (ch >= 0x4ab && ch <= 0x4ab) { return 1; }
-    else if (ch >= 0x4ad && ch <= 0x4ad) { return 1; }
-    else if (ch >= 0x4af && ch <= 0x4af) { return 1; }
-    else if (ch >= 0x4b1 && ch <= 0x4b1) { return 1; }
-    else if (ch >= 0x4b3 && ch <= 0x4b3) { return 1; }
-    else if (ch >= 0x4b5 && ch <= 0x4b5) { return 1; }
-    else if (ch >= 0x4b7 && ch <= 0x4b7) { return 1; }
-    else if (ch >= 0x4b9 && ch <= 0x4b9) { return 1; }
-    else if (ch >= 0x4bb && ch <= 0x4bb) { return 1; }
-    else if (ch >= 0x4bd && ch <= 0x4bd) { return 1; }
-    else if (ch >= 0x4bf && ch <= 0x4bf) { return 1; }
-    else if (ch >= 0x4c2 && ch <= 0x4c2) { return 1; }
-    else if (ch >= 0x4c4 && ch <= 0x4c4) { return 1; }
-    else if (ch >= 0x4c6 && ch <= 0x4c6) { return 1; }
-    else if (ch >= 0x4c8 && ch <= 0x4c8) { return 1; }
-    else if (ch >= 0x4ca && ch <= 0x4ca) { return 1; }
-    else if (ch >= 0x4cc && ch <= 0x4cc) { return 1; }
-    else if (ch >= 0x4ce && ch <= 0x4cf) { return 1; }
-    else if (ch >= 0x4d1 && ch <= 0x4d1) { return 1; }
-    else if (ch >= 0x4d3 && ch <= 0x4d3) { return 1; }
-    else if (ch >= 0x4d5 && ch <= 0x4d5) { return 1; }
-    else if (ch >= 0x4d7 && ch <= 0x4d7) { return 1; }
-    else if (ch >= 0x4d9 && ch <= 0x4d9) { return 1; }
-    else if (ch >= 0x4db && ch <= 0x4db) { return 1; }
-    else if (ch >= 0x4dd && ch <= 0x4dd) { return 1; }
-    else if (ch >= 0x4df && ch <= 0x4df) { return 1; }
-    else if (ch >= 0x4e1 && ch <= 0x4e1) { return 1; }
-    else if (ch >= 0x4e3 && ch <= 0x4e3) { return 1; }
-    else if (ch >= 0x4e5 && ch <= 0x4e5) { return 1; }
-    else if (ch >= 0x4e7 && ch <= 0x4e7) { return 1; }
-    else if (ch >= 0x4e9 && ch <= 0x4e9) { return 1; }
-    else if (ch >= 0x4eb && ch <= 0x4eb) { return 1; }
-    else if (ch >= 0x4ed && ch <= 0x4ed) { return 1; }
-    else if (ch >= 0x4ef && ch <= 0x4ef) { return 1; }
-    else if (ch >= 0x4f1 && ch <= 0x4f1) { return 1; }
-    else if (ch >= 0x4f3 && ch <= 0x4f3) { return 1; }
-    else if (ch >= 0x4f5 && ch <= 0x4f5) { return 1; }
-    else if (ch >= 0x4f7 && ch <= 0x4f7) { return 1; }
-    else if (ch >= 0x4f9 && ch <= 0x4f9) { return 1; }
-    else if (ch >= 0x4fb && ch <= 0x4fb) { return 1; }
-    else if (ch >= 0x4fd && ch <= 0x4fd) { return 1; }
-    else if (ch >= 0x4ff && ch <= 0x4ff) { return 1; }
-    else if (ch >= 0x501 && ch <= 0x501) { return 1; }
-    else if (ch >= 0x503 && ch <= 0x503) { return 1; }
-    else if (ch >= 0x505 && ch <= 0x505) { return 1; }
-    else if (ch >= 0x507 && ch <= 0x507) { return 1; }
-    else if (ch >= 0x509 && ch <= 0x509) { return 1; }
-    else if (ch >= 0x50b && ch <= 0x50b) { return 1; }
-    else if (ch >= 0x50d && ch <= 0x50d) { return 1; }
-    else if (ch >= 0x50f && ch <= 0x50f) { return 1; }
-    else if (ch >= 0x511 && ch <= 0x511) { return 1; }
-    else if (ch >= 0x513 && ch <= 0x513) { return 1; }
-    else if (ch >= 0x515 && ch <= 0x515) { return 1; }
-    else if (ch >= 0x517 && ch <= 0x517) { return 1; }
-    else if (ch >= 0x519 && ch <= 0x519) { return 1; }
-    else if (ch >= 0x51b && ch <= 0x51b) { return 1; }
-    else if (ch >= 0x51d && ch <= 0x51d) { return 1; }
-    else if (ch >= 0x51f && ch <= 0x51f) { return 1; }
-    else if (ch >= 0x521 && ch <= 0x521) { return 1; }
-    else if (ch >= 0x523 && ch <= 0x523) { return 1; }
-    else if (ch >= 0x525 && ch <= 0x525) { return 1; }
-    else if (ch >= 0x527 && ch <= 0x527) { return 1; }
-    else if (ch >= 0x561 && ch <= 0x587) { return 1; }
-    else if (ch >= 0x1d00 && ch <= 0x1d2b) { return 1; }
-    else if (ch >= 0x1d6b && ch <= 0x1d77) { return 1; }
-    else if (ch >= 0x1d79 && ch <= 0x1d9a) { return 1; }
-    else if (ch >= 0x1e01 && ch <= 0x1e01) { return 1; }
-    else if (ch >= 0x1e03 && ch <= 0x1e03) { return 1; }
-    else if (ch >= 0x1e05 && ch <= 0x1e05) { return 1; }
-    else if (ch >= 0x1e07 && ch <= 0x1e07) { return 1; }
-    else if (ch >= 0x1e09 && ch <= 0x1e09) { return 1; }
-    else if (ch >= 0x1e0b && ch <= 0x1e0b) { return 1; }
-    else if (ch >= 0x1e0d && ch <= 0x1e0d) { return 1; }
-    else if (ch >= 0x1e0f && ch <= 0x1e0f) { return 1; }
-    else if (ch >= 0x1e11 && ch <= 0x1e11) { return 1; }
-    else if (ch >= 0x1e13 && ch <= 0x1e13) { return 1; }
-    else if (ch >= 0x1e15 && ch <= 0x1e15) { return 1; }
-    else if (ch >= 0x1e17 && ch <= 0x1e17) { return 1; }
-    else if (ch >= 0x1e19 && ch <= 0x1e19) { return 1; }
-    else if (ch >= 0x1e1b && ch <= 0x1e1b) { return 1; }
-    else if (ch >= 0x1e1d && ch <= 0x1e1d) { return 1; }
-    else if (ch >= 0x1e1f && ch <= 0x1e1f) { return 1; }
-    else if (ch >= 0x1e21 && ch <= 0x1e21) { return 1; }
-    else if (ch >= 0x1e23 && ch <= 0x1e23) { return 1; }
-    else if (ch >= 0x1e25 && ch <= 0x1e25) { return 1; }
-    else if (ch >= 0x1e27 && ch <= 0x1e27) { return 1; }
-    else if (ch >= 0x1e29 && ch <= 0x1e29) { return 1; }
-    else if (ch >= 0x1e2b && ch <= 0x1e2b) { return 1; }
-    else if (ch >= 0x1e2d && ch <= 0x1e2d) { return 1; }
-    else if (ch >= 0x1e2f && ch <= 0x1e2f) { return 1; }
-    else if (ch >= 0x1e31 && ch <= 0x1e31) { return 1; }
-    else if (ch >= 0x1e33 && ch <= 0x1e33) { return 1; }
-    else if (ch >= 0x1e35 && ch <= 0x1e35) { return 1; }
-    else if (ch >= 0x1e37 && ch <= 0x1e37) { return 1; }
-    else if (ch >= 0x1e39 && ch <= 0x1e39) { return 1; }
-    else if (ch >= 0x1e3b && ch <= 0x1e3b) { return 1; }
-    else if (ch >= 0x1e3d && ch <= 0x1e3d) { return 1; }
-    else if (ch >= 0x1e3f && ch <= 0x1e3f) { return 1; }
-    else if (ch >= 0x1e41 && ch <= 0x1e41) { return 1; }
-    else if (ch >= 0x1e43 && ch <= 0x1e43) { return 1; }
-    else if (ch >= 0x1e45 && ch <= 0x1e45) { return 1; }
-    else if (ch >= 0x1e47 && ch <= 0x1e47) { return 1; }
-    else if (ch >= 0x1e49 && ch <= 0x1e49) { return 1; }
-    else if (ch >= 0x1e4b && ch <= 0x1e4b) { return 1; }
-    else if (ch >= 0x1e4d && ch <= 0x1e4d) { return 1; }
-    else if (ch >= 0x1e4f && ch <= 0x1e4f) { return 1; }
-    else if (ch >= 0x1e51 && ch <= 0x1e51) { return 1; }
-    else if (ch >= 0x1e53 && ch <= 0x1e53) { return 1; }
-    else if (ch >= 0x1e55 && ch <= 0x1e55) { return 1; }
-    else if (ch >= 0x1e57 && ch <= 0x1e57) { return 1; }
-    else if (ch >= 0x1e59 && ch <= 0x1e59) { return 1; }
-    else if (ch >= 0x1e5b && ch <= 0x1e5b) { return 1; }
-    else if (ch >= 0x1e5d && ch <= 0x1e5d) { return 1; }
-    else if (ch >= 0x1e5f && ch <= 0x1e5f) { return 1; }
-    else if (ch >= 0x1e61 && ch <= 0x1e61) { return 1; }
-    else if (ch >= 0x1e63 && ch <= 0x1e63) { return 1; }
-    else if (ch >= 0x1e65 && ch <= 0x1e65) { return 1; }
-    else if (ch >= 0x1e67 && ch <= 0x1e67) { return 1; }
-    else if (ch >= 0x1e69 && ch <= 0x1e69) { return 1; }
-    else if (ch >= 0x1e6b && ch <= 0x1e6b) { return 1; }
-    else if (ch >= 0x1e6d && ch <= 0x1e6d) { return 1; }
-    else if (ch >= 0x1e6f && ch <= 0x1e6f) { return 1; }
-    else if (ch >= 0x1e71 && ch <= 0x1e71) { return 1; }
-    else if (ch >= 0x1e73 && ch <= 0x1e73) { return 1; }
-    else if (ch >= 0x1e75 && ch <= 0x1e75) { return 1; }
-    else if (ch >= 0x1e77 && ch <= 0x1e77) { return 1; }
-    else if (ch >= 0x1e79 && ch <= 0x1e79) { return 1; }
-    else if (ch >= 0x1e7b && ch <= 0x1e7b) { return 1; }
-    else if (ch >= 0x1e7d && ch <= 0x1e7d) { return 1; }
-    else if (ch >= 0x1e7f && ch <= 0x1e7f) { return 1; }
-    else if (ch >= 0x1e81 && ch <= 0x1e81) { return 1; }
-    else if (ch >= 0x1e83 && ch <= 0x1e83) { return 1; }
-    else if (ch >= 0x1e85 && ch <= 0x1e85) { return 1; }
-    else if (ch >= 0x1e87 && ch <= 0x1e87) { return 1; }
-    else if (ch >= 0x1e89 && ch <= 0x1e89) { return 1; }
-    else if (ch >= 0x1e8b && ch <= 0x1e8b) { return 1; }
-    else if (ch >= 0x1e8d && ch <= 0x1e8d) { return 1; }
-    else if (ch >= 0x1e8f && ch <= 0x1e8f) { return 1; }
-    else if (ch >= 0x1e91 && ch <= 0x1e91) { return 1; }
-    else if (ch >= 0x1e93 && ch <= 0x1e93) { return 1; }
-    else if (ch >= 0x1e95 && ch <= 0x1e9d) { return 1; }
-    else if (ch >= 0x1e9f && ch <= 0x1e9f) { return 1; }
-    else if (ch >= 0x1ea1 && ch <= 0x1ea1) { return 1; }
-    else if (ch >= 0x1ea3 && ch <= 0x1ea3) { return 1; }
-    else if (ch >= 0x1ea5 && ch <= 0x1ea5) { return 1; }
-    else if (ch >= 0x1ea7 && ch <= 0x1ea7) { return 1; }
-    else if (ch >= 0x1ea9 && ch <= 0x1ea9) { return 1; }
-    else if (ch >= 0x1eab && ch <= 0x1eab) { return 1; }
-    else if (ch >= 0x1ead && ch <= 0x1ead) { return 1; }
-    else if (ch >= 0x1eaf && ch <= 0x1eaf) { return 1; }
-    else if (ch >= 0x1eb1 && ch <= 0x1eb1) { return 1; }
-    else if (ch >= 0x1eb3 && ch <= 0x1eb3) { return 1; }
-    else if (ch >= 0x1eb5 && ch <= 0x1eb5) { return 1; }
-    else if (ch >= 0x1eb7 && ch <= 0x1eb7) { return 1; }
-    else if (ch >= 0x1eb9 && ch <= 0x1eb9) { return 1; }
-    else if (ch >= 0x1ebb && ch <= 0x1ebb) { return 1; }
-    else if (ch >= 0x1ebd && ch <= 0x1ebd) { return 1; }
-    else if (ch >= 0x1ebf && ch <= 0x1ebf) { return 1; }
-    else if (ch >= 0x1ec1 && ch <= 0x1ec1) { return 1; }
-    else if (ch >= 0x1ec3 && ch <= 0x1ec3) { return 1; }
-    else if (ch >= 0x1ec5 && ch <= 0x1ec5) { return 1; }
-    else if (ch >= 0x1ec7 && ch <= 0x1ec7) { return 1; }
-    else if (ch >= 0x1ec9 && ch <= 0x1ec9) { return 1; }
-    else if (ch >= 0x1ecb && ch <= 0x1ecb) { return 1; }
-    else if (ch >= 0x1ecd && ch <= 0x1ecd) { return 1; }
-    else if (ch >= 0x1ecf && ch <= 0x1ecf) { return 1; }
-    else if (ch >= 0x1ed1 && ch <= 0x1ed1) { return 1; }
-    else if (ch >= 0x1ed3 && ch <= 0x1ed3) { return 1; }
-    else if (ch >= 0x1ed5 && ch <= 0x1ed5) { return 1; }
-    else if (ch >= 0x1ed7 && ch <= 0x1ed7) { return 1; }
-    else if (ch >= 0x1ed9 && ch <= 0x1ed9) { return 1; }
-    else if (ch >= 0x1edb && ch <= 0x1edb) { return 1; }
-    else if (ch >= 0x1edd && ch <= 0x1edd) { return 1; }
-    else if (ch >= 0x1edf && ch <= 0x1edf) { return 1; }
-    else if (ch >= 0x1ee1 && ch <= 0x1ee1) { return 1; }
-    else if (ch >= 0x1ee3 && ch <= 0x1ee3) { return 1; }
-    else if (ch >= 0x1ee5 && ch <= 0x1ee5) { return 1; }
-    else if (ch >= 0x1ee7 && ch <= 0x1ee7) { return 1; }
-    else if (ch >= 0x1ee9 && ch <= 0x1ee9) { return 1; }
-    else if (ch >= 0x1eeb && ch <= 0x1eeb) { return 1; }
-    else if (ch >= 0x1eed && ch <= 0x1eed) { return 1; }
-    else if (ch >= 0x1eef && ch <= 0x1eef) { return 1; }
-    else if (ch >= 0x1ef1 && ch <= 0x1ef1) { return 1; }
-    else if (ch >= 0x1ef3 && ch <= 0x1ef3) { return 1; }
-    else if (ch >= 0x1ef5 && ch <= 0x1ef5) { return 1; }
-    else if (ch >= 0x1ef7 && ch <= 0x1ef7) { return 1; }
-    else if (ch >= 0x1ef9 && ch <= 0x1ef9) { return 1; }
-    else if (ch >= 0x1efb && ch <= 0x1efb) { return 1; }
-    else if (ch >= 0x1efd && ch <= 0x1efd) { return 1; }
-    else if (ch >= 0x1eff && ch <= 0x1f07) { return 1; }
-    else if (ch >= 0x1f10 && ch <= 0x1f15) { return 1; }
-    else if (ch >= 0x1f20 && ch <= 0x1f27) { return 1; }
-    else if (ch >= 0x1f30 && ch <= 0x1f37) { return 1; }
-    else if (ch >= 0x1f40 && ch <= 0x1f45) { return 1; }
-    else if (ch >= 0x1f50 && ch <= 0x1f57) { return 1; }
-    else if (ch >= 0x1f60 && ch <= 0x1f67) { return 1; }
-    else if (ch >= 0x1f70 && ch <= 0x1f7d) { return 1; }
-    else if (ch >= 0x1f80 && ch <= 0x1f87) { return 1; }
-    else if (ch >= 0x1f90 && ch <= 0x1f97) { return 1; }
-    else if (ch >= 0x1fa0 && ch <= 0x1fa7) { return 1; }
-    else if (ch >= 0x1fb0 && ch <= 0x1fb4) { return 1; }
-    else if (ch >= 0x1fb6 && ch <= 0x1fb7) { return 1; }
-    else if (ch >= 0x1fbe && ch <= 0x1fbe) { return 1; }
-    else if (ch >= 0x1fc2 && ch <= 0x1fc4) { return 1; }
-    else if (ch >= 0x1fc6 && ch <= 0x1fc7) { return 1; }
-    else if (ch >= 0x1fd0 && ch <= 0x1fd3) { return 1; }
-    else if (ch >= 0x1fd6 && ch <= 0x1fd7) { return 1; }
-    else if (ch >= 0x1fe0 && ch <= 0x1fe7) { return 1; }
-    else if (ch >= 0x1ff2 && ch <= 0x1ff4) { return 1; }
-    else if (ch >= 0x1ff6 && ch <= 0x1ff7) { return 1; }
-    else if (ch >= 0x210a && ch <= 0x210a) { return 1; }
-    else if (ch >= 0x210e && ch <= 0x210f) { return 1; }
-    else if (ch >= 0x2113 && ch <= 0x2113) { return 1; }
-    else if (ch >= 0x212f && ch <= 0x212f) { return 1; }
-    else if (ch >= 0x2134 && ch <= 0x2134) { return 1; }
-    else if (ch >= 0x2139 && ch <= 0x2139) { return 1; }
-    else if (ch >= 0x213c && ch <= 0x213d) { return 1; }
-    else if (ch >= 0x2146 && ch <= 0x2149) { return 1; }
-    else if (ch >= 0x214e && ch <= 0x214e) { return 1; }
-    else if (ch >= 0x2184 && ch <= 0x2184) { return 1; }
-    else if (ch >= 0x2c30 && ch <= 0x2c5e) { return 1; }
-    else if (ch >= 0x2c61 && ch <= 0x2c61) { return 1; }
-    else if (ch >= 0x2c65 && ch <= 0x2c66) { return 1; }
-    else if (ch >= 0x2c68 && ch <= 0x2c68) { return 1; }
-    else if (ch >= 0x2c6a && ch <= 0x2c6a) { return 1; }
-    else if (ch >= 0x2c6c && ch <= 0x2c6c) { return 1; }
-    else if (ch >= 0x2c71 && ch <= 0x2c71) { return 1; }
-    else if (ch >= 0x2c73 && ch <= 0x2c74) { return 1; }
-    else if (ch >= 0x2c76 && ch <= 0x2c7b) { return 1; }
-    else if (ch >= 0x2c81 && ch <= 0x2c81) { return 1; }
-    else if (ch >= 0x2c83 && ch <= 0x2c83) { return 1; }
-    else if (ch >= 0x2c85 && ch <= 0x2c85) { return 1; }
-    else if (ch >= 0x2c87 && ch <= 0x2c87) { return 1; }
-    else if (ch >= 0x2c89 && ch <= 0x2c89) { return 1; }
-    else if (ch >= 0x2c8b && ch <= 0x2c8b) { return 1; }
-    else if (ch >= 0x2c8d && ch <= 0x2c8d) { return 1; }
-    else if (ch >= 0x2c8f && ch <= 0x2c8f) { return 1; }
-    else if (ch >= 0x2c91 && ch <= 0x2c91) { return 1; }
-    else if (ch >= 0x2c93 && ch <= 0x2c93) { return 1; }
-    else if (ch >= 0x2c95 && ch <= 0x2c95) { return 1; }
-    else if (ch >= 0x2c97 && ch <= 0x2c97) { return 1; }
-    else if (ch >= 0x2c99 && ch <= 0x2c99) { return 1; }
-    else if (ch >= 0x2c9b && ch <= 0x2c9b) { return 1; }
-    else if (ch >= 0x2c9d && ch <= 0x2c9d) { return 1; }
-    else if (ch >= 0x2c9f && ch <= 0x2c9f) { return 1; }
-    else if (ch >= 0x2ca1 && ch <= 0x2ca1) { return 1; }
-    else if (ch >= 0x2ca3 && ch <= 0x2ca3) { return 1; }
-    else if (ch >= 0x2ca5 && ch <= 0x2ca5) { return 1; }
-    else if (ch >= 0x2ca7 && ch <= 0x2ca7) { return 1; }
-    else if (ch >= 0x2ca9 && ch <= 0x2ca9) { return 1; }
-    else if (ch >= 0x2cab && ch <= 0x2cab) { return 1; }
-    else if (ch >= 0x2cad && ch <= 0x2cad) { return 1; }
-    else if (ch >= 0x2caf && ch <= 0x2caf) { return 1; }
-    else if (ch >= 0x2cb1 && ch <= 0x2cb1) { return 1; }
-    else if (ch >= 0x2cb3 && ch <= 0x2cb3) { return 1; }
-    else if (ch >= 0x2cb5 && ch <= 0x2cb5) { return 1; }
-    else if (ch >= 0x2cb7 && ch <= 0x2cb7) { return 1; }
-    else if (ch >= 0x2cb9 && ch <= 0x2cb9) { return 1; }
-    else if (ch >= 0x2cbb && ch <= 0x2cbb) { return 1; }
-    else if (ch >= 0x2cbd && ch <= 0x2cbd) { return 1; }
-    else if (ch >= 0x2cbf && ch <= 0x2cbf) { return 1; }
-    else if (ch >= 0x2cc1 && ch <= 0x2cc1) { return 1; }
-    else if (ch >= 0x2cc3 && ch <= 0x2cc3) { return 1; }
-    else if (ch >= 0x2cc5 && ch <= 0x2cc5) { return 1; }
-    else if (ch >= 0x2cc7 && ch <= 0x2cc7) { return 1; }
-    else if (ch >= 0x2cc9 && ch <= 0x2cc9) { return 1; }
-    else if (ch >= 0x2ccb && ch <= 0x2ccb) { return 1; }
-    else if (ch >= 0x2ccd && ch <= 0x2ccd) { return 1; }
-    else if (ch >= 0x2ccf && ch <= 0x2ccf) { return 1; }
-    else if (ch >= 0x2cd1 && ch <= 0x2cd1) { return 1; }
-    else if (ch >= 0x2cd3 && ch <= 0x2cd3) { return 1; }
-    else if (ch >= 0x2cd5 && ch <= 0x2cd5) { return 1; }
-    else if (ch >= 0x2cd7 && ch <= 0x2cd7) { return 1; }
-    else if (ch >= 0x2cd9 && ch <= 0x2cd9) { return 1; }
-    else if (ch >= 0x2cdb && ch <= 0x2cdb) { return 1; }
-    else if (ch >= 0x2cdd && ch <= 0x2cdd) { return 1; }
-    else if (ch >= 0x2cdf && ch <= 0x2cdf) { return 1; }
-    else if (ch >= 0x2ce1 && ch <= 0x2ce1) { return 1; }
-    else if (ch >= 0x2ce3 && ch <= 0x2ce4) { return 1; }
-    else if (ch >= 0x2cec && ch <= 0x2cec) { return 1; }
-    else if (ch >= 0x2cee && ch <= 0x2cee) { return 1; }
-    else if (ch >= 0x2cf3 && ch <= 0x2cf3) { return 1; }
-    else if (ch >= 0x2d00 && ch <= 0x2d25) { return 1; }
-    else if (ch >= 0x2d27 && ch <= 0x2d27) { return 1; }
-    else if (ch >= 0x2d2d && ch <= 0x2d2d) { return 1; }
-    else if (ch >= 0xa641 && ch <= 0xa641) { return 1; }
-    else if (ch >= 0xa643 && ch <= 0xa643) { return 1; }
-    else if (ch >= 0xa645 && ch <= 0xa645) { return 1; }
-    else if (ch >= 0xa647 && ch <= 0xa647) { return 1; }
-    else if (ch >= 0xa649 && ch <= 0xa649) { return 1; }
-    else if (ch >= 0xa64b && ch <= 0xa64b) { return 1; }
-    else if (ch >= 0xa64d && ch <= 0xa64d) { return 1; }
-    else if (ch >= 0xa64f && ch <= 0xa64f) { return 1; }
-    else if (ch >= 0xa651 && ch <= 0xa651) { return 1; }
-    else if (ch >= 0xa653 && ch <= 0xa653) { return 1; }
-    else if (ch >= 0xa655 && ch <= 0xa655) { return 1; }
-    else if (ch >= 0xa657 && ch <= 0xa657) { return 1; }
-    else if (ch >= 0xa659 && ch <= 0xa659) { return 1; }
-    else if (ch >= 0xa65b && ch <= 0xa65b) { return 1; }
-    else if (ch >= 0xa65d && ch <= 0xa65d) { return 1; }
-    else if (ch >= 0xa65f && ch <= 0xa65f) { return 1; }
-    else if (ch >= 0xa661 && ch <= 0xa661) { return 1; }
-    else if (ch >= 0xa663 && ch <= 0xa663) { return 1; }
-    else if (ch >= 0xa665 && ch <= 0xa665) { return 1; }
-    else if (ch >= 0xa667 && ch <= 0xa667) { return 1; }
-    else if (ch >= 0xa669 && ch <= 0xa669) { return 1; }
-    else if (ch >= 0xa66b && ch <= 0xa66b) { return 1; }
-    else if (ch >= 0xa66d && ch <= 0xa66d) { return 1; }
-    else if (ch >= 0xa681 && ch <= 0xa681) { return 1; }
-    else if (ch >= 0xa683 && ch <= 0xa683) { return 1; }
-    else if (ch >= 0xa685 && ch <= 0xa685) { return 1; }
-    else if (ch >= 0xa687 && ch <= 0xa687) { return 1; }
-    else if (ch >= 0xa689 && ch <= 0xa689) { return 1; }
-    else if (ch >= 0xa68b && ch <= 0xa68b) { return 1; }
-    else if (ch >= 0xa68d && ch <= 0xa68d) { return 1; }
-    else if (ch >= 0xa68f && ch <= 0xa68f) { return 1; }
-    else if (ch >= 0xa691 && ch <= 0xa691) { return 1; }
-    else if (ch >= 0xa693 && ch <= 0xa693) { return 1; }
-    else if (ch >= 0xa695 && ch <= 0xa695) { return 1; }
-    else if (ch >= 0xa697 && ch <= 0xa697) { return 1; }
-    else if (ch >= 0xa723 && ch <= 0xa723) { return 1; }
-    else if (ch >= 0xa725 && ch <= 0xa725) { return 1; }
-    else if (ch >= 0xa727 && ch <= 0xa727) { return 1; }
-    else if (ch >= 0xa729 && ch <= 0xa729) { return 1; }
-    else if (ch >= 0xa72b && ch <= 0xa72b) { return 1; }
-    else if (ch >= 0xa72d && ch <= 0xa72d) { return 1; }
-    else if (ch >= 0xa72f && ch <= 0xa731) { return 1; }
-    else if (ch >= 0xa733 && ch <= 0xa733) { return 1; }
-    else if (ch >= 0xa735 && ch <= 0xa735) { return 1; }
-    else if (ch >= 0xa737 && ch <= 0xa737) { return 1; }
-    else if (ch >= 0xa739 && ch <= 0xa739) { return 1; }
-    else if (ch >= 0xa73b && ch <= 0xa73b) { return 1; }
-    else if (ch >= 0xa73d && ch <= 0xa73d) { return 1; }
-    else if (ch >= 0xa73f && ch <= 0xa73f) { return 1; }
-    else if (ch >= 0xa741 && ch <= 0xa741) { return 1; }
-    else if (ch >= 0xa743 && ch <= 0xa743) { return 1; }
-    else if (ch >= 0xa745 && ch <= 0xa745) { return 1; }
-    else if (ch >= 0xa747 && ch <= 0xa747) { return 1; }
-    else if (ch >= 0xa749 && ch <= 0xa749) { return 1; }
-    else if (ch >= 0xa74b && ch <= 0xa74b) { return 1; }
-    else if (ch >= 0xa74d && ch <= 0xa74d) { return 1; }
-    else if (ch >= 0xa74f && ch <= 0xa74f) { return 1; }
-    else if (ch >= 0xa751 && ch <= 0xa751) { return 1; }
-    else if (ch >= 0xa753 && ch <= 0xa753) { return 1; }
-    else if (ch >= 0xa755 && ch <= 0xa755) { return 1; }
-    else if (ch >= 0xa757 && ch <= 0xa757) { return 1; }
-    else if (ch >= 0xa759 && ch <= 0xa759) { return 1; }
-    else if (ch >= 0xa75b && ch <= 0xa75b) { return 1; }
-    else if (ch >= 0xa75d && ch <= 0xa75d) { return 1; }
-    else if (ch >= 0xa75f && ch <= 0xa75f) { return 1; }
-    else if (ch >= 0xa761 && ch <= 0xa761) { return 1; }
-    else if (ch >= 0xa763 && ch <= 0xa763) { return 1; }
-    else if (ch >= 0xa765 && ch <= 0xa765) { return 1; }
-    else if (ch >= 0xa767 && ch <= 0xa767) { return 1; }
-    else if (ch >= 0xa769 && ch <= 0xa769) { return 1; }
-    else if (ch >= 0xa76b && ch <= 0xa76b) { return 1; }
-    else if (ch >= 0xa76d && ch <= 0xa76d) { return 1; }
-    else if (ch >= 0xa76f && ch <= 0xa76f) { return 1; }
-    else if (ch >= 0xa771 && ch <= 0xa778) { return 1; }
-    else if (ch >= 0xa77a && ch <= 0xa77a) { return 1; }
-    else if (ch >= 0xa77c && ch <= 0xa77c) { return 1; }
-    else if (ch >= 0xa77f && ch <= 0xa77f) { return 1; }
-    else if (ch >= 0xa781 && ch <= 0xa781) { return 1; }
-    else if (ch >= 0xa783 && ch <= 0xa783) { return 1; }
-    else if (ch >= 0xa785 && ch <= 0xa785) { return 1; }
-    else if (ch >= 0xa787 && ch <= 0xa787) { return 1; }
-    else if (ch >= 0xa78c && ch <= 0xa78c) { return 1; }
-    else if (ch >= 0xa78e && ch <= 0xa78e) { return 1; }
-    else if (ch >= 0xa791 && ch <= 0xa791) { return 1; }
-    else if (ch >= 0xa793 && ch <= 0xa793) { return 1; }
-    else if (ch >= 0xa7a1 && ch <= 0xa7a1) { return 1; }
-    else if (ch >= 0xa7a3 && ch <= 0xa7a3) { return 1; }
-    else if (ch >= 0xa7a5 && ch <= 0xa7a5) { return 1; }
-    else if (ch >= 0xa7a7 && ch <= 0xa7a7) { return 1; }
-    else if (ch >= 0xa7a9 && ch <= 0xa7a9) { return 1; }
-    else if (ch >= 0xa7fa && ch <= 0xa7fa) { return 1; }
-    else if (ch >= 0xfb00 && ch <= 0xfb06) { return 1; }
-    else if (ch >= 0xfb13 && ch <= 0xfb17) { return 1; }
-    else if (ch >= 0xff41 && ch <= 0xff5a) { return 1; }
-    else if (ch >= 0x10428 && ch <= 0x1044f) { return 1; }
-    else if (ch >= 0x1d41a && ch <= 0x1d433) { return 1; }
-    else if (ch >= 0x1d44e && ch <= 0x1d454) { return 1; }
-    else if (ch >= 0x1d456 && ch <= 0x1d467) { return 1; }
-    else if (ch >= 0x1d482 && ch <= 0x1d49b) { return 1; }
-    else if (ch >= 0x1d4b6 && ch <= 0x1d4b9) { return 1; }
-    else if (ch >= 0x1d4bb && ch <= 0x1d4bb) { return 1; }
-    else if (ch >= 0x1d4bd && ch <= 0x1d4c3) { return 1; }
-    else if (ch >= 0x1d4c5 && ch <= 0x1d4cf) { return 1; }
-    else if (ch >= 0x1d4ea && ch <= 0x1d503) { return 1; }
-    else if (ch >= 0x1d51e && ch <= 0x1d537) { return 1; }
-    else if (ch >= 0x1d552 && ch <= 0x1d56b) { return 1; }
-    else if (ch >= 0x1d586 && ch <= 0x1d59f) { return 1; }
-    else if (ch >= 0x1d5ba && ch <= 0x1d5d3) { return 1; }
-    else if (ch >= 0x1d5ee && ch <= 0x1d607) { return 1; }
-    else if (ch >= 0x1d622 && ch <= 0x1d63b) { return 1; }
-    else if (ch >= 0x1d656 && ch <= 0x1d66f) { return 1; }
-    else if (ch >= 0x1d68a && ch <= 0x1d6a5) { return 1; }
-    else if (ch >= 0x1d6c2 && ch <= 0x1d6da) { return 1; }
-    else if (ch >= 0x1d6dc && ch <= 0x1d6e1) { return 1; }
-    else if (ch >= 0x1d6fc && ch <= 0x1d714) { return 1; }
-    else if (ch >= 0x1d716 && ch <= 0x1d71b) { return 1; }
-    else if (ch >= 0x1d736 && ch <= 0x1d74e) { return 1; }
-    else if (ch >= 0x1d750 && ch <= 0x1d755) { return 1; }
-    else if (ch >= 0x1d770 && ch <= 0x1d788) { return 1; }
-    else if (ch >= 0x1d78a && ch <= 0x1d78f) { return 1; }
-    else if (ch >= 0x1d7aa && ch <= 0x1d7c2) { return 1; }
-    else if (ch >= 0x1d7c4 && ch <= 0x1d7c9) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_ll_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_ll_low_bound[n] && ch <= esch_unicode_range_ll_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_lm_low_bound[] = 
+{
+    0x2b0, 
+    0x2c6, 
+    0x2e0, 
+    0x2ec, 
+    0x2ee, 
+    0x374, 
+    0x37a, 
+    0x559, 
+    0x640, 
+    0x6e5, 
+    0x7f4, 
+    0x7fa, 
+    0x81a, 
+    0x824, 
+    0x828, 
+    0x971, 
+    0xe46, 
+    0xec6, 
+    0x10fc, 
+    0x17d7, 
+    0x1843, 
+    0x1aa7, 
+    0x1c78, 
+    0x1d2c, 
+    0x1d78, 
+    0x1d9b, 
+    0x2071, 
+    0x207f, 
+    0x2090, 
+    0x2c7c, 
+    0x2d6f, 
+    0x2e2f, 
+    0x3005, 
+    0x3031, 
+    0x303b, 
+    0x309d, 
+    0x30fc, 
+    0xa015, 
+    0xa4f8, 
+    0xa60c, 
+    0xa67f, 
+    0xa717, 
+    0xa770, 
+    0xa788, 
+    0xa7f8, 
+    0xa9cf, 
+    0xaa70, 
+    0xaadd, 
+    0xaaf3, 
+    0xff70, 
+    0xff9e, 
+    0x16f93, 
+};
+static int
+esch_unicode_range_lm_up_bound[] = 
+{
+    0x2c1, 
+    0x2d1, 
+    0x2e4, 
+    0x2ec, 
+    0x2ee, 
+    0x374, 
+    0x37a, 
+    0x559, 
+    0x640, 
+    0x6e6, 
+    0x7f5, 
+    0x7fa, 
+    0x81a, 
+    0x824, 
+    0x828, 
+    0x971, 
+    0xe46, 
+    0xec6, 
+    0x10fc, 
+    0x17d7, 
+    0x1843, 
+    0x1aa7, 
+    0x1c7d, 
+    0x1d6a, 
+    0x1d78, 
+    0x1dbf, 
+    0x2071, 
+    0x207f, 
+    0x209c, 
+    0x2c7d, 
+    0x2d6f, 
+    0x2e2f, 
+    0x3005, 
+    0x3035, 
+    0x303b, 
+    0x309e, 
+    0x30fe, 
+    0xa015, 
+    0xa4fd, 
+    0xa60c, 
+    0xa67f, 
+    0xa71f, 
+    0xa770, 
+    0xa788, 
+    0xa7f9, 
+    0xa9cf, 
+    0xaa70, 
+    0xaadd, 
+    0xaaf4, 
+    0xff70, 
+    0xff9f, 
+    0x16f9f, 
+};
 int
 esch_unicode_is_range_lm(esch_unicode ch)
 {
-    if (ch >= 0x2b0 && ch <= 0x2c1) { return 1; }
-    else if (ch >= 0x2c6 && ch <= 0x2d1) { return 1; }
-    else if (ch >= 0x2e0 && ch <= 0x2e4) { return 1; }
-    else if (ch >= 0x2ec && ch <= 0x2ec) { return 1; }
-    else if (ch >= 0x2ee && ch <= 0x2ee) { return 1; }
-    else if (ch >= 0x374 && ch <= 0x374) { return 1; }
-    else if (ch >= 0x37a && ch <= 0x37a) { return 1; }
-    else if (ch >= 0x559 && ch <= 0x559) { return 1; }
-    else if (ch >= 0x640 && ch <= 0x640) { return 1; }
-    else if (ch >= 0x6e5 && ch <= 0x6e6) { return 1; }
-    else if (ch >= 0x7f4 && ch <= 0x7f5) { return 1; }
-    else if (ch >= 0x7fa && ch <= 0x7fa) { return 1; }
-    else if (ch >= 0x81a && ch <= 0x81a) { return 1; }
-    else if (ch >= 0x824 && ch <= 0x824) { return 1; }
-    else if (ch >= 0x828 && ch <= 0x828) { return 1; }
-    else if (ch >= 0x971 && ch <= 0x971) { return 1; }
-    else if (ch >= 0xe46 && ch <= 0xe46) { return 1; }
-    else if (ch >= 0xec6 && ch <= 0xec6) { return 1; }
-    else if (ch >= 0x10fc && ch <= 0x10fc) { return 1; }
-    else if (ch >= 0x17d7 && ch <= 0x17d7) { return 1; }
-    else if (ch >= 0x1843 && ch <= 0x1843) { return 1; }
-    else if (ch >= 0x1aa7 && ch <= 0x1aa7) { return 1; }
-    else if (ch >= 0x1c78 && ch <= 0x1c7d) { return 1; }
-    else if (ch >= 0x1d2c && ch <= 0x1d6a) { return 1; }
-    else if (ch >= 0x1d78 && ch <= 0x1d78) { return 1; }
-    else if (ch >= 0x1d9b && ch <= 0x1dbf) { return 1; }
-    else if (ch >= 0x2071 && ch <= 0x2071) { return 1; }
-    else if (ch >= 0x207f && ch <= 0x207f) { return 1; }
-    else if (ch >= 0x2090 && ch <= 0x209c) { return 1; }
-    else if (ch >= 0x2c7c && ch <= 0x2c7d) { return 1; }
-    else if (ch >= 0x2d6f && ch <= 0x2d6f) { return 1; }
-    else if (ch >= 0x2e2f && ch <= 0x2e2f) { return 1; }
-    else if (ch >= 0x3005 && ch <= 0x3005) { return 1; }
-    else if (ch >= 0x3031 && ch <= 0x3035) { return 1; }
-    else if (ch >= 0x303b && ch <= 0x303b) { return 1; }
-    else if (ch >= 0x309d && ch <= 0x309e) { return 1; }
-    else if (ch >= 0x30fc && ch <= 0x30fe) { return 1; }
-    else if (ch >= 0xa015 && ch <= 0xa015) { return 1; }
-    else if (ch >= 0xa4f8 && ch <= 0xa4fd) { return 1; }
-    else if (ch >= 0xa60c && ch <= 0xa60c) { return 1; }
-    else if (ch >= 0xa67f && ch <= 0xa67f) { return 1; }
-    else if (ch >= 0xa717 && ch <= 0xa71f) { return 1; }
-    else if (ch >= 0xa770 && ch <= 0xa770) { return 1; }
-    else if (ch >= 0xa788 && ch <= 0xa788) { return 1; }
-    else if (ch >= 0xa7f8 && ch <= 0xa7f9) { return 1; }
-    else if (ch >= 0xa9cf && ch <= 0xa9cf) { return 1; }
-    else if (ch >= 0xaa70 && ch <= 0xaa70) { return 1; }
-    else if (ch >= 0xaadd && ch <= 0xaadd) { return 1; }
-    else if (ch >= 0xaaf3 && ch <= 0xaaf4) { return 1; }
-    else if (ch >= 0xff70 && ch <= 0xff70) { return 1; }
-    else if (ch >= 0xff9e && ch <= 0xff9f) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_lm_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_lm_low_bound[n] && ch <= esch_unicode_range_lm_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_lo_low_bound[] = 
+{
+    0xaa, 
+    0xba, 
+    0x1bb, 
+    0x1c0, 
+    0x294, 
+    0x5d0, 
+    0x5f0, 
+    0x620, 
+    0x641, 
+    0x66e, 
+    0x671, 
+    0x6d5, 
+    0x6ee, 
+    0x6fa, 
+    0x6ff, 
+    0x710, 
+    0x712, 
+    0x74d, 
+    0x7b1, 
+    0x7ca, 
+    0x800, 
+    0x840, 
+    0x8a0, 
+    0x8a2, 
+    0x904, 
+    0x93d, 
+    0x950, 
+    0x958, 
+    0x972, 
+    0x979, 
+    0x985, 
+    0x98f, 
+    0x993, 
+    0x9aa, 
+    0x9b2, 
+    0x9b6, 
+    0x9bd, 
+    0x9ce, 
+    0x9dc, 
+    0x9df, 
+    0x9f0, 
+    0xa05, 
+    0xa0f, 
+    0xa13, 
+    0xa2a, 
+    0xa32, 
+    0xa35, 
+    0xa38, 
+    0xa59, 
+    0xa5e, 
+    0xa72, 
+    0xa85, 
+    0xa8f, 
+    0xa93, 
+    0xaaa, 
+    0xab2, 
+    0xab5, 
+    0xabd, 
+    0xad0, 
+    0xae0, 
+    0xb05, 
+    0xb0f, 
+    0xb13, 
+    0xb2a, 
+    0xb32, 
+    0xb35, 
+    0xb3d, 
+    0xb5c, 
+    0xb5f, 
+    0xb71, 
+    0xb83, 
+    0xb85, 
+    0xb8e, 
+    0xb92, 
+    0xb99, 
+    0xb9c, 
+    0xb9e, 
+    0xba3, 
+    0xba8, 
+    0xbae, 
+    0xbd0, 
+    0xc05, 
+    0xc0e, 
+    0xc12, 
+    0xc2a, 
+    0xc35, 
+    0xc3d, 
+    0xc58, 
+    0xc60, 
+    0xc85, 
+    0xc8e, 
+    0xc92, 
+    0xcaa, 
+    0xcb5, 
+    0xcbd, 
+    0xcde, 
+    0xce0, 
+    0xcf1, 
+    0xd05, 
+    0xd0e, 
+    0xd12, 
+    0xd3d, 
+    0xd4e, 
+    0xd60, 
+    0xd7a, 
+    0xd85, 
+    0xd9a, 
+    0xdb3, 
+    0xdbd, 
+    0xdc0, 
+    0xe01, 
+    0xe32, 
+    0xe40, 
+    0xe81, 
+    0xe84, 
+    0xe87, 
+    0xe8a, 
+    0xe8d, 
+    0xe94, 
+    0xe99, 
+    0xea1, 
+    0xea5, 
+    0xea7, 
+    0xeaa, 
+    0xead, 
+    0xeb2, 
+    0xebd, 
+    0xec0, 
+    0xedc, 
+    0xf00, 
+    0xf40, 
+    0xf49, 
+    0xf88, 
+    0x1000, 
+    0x103f, 
+    0x1050, 
+    0x105a, 
+    0x1061, 
+    0x1065, 
+    0x106e, 
+    0x1075, 
+    0x108e, 
+    0x10d0, 
+    0x10fd, 
+    0x124a, 
+    0x1250, 
+    0x1258, 
+    0x125a, 
+    0x1260, 
+    0x128a, 
+    0x1290, 
+    0x12b2, 
+    0x12b8, 
+    0x12c0, 
+    0x12c2, 
+    0x12c8, 
+    0x12d8, 
+    0x1312, 
+    0x1318, 
+    0x1380, 
+    0x13a0, 
+    0x1401, 
+    0x166f, 
+    0x1681, 
+    0x16a0, 
+    0x1700, 
+    0x170e, 
+    0x1720, 
+    0x1740, 
+    0x1760, 
+    0x176e, 
+    0x1780, 
+    0x17dc, 
+    0x1820, 
+    0x1844, 
+    0x1880, 
+    0x18aa, 
+    0x18b0, 
+    0x1900, 
+    0x1950, 
+    0x1970, 
+    0x1980, 
+    0x19c1, 
+    0x1a00, 
+    0x1a20, 
+    0x1b05, 
+    0x1b45, 
+    0x1b83, 
+    0x1bae, 
+    0x1bba, 
+    0x1c00, 
+    0x1c4d, 
+    0x1c5a, 
+    0x1ce9, 
+    0x1cee, 
+    0x1cf5, 
+    0x2135, 
+    0x2d30, 
+    0x2d80, 
+    0x2da0, 
+    0x2da8, 
+    0x2db0, 
+    0x2db8, 
+    0x2dc0, 
+    0x2dc8, 
+    0x2dd0, 
+    0x2dd8, 
+    0x3006, 
+    0x303c, 
+    0x3041, 
+    0x309f, 
+    0x30a1, 
+    0x30ff, 
+    0x3105, 
+    0x3131, 
+    0x31a0, 
+    0x31f0, 
+    0x3400, 
+    0x4db5, 
+    0x4e00, 
+    0x9fcc, 
+    0xa000, 
+    0xa016, 
+    0xa4d0, 
+    0xa500, 
+    0xa610, 
+    0xa62a, 
+    0xa66e, 
+    0xa6a0, 
+    0xa7fb, 
+    0xa803, 
+    0xa807, 
+    0xa80c, 
+    0xa840, 
+    0xa882, 
+    0xa8f2, 
+    0xa8fb, 
+    0xa90a, 
+    0xa930, 
+    0xa960, 
+    0xa984, 
+    0xaa00, 
+    0xaa40, 
+    0xaa44, 
+    0xaa60, 
+    0xaa71, 
+    0xaa7a, 
+    0xaa80, 
+    0xaab1, 
+    0xaab5, 
+    0xaab9, 
+    0xaac0, 
+    0xaac2, 
+    0xaadb, 
+    0xaae0, 
+    0xaaf2, 
+    0xab01, 
+    0xab09, 
+    0xab11, 
+    0xab20, 
+    0xab28, 
+    0xabc0, 
+    0xac00, 
+    0xd7a3, 
+    0xd7b0, 
+    0xd7cb, 
+    0xf900, 
+    0xfa70, 
+    0xfb1d, 
+    0xfb1f, 
+    0xfb2a, 
+    0xfb38, 
+    0xfb3e, 
+    0xfb40, 
+    0xfb43, 
+    0xfb46, 
+    0xfbd3, 
+    0xfd50, 
+    0xfd92, 
+    0xfdf0, 
+    0xfe70, 
+    0xfe76, 
+    0xff66, 
+    0xff71, 
+    0xffa0, 
+    0xffc2, 
+    0xffca, 
+    0xffd2, 
+    0xffda, 
+    0x10000, 
+    0x1000d, 
+    0x10028, 
+    0x1003c, 
+    0x1003f, 
+    0x10050, 
+    0x10080, 
+    0x10280, 
+    0x102a0, 
+    0x10300, 
+    0x10330, 
+    0x10342, 
+    0x10380, 
+    0x103a0, 
+    0x103c8, 
+    0x10450, 
+    0x10800, 
+    0x10808, 
+    0x1080a, 
+    0x10837, 
+    0x1083c, 
+    0x1083f, 
+    0x10900, 
+    0x10920, 
+    0x10980, 
+    0x109be, 
+    0x10a00, 
+    0x10a10, 
+    0x10a15, 
+    0x10a19, 
+    0x10a60, 
+    0x10b00, 
+    0x10b40, 
+    0x10b60, 
+    0x10c00, 
+    0x11003, 
+    0x11083, 
+    0x110d0, 
+    0x11103, 
+    0x11183, 
+    0x111c1, 
+    0x11680, 
+    0x12000, 
+    0x13000, 
+    0x16800, 
+    0x16f00, 
+    0x16f50, 
+    0x1b000, 
+    0x1ee00, 
+    0x1ee05, 
+    0x1ee21, 
+    0x1ee24, 
+    0x1ee27, 
+    0x1ee29, 
+    0x1ee34, 
+    0x1ee39, 
+    0x1ee3b, 
+    0x1ee42, 
+    0x1ee47, 
+    0x1ee49, 
+    0x1ee4b, 
+    0x1ee4d, 
+    0x1ee51, 
+    0x1ee54, 
+    0x1ee57, 
+    0x1ee59, 
+    0x1ee5b, 
+    0x1ee5d, 
+    0x1ee5f, 
+    0x1ee61, 
+    0x1ee64, 
+    0x1ee67, 
+    0x1ee6c, 
+    0x1ee74, 
+    0x1ee79, 
+    0x1ee7e, 
+    0x1ee80, 
+    0x1ee8b, 
+    0x1eea1, 
+    0x1eea5, 
+    0x1eeab, 
+    0x20000, 
+    0x2a6d6, 
+    0x2a700, 
+    0x2b734, 
+    0x2b740, 
+    0x2b81d, 
+    0x2f800, 
+};
+static int
+esch_unicode_range_lo_up_bound[] = 
+{
+    0xaa, 
+    0xba, 
+    0x1bb, 
+    0x1c3, 
+    0x294, 
+    0x5ea, 
+    0x5f2, 
+    0x63f, 
+    0x64a, 
+    0x66f, 
+    0x6d3, 
+    0x6d5, 
+    0x6ef, 
+    0x6fc, 
+    0x6ff, 
+    0x710, 
+    0x72f, 
+    0x7a5, 
+    0x7b1, 
+    0x7ea, 
+    0x815, 
+    0x858, 
+    0x8a0, 
+    0x8ac, 
+    0x939, 
+    0x93d, 
+    0x950, 
+    0x961, 
+    0x977, 
+    0x97f, 
+    0x98c, 
+    0x990, 
+    0x9a8, 
+    0x9b0, 
+    0x9b2, 
+    0x9b9, 
+    0x9bd, 
+    0x9ce, 
+    0x9dd, 
+    0x9e1, 
+    0x9f1, 
+    0xa0a, 
+    0xa10, 
+    0xa28, 
+    0xa30, 
+    0xa33, 
+    0xa36, 
+    0xa39, 
+    0xa5c, 
+    0xa5e, 
+    0xa74, 
+    0xa8d, 
+    0xa91, 
+    0xaa8, 
+    0xab0, 
+    0xab3, 
+    0xab9, 
+    0xabd, 
+    0xad0, 
+    0xae1, 
+    0xb0c, 
+    0xb10, 
+    0xb28, 
+    0xb30, 
+    0xb33, 
+    0xb39, 
+    0xb3d, 
+    0xb5d, 
+    0xb61, 
+    0xb71, 
+    0xb83, 
+    0xb8a, 
+    0xb90, 
+    0xb95, 
+    0xb9a, 
+    0xb9c, 
+    0xb9f, 
+    0xba4, 
+    0xbaa, 
+    0xbb9, 
+    0xbd0, 
+    0xc0c, 
+    0xc10, 
+    0xc28, 
+    0xc33, 
+    0xc39, 
+    0xc3d, 
+    0xc59, 
+    0xc61, 
+    0xc8c, 
+    0xc90, 
+    0xca8, 
+    0xcb3, 
+    0xcb9, 
+    0xcbd, 
+    0xcde, 
+    0xce1, 
+    0xcf2, 
+    0xd0c, 
+    0xd10, 
+    0xd3a, 
+    0xd3d, 
+    0xd4e, 
+    0xd61, 
+    0xd7f, 
+    0xd96, 
+    0xdb1, 
+    0xdbb, 
+    0xdbd, 
+    0xdc6, 
+    0xe30, 
+    0xe33, 
+    0xe45, 
+    0xe82, 
+    0xe84, 
+    0xe88, 
+    0xe8a, 
+    0xe8d, 
+    0xe97, 
+    0xe9f, 
+    0xea3, 
+    0xea5, 
+    0xea7, 
+    0xeab, 
+    0xeb0, 
+    0xeb3, 
+    0xebd, 
+    0xec4, 
+    0xedf, 
+    0xf00, 
+    0xf47, 
+    0xf6c, 
+    0xf8c, 
+    0x102a, 
+    0x103f, 
+    0x1055, 
+    0x105d, 
+    0x1061, 
+    0x1066, 
+    0x1070, 
+    0x1081, 
+    0x108e, 
+    0x10fa, 
+    0x1248, 
+    0x124d, 
+    0x1256, 
+    0x1258, 
+    0x125d, 
+    0x1288, 
+    0x128d, 
+    0x12b0, 
+    0x12b5, 
+    0x12be, 
+    0x12c0, 
+    0x12c5, 
+    0x12d6, 
+    0x1310, 
+    0x1315, 
+    0x135a, 
+    0x138f, 
+    0x13f4, 
+    0x166c, 
+    0x167f, 
+    0x169a, 
+    0x16ea, 
+    0x170c, 
+    0x1711, 
+    0x1731, 
+    0x1751, 
+    0x176c, 
+    0x1770, 
+    0x17b3, 
+    0x17dc, 
+    0x1842, 
+    0x1877, 
+    0x18a8, 
+    0x18aa, 
+    0x18f5, 
+    0x191c, 
+    0x196d, 
+    0x1974, 
+    0x19ab, 
+    0x19c7, 
+    0x1a16, 
+    0x1a54, 
+    0x1b33, 
+    0x1b4b, 
+    0x1ba0, 
+    0x1baf, 
+    0x1be5, 
+    0x1c23, 
+    0x1c4f, 
+    0x1c77, 
+    0x1cec, 
+    0x1cf1, 
+    0x1cf6, 
+    0x2138, 
+    0x2d67, 
+    0x2d96, 
+    0x2da6, 
+    0x2dae, 
+    0x2db6, 
+    0x2dbe, 
+    0x2dc6, 
+    0x2dce, 
+    0x2dd6, 
+    0x2dde, 
+    0x3006, 
+    0x303c, 
+    0x3096, 
+    0x309f, 
+    0x30fa, 
+    0x30ff, 
+    0x312d, 
+    0x318e, 
+    0x31ba, 
+    0x31ff, 
+    0x3400, 
+    0x4db5, 
+    0x4e00, 
+    0x9fcc, 
+    0xa014, 
+    0xa48c, 
+    0xa4f7, 
+    0xa60b, 
+    0xa61f, 
+    0xa62b, 
+    0xa66e, 
+    0xa6e5, 
+    0xa801, 
+    0xa805, 
+    0xa80a, 
+    0xa822, 
+    0xa873, 
+    0xa8b3, 
+    0xa8f7, 
+    0xa8fb, 
+    0xa925, 
+    0xa946, 
+    0xa97c, 
+    0xa9b2, 
+    0xaa28, 
+    0xaa42, 
+    0xaa4b, 
+    0xaa6f, 
+    0xaa76, 
+    0xaa7a, 
+    0xaaaf, 
+    0xaab1, 
+    0xaab6, 
+    0xaabd, 
+    0xaac0, 
+    0xaac2, 
+    0xaadc, 
+    0xaaea, 
+    0xaaf2, 
+    0xab06, 
+    0xab0e, 
+    0xab16, 
+    0xab26, 
+    0xab2e, 
+    0xabe2, 
+    0xac00, 
+    0xd7a3, 
+    0xd7c6, 
+    0xd7fb, 
+    0xfa6d, 
+    0xfad9, 
+    0xfb1d, 
+    0xfb28, 
+    0xfb36, 
+    0xfb3c, 
+    0xfb3e, 
+    0xfb41, 
+    0xfb44, 
+    0xfbb1, 
+    0xfd3d, 
+    0xfd8f, 
+    0xfdc7, 
+    0xfdfb, 
+    0xfe74, 
+    0xfefc, 
+    0xff6f, 
+    0xff9d, 
+    0xffbe, 
+    0xffc7, 
+    0xffcf, 
+    0xffd7, 
+    0xffdc, 
+    0x1000b, 
+    0x10026, 
+    0x1003a, 
+    0x1003d, 
+    0x1004d, 
+    0x1005d, 
+    0x100fa, 
+    0x1029c, 
+    0x102d0, 
+    0x1031e, 
+    0x10340, 
+    0x10349, 
+    0x1039d, 
+    0x103c3, 
+    0x103cf, 
+    0x1049d, 
+    0x10805, 
+    0x10808, 
+    0x10835, 
+    0x10838, 
+    0x1083c, 
+    0x10855, 
+    0x10915, 
+    0x10939, 
+    0x109b7, 
+    0x109bf, 
+    0x10a00, 
+    0x10a13, 
+    0x10a17, 
+    0x10a33, 
+    0x10a7c, 
+    0x10b35, 
+    0x10b55, 
+    0x10b72, 
+    0x10c48, 
+    0x11037, 
+    0x110af, 
+    0x110e8, 
+    0x11126, 
+    0x111b2, 
+    0x111c4, 
+    0x116aa, 
+    0x1236e, 
+    0x1342e, 
+    0x16a38, 
+    0x16f44, 
+    0x16f50, 
+    0x1b001, 
+    0x1ee03, 
+    0x1ee1f, 
+    0x1ee22, 
+    0x1ee24, 
+    0x1ee27, 
+    0x1ee32, 
+    0x1ee37, 
+    0x1ee39, 
+    0x1ee3b, 
+    0x1ee42, 
+    0x1ee47, 
+    0x1ee49, 
+    0x1ee4b, 
+    0x1ee4f, 
+    0x1ee52, 
+    0x1ee54, 
+    0x1ee57, 
+    0x1ee59, 
+    0x1ee5b, 
+    0x1ee5d, 
+    0x1ee5f, 
+    0x1ee62, 
+    0x1ee64, 
+    0x1ee6a, 
+    0x1ee72, 
+    0x1ee77, 
+    0x1ee7c, 
+    0x1ee7e, 
+    0x1ee89, 
+    0x1ee9b, 
+    0x1eea3, 
+    0x1eea9, 
+    0x1eebb, 
+    0x20000, 
+    0x2a6d6, 
+    0x2a700, 
+    0x2b734, 
+    0x2b740, 
+    0x2b81d, 
+    0x2fa1d, 
+};
 int
 esch_unicode_is_range_lo(esch_unicode ch)
 {
-    if (ch >= 0xaa && ch <= 0xaa) { return 1; }
-    else if (ch >= 0xba && ch <= 0xba) { return 1; }
-    else if (ch >= 0x1bb && ch <= 0x1bb) { return 1; }
-    else if (ch >= 0x1c0 && ch <= 0x1c3) { return 1; }
-    else if (ch >= 0x294 && ch <= 0x294) { return 1; }
-    else if (ch >= 0x5d0 && ch <= 0x5ea) { return 1; }
-    else if (ch >= 0x5f0 && ch <= 0x5f2) { return 1; }
-    else if (ch >= 0x620 && ch <= 0x63f) { return 1; }
-    else if (ch >= 0x641 && ch <= 0x64a) { return 1; }
-    else if (ch >= 0x66e && ch <= 0x66f) { return 1; }
-    else if (ch >= 0x671 && ch <= 0x6d3) { return 1; }
-    else if (ch >= 0x6d5 && ch <= 0x6d5) { return 1; }
-    else if (ch >= 0x6ee && ch <= 0x6ef) { return 1; }
-    else if (ch >= 0x6fa && ch <= 0x6fc) { return 1; }
-    else if (ch >= 0x6ff && ch <= 0x6ff) { return 1; }
-    else if (ch >= 0x710 && ch <= 0x710) { return 1; }
-    else if (ch >= 0x712 && ch <= 0x72f) { return 1; }
-    else if (ch >= 0x74d && ch <= 0x7a5) { return 1; }
-    else if (ch >= 0x7b1 && ch <= 0x7b1) { return 1; }
-    else if (ch >= 0x7ca && ch <= 0x7ea) { return 1; }
-    else if (ch >= 0x800 && ch <= 0x815) { return 1; }
-    else if (ch >= 0x840 && ch <= 0x858) { return 1; }
-    else if (ch >= 0x8a0 && ch <= 0x8a0) { return 1; }
-    else if (ch >= 0x8a2 && ch <= 0x8ac) { return 1; }
-    else if (ch >= 0x904 && ch <= 0x939) { return 1; }
-    else if (ch >= 0x93d && ch <= 0x93d) { return 1; }
-    else if (ch >= 0x950 && ch <= 0x950) { return 1; }
-    else if (ch >= 0x958 && ch <= 0x961) { return 1; }
-    else if (ch >= 0x972 && ch <= 0x977) { return 1; }
-    else if (ch >= 0x979 && ch <= 0x97f) { return 1; }
-    else if (ch >= 0x985 && ch <= 0x98c) { return 1; }
-    else if (ch >= 0x98f && ch <= 0x990) { return 1; }
-    else if (ch >= 0x993 && ch <= 0x9a8) { return 1; }
-    else if (ch >= 0x9aa && ch <= 0x9b0) { return 1; }
-    else if (ch >= 0x9b2 && ch <= 0x9b2) { return 1; }
-    else if (ch >= 0x9b6 && ch <= 0x9b9) { return 1; }
-    else if (ch >= 0x9bd && ch <= 0x9bd) { return 1; }
-    else if (ch >= 0x9ce && ch <= 0x9ce) { return 1; }
-    else if (ch >= 0x9dc && ch <= 0x9dd) { return 1; }
-    else if (ch >= 0x9df && ch <= 0x9e1) { return 1; }
-    else if (ch >= 0x9f0 && ch <= 0x9f1) { return 1; }
-    else if (ch >= 0xa05 && ch <= 0xa0a) { return 1; }
-    else if (ch >= 0xa0f && ch <= 0xa10) { return 1; }
-    else if (ch >= 0xa13 && ch <= 0xa28) { return 1; }
-    else if (ch >= 0xa2a && ch <= 0xa30) { return 1; }
-    else if (ch >= 0xa32 && ch <= 0xa33) { return 1; }
-    else if (ch >= 0xa35 && ch <= 0xa36) { return 1; }
-    else if (ch >= 0xa38 && ch <= 0xa39) { return 1; }
-    else if (ch >= 0xa59 && ch <= 0xa5c) { return 1; }
-    else if (ch >= 0xa5e && ch <= 0xa5e) { return 1; }
-    else if (ch >= 0xa72 && ch <= 0xa74) { return 1; }
-    else if (ch >= 0xa85 && ch <= 0xa8d) { return 1; }
-    else if (ch >= 0xa8f && ch <= 0xa91) { return 1; }
-    else if (ch >= 0xa93 && ch <= 0xaa8) { return 1; }
-    else if (ch >= 0xaaa && ch <= 0xab0) { return 1; }
-    else if (ch >= 0xab2 && ch <= 0xab3) { return 1; }
-    else if (ch >= 0xab5 && ch <= 0xab9) { return 1; }
-    else if (ch >= 0xabd && ch <= 0xabd) { return 1; }
-    else if (ch >= 0xad0 && ch <= 0xad0) { return 1; }
-    else if (ch >= 0xae0 && ch <= 0xae1) { return 1; }
-    else if (ch >= 0xb05 && ch <= 0xb0c) { return 1; }
-    else if (ch >= 0xb0f && ch <= 0xb10) { return 1; }
-    else if (ch >= 0xb13 && ch <= 0xb28) { return 1; }
-    else if (ch >= 0xb2a && ch <= 0xb30) { return 1; }
-    else if (ch >= 0xb32 && ch <= 0xb33) { return 1; }
-    else if (ch >= 0xb35 && ch <= 0xb39) { return 1; }
-    else if (ch >= 0xb3d && ch <= 0xb3d) { return 1; }
-    else if (ch >= 0xb5c && ch <= 0xb5d) { return 1; }
-    else if (ch >= 0xb5f && ch <= 0xb61) { return 1; }
-    else if (ch >= 0xb71 && ch <= 0xb71) { return 1; }
-    else if (ch >= 0xb83 && ch <= 0xb83) { return 1; }
-    else if (ch >= 0xb85 && ch <= 0xb8a) { return 1; }
-    else if (ch >= 0xb8e && ch <= 0xb90) { return 1; }
-    else if (ch >= 0xb92 && ch <= 0xb95) { return 1; }
-    else if (ch >= 0xb99 && ch <= 0xb9a) { return 1; }
-    else if (ch >= 0xb9c && ch <= 0xb9c) { return 1; }
-    else if (ch >= 0xb9e && ch <= 0xb9f) { return 1; }
-    else if (ch >= 0xba3 && ch <= 0xba4) { return 1; }
-    else if (ch >= 0xba8 && ch <= 0xbaa) { return 1; }
-    else if (ch >= 0xbae && ch <= 0xbb9) { return 1; }
-    else if (ch >= 0xbd0 && ch <= 0xbd0) { return 1; }
-    else if (ch >= 0xc05 && ch <= 0xc0c) { return 1; }
-    else if (ch >= 0xc0e && ch <= 0xc10) { return 1; }
-    else if (ch >= 0xc12 && ch <= 0xc28) { return 1; }
-    else if (ch >= 0xc2a && ch <= 0xc33) { return 1; }
-    else if (ch >= 0xc35 && ch <= 0xc39) { return 1; }
-    else if (ch >= 0xc3d && ch <= 0xc3d) { return 1; }
-    else if (ch >= 0xc58 && ch <= 0xc59) { return 1; }
-    else if (ch >= 0xc60 && ch <= 0xc61) { return 1; }
-    else if (ch >= 0xc85 && ch <= 0xc8c) { return 1; }
-    else if (ch >= 0xc8e && ch <= 0xc90) { return 1; }
-    else if (ch >= 0xc92 && ch <= 0xca8) { return 1; }
-    else if (ch >= 0xcaa && ch <= 0xcb3) { return 1; }
-    else if (ch >= 0xcb5 && ch <= 0xcb9) { return 1; }
-    else if (ch >= 0xcbd && ch <= 0xcbd) { return 1; }
-    else if (ch >= 0xcde && ch <= 0xcde) { return 1; }
-    else if (ch >= 0xce0 && ch <= 0xce1) { return 1; }
-    else if (ch >= 0xcf1 && ch <= 0xcf2) { return 1; }
-    else if (ch >= 0xd05 && ch <= 0xd0c) { return 1; }
-    else if (ch >= 0xd0e && ch <= 0xd10) { return 1; }
-    else if (ch >= 0xd12 && ch <= 0xd3a) { return 1; }
-    else if (ch >= 0xd3d && ch <= 0xd3d) { return 1; }
-    else if (ch >= 0xd4e && ch <= 0xd4e) { return 1; }
-    else if (ch >= 0xd60 && ch <= 0xd61) { return 1; }
-    else if (ch >= 0xd7a && ch <= 0xd7f) { return 1; }
-    else if (ch >= 0xd85 && ch <= 0xd96) { return 1; }
-    else if (ch >= 0xd9a && ch <= 0xdb1) { return 1; }
-    else if (ch >= 0xdb3 && ch <= 0xdbb) { return 1; }
-    else if (ch >= 0xdbd && ch <= 0xdbd) { return 1; }
-    else if (ch >= 0xdc0 && ch <= 0xdc6) { return 1; }
-    else if (ch >= 0xe01 && ch <= 0xe30) { return 1; }
-    else if (ch >= 0xe32 && ch <= 0xe33) { return 1; }
-    else if (ch >= 0xe40 && ch <= 0xe45) { return 1; }
-    else if (ch >= 0xe81 && ch <= 0xe82) { return 1; }
-    else if (ch >= 0xe84 && ch <= 0xe84) { return 1; }
-    else if (ch >= 0xe87 && ch <= 0xe88) { return 1; }
-    else if (ch >= 0xe8a && ch <= 0xe8a) { return 1; }
-    else if (ch >= 0xe8d && ch <= 0xe8d) { return 1; }
-    else if (ch >= 0xe94 && ch <= 0xe97) { return 1; }
-    else if (ch >= 0xe99 && ch <= 0xe9f) { return 1; }
-    else if (ch >= 0xea1 && ch <= 0xea3) { return 1; }
-    else if (ch >= 0xea5 && ch <= 0xea5) { return 1; }
-    else if (ch >= 0xea7 && ch <= 0xea7) { return 1; }
-    else if (ch >= 0xeaa && ch <= 0xeab) { return 1; }
-    else if (ch >= 0xead && ch <= 0xeb0) { return 1; }
-    else if (ch >= 0xeb2 && ch <= 0xeb3) { return 1; }
-    else if (ch >= 0xebd && ch <= 0xebd) { return 1; }
-    else if (ch >= 0xec0 && ch <= 0xec4) { return 1; }
-    else if (ch >= 0xedc && ch <= 0xedf) { return 1; }
-    else if (ch >= 0xf00 && ch <= 0xf00) { return 1; }
-    else if (ch >= 0xf40 && ch <= 0xf47) { return 1; }
-    else if (ch >= 0xf49 && ch <= 0xf6c) { return 1; }
-    else if (ch >= 0xf88 && ch <= 0xf8c) { return 1; }
-    else if (ch >= 0x1000 && ch <= 0x102a) { return 1; }
-    else if (ch >= 0x103f && ch <= 0x103f) { return 1; }
-    else if (ch >= 0x1050 && ch <= 0x1055) { return 1; }
-    else if (ch >= 0x105a && ch <= 0x105d) { return 1; }
-    else if (ch >= 0x1061 && ch <= 0x1061) { return 1; }
-    else if (ch >= 0x1065 && ch <= 0x1066) { return 1; }
-    else if (ch >= 0x106e && ch <= 0x1070) { return 1; }
-    else if (ch >= 0x1075 && ch <= 0x1081) { return 1; }
-    else if (ch >= 0x108e && ch <= 0x108e) { return 1; }
-    else if (ch >= 0x10d0 && ch <= 0x10fa) { return 1; }
-    else if (ch >= 0x10fd && ch <= 0x1248) { return 1; }
-    else if (ch >= 0x124a && ch <= 0x124d) { return 1; }
-    else if (ch >= 0x1250 && ch <= 0x1256) { return 1; }
-    else if (ch >= 0x1258 && ch <= 0x1258) { return 1; }
-    else if (ch >= 0x125a && ch <= 0x125d) { return 1; }
-    else if (ch >= 0x1260 && ch <= 0x1288) { return 1; }
-    else if (ch >= 0x128a && ch <= 0x128d) { return 1; }
-    else if (ch >= 0x1290 && ch <= 0x12b0) { return 1; }
-    else if (ch >= 0x12b2 && ch <= 0x12b5) { return 1; }
-    else if (ch >= 0x12b8 && ch <= 0x12be) { return 1; }
-    else if (ch >= 0x12c0 && ch <= 0x12c0) { return 1; }
-    else if (ch >= 0x12c2 && ch <= 0x12c5) { return 1; }
-    else if (ch >= 0x12c8 && ch <= 0x12d6) { return 1; }
-    else if (ch >= 0x12d8 && ch <= 0x1310) { return 1; }
-    else if (ch >= 0x1312 && ch <= 0x1315) { return 1; }
-    else if (ch >= 0x1318 && ch <= 0x135a) { return 1; }
-    else if (ch >= 0x1380 && ch <= 0x138f) { return 1; }
-    else if (ch >= 0x13a0 && ch <= 0x13f4) { return 1; }
-    else if (ch >= 0x1401 && ch <= 0x166c) { return 1; }
-    else if (ch >= 0x166f && ch <= 0x167f) { return 1; }
-    else if (ch >= 0x1681 && ch <= 0x169a) { return 1; }
-    else if (ch >= 0x16a0 && ch <= 0x16ea) { return 1; }
-    else if (ch >= 0x1700 && ch <= 0x170c) { return 1; }
-    else if (ch >= 0x170e && ch <= 0x1711) { return 1; }
-    else if (ch >= 0x1720 && ch <= 0x1731) { return 1; }
-    else if (ch >= 0x1740 && ch <= 0x1751) { return 1; }
-    else if (ch >= 0x1760 && ch <= 0x176c) { return 1; }
-    else if (ch >= 0x176e && ch <= 0x1770) { return 1; }
-    else if (ch >= 0x1780 && ch <= 0x17b3) { return 1; }
-    else if (ch >= 0x17dc && ch <= 0x17dc) { return 1; }
-    else if (ch >= 0x1820 && ch <= 0x1842) { return 1; }
-    else if (ch >= 0x1844 && ch <= 0x1877) { return 1; }
-    else if (ch >= 0x1880 && ch <= 0x18a8) { return 1; }
-    else if (ch >= 0x18aa && ch <= 0x18aa) { return 1; }
-    else if (ch >= 0x18b0 && ch <= 0x18f5) { return 1; }
-    else if (ch >= 0x1900 && ch <= 0x191c) { return 1; }
-    else if (ch >= 0x1950 && ch <= 0x196d) { return 1; }
-    else if (ch >= 0x1970 && ch <= 0x1974) { return 1; }
-    else if (ch >= 0x1980 && ch <= 0x19ab) { return 1; }
-    else if (ch >= 0x19c1 && ch <= 0x19c7) { return 1; }
-    else if (ch >= 0x1a00 && ch <= 0x1a16) { return 1; }
-    else if (ch >= 0x1a20 && ch <= 0x1a54) { return 1; }
-    else if (ch >= 0x1b05 && ch <= 0x1b33) { return 1; }
-    else if (ch >= 0x1b45 && ch <= 0x1b4b) { return 1; }
-    else if (ch >= 0x1b83 && ch <= 0x1ba0) { return 1; }
-    else if (ch >= 0x1bae && ch <= 0x1baf) { return 1; }
-    else if (ch >= 0x1bba && ch <= 0x1be5) { return 1; }
-    else if (ch >= 0x1c00 && ch <= 0x1c23) { return 1; }
-    else if (ch >= 0x1c4d && ch <= 0x1c4f) { return 1; }
-    else if (ch >= 0x1c5a && ch <= 0x1c77) { return 1; }
-    else if (ch >= 0x1ce9 && ch <= 0x1cec) { return 1; }
-    else if (ch >= 0x1cee && ch <= 0x1cf1) { return 1; }
-    else if (ch >= 0x1cf5 && ch <= 0x1cf6) { return 1; }
-    else if (ch >= 0x2135 && ch <= 0x2138) { return 1; }
-    else if (ch >= 0x2d30 && ch <= 0x2d67) { return 1; }
-    else if (ch >= 0x2d80 && ch <= 0x2d96) { return 1; }
-    else if (ch >= 0x2da0 && ch <= 0x2da6) { return 1; }
-    else if (ch >= 0x2da8 && ch <= 0x2dae) { return 1; }
-    else if (ch >= 0x2db0 && ch <= 0x2db6) { return 1; }
-    else if (ch >= 0x2db8 && ch <= 0x2dbe) { return 1; }
-    else if (ch >= 0x2dc0 && ch <= 0x2dc6) { return 1; }
-    else if (ch >= 0x2dc8 && ch <= 0x2dce) { return 1; }
-    else if (ch >= 0x2dd0 && ch <= 0x2dd6) { return 1; }
-    else if (ch >= 0x2dd8 && ch <= 0x2dde) { return 1; }
-    else if (ch >= 0x3006 && ch <= 0x3006) { return 1; }
-    else if (ch >= 0x303c && ch <= 0x303c) { return 1; }
-    else if (ch >= 0x3041 && ch <= 0x3096) { return 1; }
-    else if (ch >= 0x309f && ch <= 0x309f) { return 1; }
-    else if (ch >= 0x30a1 && ch <= 0x30fa) { return 1; }
-    else if (ch >= 0x30ff && ch <= 0x30ff) { return 1; }
-    else if (ch >= 0x3105 && ch <= 0x312d) { return 1; }
-    else if (ch >= 0x3131 && ch <= 0x318e) { return 1; }
-    else if (ch >= 0x31a0 && ch <= 0x31ba) { return 1; }
-    else if (ch >= 0x31f0 && ch <= 0x31ff) { return 1; }
-    else if (ch >= 0x3400 && ch <= 0x3400) { return 1; }
-    else if (ch >= 0x4db5 && ch <= 0x4db5) { return 1; }
-    else if (ch >= 0x4e00 && ch <= 0x4e00) { return 1; }
-    else if (ch >= 0x9fcc && ch <= 0x9fcc) { return 1; }
-    else if (ch >= 0xa000 && ch <= 0xa014) { return 1; }
-    else if (ch >= 0xa016 && ch <= 0xa48c) { return 1; }
-    else if (ch >= 0xa4d0 && ch <= 0xa4f7) { return 1; }
-    else if (ch >= 0xa500 && ch <= 0xa60b) { return 1; }
-    else if (ch >= 0xa610 && ch <= 0xa61f) { return 1; }
-    else if (ch >= 0xa62a && ch <= 0xa62b) { return 1; }
-    else if (ch >= 0xa66e && ch <= 0xa66e) { return 1; }
-    else if (ch >= 0xa6a0 && ch <= 0xa6e5) { return 1; }
-    else if (ch >= 0xa7fb && ch <= 0xa801) { return 1; }
-    else if (ch >= 0xa803 && ch <= 0xa805) { return 1; }
-    else if (ch >= 0xa807 && ch <= 0xa80a) { return 1; }
-    else if (ch >= 0xa80c && ch <= 0xa822) { return 1; }
-    else if (ch >= 0xa840 && ch <= 0xa873) { return 1; }
-    else if (ch >= 0xa882 && ch <= 0xa8b3) { return 1; }
-    else if (ch >= 0xa8f2 && ch <= 0xa8f7) { return 1; }
-    else if (ch >= 0xa8fb && ch <= 0xa8fb) { return 1; }
-    else if (ch >= 0xa90a && ch <= 0xa925) { return 1; }
-    else if (ch >= 0xa930 && ch <= 0xa946) { return 1; }
-    else if (ch >= 0xa960 && ch <= 0xa97c) { return 1; }
-    else if (ch >= 0xa984 && ch <= 0xa9b2) { return 1; }
-    else if (ch >= 0xaa00 && ch <= 0xaa28) { return 1; }
-    else if (ch >= 0xaa40 && ch <= 0xaa42) { return 1; }
-    else if (ch >= 0xaa44 && ch <= 0xaa4b) { return 1; }
-    else if (ch >= 0xaa60 && ch <= 0xaa6f) { return 1; }
-    else if (ch >= 0xaa71 && ch <= 0xaa76) { return 1; }
-    else if (ch >= 0xaa7a && ch <= 0xaa7a) { return 1; }
-    else if (ch >= 0xaa80 && ch <= 0xaaaf) { return 1; }
-    else if (ch >= 0xaab1 && ch <= 0xaab1) { return 1; }
-    else if (ch >= 0xaab5 && ch <= 0xaab6) { return 1; }
-    else if (ch >= 0xaab9 && ch <= 0xaabd) { return 1; }
-    else if (ch >= 0xaac0 && ch <= 0xaac0) { return 1; }
-    else if (ch >= 0xaac2 && ch <= 0xaac2) { return 1; }
-    else if (ch >= 0xaadb && ch <= 0xaadc) { return 1; }
-    else if (ch >= 0xaae0 && ch <= 0xaaea) { return 1; }
-    else if (ch >= 0xaaf2 && ch <= 0xaaf2) { return 1; }
-    else if (ch >= 0xab01 && ch <= 0xab06) { return 1; }
-    else if (ch >= 0xab09 && ch <= 0xab0e) { return 1; }
-    else if (ch >= 0xab11 && ch <= 0xab16) { return 1; }
-    else if (ch >= 0xab20 && ch <= 0xab26) { return 1; }
-    else if (ch >= 0xab28 && ch <= 0xab2e) { return 1; }
-    else if (ch >= 0xabc0 && ch <= 0xabe2) { return 1; }
-    else if (ch >= 0xac00 && ch <= 0xac00) { return 1; }
-    else if (ch >= 0xd7a3 && ch <= 0xd7a3) { return 1; }
-    else if (ch >= 0xd7b0 && ch <= 0xd7c6) { return 1; }
-    else if (ch >= 0xd7cb && ch <= 0xd7fb) { return 1; }
-    else if (ch >= 0xf900 && ch <= 0xfa6d) { return 1; }
-    else if (ch >= 0xfa70 && ch <= 0xfad9) { return 1; }
-    else if (ch >= 0xfb1d && ch <= 0xfb1d) { return 1; }
-    else if (ch >= 0xfb1f && ch <= 0xfb28) { return 1; }
-    else if (ch >= 0xfb2a && ch <= 0xfb36) { return 1; }
-    else if (ch >= 0xfb38 && ch <= 0xfb3c) { return 1; }
-    else if (ch >= 0xfb3e && ch <= 0xfb3e) { return 1; }
-    else if (ch >= 0xfb40 && ch <= 0xfb41) { return 1; }
-    else if (ch >= 0xfb43 && ch <= 0xfb44) { return 1; }
-    else if (ch >= 0xfb46 && ch <= 0xfbb1) { return 1; }
-    else if (ch >= 0xfbd3 && ch <= 0xfd3d) { return 1; }
-    else if (ch >= 0xfd50 && ch <= 0xfd8f) { return 1; }
-    else if (ch >= 0xfd92 && ch <= 0xfdc7) { return 1; }
-    else if (ch >= 0xfdf0 && ch <= 0xfdfb) { return 1; }
-    else if (ch >= 0xfe70 && ch <= 0xfe74) { return 1; }
-    else if (ch >= 0xfe76 && ch <= 0xfefc) { return 1; }
-    else if (ch >= 0xff66 && ch <= 0xff6f) { return 1; }
-    else if (ch >= 0xff71 && ch <= 0xff9d) { return 1; }
-    else if (ch >= 0xffa0 && ch <= 0xffbe) { return 1; }
-    else if (ch >= 0xffc2 && ch <= 0xffc7) { return 1; }
-    else if (ch >= 0xffca && ch <= 0xffcf) { return 1; }
-    else if (ch >= 0xffd2 && ch <= 0xffd7) { return 1; }
-    else if (ch >= 0xffda && ch <= 0xffdc) { return 1; }
-    else if (ch >= 0x10000 && ch <= 0x1000b) { return 1; }
-    else if (ch >= 0x1000d && ch <= 0x10026) { return 1; }
-    else if (ch >= 0x10028 && ch <= 0x1003a) { return 1; }
-    else if (ch >= 0x1003c && ch <= 0x1003d) { return 1; }
-    else if (ch >= 0x1003f && ch <= 0x1004d) { return 1; }
-    else if (ch >= 0x10050 && ch <= 0x1005d) { return 1; }
-    else if (ch >= 0x10080 && ch <= 0x100fa) { return 1; }
-    else if (ch >= 0x10280 && ch <= 0x1029c) { return 1; }
-    else if (ch >= 0x102a0 && ch <= 0x102d0) { return 1; }
-    else if (ch >= 0x10300 && ch <= 0x1031e) { return 1; }
-    else if (ch >= 0x10330 && ch <= 0x10340) { return 1; }
-    else if (ch >= 0x10342 && ch <= 0x10349) { return 1; }
-    else if (ch >= 0x10380 && ch <= 0x1039d) { return 1; }
-    else if (ch >= 0x103a0 && ch <= 0x103c3) { return 1; }
-    else if (ch >= 0x103c8 && ch <= 0x103cf) { return 1; }
-    else if (ch >= 0x10450 && ch <= 0x1049d) { return 1; }
-    else if (ch >= 0x10800 && ch <= 0x10805) { return 1; }
-    else if (ch >= 0x10808 && ch <= 0x10808) { return 1; }
-    else if (ch >= 0x1080a && ch <= 0x10835) { return 1; }
-    else if (ch >= 0x10837 && ch <= 0x10838) { return 1; }
-    else if (ch >= 0x1083c && ch <= 0x1083c) { return 1; }
-    else if (ch >= 0x1083f && ch <= 0x10855) { return 1; }
-    else if (ch >= 0x10900 && ch <= 0x10915) { return 1; }
-    else if (ch >= 0x10920 && ch <= 0x10939) { return 1; }
-    else if (ch >= 0x10980 && ch <= 0x109b7) { return 1; }
-    else if (ch >= 0x109be && ch <= 0x109bf) { return 1; }
-    else if (ch >= 0x10a00 && ch <= 0x10a00) { return 1; }
-    else if (ch >= 0x10a10 && ch <= 0x10a13) { return 1; }
-    else if (ch >= 0x10a15 && ch <= 0x10a17) { return 1; }
-    else if (ch >= 0x10a19 && ch <= 0x10a33) { return 1; }
-    else if (ch >= 0x10a60 && ch <= 0x10a7c) { return 1; }
-    else if (ch >= 0x10b00 && ch <= 0x10b35) { return 1; }
-    else if (ch >= 0x10b40 && ch <= 0x10b55) { return 1; }
-    else if (ch >= 0x10b60 && ch <= 0x10b72) { return 1; }
-    else if (ch >= 0x10c00 && ch <= 0x10c48) { return 1; }
-    else if (ch >= 0x11003 && ch <= 0x11037) { return 1; }
-    else if (ch >= 0x11083 && ch <= 0x110af) { return 1; }
-    else if (ch >= 0x110d0 && ch <= 0x110e8) { return 1; }
-    else if (ch >= 0x11103 && ch <= 0x11126) { return 1; }
-    else if (ch >= 0x11183 && ch <= 0x111b2) { return 1; }
-    else if (ch >= 0x111c1 && ch <= 0x111c4) { return 1; }
-    else if (ch >= 0x11680 && ch <= 0x116aa) { return 1; }
-    else if (ch >= 0x12000 && ch <= 0x1236e) { return 1; }
-    else if (ch >= 0x13000 && ch <= 0x1342e) { return 1; }
-    else if (ch >= 0x16800 && ch <= 0x16a38) { return 1; }
-    else if (ch >= 0x16f00 && ch <= 0x16f44) { return 1; }
-    else if (ch >= 0x16f50 && ch <= 0x16f50) { return 1; }
-    else if (ch >= 0x1b000 && ch <= 0x1b001) { return 1; }
-    else if (ch >= 0x1ee00 && ch <= 0x1ee03) { return 1; }
-    else if (ch >= 0x1ee05 && ch <= 0x1ee1f) { return 1; }
-    else if (ch >= 0x1ee21 && ch <= 0x1ee22) { return 1; }
-    else if (ch >= 0x1ee24 && ch <= 0x1ee24) { return 1; }
-    else if (ch >= 0x1ee27 && ch <= 0x1ee27) { return 1; }
-    else if (ch >= 0x1ee29 && ch <= 0x1ee32) { return 1; }
-    else if (ch >= 0x1ee34 && ch <= 0x1ee37) { return 1; }
-    else if (ch >= 0x1ee39 && ch <= 0x1ee39) { return 1; }
-    else if (ch >= 0x1ee3b && ch <= 0x1ee3b) { return 1; }
-    else if (ch >= 0x1ee42 && ch <= 0x1ee42) { return 1; }
-    else if (ch >= 0x1ee47 && ch <= 0x1ee47) { return 1; }
-    else if (ch >= 0x1ee49 && ch <= 0x1ee49) { return 1; }
-    else if (ch >= 0x1ee4b && ch <= 0x1ee4b) { return 1; }
-    else if (ch >= 0x1ee4d && ch <= 0x1ee4f) { return 1; }
-    else if (ch >= 0x1ee51 && ch <= 0x1ee52) { return 1; }
-    else if (ch >= 0x1ee54 && ch <= 0x1ee54) { return 1; }
-    else if (ch >= 0x1ee57 && ch <= 0x1ee57) { return 1; }
-    else if (ch >= 0x1ee59 && ch <= 0x1ee59) { return 1; }
-    else if (ch >= 0x1ee5b && ch <= 0x1ee5b) { return 1; }
-    else if (ch >= 0x1ee5d && ch <= 0x1ee5d) { return 1; }
-    else if (ch >= 0x1ee5f && ch <= 0x1ee5f) { return 1; }
-    else if (ch >= 0x1ee61 && ch <= 0x1ee62) { return 1; }
-    else if (ch >= 0x1ee64 && ch <= 0x1ee64) { return 1; }
-    else if (ch >= 0x1ee67 && ch <= 0x1ee6a) { return 1; }
-    else if (ch >= 0x1ee6c && ch <= 0x1ee72) { return 1; }
-    else if (ch >= 0x1ee74 && ch <= 0x1ee77) { return 1; }
-    else if (ch >= 0x1ee79 && ch <= 0x1ee7c) { return 1; }
-    else if (ch >= 0x1ee7e && ch <= 0x1ee7e) { return 1; }
-    else if (ch >= 0x1ee80 && ch <= 0x1ee89) { return 1; }
-    else if (ch >= 0x1ee8b && ch <= 0x1ee9b) { return 1; }
-    else if (ch >= 0x1eea1 && ch <= 0x1eea3) { return 1; }
-    else if (ch >= 0x1eea5 && ch <= 0x1eea9) { return 1; }
-    else if (ch >= 0x1eeab && ch <= 0x1eebb) { return 1; }
-    else if (ch >= 0x20000 && ch <= 0x20000) { return 1; }
-    else if (ch >= 0x2a6d6 && ch <= 0x2a6d6) { return 1; }
-    else if (ch >= 0x2a700 && ch <= 0x2a700) { return 1; }
-    else if (ch >= 0x2b734 && ch <= 0x2b734) { return 1; }
-    else if (ch >= 0x2b740 && ch <= 0x2b740) { return 1; }
-    else if (ch >= 0x2b81d && ch <= 0x2b81d) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_lo_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_lo_low_bound[n] && ch <= esch_unicode_range_lo_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_lt_low_bound[] = 
+{
+    0x1c5, 
+    0x1c8, 
+    0x1cb, 
+    0x1f2, 
+    0x1f88, 
+    0x1f98, 
+    0x1fa8, 
+    0x1fbc, 
+    0x1fcc, 
+    0x1ffc, 
+};
+static int
+esch_unicode_range_lt_up_bound[] = 
+{
+    0x1c5, 
+    0x1c8, 
+    0x1cb, 
+    0x1f2, 
+    0x1f8f, 
+    0x1f9f, 
+    0x1faf, 
+    0x1fbc, 
+    0x1fcc, 
+    0x1ffc, 
+};
 int
 esch_unicode_is_range_lt(esch_unicode ch)
 {
-    if (ch >= 0x1c5 && ch <= 0x1c5) { return 1; }
-    else if (ch >= 0x1c8 && ch <= 0x1c8) { return 1; }
-    else if (ch >= 0x1cb && ch <= 0x1cb) { return 1; }
-    else if (ch >= 0x1f2 && ch <= 0x1f2) { return 1; }
-    else if (ch >= 0x1f88 && ch <= 0x1f8f) { return 1; }
-    else if (ch >= 0x1f98 && ch <= 0x1f9f) { return 1; }
-    else if (ch >= 0x1fa8 && ch <= 0x1faf) { return 1; }
-    else if (ch >= 0x1fbc && ch <= 0x1fbc) { return 1; }
-    else if (ch >= 0x1fcc && ch <= 0x1fcc) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_lt_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_lt_low_bound[n] && ch <= esch_unicode_range_lt_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_lu_low_bound[] = 
+{
+    0x41, 
+    0xc0, 
+    0xd8, 
+    0x100, 
+    0x102, 
+    0x104, 
+    0x106, 
+    0x108, 
+    0x10a, 
+    0x10c, 
+    0x10e, 
+    0x110, 
+    0x112, 
+    0x114, 
+    0x116, 
+    0x118, 
+    0x11a, 
+    0x11c, 
+    0x11e, 
+    0x120, 
+    0x122, 
+    0x124, 
+    0x126, 
+    0x128, 
+    0x12a, 
+    0x12c, 
+    0x12e, 
+    0x130, 
+    0x132, 
+    0x134, 
+    0x136, 
+    0x139, 
+    0x13b, 
+    0x13d, 
+    0x13f, 
+    0x141, 
+    0x143, 
+    0x145, 
+    0x147, 
+    0x14a, 
+    0x14c, 
+    0x14e, 
+    0x150, 
+    0x152, 
+    0x154, 
+    0x156, 
+    0x158, 
+    0x15a, 
+    0x15c, 
+    0x15e, 
+    0x160, 
+    0x162, 
+    0x164, 
+    0x166, 
+    0x168, 
+    0x16a, 
+    0x16c, 
+    0x16e, 
+    0x170, 
+    0x172, 
+    0x174, 
+    0x176, 
+    0x178, 
+    0x17b, 
+    0x17d, 
+    0x181, 
+    0x184, 
+    0x186, 
+    0x189, 
+    0x18e, 
+    0x193, 
+    0x196, 
+    0x19c, 
+    0x19f, 
+    0x1a2, 
+    0x1a4, 
+    0x1a6, 
+    0x1a9, 
+    0x1ac, 
+    0x1ae, 
+    0x1b1, 
+    0x1b5, 
+    0x1b7, 
+    0x1bc, 
+    0x1c4, 
+    0x1c7, 
+    0x1ca, 
+    0x1cd, 
+    0x1cf, 
+    0x1d1, 
+    0x1d3, 
+    0x1d5, 
+    0x1d7, 
+    0x1d9, 
+    0x1db, 
+    0x1de, 
+    0x1e0, 
+    0x1e2, 
+    0x1e4, 
+    0x1e6, 
+    0x1e8, 
+    0x1ea, 
+    0x1ec, 
+    0x1ee, 
+    0x1f1, 
+    0x1f4, 
+    0x1f6, 
+    0x1fa, 
+    0x1fc, 
+    0x1fe, 
+    0x200, 
+    0x202, 
+    0x204, 
+    0x206, 
+    0x208, 
+    0x20a, 
+    0x20c, 
+    0x20e, 
+    0x210, 
+    0x212, 
+    0x214, 
+    0x216, 
+    0x218, 
+    0x21a, 
+    0x21c, 
+    0x21e, 
+    0x220, 
+    0x222, 
+    0x224, 
+    0x226, 
+    0x228, 
+    0x22a, 
+    0x22c, 
+    0x22e, 
+    0x230, 
+    0x232, 
+    0x23a, 
+    0x23d, 
+    0x241, 
+    0x243, 
+    0x248, 
+    0x24a, 
+    0x24c, 
+    0x24e, 
+    0x370, 
+    0x372, 
+    0x376, 
+    0x386, 
+    0x388, 
+    0x38c, 
+    0x38e, 
+    0x391, 
+    0x3a3, 
+    0x3cf, 
+    0x3d2, 
+    0x3d8, 
+    0x3da, 
+    0x3dc, 
+    0x3de, 
+    0x3e0, 
+    0x3e2, 
+    0x3e4, 
+    0x3e6, 
+    0x3e8, 
+    0x3ea, 
+    0x3ec, 
+    0x3ee, 
+    0x3f4, 
+    0x3f7, 
+    0x3f9, 
+    0x3fd, 
+    0x460, 
+    0x462, 
+    0x464, 
+    0x466, 
+    0x468, 
+    0x46a, 
+    0x46c, 
+    0x46e, 
+    0x470, 
+    0x472, 
+    0x474, 
+    0x476, 
+    0x478, 
+    0x47a, 
+    0x47c, 
+    0x47e, 
+    0x480, 
+    0x48a, 
+    0x48c, 
+    0x48e, 
+    0x490, 
+    0x492, 
+    0x494, 
+    0x496, 
+    0x498, 
+    0x49a, 
+    0x49c, 
+    0x49e, 
+    0x4a0, 
+    0x4a2, 
+    0x4a4, 
+    0x4a6, 
+    0x4a8, 
+    0x4aa, 
+    0x4ac, 
+    0x4ae, 
+    0x4b0, 
+    0x4b2, 
+    0x4b4, 
+    0x4b6, 
+    0x4b8, 
+    0x4ba, 
+    0x4bc, 
+    0x4be, 
+    0x4c0, 
+    0x4c3, 
+    0x4c5, 
+    0x4c7, 
+    0x4c9, 
+    0x4cb, 
+    0x4cd, 
+    0x4d0, 
+    0x4d2, 
+    0x4d4, 
+    0x4d6, 
+    0x4d8, 
+    0x4da, 
+    0x4dc, 
+    0x4de, 
+    0x4e0, 
+    0x4e2, 
+    0x4e4, 
+    0x4e6, 
+    0x4e8, 
+    0x4ea, 
+    0x4ec, 
+    0x4ee, 
+    0x4f0, 
+    0x4f2, 
+    0x4f4, 
+    0x4f6, 
+    0x4f8, 
+    0x4fa, 
+    0x4fc, 
+    0x4fe, 
+    0x500, 
+    0x502, 
+    0x504, 
+    0x506, 
+    0x508, 
+    0x50a, 
+    0x50c, 
+    0x50e, 
+    0x510, 
+    0x512, 
+    0x514, 
+    0x516, 
+    0x518, 
+    0x51a, 
+    0x51c, 
+    0x51e, 
+    0x520, 
+    0x522, 
+    0x524, 
+    0x526, 
+    0x531, 
+    0x10a0, 
+    0x10c7, 
+    0x10cd, 
+    0x1e00, 
+    0x1e02, 
+    0x1e04, 
+    0x1e06, 
+    0x1e08, 
+    0x1e0a, 
+    0x1e0c, 
+    0x1e0e, 
+    0x1e10, 
+    0x1e12, 
+    0x1e14, 
+    0x1e16, 
+    0x1e18, 
+    0x1e1a, 
+    0x1e1c, 
+    0x1e1e, 
+    0x1e20, 
+    0x1e22, 
+    0x1e24, 
+    0x1e26, 
+    0x1e28, 
+    0x1e2a, 
+    0x1e2c, 
+    0x1e2e, 
+    0x1e30, 
+    0x1e32, 
+    0x1e34, 
+    0x1e36, 
+    0x1e38, 
+    0x1e3a, 
+    0x1e3c, 
+    0x1e3e, 
+    0x1e40, 
+    0x1e42, 
+    0x1e44, 
+    0x1e46, 
+    0x1e48, 
+    0x1e4a, 
+    0x1e4c, 
+    0x1e4e, 
+    0x1e50, 
+    0x1e52, 
+    0x1e54, 
+    0x1e56, 
+    0x1e58, 
+    0x1e5a, 
+    0x1e5c, 
+    0x1e5e, 
+    0x1e60, 
+    0x1e62, 
+    0x1e64, 
+    0x1e66, 
+    0x1e68, 
+    0x1e6a, 
+    0x1e6c, 
+    0x1e6e, 
+    0x1e70, 
+    0x1e72, 
+    0x1e74, 
+    0x1e76, 
+    0x1e78, 
+    0x1e7a, 
+    0x1e7c, 
+    0x1e7e, 
+    0x1e80, 
+    0x1e82, 
+    0x1e84, 
+    0x1e86, 
+    0x1e88, 
+    0x1e8a, 
+    0x1e8c, 
+    0x1e8e, 
+    0x1e90, 
+    0x1e92, 
+    0x1e94, 
+    0x1e9e, 
+    0x1ea0, 
+    0x1ea2, 
+    0x1ea4, 
+    0x1ea6, 
+    0x1ea8, 
+    0x1eaa, 
+    0x1eac, 
+    0x1eae, 
+    0x1eb0, 
+    0x1eb2, 
+    0x1eb4, 
+    0x1eb6, 
+    0x1eb8, 
+    0x1eba, 
+    0x1ebc, 
+    0x1ebe, 
+    0x1ec0, 
+    0x1ec2, 
+    0x1ec4, 
+    0x1ec6, 
+    0x1ec8, 
+    0x1eca, 
+    0x1ecc, 
+    0x1ece, 
+    0x1ed0, 
+    0x1ed2, 
+    0x1ed4, 
+    0x1ed6, 
+    0x1ed8, 
+    0x1eda, 
+    0x1edc, 
+    0x1ede, 
+    0x1ee0, 
+    0x1ee2, 
+    0x1ee4, 
+    0x1ee6, 
+    0x1ee8, 
+    0x1eea, 
+    0x1eec, 
+    0x1eee, 
+    0x1ef0, 
+    0x1ef2, 
+    0x1ef4, 
+    0x1ef6, 
+    0x1ef8, 
+    0x1efa, 
+    0x1efc, 
+    0x1efe, 
+    0x1f08, 
+    0x1f18, 
+    0x1f28, 
+    0x1f38, 
+    0x1f48, 
+    0x1f59, 
+    0x1f5b, 
+    0x1f5d, 
+    0x1f5f, 
+    0x1f68, 
+    0x1fb8, 
+    0x1fc8, 
+    0x1fd8, 
+    0x1fe8, 
+    0x1ff8, 
+    0x2102, 
+    0x2107, 
+    0x210b, 
+    0x2110, 
+    0x2115, 
+    0x2119, 
+    0x2124, 
+    0x2126, 
+    0x2128, 
+    0x212a, 
+    0x2130, 
+    0x213e, 
+    0x2145, 
+    0x2183, 
+    0x2c00, 
+    0x2c60, 
+    0x2c62, 
+    0x2c67, 
+    0x2c69, 
+    0x2c6b, 
+    0x2c6d, 
+    0x2c72, 
+    0x2c75, 
+    0x2c7e, 
+    0x2c82, 
+    0x2c84, 
+    0x2c86, 
+    0x2c88, 
+    0x2c8a, 
+    0x2c8c, 
+    0x2c8e, 
+    0x2c90, 
+    0x2c92, 
+    0x2c94, 
+    0x2c96, 
+    0x2c98, 
+    0x2c9a, 
+    0x2c9c, 
+    0x2c9e, 
+    0x2ca0, 
+    0x2ca2, 
+    0x2ca4, 
+    0x2ca6, 
+    0x2ca8, 
+    0x2caa, 
+    0x2cac, 
+    0x2cae, 
+    0x2cb0, 
+    0x2cb2, 
+    0x2cb4, 
+    0x2cb6, 
+    0x2cb8, 
+    0x2cba, 
+    0x2cbc, 
+    0x2cbe, 
+    0x2cc0, 
+    0x2cc2, 
+    0x2cc4, 
+    0x2cc6, 
+    0x2cc8, 
+    0x2cca, 
+    0x2ccc, 
+    0x2cce, 
+    0x2cd0, 
+    0x2cd2, 
+    0x2cd4, 
+    0x2cd6, 
+    0x2cd8, 
+    0x2cda, 
+    0x2cdc, 
+    0x2cde, 
+    0x2ce0, 
+    0x2ce2, 
+    0x2ceb, 
+    0x2ced, 
+    0x2cf2, 
+    0xa640, 
+    0xa642, 
+    0xa644, 
+    0xa646, 
+    0xa648, 
+    0xa64a, 
+    0xa64c, 
+    0xa64e, 
+    0xa650, 
+    0xa652, 
+    0xa654, 
+    0xa656, 
+    0xa658, 
+    0xa65a, 
+    0xa65c, 
+    0xa65e, 
+    0xa660, 
+    0xa662, 
+    0xa664, 
+    0xa666, 
+    0xa668, 
+    0xa66a, 
+    0xa66c, 
+    0xa680, 
+    0xa682, 
+    0xa684, 
+    0xa686, 
+    0xa688, 
+    0xa68a, 
+    0xa68c, 
+    0xa68e, 
+    0xa690, 
+    0xa692, 
+    0xa694, 
+    0xa696, 
+    0xa722, 
+    0xa724, 
+    0xa726, 
+    0xa728, 
+    0xa72a, 
+    0xa72c, 
+    0xa72e, 
+    0xa732, 
+    0xa734, 
+    0xa736, 
+    0xa738, 
+    0xa73a, 
+    0xa73c, 
+    0xa73e, 
+    0xa740, 
+    0xa742, 
+    0xa744, 
+    0xa746, 
+    0xa748, 
+    0xa74a, 
+    0xa74c, 
+    0xa74e, 
+    0xa750, 
+    0xa752, 
+    0xa754, 
+    0xa756, 
+    0xa758, 
+    0xa75a, 
+    0xa75c, 
+    0xa75e, 
+    0xa760, 
+    0xa762, 
+    0xa764, 
+    0xa766, 
+    0xa768, 
+    0xa76a, 
+    0xa76c, 
+    0xa76e, 
+    0xa779, 
+    0xa77b, 
+    0xa77d, 
+    0xa780, 
+    0xa782, 
+    0xa784, 
+    0xa786, 
+    0xa78b, 
+    0xa78d, 
+    0xa790, 
+    0xa792, 
+    0xa7a0, 
+    0xa7a2, 
+    0xa7a4, 
+    0xa7a6, 
+    0xa7a8, 
+    0xa7aa, 
+    0xff21, 
+    0x10400, 
+    0x1d400, 
+    0x1d434, 
+    0x1d468, 
+    0x1d49c, 
+    0x1d49e, 
+    0x1d4a2, 
+    0x1d4a5, 
+    0x1d4a9, 
+    0x1d4ae, 
+    0x1d4d0, 
+    0x1d504, 
+    0x1d507, 
+    0x1d50d, 
+    0x1d516, 
+    0x1d538, 
+    0x1d53b, 
+    0x1d540, 
+    0x1d546, 
+    0x1d54a, 
+    0x1d56c, 
+    0x1d5a0, 
+    0x1d5d4, 
+    0x1d608, 
+    0x1d63c, 
+    0x1d670, 
+    0x1d6a8, 
+    0x1d6e2, 
+    0x1d71c, 
+    0x1d756, 
+    0x1d790, 
+    0x1d7ca, 
+};
+static int
+esch_unicode_range_lu_up_bound[] = 
+{
+    0x5a, 
+    0xd6, 
+    0xde, 
+    0x100, 
+    0x102, 
+    0x104, 
+    0x106, 
+    0x108, 
+    0x10a, 
+    0x10c, 
+    0x10e, 
+    0x110, 
+    0x112, 
+    0x114, 
+    0x116, 
+    0x118, 
+    0x11a, 
+    0x11c, 
+    0x11e, 
+    0x120, 
+    0x122, 
+    0x124, 
+    0x126, 
+    0x128, 
+    0x12a, 
+    0x12c, 
+    0x12e, 
+    0x130, 
+    0x132, 
+    0x134, 
+    0x136, 
+    0x139, 
+    0x13b, 
+    0x13d, 
+    0x13f, 
+    0x141, 
+    0x143, 
+    0x145, 
+    0x147, 
+    0x14a, 
+    0x14c, 
+    0x14e, 
+    0x150, 
+    0x152, 
+    0x154, 
+    0x156, 
+    0x158, 
+    0x15a, 
+    0x15c, 
+    0x15e, 
+    0x160, 
+    0x162, 
+    0x164, 
+    0x166, 
+    0x168, 
+    0x16a, 
+    0x16c, 
+    0x16e, 
+    0x170, 
+    0x172, 
+    0x174, 
+    0x176, 
+    0x179, 
+    0x17b, 
+    0x17d, 
+    0x182, 
+    0x184, 
+    0x187, 
+    0x18b, 
+    0x191, 
+    0x194, 
+    0x198, 
+    0x19d, 
+    0x1a0, 
+    0x1a2, 
+    0x1a4, 
+    0x1a7, 
+    0x1a9, 
+    0x1ac, 
+    0x1af, 
+    0x1b3, 
+    0x1b5, 
+    0x1b8, 
+    0x1bc, 
+    0x1c4, 
+    0x1c7, 
+    0x1ca, 
+    0x1cd, 
+    0x1cf, 
+    0x1d1, 
+    0x1d3, 
+    0x1d5, 
+    0x1d7, 
+    0x1d9, 
+    0x1db, 
+    0x1de, 
+    0x1e0, 
+    0x1e2, 
+    0x1e4, 
+    0x1e6, 
+    0x1e8, 
+    0x1ea, 
+    0x1ec, 
+    0x1ee, 
+    0x1f1, 
+    0x1f4, 
+    0x1f8, 
+    0x1fa, 
+    0x1fc, 
+    0x1fe, 
+    0x200, 
+    0x202, 
+    0x204, 
+    0x206, 
+    0x208, 
+    0x20a, 
+    0x20c, 
+    0x20e, 
+    0x210, 
+    0x212, 
+    0x214, 
+    0x216, 
+    0x218, 
+    0x21a, 
+    0x21c, 
+    0x21e, 
+    0x220, 
+    0x222, 
+    0x224, 
+    0x226, 
+    0x228, 
+    0x22a, 
+    0x22c, 
+    0x22e, 
+    0x230, 
+    0x232, 
+    0x23b, 
+    0x23e, 
+    0x241, 
+    0x246, 
+    0x248, 
+    0x24a, 
+    0x24c, 
+    0x24e, 
+    0x370, 
+    0x372, 
+    0x376, 
+    0x386, 
+    0x38a, 
+    0x38c, 
+    0x38f, 
+    0x3a1, 
+    0x3ab, 
+    0x3cf, 
+    0x3d4, 
+    0x3d8, 
+    0x3da, 
+    0x3dc, 
+    0x3de, 
+    0x3e0, 
+    0x3e2, 
+    0x3e4, 
+    0x3e6, 
+    0x3e8, 
+    0x3ea, 
+    0x3ec, 
+    0x3ee, 
+    0x3f4, 
+    0x3f7, 
+    0x3fa, 
+    0x42f, 
+    0x460, 
+    0x462, 
+    0x464, 
+    0x466, 
+    0x468, 
+    0x46a, 
+    0x46c, 
+    0x46e, 
+    0x470, 
+    0x472, 
+    0x474, 
+    0x476, 
+    0x478, 
+    0x47a, 
+    0x47c, 
+    0x47e, 
+    0x480, 
+    0x48a, 
+    0x48c, 
+    0x48e, 
+    0x490, 
+    0x492, 
+    0x494, 
+    0x496, 
+    0x498, 
+    0x49a, 
+    0x49c, 
+    0x49e, 
+    0x4a0, 
+    0x4a2, 
+    0x4a4, 
+    0x4a6, 
+    0x4a8, 
+    0x4aa, 
+    0x4ac, 
+    0x4ae, 
+    0x4b0, 
+    0x4b2, 
+    0x4b4, 
+    0x4b6, 
+    0x4b8, 
+    0x4ba, 
+    0x4bc, 
+    0x4be, 
+    0x4c1, 
+    0x4c3, 
+    0x4c5, 
+    0x4c7, 
+    0x4c9, 
+    0x4cb, 
+    0x4cd, 
+    0x4d0, 
+    0x4d2, 
+    0x4d4, 
+    0x4d6, 
+    0x4d8, 
+    0x4da, 
+    0x4dc, 
+    0x4de, 
+    0x4e0, 
+    0x4e2, 
+    0x4e4, 
+    0x4e6, 
+    0x4e8, 
+    0x4ea, 
+    0x4ec, 
+    0x4ee, 
+    0x4f0, 
+    0x4f2, 
+    0x4f4, 
+    0x4f6, 
+    0x4f8, 
+    0x4fa, 
+    0x4fc, 
+    0x4fe, 
+    0x500, 
+    0x502, 
+    0x504, 
+    0x506, 
+    0x508, 
+    0x50a, 
+    0x50c, 
+    0x50e, 
+    0x510, 
+    0x512, 
+    0x514, 
+    0x516, 
+    0x518, 
+    0x51a, 
+    0x51c, 
+    0x51e, 
+    0x520, 
+    0x522, 
+    0x524, 
+    0x526, 
+    0x556, 
+    0x10c5, 
+    0x10c7, 
+    0x10cd, 
+    0x1e00, 
+    0x1e02, 
+    0x1e04, 
+    0x1e06, 
+    0x1e08, 
+    0x1e0a, 
+    0x1e0c, 
+    0x1e0e, 
+    0x1e10, 
+    0x1e12, 
+    0x1e14, 
+    0x1e16, 
+    0x1e18, 
+    0x1e1a, 
+    0x1e1c, 
+    0x1e1e, 
+    0x1e20, 
+    0x1e22, 
+    0x1e24, 
+    0x1e26, 
+    0x1e28, 
+    0x1e2a, 
+    0x1e2c, 
+    0x1e2e, 
+    0x1e30, 
+    0x1e32, 
+    0x1e34, 
+    0x1e36, 
+    0x1e38, 
+    0x1e3a, 
+    0x1e3c, 
+    0x1e3e, 
+    0x1e40, 
+    0x1e42, 
+    0x1e44, 
+    0x1e46, 
+    0x1e48, 
+    0x1e4a, 
+    0x1e4c, 
+    0x1e4e, 
+    0x1e50, 
+    0x1e52, 
+    0x1e54, 
+    0x1e56, 
+    0x1e58, 
+    0x1e5a, 
+    0x1e5c, 
+    0x1e5e, 
+    0x1e60, 
+    0x1e62, 
+    0x1e64, 
+    0x1e66, 
+    0x1e68, 
+    0x1e6a, 
+    0x1e6c, 
+    0x1e6e, 
+    0x1e70, 
+    0x1e72, 
+    0x1e74, 
+    0x1e76, 
+    0x1e78, 
+    0x1e7a, 
+    0x1e7c, 
+    0x1e7e, 
+    0x1e80, 
+    0x1e82, 
+    0x1e84, 
+    0x1e86, 
+    0x1e88, 
+    0x1e8a, 
+    0x1e8c, 
+    0x1e8e, 
+    0x1e90, 
+    0x1e92, 
+    0x1e94, 
+    0x1e9e, 
+    0x1ea0, 
+    0x1ea2, 
+    0x1ea4, 
+    0x1ea6, 
+    0x1ea8, 
+    0x1eaa, 
+    0x1eac, 
+    0x1eae, 
+    0x1eb0, 
+    0x1eb2, 
+    0x1eb4, 
+    0x1eb6, 
+    0x1eb8, 
+    0x1eba, 
+    0x1ebc, 
+    0x1ebe, 
+    0x1ec0, 
+    0x1ec2, 
+    0x1ec4, 
+    0x1ec6, 
+    0x1ec8, 
+    0x1eca, 
+    0x1ecc, 
+    0x1ece, 
+    0x1ed0, 
+    0x1ed2, 
+    0x1ed4, 
+    0x1ed6, 
+    0x1ed8, 
+    0x1eda, 
+    0x1edc, 
+    0x1ede, 
+    0x1ee0, 
+    0x1ee2, 
+    0x1ee4, 
+    0x1ee6, 
+    0x1ee8, 
+    0x1eea, 
+    0x1eec, 
+    0x1eee, 
+    0x1ef0, 
+    0x1ef2, 
+    0x1ef4, 
+    0x1ef6, 
+    0x1ef8, 
+    0x1efa, 
+    0x1efc, 
+    0x1efe, 
+    0x1f0f, 
+    0x1f1d, 
+    0x1f2f, 
+    0x1f3f, 
+    0x1f4d, 
+    0x1f59, 
+    0x1f5b, 
+    0x1f5d, 
+    0x1f5f, 
+    0x1f6f, 
+    0x1fbb, 
+    0x1fcb, 
+    0x1fdb, 
+    0x1fec, 
+    0x1ffb, 
+    0x2102, 
+    0x2107, 
+    0x210d, 
+    0x2112, 
+    0x2115, 
+    0x211d, 
+    0x2124, 
+    0x2126, 
+    0x2128, 
+    0x212d, 
+    0x2133, 
+    0x213f, 
+    0x2145, 
+    0x2183, 
+    0x2c2e, 
+    0x2c60, 
+    0x2c64, 
+    0x2c67, 
+    0x2c69, 
+    0x2c6b, 
+    0x2c70, 
+    0x2c72, 
+    0x2c75, 
+    0x2c80, 
+    0x2c82, 
+    0x2c84, 
+    0x2c86, 
+    0x2c88, 
+    0x2c8a, 
+    0x2c8c, 
+    0x2c8e, 
+    0x2c90, 
+    0x2c92, 
+    0x2c94, 
+    0x2c96, 
+    0x2c98, 
+    0x2c9a, 
+    0x2c9c, 
+    0x2c9e, 
+    0x2ca0, 
+    0x2ca2, 
+    0x2ca4, 
+    0x2ca6, 
+    0x2ca8, 
+    0x2caa, 
+    0x2cac, 
+    0x2cae, 
+    0x2cb0, 
+    0x2cb2, 
+    0x2cb4, 
+    0x2cb6, 
+    0x2cb8, 
+    0x2cba, 
+    0x2cbc, 
+    0x2cbe, 
+    0x2cc0, 
+    0x2cc2, 
+    0x2cc4, 
+    0x2cc6, 
+    0x2cc8, 
+    0x2cca, 
+    0x2ccc, 
+    0x2cce, 
+    0x2cd0, 
+    0x2cd2, 
+    0x2cd4, 
+    0x2cd6, 
+    0x2cd8, 
+    0x2cda, 
+    0x2cdc, 
+    0x2cde, 
+    0x2ce0, 
+    0x2ce2, 
+    0x2ceb, 
+    0x2ced, 
+    0x2cf2, 
+    0xa640, 
+    0xa642, 
+    0xa644, 
+    0xa646, 
+    0xa648, 
+    0xa64a, 
+    0xa64c, 
+    0xa64e, 
+    0xa650, 
+    0xa652, 
+    0xa654, 
+    0xa656, 
+    0xa658, 
+    0xa65a, 
+    0xa65c, 
+    0xa65e, 
+    0xa660, 
+    0xa662, 
+    0xa664, 
+    0xa666, 
+    0xa668, 
+    0xa66a, 
+    0xa66c, 
+    0xa680, 
+    0xa682, 
+    0xa684, 
+    0xa686, 
+    0xa688, 
+    0xa68a, 
+    0xa68c, 
+    0xa68e, 
+    0xa690, 
+    0xa692, 
+    0xa694, 
+    0xa696, 
+    0xa722, 
+    0xa724, 
+    0xa726, 
+    0xa728, 
+    0xa72a, 
+    0xa72c, 
+    0xa72e, 
+    0xa732, 
+    0xa734, 
+    0xa736, 
+    0xa738, 
+    0xa73a, 
+    0xa73c, 
+    0xa73e, 
+    0xa740, 
+    0xa742, 
+    0xa744, 
+    0xa746, 
+    0xa748, 
+    0xa74a, 
+    0xa74c, 
+    0xa74e, 
+    0xa750, 
+    0xa752, 
+    0xa754, 
+    0xa756, 
+    0xa758, 
+    0xa75a, 
+    0xa75c, 
+    0xa75e, 
+    0xa760, 
+    0xa762, 
+    0xa764, 
+    0xa766, 
+    0xa768, 
+    0xa76a, 
+    0xa76c, 
+    0xa76e, 
+    0xa779, 
+    0xa77b, 
+    0xa77e, 
+    0xa780, 
+    0xa782, 
+    0xa784, 
+    0xa786, 
+    0xa78b, 
+    0xa78d, 
+    0xa790, 
+    0xa792, 
+    0xa7a0, 
+    0xa7a2, 
+    0xa7a4, 
+    0xa7a6, 
+    0xa7a8, 
+    0xa7aa, 
+    0xff3a, 
+    0x10427, 
+    0x1d419, 
+    0x1d44d, 
+    0x1d481, 
+    0x1d49c, 
+    0x1d49f, 
+    0x1d4a2, 
+    0x1d4a6, 
+    0x1d4ac, 
+    0x1d4b5, 
+    0x1d4e9, 
+    0x1d505, 
+    0x1d50a, 
+    0x1d514, 
+    0x1d51c, 
+    0x1d539, 
+    0x1d53e, 
+    0x1d544, 
+    0x1d546, 
+    0x1d550, 
+    0x1d585, 
+    0x1d5b9, 
+    0x1d5ed, 
+    0x1d621, 
+    0x1d655, 
+    0x1d689, 
+    0x1d6c0, 
+    0x1d6fa, 
+    0x1d734, 
+    0x1d76e, 
+    0x1d7a8, 
+    0x1d7ca, 
+};
 int
 esch_unicode_is_range_lu(esch_unicode ch)
 {
-    if (ch >= 0x41 && ch <= 0x5a) { return 1; }
-    else if (ch >= 0xc0 && ch <= 0xd6) { return 1; }
-    else if (ch >= 0xd8 && ch <= 0xde) { return 1; }
-    else if (ch >= 0x100 && ch <= 0x100) { return 1; }
-    else if (ch >= 0x102 && ch <= 0x102) { return 1; }
-    else if (ch >= 0x104 && ch <= 0x104) { return 1; }
-    else if (ch >= 0x106 && ch <= 0x106) { return 1; }
-    else if (ch >= 0x108 && ch <= 0x108) { return 1; }
-    else if (ch >= 0x10a && ch <= 0x10a) { return 1; }
-    else if (ch >= 0x10c && ch <= 0x10c) { return 1; }
-    else if (ch >= 0x10e && ch <= 0x10e) { return 1; }
-    else if (ch >= 0x110 && ch <= 0x110) { return 1; }
-    else if (ch >= 0x112 && ch <= 0x112) { return 1; }
-    else if (ch >= 0x114 && ch <= 0x114) { return 1; }
-    else if (ch >= 0x116 && ch <= 0x116) { return 1; }
-    else if (ch >= 0x118 && ch <= 0x118) { return 1; }
-    else if (ch >= 0x11a && ch <= 0x11a) { return 1; }
-    else if (ch >= 0x11c && ch <= 0x11c) { return 1; }
-    else if (ch >= 0x11e && ch <= 0x11e) { return 1; }
-    else if (ch >= 0x120 && ch <= 0x120) { return 1; }
-    else if (ch >= 0x122 && ch <= 0x122) { return 1; }
-    else if (ch >= 0x124 && ch <= 0x124) { return 1; }
-    else if (ch >= 0x126 && ch <= 0x126) { return 1; }
-    else if (ch >= 0x128 && ch <= 0x128) { return 1; }
-    else if (ch >= 0x12a && ch <= 0x12a) { return 1; }
-    else if (ch >= 0x12c && ch <= 0x12c) { return 1; }
-    else if (ch >= 0x12e && ch <= 0x12e) { return 1; }
-    else if (ch >= 0x130 && ch <= 0x130) { return 1; }
-    else if (ch >= 0x132 && ch <= 0x132) { return 1; }
-    else if (ch >= 0x134 && ch <= 0x134) { return 1; }
-    else if (ch >= 0x136 && ch <= 0x136) { return 1; }
-    else if (ch >= 0x139 && ch <= 0x139) { return 1; }
-    else if (ch >= 0x13b && ch <= 0x13b) { return 1; }
-    else if (ch >= 0x13d && ch <= 0x13d) { return 1; }
-    else if (ch >= 0x13f && ch <= 0x13f) { return 1; }
-    else if (ch >= 0x141 && ch <= 0x141) { return 1; }
-    else if (ch >= 0x143 && ch <= 0x143) { return 1; }
-    else if (ch >= 0x145 && ch <= 0x145) { return 1; }
-    else if (ch >= 0x147 && ch <= 0x147) { return 1; }
-    else if (ch >= 0x14a && ch <= 0x14a) { return 1; }
-    else if (ch >= 0x14c && ch <= 0x14c) { return 1; }
-    else if (ch >= 0x14e && ch <= 0x14e) { return 1; }
-    else if (ch >= 0x150 && ch <= 0x150) { return 1; }
-    else if (ch >= 0x152 && ch <= 0x152) { return 1; }
-    else if (ch >= 0x154 && ch <= 0x154) { return 1; }
-    else if (ch >= 0x156 && ch <= 0x156) { return 1; }
-    else if (ch >= 0x158 && ch <= 0x158) { return 1; }
-    else if (ch >= 0x15a && ch <= 0x15a) { return 1; }
-    else if (ch >= 0x15c && ch <= 0x15c) { return 1; }
-    else if (ch >= 0x15e && ch <= 0x15e) { return 1; }
-    else if (ch >= 0x160 && ch <= 0x160) { return 1; }
-    else if (ch >= 0x162 && ch <= 0x162) { return 1; }
-    else if (ch >= 0x164 && ch <= 0x164) { return 1; }
-    else if (ch >= 0x166 && ch <= 0x166) { return 1; }
-    else if (ch >= 0x168 && ch <= 0x168) { return 1; }
-    else if (ch >= 0x16a && ch <= 0x16a) { return 1; }
-    else if (ch >= 0x16c && ch <= 0x16c) { return 1; }
-    else if (ch >= 0x16e && ch <= 0x16e) { return 1; }
-    else if (ch >= 0x170 && ch <= 0x170) { return 1; }
-    else if (ch >= 0x172 && ch <= 0x172) { return 1; }
-    else if (ch >= 0x174 && ch <= 0x174) { return 1; }
-    else if (ch >= 0x176 && ch <= 0x176) { return 1; }
-    else if (ch >= 0x178 && ch <= 0x179) { return 1; }
-    else if (ch >= 0x17b && ch <= 0x17b) { return 1; }
-    else if (ch >= 0x17d && ch <= 0x17d) { return 1; }
-    else if (ch >= 0x181 && ch <= 0x182) { return 1; }
-    else if (ch >= 0x184 && ch <= 0x184) { return 1; }
-    else if (ch >= 0x186 && ch <= 0x187) { return 1; }
-    else if (ch >= 0x189 && ch <= 0x18b) { return 1; }
-    else if (ch >= 0x18e && ch <= 0x191) { return 1; }
-    else if (ch >= 0x193 && ch <= 0x194) { return 1; }
-    else if (ch >= 0x196 && ch <= 0x198) { return 1; }
-    else if (ch >= 0x19c && ch <= 0x19d) { return 1; }
-    else if (ch >= 0x19f && ch <= 0x1a0) { return 1; }
-    else if (ch >= 0x1a2 && ch <= 0x1a2) { return 1; }
-    else if (ch >= 0x1a4 && ch <= 0x1a4) { return 1; }
-    else if (ch >= 0x1a6 && ch <= 0x1a7) { return 1; }
-    else if (ch >= 0x1a9 && ch <= 0x1a9) { return 1; }
-    else if (ch >= 0x1ac && ch <= 0x1ac) { return 1; }
-    else if (ch >= 0x1ae && ch <= 0x1af) { return 1; }
-    else if (ch >= 0x1b1 && ch <= 0x1b3) { return 1; }
-    else if (ch >= 0x1b5 && ch <= 0x1b5) { return 1; }
-    else if (ch >= 0x1b7 && ch <= 0x1b8) { return 1; }
-    else if (ch >= 0x1bc && ch <= 0x1bc) { return 1; }
-    else if (ch >= 0x1c4 && ch <= 0x1c4) { return 1; }
-    else if (ch >= 0x1c7 && ch <= 0x1c7) { return 1; }
-    else if (ch >= 0x1ca && ch <= 0x1ca) { return 1; }
-    else if (ch >= 0x1cd && ch <= 0x1cd) { return 1; }
-    else if (ch >= 0x1cf && ch <= 0x1cf) { return 1; }
-    else if (ch >= 0x1d1 && ch <= 0x1d1) { return 1; }
-    else if (ch >= 0x1d3 && ch <= 0x1d3) { return 1; }
-    else if (ch >= 0x1d5 && ch <= 0x1d5) { return 1; }
-    else if (ch >= 0x1d7 && ch <= 0x1d7) { return 1; }
-    else if (ch >= 0x1d9 && ch <= 0x1d9) { return 1; }
-    else if (ch >= 0x1db && ch <= 0x1db) { return 1; }
-    else if (ch >= 0x1de && ch <= 0x1de) { return 1; }
-    else if (ch >= 0x1e0 && ch <= 0x1e0) { return 1; }
-    else if (ch >= 0x1e2 && ch <= 0x1e2) { return 1; }
-    else if (ch >= 0x1e4 && ch <= 0x1e4) { return 1; }
-    else if (ch >= 0x1e6 && ch <= 0x1e6) { return 1; }
-    else if (ch >= 0x1e8 && ch <= 0x1e8) { return 1; }
-    else if (ch >= 0x1ea && ch <= 0x1ea) { return 1; }
-    else if (ch >= 0x1ec && ch <= 0x1ec) { return 1; }
-    else if (ch >= 0x1ee && ch <= 0x1ee) { return 1; }
-    else if (ch >= 0x1f1 && ch <= 0x1f1) { return 1; }
-    else if (ch >= 0x1f4 && ch <= 0x1f4) { return 1; }
-    else if (ch >= 0x1f6 && ch <= 0x1f8) { return 1; }
-    else if (ch >= 0x1fa && ch <= 0x1fa) { return 1; }
-    else if (ch >= 0x1fc && ch <= 0x1fc) { return 1; }
-    else if (ch >= 0x1fe && ch <= 0x1fe) { return 1; }
-    else if (ch >= 0x200 && ch <= 0x200) { return 1; }
-    else if (ch >= 0x202 && ch <= 0x202) { return 1; }
-    else if (ch >= 0x204 && ch <= 0x204) { return 1; }
-    else if (ch >= 0x206 && ch <= 0x206) { return 1; }
-    else if (ch >= 0x208 && ch <= 0x208) { return 1; }
-    else if (ch >= 0x20a && ch <= 0x20a) { return 1; }
-    else if (ch >= 0x20c && ch <= 0x20c) { return 1; }
-    else if (ch >= 0x20e && ch <= 0x20e) { return 1; }
-    else if (ch >= 0x210 && ch <= 0x210) { return 1; }
-    else if (ch >= 0x212 && ch <= 0x212) { return 1; }
-    else if (ch >= 0x214 && ch <= 0x214) { return 1; }
-    else if (ch >= 0x216 && ch <= 0x216) { return 1; }
-    else if (ch >= 0x218 && ch <= 0x218) { return 1; }
-    else if (ch >= 0x21a && ch <= 0x21a) { return 1; }
-    else if (ch >= 0x21c && ch <= 0x21c) { return 1; }
-    else if (ch >= 0x21e && ch <= 0x21e) { return 1; }
-    else if (ch >= 0x220 && ch <= 0x220) { return 1; }
-    else if (ch >= 0x222 && ch <= 0x222) { return 1; }
-    else if (ch >= 0x224 && ch <= 0x224) { return 1; }
-    else if (ch >= 0x226 && ch <= 0x226) { return 1; }
-    else if (ch >= 0x228 && ch <= 0x228) { return 1; }
-    else if (ch >= 0x22a && ch <= 0x22a) { return 1; }
-    else if (ch >= 0x22c && ch <= 0x22c) { return 1; }
-    else if (ch >= 0x22e && ch <= 0x22e) { return 1; }
-    else if (ch >= 0x230 && ch <= 0x230) { return 1; }
-    else if (ch >= 0x232 && ch <= 0x232) { return 1; }
-    else if (ch >= 0x23a && ch <= 0x23b) { return 1; }
-    else if (ch >= 0x23d && ch <= 0x23e) { return 1; }
-    else if (ch >= 0x241 && ch <= 0x241) { return 1; }
-    else if (ch >= 0x243 && ch <= 0x246) { return 1; }
-    else if (ch >= 0x248 && ch <= 0x248) { return 1; }
-    else if (ch >= 0x24a && ch <= 0x24a) { return 1; }
-    else if (ch >= 0x24c && ch <= 0x24c) { return 1; }
-    else if (ch >= 0x24e && ch <= 0x24e) { return 1; }
-    else if (ch >= 0x370 && ch <= 0x370) { return 1; }
-    else if (ch >= 0x372 && ch <= 0x372) { return 1; }
-    else if (ch >= 0x376 && ch <= 0x376) { return 1; }
-    else if (ch >= 0x386 && ch <= 0x386) { return 1; }
-    else if (ch >= 0x388 && ch <= 0x38a) { return 1; }
-    else if (ch >= 0x38c && ch <= 0x38c) { return 1; }
-    else if (ch >= 0x38e && ch <= 0x38f) { return 1; }
-    else if (ch >= 0x391 && ch <= 0x3a1) { return 1; }
-    else if (ch >= 0x3a3 && ch <= 0x3ab) { return 1; }
-    else if (ch >= 0x3cf && ch <= 0x3cf) { return 1; }
-    else if (ch >= 0x3d2 && ch <= 0x3d4) { return 1; }
-    else if (ch >= 0x3d8 && ch <= 0x3d8) { return 1; }
-    else if (ch >= 0x3da && ch <= 0x3da) { return 1; }
-    else if (ch >= 0x3dc && ch <= 0x3dc) { return 1; }
-    else if (ch >= 0x3de && ch <= 0x3de) { return 1; }
-    else if (ch >= 0x3e0 && ch <= 0x3e0) { return 1; }
-    else if (ch >= 0x3e2 && ch <= 0x3e2) { return 1; }
-    else if (ch >= 0x3e4 && ch <= 0x3e4) { return 1; }
-    else if (ch >= 0x3e6 && ch <= 0x3e6) { return 1; }
-    else if (ch >= 0x3e8 && ch <= 0x3e8) { return 1; }
-    else if (ch >= 0x3ea && ch <= 0x3ea) { return 1; }
-    else if (ch >= 0x3ec && ch <= 0x3ec) { return 1; }
-    else if (ch >= 0x3ee && ch <= 0x3ee) { return 1; }
-    else if (ch >= 0x3f4 && ch <= 0x3f4) { return 1; }
-    else if (ch >= 0x3f7 && ch <= 0x3f7) { return 1; }
-    else if (ch >= 0x3f9 && ch <= 0x3fa) { return 1; }
-    else if (ch >= 0x3fd && ch <= 0x42f) { return 1; }
-    else if (ch >= 0x460 && ch <= 0x460) { return 1; }
-    else if (ch >= 0x462 && ch <= 0x462) { return 1; }
-    else if (ch >= 0x464 && ch <= 0x464) { return 1; }
-    else if (ch >= 0x466 && ch <= 0x466) { return 1; }
-    else if (ch >= 0x468 && ch <= 0x468) { return 1; }
-    else if (ch >= 0x46a && ch <= 0x46a) { return 1; }
-    else if (ch >= 0x46c && ch <= 0x46c) { return 1; }
-    else if (ch >= 0x46e && ch <= 0x46e) { return 1; }
-    else if (ch >= 0x470 && ch <= 0x470) { return 1; }
-    else if (ch >= 0x472 && ch <= 0x472) { return 1; }
-    else if (ch >= 0x474 && ch <= 0x474) { return 1; }
-    else if (ch >= 0x476 && ch <= 0x476) { return 1; }
-    else if (ch >= 0x478 && ch <= 0x478) { return 1; }
-    else if (ch >= 0x47a && ch <= 0x47a) { return 1; }
-    else if (ch >= 0x47c && ch <= 0x47c) { return 1; }
-    else if (ch >= 0x47e && ch <= 0x47e) { return 1; }
-    else if (ch >= 0x480 && ch <= 0x480) { return 1; }
-    else if (ch >= 0x48a && ch <= 0x48a) { return 1; }
-    else if (ch >= 0x48c && ch <= 0x48c) { return 1; }
-    else if (ch >= 0x48e && ch <= 0x48e) { return 1; }
-    else if (ch >= 0x490 && ch <= 0x490) { return 1; }
-    else if (ch >= 0x492 && ch <= 0x492) { return 1; }
-    else if (ch >= 0x494 && ch <= 0x494) { return 1; }
-    else if (ch >= 0x496 && ch <= 0x496) { return 1; }
-    else if (ch >= 0x498 && ch <= 0x498) { return 1; }
-    else if (ch >= 0x49a && ch <= 0x49a) { return 1; }
-    else if (ch >= 0x49c && ch <= 0x49c) { return 1; }
-    else if (ch >= 0x49e && ch <= 0x49e) { return 1; }
-    else if (ch >= 0x4a0 && ch <= 0x4a0) { return 1; }
-    else if (ch >= 0x4a2 && ch <= 0x4a2) { return 1; }
-    else if (ch >= 0x4a4 && ch <= 0x4a4) { return 1; }
-    else if (ch >= 0x4a6 && ch <= 0x4a6) { return 1; }
-    else if (ch >= 0x4a8 && ch <= 0x4a8) { return 1; }
-    else if (ch >= 0x4aa && ch <= 0x4aa) { return 1; }
-    else if (ch >= 0x4ac && ch <= 0x4ac) { return 1; }
-    else if (ch >= 0x4ae && ch <= 0x4ae) { return 1; }
-    else if (ch >= 0x4b0 && ch <= 0x4b0) { return 1; }
-    else if (ch >= 0x4b2 && ch <= 0x4b2) { return 1; }
-    else if (ch >= 0x4b4 && ch <= 0x4b4) { return 1; }
-    else if (ch >= 0x4b6 && ch <= 0x4b6) { return 1; }
-    else if (ch >= 0x4b8 && ch <= 0x4b8) { return 1; }
-    else if (ch >= 0x4ba && ch <= 0x4ba) { return 1; }
-    else if (ch >= 0x4bc && ch <= 0x4bc) { return 1; }
-    else if (ch >= 0x4be && ch <= 0x4be) { return 1; }
-    else if (ch >= 0x4c0 && ch <= 0x4c1) { return 1; }
-    else if (ch >= 0x4c3 && ch <= 0x4c3) { return 1; }
-    else if (ch >= 0x4c5 && ch <= 0x4c5) { return 1; }
-    else if (ch >= 0x4c7 && ch <= 0x4c7) { return 1; }
-    else if (ch >= 0x4c9 && ch <= 0x4c9) { return 1; }
-    else if (ch >= 0x4cb && ch <= 0x4cb) { return 1; }
-    else if (ch >= 0x4cd && ch <= 0x4cd) { return 1; }
-    else if (ch >= 0x4d0 && ch <= 0x4d0) { return 1; }
-    else if (ch >= 0x4d2 && ch <= 0x4d2) { return 1; }
-    else if (ch >= 0x4d4 && ch <= 0x4d4) { return 1; }
-    else if (ch >= 0x4d6 && ch <= 0x4d6) { return 1; }
-    else if (ch >= 0x4d8 && ch <= 0x4d8) { return 1; }
-    else if (ch >= 0x4da && ch <= 0x4da) { return 1; }
-    else if (ch >= 0x4dc && ch <= 0x4dc) { return 1; }
-    else if (ch >= 0x4de && ch <= 0x4de) { return 1; }
-    else if (ch >= 0x4e0 && ch <= 0x4e0) { return 1; }
-    else if (ch >= 0x4e2 && ch <= 0x4e2) { return 1; }
-    else if (ch >= 0x4e4 && ch <= 0x4e4) { return 1; }
-    else if (ch >= 0x4e6 && ch <= 0x4e6) { return 1; }
-    else if (ch >= 0x4e8 && ch <= 0x4e8) { return 1; }
-    else if (ch >= 0x4ea && ch <= 0x4ea) { return 1; }
-    else if (ch >= 0x4ec && ch <= 0x4ec) { return 1; }
-    else if (ch >= 0x4ee && ch <= 0x4ee) { return 1; }
-    else if (ch >= 0x4f0 && ch <= 0x4f0) { return 1; }
-    else if (ch >= 0x4f2 && ch <= 0x4f2) { return 1; }
-    else if (ch >= 0x4f4 && ch <= 0x4f4) { return 1; }
-    else if (ch >= 0x4f6 && ch <= 0x4f6) { return 1; }
-    else if (ch >= 0x4f8 && ch <= 0x4f8) { return 1; }
-    else if (ch >= 0x4fa && ch <= 0x4fa) { return 1; }
-    else if (ch >= 0x4fc && ch <= 0x4fc) { return 1; }
-    else if (ch >= 0x4fe && ch <= 0x4fe) { return 1; }
-    else if (ch >= 0x500 && ch <= 0x500) { return 1; }
-    else if (ch >= 0x502 && ch <= 0x502) { return 1; }
-    else if (ch >= 0x504 && ch <= 0x504) { return 1; }
-    else if (ch >= 0x506 && ch <= 0x506) { return 1; }
-    else if (ch >= 0x508 && ch <= 0x508) { return 1; }
-    else if (ch >= 0x50a && ch <= 0x50a) { return 1; }
-    else if (ch >= 0x50c && ch <= 0x50c) { return 1; }
-    else if (ch >= 0x50e && ch <= 0x50e) { return 1; }
-    else if (ch >= 0x510 && ch <= 0x510) { return 1; }
-    else if (ch >= 0x512 && ch <= 0x512) { return 1; }
-    else if (ch >= 0x514 && ch <= 0x514) { return 1; }
-    else if (ch >= 0x516 && ch <= 0x516) { return 1; }
-    else if (ch >= 0x518 && ch <= 0x518) { return 1; }
-    else if (ch >= 0x51a && ch <= 0x51a) { return 1; }
-    else if (ch >= 0x51c && ch <= 0x51c) { return 1; }
-    else if (ch >= 0x51e && ch <= 0x51e) { return 1; }
-    else if (ch >= 0x520 && ch <= 0x520) { return 1; }
-    else if (ch >= 0x522 && ch <= 0x522) { return 1; }
-    else if (ch >= 0x524 && ch <= 0x524) { return 1; }
-    else if (ch >= 0x526 && ch <= 0x526) { return 1; }
-    else if (ch >= 0x531 && ch <= 0x556) { return 1; }
-    else if (ch >= 0x10a0 && ch <= 0x10c5) { return 1; }
-    else if (ch >= 0x10c7 && ch <= 0x10c7) { return 1; }
-    else if (ch >= 0x10cd && ch <= 0x10cd) { return 1; }
-    else if (ch >= 0x1e00 && ch <= 0x1e00) { return 1; }
-    else if (ch >= 0x1e02 && ch <= 0x1e02) { return 1; }
-    else if (ch >= 0x1e04 && ch <= 0x1e04) { return 1; }
-    else if (ch >= 0x1e06 && ch <= 0x1e06) { return 1; }
-    else if (ch >= 0x1e08 && ch <= 0x1e08) { return 1; }
-    else if (ch >= 0x1e0a && ch <= 0x1e0a) { return 1; }
-    else if (ch >= 0x1e0c && ch <= 0x1e0c) { return 1; }
-    else if (ch >= 0x1e0e && ch <= 0x1e0e) { return 1; }
-    else if (ch >= 0x1e10 && ch <= 0x1e10) { return 1; }
-    else if (ch >= 0x1e12 && ch <= 0x1e12) { return 1; }
-    else if (ch >= 0x1e14 && ch <= 0x1e14) { return 1; }
-    else if (ch >= 0x1e16 && ch <= 0x1e16) { return 1; }
-    else if (ch >= 0x1e18 && ch <= 0x1e18) { return 1; }
-    else if (ch >= 0x1e1a && ch <= 0x1e1a) { return 1; }
-    else if (ch >= 0x1e1c && ch <= 0x1e1c) { return 1; }
-    else if (ch >= 0x1e1e && ch <= 0x1e1e) { return 1; }
-    else if (ch >= 0x1e20 && ch <= 0x1e20) { return 1; }
-    else if (ch >= 0x1e22 && ch <= 0x1e22) { return 1; }
-    else if (ch >= 0x1e24 && ch <= 0x1e24) { return 1; }
-    else if (ch >= 0x1e26 && ch <= 0x1e26) { return 1; }
-    else if (ch >= 0x1e28 && ch <= 0x1e28) { return 1; }
-    else if (ch >= 0x1e2a && ch <= 0x1e2a) { return 1; }
-    else if (ch >= 0x1e2c && ch <= 0x1e2c) { return 1; }
-    else if (ch >= 0x1e2e && ch <= 0x1e2e) { return 1; }
-    else if (ch >= 0x1e30 && ch <= 0x1e30) { return 1; }
-    else if (ch >= 0x1e32 && ch <= 0x1e32) { return 1; }
-    else if (ch >= 0x1e34 && ch <= 0x1e34) { return 1; }
-    else if (ch >= 0x1e36 && ch <= 0x1e36) { return 1; }
-    else if (ch >= 0x1e38 && ch <= 0x1e38) { return 1; }
-    else if (ch >= 0x1e3a && ch <= 0x1e3a) { return 1; }
-    else if (ch >= 0x1e3c && ch <= 0x1e3c) { return 1; }
-    else if (ch >= 0x1e3e && ch <= 0x1e3e) { return 1; }
-    else if (ch >= 0x1e40 && ch <= 0x1e40) { return 1; }
-    else if (ch >= 0x1e42 && ch <= 0x1e42) { return 1; }
-    else if (ch >= 0x1e44 && ch <= 0x1e44) { return 1; }
-    else if (ch >= 0x1e46 && ch <= 0x1e46) { return 1; }
-    else if (ch >= 0x1e48 && ch <= 0x1e48) { return 1; }
-    else if (ch >= 0x1e4a && ch <= 0x1e4a) { return 1; }
-    else if (ch >= 0x1e4c && ch <= 0x1e4c) { return 1; }
-    else if (ch >= 0x1e4e && ch <= 0x1e4e) { return 1; }
-    else if (ch >= 0x1e50 && ch <= 0x1e50) { return 1; }
-    else if (ch >= 0x1e52 && ch <= 0x1e52) { return 1; }
-    else if (ch >= 0x1e54 && ch <= 0x1e54) { return 1; }
-    else if (ch >= 0x1e56 && ch <= 0x1e56) { return 1; }
-    else if (ch >= 0x1e58 && ch <= 0x1e58) { return 1; }
-    else if (ch >= 0x1e5a && ch <= 0x1e5a) { return 1; }
-    else if (ch >= 0x1e5c && ch <= 0x1e5c) { return 1; }
-    else if (ch >= 0x1e5e && ch <= 0x1e5e) { return 1; }
-    else if (ch >= 0x1e60 && ch <= 0x1e60) { return 1; }
-    else if (ch >= 0x1e62 && ch <= 0x1e62) { return 1; }
-    else if (ch >= 0x1e64 && ch <= 0x1e64) { return 1; }
-    else if (ch >= 0x1e66 && ch <= 0x1e66) { return 1; }
-    else if (ch >= 0x1e68 && ch <= 0x1e68) { return 1; }
-    else if (ch >= 0x1e6a && ch <= 0x1e6a) { return 1; }
-    else if (ch >= 0x1e6c && ch <= 0x1e6c) { return 1; }
-    else if (ch >= 0x1e6e && ch <= 0x1e6e) { return 1; }
-    else if (ch >= 0x1e70 && ch <= 0x1e70) { return 1; }
-    else if (ch >= 0x1e72 && ch <= 0x1e72) { return 1; }
-    else if (ch >= 0x1e74 && ch <= 0x1e74) { return 1; }
-    else if (ch >= 0x1e76 && ch <= 0x1e76) { return 1; }
-    else if (ch >= 0x1e78 && ch <= 0x1e78) { return 1; }
-    else if (ch >= 0x1e7a && ch <= 0x1e7a) { return 1; }
-    else if (ch >= 0x1e7c && ch <= 0x1e7c) { return 1; }
-    else if (ch >= 0x1e7e && ch <= 0x1e7e) { return 1; }
-    else if (ch >= 0x1e80 && ch <= 0x1e80) { return 1; }
-    else if (ch >= 0x1e82 && ch <= 0x1e82) { return 1; }
-    else if (ch >= 0x1e84 && ch <= 0x1e84) { return 1; }
-    else if (ch >= 0x1e86 && ch <= 0x1e86) { return 1; }
-    else if (ch >= 0x1e88 && ch <= 0x1e88) { return 1; }
-    else if (ch >= 0x1e8a && ch <= 0x1e8a) { return 1; }
-    else if (ch >= 0x1e8c && ch <= 0x1e8c) { return 1; }
-    else if (ch >= 0x1e8e && ch <= 0x1e8e) { return 1; }
-    else if (ch >= 0x1e90 && ch <= 0x1e90) { return 1; }
-    else if (ch >= 0x1e92 && ch <= 0x1e92) { return 1; }
-    else if (ch >= 0x1e94 && ch <= 0x1e94) { return 1; }
-    else if (ch >= 0x1e9e && ch <= 0x1e9e) { return 1; }
-    else if (ch >= 0x1ea0 && ch <= 0x1ea0) { return 1; }
-    else if (ch >= 0x1ea2 && ch <= 0x1ea2) { return 1; }
-    else if (ch >= 0x1ea4 && ch <= 0x1ea4) { return 1; }
-    else if (ch >= 0x1ea6 && ch <= 0x1ea6) { return 1; }
-    else if (ch >= 0x1ea8 && ch <= 0x1ea8) { return 1; }
-    else if (ch >= 0x1eaa && ch <= 0x1eaa) { return 1; }
-    else if (ch >= 0x1eac && ch <= 0x1eac) { return 1; }
-    else if (ch >= 0x1eae && ch <= 0x1eae) { return 1; }
-    else if (ch >= 0x1eb0 && ch <= 0x1eb0) { return 1; }
-    else if (ch >= 0x1eb2 && ch <= 0x1eb2) { return 1; }
-    else if (ch >= 0x1eb4 && ch <= 0x1eb4) { return 1; }
-    else if (ch >= 0x1eb6 && ch <= 0x1eb6) { return 1; }
-    else if (ch >= 0x1eb8 && ch <= 0x1eb8) { return 1; }
-    else if (ch >= 0x1eba && ch <= 0x1eba) { return 1; }
-    else if (ch >= 0x1ebc && ch <= 0x1ebc) { return 1; }
-    else if (ch >= 0x1ebe && ch <= 0x1ebe) { return 1; }
-    else if (ch >= 0x1ec0 && ch <= 0x1ec0) { return 1; }
-    else if (ch >= 0x1ec2 && ch <= 0x1ec2) { return 1; }
-    else if (ch >= 0x1ec4 && ch <= 0x1ec4) { return 1; }
-    else if (ch >= 0x1ec6 && ch <= 0x1ec6) { return 1; }
-    else if (ch >= 0x1ec8 && ch <= 0x1ec8) { return 1; }
-    else if (ch >= 0x1eca && ch <= 0x1eca) { return 1; }
-    else if (ch >= 0x1ecc && ch <= 0x1ecc) { return 1; }
-    else if (ch >= 0x1ece && ch <= 0x1ece) { return 1; }
-    else if (ch >= 0x1ed0 && ch <= 0x1ed0) { return 1; }
-    else if (ch >= 0x1ed2 && ch <= 0x1ed2) { return 1; }
-    else if (ch >= 0x1ed4 && ch <= 0x1ed4) { return 1; }
-    else if (ch >= 0x1ed6 && ch <= 0x1ed6) { return 1; }
-    else if (ch >= 0x1ed8 && ch <= 0x1ed8) { return 1; }
-    else if (ch >= 0x1eda && ch <= 0x1eda) { return 1; }
-    else if (ch >= 0x1edc && ch <= 0x1edc) { return 1; }
-    else if (ch >= 0x1ede && ch <= 0x1ede) { return 1; }
-    else if (ch >= 0x1ee0 && ch <= 0x1ee0) { return 1; }
-    else if (ch >= 0x1ee2 && ch <= 0x1ee2) { return 1; }
-    else if (ch >= 0x1ee4 && ch <= 0x1ee4) { return 1; }
-    else if (ch >= 0x1ee6 && ch <= 0x1ee6) { return 1; }
-    else if (ch >= 0x1ee8 && ch <= 0x1ee8) { return 1; }
-    else if (ch >= 0x1eea && ch <= 0x1eea) { return 1; }
-    else if (ch >= 0x1eec && ch <= 0x1eec) { return 1; }
-    else if (ch >= 0x1eee && ch <= 0x1eee) { return 1; }
-    else if (ch >= 0x1ef0 && ch <= 0x1ef0) { return 1; }
-    else if (ch >= 0x1ef2 && ch <= 0x1ef2) { return 1; }
-    else if (ch >= 0x1ef4 && ch <= 0x1ef4) { return 1; }
-    else if (ch >= 0x1ef6 && ch <= 0x1ef6) { return 1; }
-    else if (ch >= 0x1ef8 && ch <= 0x1ef8) { return 1; }
-    else if (ch >= 0x1efa && ch <= 0x1efa) { return 1; }
-    else if (ch >= 0x1efc && ch <= 0x1efc) { return 1; }
-    else if (ch >= 0x1efe && ch <= 0x1efe) { return 1; }
-    else if (ch >= 0x1f08 && ch <= 0x1f0f) { return 1; }
-    else if (ch >= 0x1f18 && ch <= 0x1f1d) { return 1; }
-    else if (ch >= 0x1f28 && ch <= 0x1f2f) { return 1; }
-    else if (ch >= 0x1f38 && ch <= 0x1f3f) { return 1; }
-    else if (ch >= 0x1f48 && ch <= 0x1f4d) { return 1; }
-    else if (ch >= 0x1f59 && ch <= 0x1f59) { return 1; }
-    else if (ch >= 0x1f5b && ch <= 0x1f5b) { return 1; }
-    else if (ch >= 0x1f5d && ch <= 0x1f5d) { return 1; }
-    else if (ch >= 0x1f5f && ch <= 0x1f5f) { return 1; }
-    else if (ch >= 0x1f68 && ch <= 0x1f6f) { return 1; }
-    else if (ch >= 0x1fb8 && ch <= 0x1fbb) { return 1; }
-    else if (ch >= 0x1fc8 && ch <= 0x1fcb) { return 1; }
-    else if (ch >= 0x1fd8 && ch <= 0x1fdb) { return 1; }
-    else if (ch >= 0x1fe8 && ch <= 0x1fec) { return 1; }
-    else if (ch >= 0x1ff8 && ch <= 0x1ffb) { return 1; }
-    else if (ch >= 0x2102 && ch <= 0x2102) { return 1; }
-    else if (ch >= 0x2107 && ch <= 0x2107) { return 1; }
-    else if (ch >= 0x210b && ch <= 0x210d) { return 1; }
-    else if (ch >= 0x2110 && ch <= 0x2112) { return 1; }
-    else if (ch >= 0x2115 && ch <= 0x2115) { return 1; }
-    else if (ch >= 0x2119 && ch <= 0x211d) { return 1; }
-    else if (ch >= 0x2124 && ch <= 0x2124) { return 1; }
-    else if (ch >= 0x2126 && ch <= 0x2126) { return 1; }
-    else if (ch >= 0x2128 && ch <= 0x2128) { return 1; }
-    else if (ch >= 0x212a && ch <= 0x212d) { return 1; }
-    else if (ch >= 0x2130 && ch <= 0x2133) { return 1; }
-    else if (ch >= 0x213e && ch <= 0x213f) { return 1; }
-    else if (ch >= 0x2145 && ch <= 0x2145) { return 1; }
-    else if (ch >= 0x2183 && ch <= 0x2183) { return 1; }
-    else if (ch >= 0x2c00 && ch <= 0x2c2e) { return 1; }
-    else if (ch >= 0x2c60 && ch <= 0x2c60) { return 1; }
-    else if (ch >= 0x2c62 && ch <= 0x2c64) { return 1; }
-    else if (ch >= 0x2c67 && ch <= 0x2c67) { return 1; }
-    else if (ch >= 0x2c69 && ch <= 0x2c69) { return 1; }
-    else if (ch >= 0x2c6b && ch <= 0x2c6b) { return 1; }
-    else if (ch >= 0x2c6d && ch <= 0x2c70) { return 1; }
-    else if (ch >= 0x2c72 && ch <= 0x2c72) { return 1; }
-    else if (ch >= 0x2c75 && ch <= 0x2c75) { return 1; }
-    else if (ch >= 0x2c7e && ch <= 0x2c80) { return 1; }
-    else if (ch >= 0x2c82 && ch <= 0x2c82) { return 1; }
-    else if (ch >= 0x2c84 && ch <= 0x2c84) { return 1; }
-    else if (ch >= 0x2c86 && ch <= 0x2c86) { return 1; }
-    else if (ch >= 0x2c88 && ch <= 0x2c88) { return 1; }
-    else if (ch >= 0x2c8a && ch <= 0x2c8a) { return 1; }
-    else if (ch >= 0x2c8c && ch <= 0x2c8c) { return 1; }
-    else if (ch >= 0x2c8e && ch <= 0x2c8e) { return 1; }
-    else if (ch >= 0x2c90 && ch <= 0x2c90) { return 1; }
-    else if (ch >= 0x2c92 && ch <= 0x2c92) { return 1; }
-    else if (ch >= 0x2c94 && ch <= 0x2c94) { return 1; }
-    else if (ch >= 0x2c96 && ch <= 0x2c96) { return 1; }
-    else if (ch >= 0x2c98 && ch <= 0x2c98) { return 1; }
-    else if (ch >= 0x2c9a && ch <= 0x2c9a) { return 1; }
-    else if (ch >= 0x2c9c && ch <= 0x2c9c) { return 1; }
-    else if (ch >= 0x2c9e && ch <= 0x2c9e) { return 1; }
-    else if (ch >= 0x2ca0 && ch <= 0x2ca0) { return 1; }
-    else if (ch >= 0x2ca2 && ch <= 0x2ca2) { return 1; }
-    else if (ch >= 0x2ca4 && ch <= 0x2ca4) { return 1; }
-    else if (ch >= 0x2ca6 && ch <= 0x2ca6) { return 1; }
-    else if (ch >= 0x2ca8 && ch <= 0x2ca8) { return 1; }
-    else if (ch >= 0x2caa && ch <= 0x2caa) { return 1; }
-    else if (ch >= 0x2cac && ch <= 0x2cac) { return 1; }
-    else if (ch >= 0x2cae && ch <= 0x2cae) { return 1; }
-    else if (ch >= 0x2cb0 && ch <= 0x2cb0) { return 1; }
-    else if (ch >= 0x2cb2 && ch <= 0x2cb2) { return 1; }
-    else if (ch >= 0x2cb4 && ch <= 0x2cb4) { return 1; }
-    else if (ch >= 0x2cb6 && ch <= 0x2cb6) { return 1; }
-    else if (ch >= 0x2cb8 && ch <= 0x2cb8) { return 1; }
-    else if (ch >= 0x2cba && ch <= 0x2cba) { return 1; }
-    else if (ch >= 0x2cbc && ch <= 0x2cbc) { return 1; }
-    else if (ch >= 0x2cbe && ch <= 0x2cbe) { return 1; }
-    else if (ch >= 0x2cc0 && ch <= 0x2cc0) { return 1; }
-    else if (ch >= 0x2cc2 && ch <= 0x2cc2) { return 1; }
-    else if (ch >= 0x2cc4 && ch <= 0x2cc4) { return 1; }
-    else if (ch >= 0x2cc6 && ch <= 0x2cc6) { return 1; }
-    else if (ch >= 0x2cc8 && ch <= 0x2cc8) { return 1; }
-    else if (ch >= 0x2cca && ch <= 0x2cca) { return 1; }
-    else if (ch >= 0x2ccc && ch <= 0x2ccc) { return 1; }
-    else if (ch >= 0x2cce && ch <= 0x2cce) { return 1; }
-    else if (ch >= 0x2cd0 && ch <= 0x2cd0) { return 1; }
-    else if (ch >= 0x2cd2 && ch <= 0x2cd2) { return 1; }
-    else if (ch >= 0x2cd4 && ch <= 0x2cd4) { return 1; }
-    else if (ch >= 0x2cd6 && ch <= 0x2cd6) { return 1; }
-    else if (ch >= 0x2cd8 && ch <= 0x2cd8) { return 1; }
-    else if (ch >= 0x2cda && ch <= 0x2cda) { return 1; }
-    else if (ch >= 0x2cdc && ch <= 0x2cdc) { return 1; }
-    else if (ch >= 0x2cde && ch <= 0x2cde) { return 1; }
-    else if (ch >= 0x2ce0 && ch <= 0x2ce0) { return 1; }
-    else if (ch >= 0x2ce2 && ch <= 0x2ce2) { return 1; }
-    else if (ch >= 0x2ceb && ch <= 0x2ceb) { return 1; }
-    else if (ch >= 0x2ced && ch <= 0x2ced) { return 1; }
-    else if (ch >= 0x2cf2 && ch <= 0x2cf2) { return 1; }
-    else if (ch >= 0xa640 && ch <= 0xa640) { return 1; }
-    else if (ch >= 0xa642 && ch <= 0xa642) { return 1; }
-    else if (ch >= 0xa644 && ch <= 0xa644) { return 1; }
-    else if (ch >= 0xa646 && ch <= 0xa646) { return 1; }
-    else if (ch >= 0xa648 && ch <= 0xa648) { return 1; }
-    else if (ch >= 0xa64a && ch <= 0xa64a) { return 1; }
-    else if (ch >= 0xa64c && ch <= 0xa64c) { return 1; }
-    else if (ch >= 0xa64e && ch <= 0xa64e) { return 1; }
-    else if (ch >= 0xa650 && ch <= 0xa650) { return 1; }
-    else if (ch >= 0xa652 && ch <= 0xa652) { return 1; }
-    else if (ch >= 0xa654 && ch <= 0xa654) { return 1; }
-    else if (ch >= 0xa656 && ch <= 0xa656) { return 1; }
-    else if (ch >= 0xa658 && ch <= 0xa658) { return 1; }
-    else if (ch >= 0xa65a && ch <= 0xa65a) { return 1; }
-    else if (ch >= 0xa65c && ch <= 0xa65c) { return 1; }
-    else if (ch >= 0xa65e && ch <= 0xa65e) { return 1; }
-    else if (ch >= 0xa660 && ch <= 0xa660) { return 1; }
-    else if (ch >= 0xa662 && ch <= 0xa662) { return 1; }
-    else if (ch >= 0xa664 && ch <= 0xa664) { return 1; }
-    else if (ch >= 0xa666 && ch <= 0xa666) { return 1; }
-    else if (ch >= 0xa668 && ch <= 0xa668) { return 1; }
-    else if (ch >= 0xa66a && ch <= 0xa66a) { return 1; }
-    else if (ch >= 0xa66c && ch <= 0xa66c) { return 1; }
-    else if (ch >= 0xa680 && ch <= 0xa680) { return 1; }
-    else if (ch >= 0xa682 && ch <= 0xa682) { return 1; }
-    else if (ch >= 0xa684 && ch <= 0xa684) { return 1; }
-    else if (ch >= 0xa686 && ch <= 0xa686) { return 1; }
-    else if (ch >= 0xa688 && ch <= 0xa688) { return 1; }
-    else if (ch >= 0xa68a && ch <= 0xa68a) { return 1; }
-    else if (ch >= 0xa68c && ch <= 0xa68c) { return 1; }
-    else if (ch >= 0xa68e && ch <= 0xa68e) { return 1; }
-    else if (ch >= 0xa690 && ch <= 0xa690) { return 1; }
-    else if (ch >= 0xa692 && ch <= 0xa692) { return 1; }
-    else if (ch >= 0xa694 && ch <= 0xa694) { return 1; }
-    else if (ch >= 0xa696 && ch <= 0xa696) { return 1; }
-    else if (ch >= 0xa722 && ch <= 0xa722) { return 1; }
-    else if (ch >= 0xa724 && ch <= 0xa724) { return 1; }
-    else if (ch >= 0xa726 && ch <= 0xa726) { return 1; }
-    else if (ch >= 0xa728 && ch <= 0xa728) { return 1; }
-    else if (ch >= 0xa72a && ch <= 0xa72a) { return 1; }
-    else if (ch >= 0xa72c && ch <= 0xa72c) { return 1; }
-    else if (ch >= 0xa72e && ch <= 0xa72e) { return 1; }
-    else if (ch >= 0xa732 && ch <= 0xa732) { return 1; }
-    else if (ch >= 0xa734 && ch <= 0xa734) { return 1; }
-    else if (ch >= 0xa736 && ch <= 0xa736) { return 1; }
-    else if (ch >= 0xa738 && ch <= 0xa738) { return 1; }
-    else if (ch >= 0xa73a && ch <= 0xa73a) { return 1; }
-    else if (ch >= 0xa73c && ch <= 0xa73c) { return 1; }
-    else if (ch >= 0xa73e && ch <= 0xa73e) { return 1; }
-    else if (ch >= 0xa740 && ch <= 0xa740) { return 1; }
-    else if (ch >= 0xa742 && ch <= 0xa742) { return 1; }
-    else if (ch >= 0xa744 && ch <= 0xa744) { return 1; }
-    else if (ch >= 0xa746 && ch <= 0xa746) { return 1; }
-    else if (ch >= 0xa748 && ch <= 0xa748) { return 1; }
-    else if (ch >= 0xa74a && ch <= 0xa74a) { return 1; }
-    else if (ch >= 0xa74c && ch <= 0xa74c) { return 1; }
-    else if (ch >= 0xa74e && ch <= 0xa74e) { return 1; }
-    else if (ch >= 0xa750 && ch <= 0xa750) { return 1; }
-    else if (ch >= 0xa752 && ch <= 0xa752) { return 1; }
-    else if (ch >= 0xa754 && ch <= 0xa754) { return 1; }
-    else if (ch >= 0xa756 && ch <= 0xa756) { return 1; }
-    else if (ch >= 0xa758 && ch <= 0xa758) { return 1; }
-    else if (ch >= 0xa75a && ch <= 0xa75a) { return 1; }
-    else if (ch >= 0xa75c && ch <= 0xa75c) { return 1; }
-    else if (ch >= 0xa75e && ch <= 0xa75e) { return 1; }
-    else if (ch >= 0xa760 && ch <= 0xa760) { return 1; }
-    else if (ch >= 0xa762 && ch <= 0xa762) { return 1; }
-    else if (ch >= 0xa764 && ch <= 0xa764) { return 1; }
-    else if (ch >= 0xa766 && ch <= 0xa766) { return 1; }
-    else if (ch >= 0xa768 && ch <= 0xa768) { return 1; }
-    else if (ch >= 0xa76a && ch <= 0xa76a) { return 1; }
-    else if (ch >= 0xa76c && ch <= 0xa76c) { return 1; }
-    else if (ch >= 0xa76e && ch <= 0xa76e) { return 1; }
-    else if (ch >= 0xa779 && ch <= 0xa779) { return 1; }
-    else if (ch >= 0xa77b && ch <= 0xa77b) { return 1; }
-    else if (ch >= 0xa77d && ch <= 0xa77e) { return 1; }
-    else if (ch >= 0xa780 && ch <= 0xa780) { return 1; }
-    else if (ch >= 0xa782 && ch <= 0xa782) { return 1; }
-    else if (ch >= 0xa784 && ch <= 0xa784) { return 1; }
-    else if (ch >= 0xa786 && ch <= 0xa786) { return 1; }
-    else if (ch >= 0xa78b && ch <= 0xa78b) { return 1; }
-    else if (ch >= 0xa78d && ch <= 0xa78d) { return 1; }
-    else if (ch >= 0xa790 && ch <= 0xa790) { return 1; }
-    else if (ch >= 0xa792 && ch <= 0xa792) { return 1; }
-    else if (ch >= 0xa7a0 && ch <= 0xa7a0) { return 1; }
-    else if (ch >= 0xa7a2 && ch <= 0xa7a2) { return 1; }
-    else if (ch >= 0xa7a4 && ch <= 0xa7a4) { return 1; }
-    else if (ch >= 0xa7a6 && ch <= 0xa7a6) { return 1; }
-    else if (ch >= 0xa7a8 && ch <= 0xa7a8) { return 1; }
-    else if (ch >= 0xa7aa && ch <= 0xa7aa) { return 1; }
-    else if (ch >= 0xff21 && ch <= 0xff3a) { return 1; }
-    else if (ch >= 0x10400 && ch <= 0x10427) { return 1; }
-    else if (ch >= 0x1d400 && ch <= 0x1d419) { return 1; }
-    else if (ch >= 0x1d434 && ch <= 0x1d44d) { return 1; }
-    else if (ch >= 0x1d468 && ch <= 0x1d481) { return 1; }
-    else if (ch >= 0x1d49c && ch <= 0x1d49c) { return 1; }
-    else if (ch >= 0x1d49e && ch <= 0x1d49f) { return 1; }
-    else if (ch >= 0x1d4a2 && ch <= 0x1d4a2) { return 1; }
-    else if (ch >= 0x1d4a5 && ch <= 0x1d4a6) { return 1; }
-    else if (ch >= 0x1d4a9 && ch <= 0x1d4ac) { return 1; }
-    else if (ch >= 0x1d4ae && ch <= 0x1d4b5) { return 1; }
-    else if (ch >= 0x1d4d0 && ch <= 0x1d4e9) { return 1; }
-    else if (ch >= 0x1d504 && ch <= 0x1d505) { return 1; }
-    else if (ch >= 0x1d507 && ch <= 0x1d50a) { return 1; }
-    else if (ch >= 0x1d50d && ch <= 0x1d514) { return 1; }
-    else if (ch >= 0x1d516 && ch <= 0x1d51c) { return 1; }
-    else if (ch >= 0x1d538 && ch <= 0x1d539) { return 1; }
-    else if (ch >= 0x1d53b && ch <= 0x1d53e) { return 1; }
-    else if (ch >= 0x1d540 && ch <= 0x1d544) { return 1; }
-    else if (ch >= 0x1d546 && ch <= 0x1d546) { return 1; }
-    else if (ch >= 0x1d54a && ch <= 0x1d550) { return 1; }
-    else if (ch >= 0x1d56c && ch <= 0x1d585) { return 1; }
-    else if (ch >= 0x1d5a0 && ch <= 0x1d5b9) { return 1; }
-    else if (ch >= 0x1d5d4 && ch <= 0x1d5ed) { return 1; }
-    else if (ch >= 0x1d608 && ch <= 0x1d621) { return 1; }
-    else if (ch >= 0x1d63c && ch <= 0x1d655) { return 1; }
-    else if (ch >= 0x1d670 && ch <= 0x1d689) { return 1; }
-    else if (ch >= 0x1d6a8 && ch <= 0x1d6c0) { return 1; }
-    else if (ch >= 0x1d6e2 && ch <= 0x1d6fa) { return 1; }
-    else if (ch >= 0x1d71c && ch <= 0x1d734) { return 1; }
-    else if (ch >= 0x1d756 && ch <= 0x1d76e) { return 1; }
-    else if (ch >= 0x1d790 && ch <= 0x1d7a8) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_lu_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_lu_low_bound[n] && ch <= esch_unicode_range_lu_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_mc_low_bound[] = 
+{
+    0x903, 
+    0x93b, 
+    0x93e, 
+    0x949, 
+    0x94e, 
+    0x982, 
+    0x9be, 
+    0x9c7, 
+    0x9cb, 
+    0x9d7, 
+    0xa03, 
+    0xa3e, 
+    0xa83, 
+    0xabe, 
+    0xac9, 
+    0xacb, 
+    0xb02, 
+    0xb3e, 
+    0xb40, 
+    0xb47, 
+    0xb4b, 
+    0xb57, 
+    0xbbe, 
+    0xbc1, 
+    0xbc6, 
+    0xbca, 
+    0xbd7, 
+    0xc01, 
+    0xc41, 
+    0xc82, 
+    0xcbe, 
+    0xcc0, 
+    0xcc7, 
+    0xcca, 
+    0xcd5, 
+    0xd02, 
+    0xd3e, 
+    0xd46, 
+    0xd4a, 
+    0xd57, 
+    0xd82, 
+    0xdcf, 
+    0xdd8, 
+    0xdf2, 
+    0xf3e, 
+    0xf7f, 
+    0x102b, 
+    0x1031, 
+    0x1038, 
+    0x103b, 
+    0x1056, 
+    0x1062, 
+    0x1067, 
+    0x1083, 
+    0x1087, 
+    0x108f, 
+    0x109a, 
+    0x17b6, 
+    0x17be, 
+    0x17c7, 
+    0x1923, 
+    0x1929, 
+    0x1930, 
+    0x1933, 
+    0x19b0, 
+    0x19c8, 
+    0x1a19, 
+    0x1a55, 
+    0x1a57, 
+    0x1a61, 
+    0x1a63, 
+    0x1a6d, 
+    0x1b04, 
+    0x1b35, 
+    0x1b3b, 
+    0x1b3d, 
+    0x1b43, 
+    0x1b82, 
+    0x1ba1, 
+    0x1ba6, 
+    0x1baa, 
+    0x1bac, 
+    0x1be7, 
+    0x1bea, 
+    0x1bee, 
+    0x1bf2, 
+    0x1c24, 
+    0x1c34, 
+    0x1ce1, 
+    0x1cf2, 
+    0x302e, 
+    0xa823, 
+    0xa827, 
+    0xa880, 
+    0xa8b4, 
+    0xa952, 
+    0xa983, 
+    0xa9b4, 
+    0xa9ba, 
+    0xa9bd, 
+    0xaa2f, 
+    0xaa33, 
+    0xaa4d, 
+    0xaa7b, 
+    0xaaeb, 
+    0xaaee, 
+    0xaaf5, 
+    0xabe3, 
+    0xabe6, 
+    0xabe9, 
+    0xabec, 
+    0x11000, 
+    0x11002, 
+    0x11082, 
+    0x110b0, 
+    0x110b7, 
+    0x1112c, 
+    0x11182, 
+    0x111b3, 
+    0x111bf, 
+    0x116ac, 
+    0x116ae, 
+    0x116b6, 
+    0x16f51, 
+    0x1d165, 
+    0x1d16d, 
+};
+static int
+esch_unicode_range_mc_up_bound[] = 
+{
+    0x903, 
+    0x93b, 
+    0x940, 
+    0x94c, 
+    0x94f, 
+    0x983, 
+    0x9c0, 
+    0x9c8, 
+    0x9cc, 
+    0x9d7, 
+    0xa03, 
+    0xa40, 
+    0xa83, 
+    0xac0, 
+    0xac9, 
+    0xacc, 
+    0xb03, 
+    0xb3e, 
+    0xb40, 
+    0xb48, 
+    0xb4c, 
+    0xb57, 
+    0xbbf, 
+    0xbc2, 
+    0xbc8, 
+    0xbcc, 
+    0xbd7, 
+    0xc03, 
+    0xc44, 
+    0xc83, 
+    0xcbe, 
+    0xcc4, 
+    0xcc8, 
+    0xccb, 
+    0xcd6, 
+    0xd03, 
+    0xd40, 
+    0xd48, 
+    0xd4c, 
+    0xd57, 
+    0xd83, 
+    0xdd1, 
+    0xddf, 
+    0xdf3, 
+    0xf3f, 
+    0xf7f, 
+    0x102c, 
+    0x1031, 
+    0x1038, 
+    0x103c, 
+    0x1057, 
+    0x1064, 
+    0x106d, 
+    0x1084, 
+    0x108c, 
+    0x108f, 
+    0x109c, 
+    0x17b6, 
+    0x17c5, 
+    0x17c8, 
+    0x1926, 
+    0x192b, 
+    0x1931, 
+    0x1938, 
+    0x19c0, 
+    0x19c9, 
+    0x1a1b, 
+    0x1a55, 
+    0x1a57, 
+    0x1a61, 
+    0x1a64, 
+    0x1a72, 
+    0x1b04, 
+    0x1b35, 
+    0x1b3b, 
+    0x1b41, 
+    0x1b44, 
+    0x1b82, 
+    0x1ba1, 
+    0x1ba7, 
+    0x1baa, 
+    0x1bad, 
+    0x1be7, 
+    0x1bec, 
+    0x1bee, 
+    0x1bf3, 
+    0x1c2b, 
+    0x1c35, 
+    0x1ce1, 
+    0x1cf3, 
+    0x302f, 
+    0xa824, 
+    0xa827, 
+    0xa881, 
+    0xa8c3, 
+    0xa953, 
+    0xa983, 
+    0xa9b5, 
+    0xa9bb, 
+    0xa9c0, 
+    0xaa30, 
+    0xaa34, 
+    0xaa4d, 
+    0xaa7b, 
+    0xaaeb, 
+    0xaaef, 
+    0xaaf5, 
+    0xabe4, 
+    0xabe7, 
+    0xabea, 
+    0xabec, 
+    0x11000, 
+    0x11002, 
+    0x11082, 
+    0x110b2, 
+    0x110b8, 
+    0x1112c, 
+    0x11182, 
+    0x111b5, 
+    0x111c0, 
+    0x116ac, 
+    0x116af, 
+    0x116b6, 
+    0x16f7e, 
+    0x1d166, 
+    0x1d172, 
+};
 int
 esch_unicode_is_range_mc(esch_unicode ch)
 {
-    if (ch >= 0x903 && ch <= 0x903) { return 1; }
-    else if (ch >= 0x93b && ch <= 0x93b) { return 1; }
-    else if (ch >= 0x93e && ch <= 0x940) { return 1; }
-    else if (ch >= 0x949 && ch <= 0x94c) { return 1; }
-    else if (ch >= 0x94e && ch <= 0x94f) { return 1; }
-    else if (ch >= 0x982 && ch <= 0x983) { return 1; }
-    else if (ch >= 0x9be && ch <= 0x9c0) { return 1; }
-    else if (ch >= 0x9c7 && ch <= 0x9c8) { return 1; }
-    else if (ch >= 0x9cb && ch <= 0x9cc) { return 1; }
-    else if (ch >= 0x9d7 && ch <= 0x9d7) { return 1; }
-    else if (ch >= 0xa03 && ch <= 0xa03) { return 1; }
-    else if (ch >= 0xa3e && ch <= 0xa40) { return 1; }
-    else if (ch >= 0xa83 && ch <= 0xa83) { return 1; }
-    else if (ch >= 0xabe && ch <= 0xac0) { return 1; }
-    else if (ch >= 0xac9 && ch <= 0xac9) { return 1; }
-    else if (ch >= 0xacb && ch <= 0xacc) { return 1; }
-    else if (ch >= 0xb02 && ch <= 0xb03) { return 1; }
-    else if (ch >= 0xb3e && ch <= 0xb3e) { return 1; }
-    else if (ch >= 0xb40 && ch <= 0xb40) { return 1; }
-    else if (ch >= 0xb47 && ch <= 0xb48) { return 1; }
-    else if (ch >= 0xb4b && ch <= 0xb4c) { return 1; }
-    else if (ch >= 0xb57 && ch <= 0xb57) { return 1; }
-    else if (ch >= 0xbbe && ch <= 0xbbf) { return 1; }
-    else if (ch >= 0xbc1 && ch <= 0xbc2) { return 1; }
-    else if (ch >= 0xbc6 && ch <= 0xbc8) { return 1; }
-    else if (ch >= 0xbca && ch <= 0xbcc) { return 1; }
-    else if (ch >= 0xbd7 && ch <= 0xbd7) { return 1; }
-    else if (ch >= 0xc01 && ch <= 0xc03) { return 1; }
-    else if (ch >= 0xc41 && ch <= 0xc44) { return 1; }
-    else if (ch >= 0xc82 && ch <= 0xc83) { return 1; }
-    else if (ch >= 0xcbe && ch <= 0xcbe) { return 1; }
-    else if (ch >= 0xcc0 && ch <= 0xcc4) { return 1; }
-    else if (ch >= 0xcc7 && ch <= 0xcc8) { return 1; }
-    else if (ch >= 0xcca && ch <= 0xccb) { return 1; }
-    else if (ch >= 0xcd5 && ch <= 0xcd6) { return 1; }
-    else if (ch >= 0xd02 && ch <= 0xd03) { return 1; }
-    else if (ch >= 0xd3e && ch <= 0xd40) { return 1; }
-    else if (ch >= 0xd46 && ch <= 0xd48) { return 1; }
-    else if (ch >= 0xd4a && ch <= 0xd4c) { return 1; }
-    else if (ch >= 0xd57 && ch <= 0xd57) { return 1; }
-    else if (ch >= 0xd82 && ch <= 0xd83) { return 1; }
-    else if (ch >= 0xdcf && ch <= 0xdd1) { return 1; }
-    else if (ch >= 0xdd8 && ch <= 0xddf) { return 1; }
-    else if (ch >= 0xdf2 && ch <= 0xdf3) { return 1; }
-    else if (ch >= 0xf3e && ch <= 0xf3f) { return 1; }
-    else if (ch >= 0xf7f && ch <= 0xf7f) { return 1; }
-    else if (ch >= 0x102b && ch <= 0x102c) { return 1; }
-    else if (ch >= 0x1031 && ch <= 0x1031) { return 1; }
-    else if (ch >= 0x1038 && ch <= 0x1038) { return 1; }
-    else if (ch >= 0x103b && ch <= 0x103c) { return 1; }
-    else if (ch >= 0x1056 && ch <= 0x1057) { return 1; }
-    else if (ch >= 0x1062 && ch <= 0x1064) { return 1; }
-    else if (ch >= 0x1067 && ch <= 0x106d) { return 1; }
-    else if (ch >= 0x1083 && ch <= 0x1084) { return 1; }
-    else if (ch >= 0x1087 && ch <= 0x108c) { return 1; }
-    else if (ch >= 0x108f && ch <= 0x108f) { return 1; }
-    else if (ch >= 0x109a && ch <= 0x109c) { return 1; }
-    else if (ch >= 0x17b6 && ch <= 0x17b6) { return 1; }
-    else if (ch >= 0x17be && ch <= 0x17c5) { return 1; }
-    else if (ch >= 0x17c7 && ch <= 0x17c8) { return 1; }
-    else if (ch >= 0x1923 && ch <= 0x1926) { return 1; }
-    else if (ch >= 0x1929 && ch <= 0x192b) { return 1; }
-    else if (ch >= 0x1930 && ch <= 0x1931) { return 1; }
-    else if (ch >= 0x1933 && ch <= 0x1938) { return 1; }
-    else if (ch >= 0x19b0 && ch <= 0x19c0) { return 1; }
-    else if (ch >= 0x19c8 && ch <= 0x19c9) { return 1; }
-    else if (ch >= 0x1a19 && ch <= 0x1a1b) { return 1; }
-    else if (ch >= 0x1a55 && ch <= 0x1a55) { return 1; }
-    else if (ch >= 0x1a57 && ch <= 0x1a57) { return 1; }
-    else if (ch >= 0x1a61 && ch <= 0x1a61) { return 1; }
-    else if (ch >= 0x1a63 && ch <= 0x1a64) { return 1; }
-    else if (ch >= 0x1a6d && ch <= 0x1a72) { return 1; }
-    else if (ch >= 0x1b04 && ch <= 0x1b04) { return 1; }
-    else if (ch >= 0x1b35 && ch <= 0x1b35) { return 1; }
-    else if (ch >= 0x1b3b && ch <= 0x1b3b) { return 1; }
-    else if (ch >= 0x1b3d && ch <= 0x1b41) { return 1; }
-    else if (ch >= 0x1b43 && ch <= 0x1b44) { return 1; }
-    else if (ch >= 0x1b82 && ch <= 0x1b82) { return 1; }
-    else if (ch >= 0x1ba1 && ch <= 0x1ba1) { return 1; }
-    else if (ch >= 0x1ba6 && ch <= 0x1ba7) { return 1; }
-    else if (ch >= 0x1baa && ch <= 0x1baa) { return 1; }
-    else if (ch >= 0x1bac && ch <= 0x1bad) { return 1; }
-    else if (ch >= 0x1be7 && ch <= 0x1be7) { return 1; }
-    else if (ch >= 0x1bea && ch <= 0x1bec) { return 1; }
-    else if (ch >= 0x1bee && ch <= 0x1bee) { return 1; }
-    else if (ch >= 0x1bf2 && ch <= 0x1bf3) { return 1; }
-    else if (ch >= 0x1c24 && ch <= 0x1c2b) { return 1; }
-    else if (ch >= 0x1c34 && ch <= 0x1c35) { return 1; }
-    else if (ch >= 0x1ce1 && ch <= 0x1ce1) { return 1; }
-    else if (ch >= 0x1cf2 && ch <= 0x1cf3) { return 1; }
-    else if (ch >= 0x302e && ch <= 0x302f) { return 1; }
-    else if (ch >= 0xa823 && ch <= 0xa824) { return 1; }
-    else if (ch >= 0xa827 && ch <= 0xa827) { return 1; }
-    else if (ch >= 0xa880 && ch <= 0xa881) { return 1; }
-    else if (ch >= 0xa8b4 && ch <= 0xa8c3) { return 1; }
-    else if (ch >= 0xa952 && ch <= 0xa953) { return 1; }
-    else if (ch >= 0xa983 && ch <= 0xa983) { return 1; }
-    else if (ch >= 0xa9b4 && ch <= 0xa9b5) { return 1; }
-    else if (ch >= 0xa9ba && ch <= 0xa9bb) { return 1; }
-    else if (ch >= 0xa9bd && ch <= 0xa9c0) { return 1; }
-    else if (ch >= 0xaa2f && ch <= 0xaa30) { return 1; }
-    else if (ch >= 0xaa33 && ch <= 0xaa34) { return 1; }
-    else if (ch >= 0xaa4d && ch <= 0xaa4d) { return 1; }
-    else if (ch >= 0xaa7b && ch <= 0xaa7b) { return 1; }
-    else if (ch >= 0xaaeb && ch <= 0xaaeb) { return 1; }
-    else if (ch >= 0xaaee && ch <= 0xaaef) { return 1; }
-    else if (ch >= 0xaaf5 && ch <= 0xaaf5) { return 1; }
-    else if (ch >= 0xabe3 && ch <= 0xabe4) { return 1; }
-    else if (ch >= 0xabe6 && ch <= 0xabe7) { return 1; }
-    else if (ch >= 0xabe9 && ch <= 0xabea) { return 1; }
-    else if (ch >= 0xabec && ch <= 0xabec) { return 1; }
-    else if (ch >= 0x11000 && ch <= 0x11000) { return 1; }
-    else if (ch >= 0x11002 && ch <= 0x11002) { return 1; }
-    else if (ch >= 0x11082 && ch <= 0x11082) { return 1; }
-    else if (ch >= 0x110b0 && ch <= 0x110b2) { return 1; }
-    else if (ch >= 0x110b7 && ch <= 0x110b8) { return 1; }
-    else if (ch >= 0x1112c && ch <= 0x1112c) { return 1; }
-    else if (ch >= 0x11182 && ch <= 0x11182) { return 1; }
-    else if (ch >= 0x111b3 && ch <= 0x111b5) { return 1; }
-    else if (ch >= 0x111bf && ch <= 0x111c0) { return 1; }
-    else if (ch >= 0x116ac && ch <= 0x116ac) { return 1; }
-    else if (ch >= 0x116ae && ch <= 0x116af) { return 1; }
-    else if (ch >= 0x116b6 && ch <= 0x116b6) { return 1; }
-    else if (ch >= 0x16f51 && ch <= 0x16f7e) { return 1; }
-    else if (ch >= 0x1d165 && ch <= 0x1d166) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_mc_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_mc_low_bound[n] && ch <= esch_unicode_range_mc_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_mn_low_bound[] = 
+{
+    0x300, 
+    0x483, 
+    0x591, 
+    0x5bf, 
+    0x5c1, 
+    0x5c4, 
+    0x5c7, 
+    0x610, 
+    0x64b, 
+    0x670, 
+    0x6d6, 
+    0x6df, 
+    0x6e7, 
+    0x6ea, 
+    0x711, 
+    0x730, 
+    0x7a6, 
+    0x7eb, 
+    0x816, 
+    0x81b, 
+    0x825, 
+    0x829, 
+    0x859, 
+    0x8e4, 
+    0x900, 
+    0x93a, 
+    0x93c, 
+    0x941, 
+    0x94d, 
+    0x951, 
+    0x962, 
+    0x981, 
+    0x9bc, 
+    0x9c1, 
+    0x9cd, 
+    0x9e2, 
+    0xa01, 
+    0xa3c, 
+    0xa41, 
+    0xa47, 
+    0xa4b, 
+    0xa51, 
+    0xa70, 
+    0xa75, 
+    0xa81, 
+    0xabc, 
+    0xac1, 
+    0xac7, 
+    0xacd, 
+    0xae2, 
+    0xb01, 
+    0xb3c, 
+    0xb3f, 
+    0xb41, 
+    0xb4d, 
+    0xb56, 
+    0xb62, 
+    0xb82, 
+    0xbc0, 
+    0xbcd, 
+    0xc3e, 
+    0xc46, 
+    0xc4a, 
+    0xc55, 
+    0xc62, 
+    0xcbc, 
+    0xcbf, 
+    0xcc6, 
+    0xccc, 
+    0xce2, 
+    0xd41, 
+    0xd4d, 
+    0xd62, 
+    0xdca, 
+    0xdd2, 
+    0xdd6, 
+    0xe31, 
+    0xe34, 
+    0xe47, 
+    0xeb1, 
+    0xeb4, 
+    0xebb, 
+    0xec8, 
+    0xf18, 
+    0xf35, 
+    0xf37, 
+    0xf39, 
+    0xf71, 
+    0xf80, 
+    0xf86, 
+    0xf8d, 
+    0xf99, 
+    0xfc6, 
+    0x102d, 
+    0x1032, 
+    0x1039, 
+    0x103d, 
+    0x1058, 
+    0x105e, 
+    0x1071, 
+    0x1082, 
+    0x1085, 
+    0x108d, 
+    0x109d, 
+    0x135d, 
+    0x1712, 
+    0x1732, 
+    0x1752, 
+    0x1772, 
+    0x17b4, 
+    0x17b7, 
+    0x17c6, 
+    0x17c9, 
+    0x17dd, 
+    0x180b, 
+    0x18a9, 
+    0x1920, 
+    0x1927, 
+    0x1932, 
+    0x1939, 
+    0x1a17, 
+    0x1a56, 
+    0x1a58, 
+    0x1a60, 
+    0x1a62, 
+    0x1a65, 
+    0x1a73, 
+    0x1a7f, 
+    0x1b00, 
+    0x1b34, 
+    0x1b36, 
+    0x1b3c, 
+    0x1b42, 
+    0x1b6b, 
+    0x1b80, 
+    0x1ba2, 
+    0x1ba8, 
+    0x1bab, 
+    0x1be6, 
+    0x1be8, 
+    0x1bed, 
+    0x1bef, 
+    0x1c2c, 
+    0x1c36, 
+    0x1cd0, 
+    0x1cd4, 
+    0x1ce2, 
+    0x1ced, 
+    0x1cf4, 
+    0x1dc0, 
+    0x1dfc, 
+    0x20d0, 
+    0x20e1, 
+    0x20e5, 
+    0x2cef, 
+    0x2d7f, 
+    0x2de0, 
+    0x302a, 
+    0x3099, 
+    0xa66f, 
+    0xa674, 
+    0xa69f, 
+    0xa6f0, 
+    0xa802, 
+    0xa806, 
+    0xa80b, 
+    0xa825, 
+    0xa8c4, 
+    0xa8e0, 
+    0xa926, 
+    0xa947, 
+    0xa980, 
+    0xa9b3, 
+    0xa9b6, 
+    0xa9bc, 
+    0xaa29, 
+    0xaa31, 
+    0xaa35, 
+    0xaa43, 
+    0xaa4c, 
+    0xaab0, 
+    0xaab2, 
+    0xaab7, 
+    0xaabe, 
+    0xaac1, 
+    0xaaec, 
+    0xaaf6, 
+    0xabe5, 
+    0xabe8, 
+    0xabed, 
+    0xfb1e, 
+    0xfe00, 
+    0xfe20, 
+    0x101fd, 
+    0x10a01, 
+    0x10a05, 
+    0x10a0c, 
+    0x10a38, 
+    0x10a3f, 
+    0x11001, 
+    0x11038, 
+    0x11080, 
+    0x110b3, 
+    0x110b9, 
+    0x11100, 
+    0x11127, 
+    0x1112d, 
+    0x11180, 
+    0x111b6, 
+    0x116ab, 
+    0x116ad, 
+    0x116b0, 
+    0x116b7, 
+    0x16f8f, 
+    0x1d167, 
+    0x1d17b, 
+    0x1d185, 
+    0x1d1aa, 
+    0x1d242, 
+    0xe0100, 
+};
+static int
+esch_unicode_range_mn_up_bound[] = 
+{
+    0x36f, 
+    0x487, 
+    0x5bd, 
+    0x5bf, 
+    0x5c2, 
+    0x5c5, 
+    0x5c7, 
+    0x61a, 
+    0x65f, 
+    0x670, 
+    0x6dc, 
+    0x6e4, 
+    0x6e8, 
+    0x6ed, 
+    0x711, 
+    0x74a, 
+    0x7b0, 
+    0x7f3, 
+    0x819, 
+    0x823, 
+    0x827, 
+    0x82d, 
+    0x85b, 
+    0x8fe, 
+    0x902, 
+    0x93a, 
+    0x93c, 
+    0x948, 
+    0x94d, 
+    0x957, 
+    0x963, 
+    0x981, 
+    0x9bc, 
+    0x9c4, 
+    0x9cd, 
+    0x9e3, 
+    0xa02, 
+    0xa3c, 
+    0xa42, 
+    0xa48, 
+    0xa4d, 
+    0xa51, 
+    0xa71, 
+    0xa75, 
+    0xa82, 
+    0xabc, 
+    0xac5, 
+    0xac8, 
+    0xacd, 
+    0xae3, 
+    0xb01, 
+    0xb3c, 
+    0xb3f, 
+    0xb44, 
+    0xb4d, 
+    0xb56, 
+    0xb63, 
+    0xb82, 
+    0xbc0, 
+    0xbcd, 
+    0xc40, 
+    0xc48, 
+    0xc4d, 
+    0xc56, 
+    0xc63, 
+    0xcbc, 
+    0xcbf, 
+    0xcc6, 
+    0xccd, 
+    0xce3, 
+    0xd44, 
+    0xd4d, 
+    0xd63, 
+    0xdca, 
+    0xdd4, 
+    0xdd6, 
+    0xe31, 
+    0xe3a, 
+    0xe4e, 
+    0xeb1, 
+    0xeb9, 
+    0xebc, 
+    0xecd, 
+    0xf19, 
+    0xf35, 
+    0xf37, 
+    0xf39, 
+    0xf7e, 
+    0xf84, 
+    0xf87, 
+    0xf97, 
+    0xfbc, 
+    0xfc6, 
+    0x1030, 
+    0x1037, 
+    0x103a, 
+    0x103e, 
+    0x1059, 
+    0x1060, 
+    0x1074, 
+    0x1082, 
+    0x1086, 
+    0x108d, 
+    0x109d, 
+    0x135f, 
+    0x1714, 
+    0x1734, 
+    0x1753, 
+    0x1773, 
+    0x17b5, 
+    0x17bd, 
+    0x17c6, 
+    0x17d3, 
+    0x17dd, 
+    0x180d, 
+    0x18a9, 
+    0x1922, 
+    0x1928, 
+    0x1932, 
+    0x193b, 
+    0x1a18, 
+    0x1a56, 
+    0x1a5e, 
+    0x1a60, 
+    0x1a62, 
+    0x1a6c, 
+    0x1a7c, 
+    0x1a7f, 
+    0x1b03, 
+    0x1b34, 
+    0x1b3a, 
+    0x1b3c, 
+    0x1b42, 
+    0x1b73, 
+    0x1b81, 
+    0x1ba5, 
+    0x1ba9, 
+    0x1bab, 
+    0x1be6, 
+    0x1be9, 
+    0x1bed, 
+    0x1bf1, 
+    0x1c33, 
+    0x1c37, 
+    0x1cd2, 
+    0x1ce0, 
+    0x1ce8, 
+    0x1ced, 
+    0x1cf4, 
+    0x1de6, 
+    0x1dff, 
+    0x20dc, 
+    0x20e1, 
+    0x20f0, 
+    0x2cf1, 
+    0x2d7f, 
+    0x2dff, 
+    0x302d, 
+    0x309a, 
+    0xa66f, 
+    0xa67d, 
+    0xa69f, 
+    0xa6f1, 
+    0xa802, 
+    0xa806, 
+    0xa80b, 
+    0xa826, 
+    0xa8c4, 
+    0xa8f1, 
+    0xa92d, 
+    0xa951, 
+    0xa982, 
+    0xa9b3, 
+    0xa9b9, 
+    0xa9bc, 
+    0xaa2e, 
+    0xaa32, 
+    0xaa36, 
+    0xaa43, 
+    0xaa4c, 
+    0xaab0, 
+    0xaab4, 
+    0xaab8, 
+    0xaabf, 
+    0xaac1, 
+    0xaaed, 
+    0xaaf6, 
+    0xabe5, 
+    0xabe8, 
+    0xabed, 
+    0xfb1e, 
+    0xfe0f, 
+    0xfe26, 
+    0x101fd, 
+    0x10a03, 
+    0x10a06, 
+    0x10a0f, 
+    0x10a3a, 
+    0x10a3f, 
+    0x11001, 
+    0x11046, 
+    0x11081, 
+    0x110b6, 
+    0x110ba, 
+    0x11102, 
+    0x1112b, 
+    0x11134, 
+    0x11181, 
+    0x111be, 
+    0x116ab, 
+    0x116ad, 
+    0x116b5, 
+    0x116b7, 
+    0x16f92, 
+    0x1d169, 
+    0x1d182, 
+    0x1d18b, 
+    0x1d1ad, 
+    0x1d244, 
+    0xe01ef, 
+};
 int
 esch_unicode_is_range_mn(esch_unicode ch)
 {
-    if (ch >= 0x300 && ch <= 0x36f) { return 1; }
-    else if (ch >= 0x483 && ch <= 0x487) { return 1; }
-    else if (ch >= 0x591 && ch <= 0x5bd) { return 1; }
-    else if (ch >= 0x5bf && ch <= 0x5bf) { return 1; }
-    else if (ch >= 0x5c1 && ch <= 0x5c2) { return 1; }
-    else if (ch >= 0x5c4 && ch <= 0x5c5) { return 1; }
-    else if (ch >= 0x5c7 && ch <= 0x5c7) { return 1; }
-    else if (ch >= 0x610 && ch <= 0x61a) { return 1; }
-    else if (ch >= 0x64b && ch <= 0x65f) { return 1; }
-    else if (ch >= 0x670 && ch <= 0x670) { return 1; }
-    else if (ch >= 0x6d6 && ch <= 0x6dc) { return 1; }
-    else if (ch >= 0x6df && ch <= 0x6e4) { return 1; }
-    else if (ch >= 0x6e7 && ch <= 0x6e8) { return 1; }
-    else if (ch >= 0x6ea && ch <= 0x6ed) { return 1; }
-    else if (ch >= 0x711 && ch <= 0x711) { return 1; }
-    else if (ch >= 0x730 && ch <= 0x74a) { return 1; }
-    else if (ch >= 0x7a6 && ch <= 0x7b0) { return 1; }
-    else if (ch >= 0x7eb && ch <= 0x7f3) { return 1; }
-    else if (ch >= 0x816 && ch <= 0x819) { return 1; }
-    else if (ch >= 0x81b && ch <= 0x823) { return 1; }
-    else if (ch >= 0x825 && ch <= 0x827) { return 1; }
-    else if (ch >= 0x829 && ch <= 0x82d) { return 1; }
-    else if (ch >= 0x859 && ch <= 0x85b) { return 1; }
-    else if (ch >= 0x8e4 && ch <= 0x8fe) { return 1; }
-    else if (ch >= 0x900 && ch <= 0x902) { return 1; }
-    else if (ch >= 0x93a && ch <= 0x93a) { return 1; }
-    else if (ch >= 0x93c && ch <= 0x93c) { return 1; }
-    else if (ch >= 0x941 && ch <= 0x948) { return 1; }
-    else if (ch >= 0x94d && ch <= 0x94d) { return 1; }
-    else if (ch >= 0x951 && ch <= 0x957) { return 1; }
-    else if (ch >= 0x962 && ch <= 0x963) { return 1; }
-    else if (ch >= 0x981 && ch <= 0x981) { return 1; }
-    else if (ch >= 0x9bc && ch <= 0x9bc) { return 1; }
-    else if (ch >= 0x9c1 && ch <= 0x9c4) { return 1; }
-    else if (ch >= 0x9cd && ch <= 0x9cd) { return 1; }
-    else if (ch >= 0x9e2 && ch <= 0x9e3) { return 1; }
-    else if (ch >= 0xa01 && ch <= 0xa02) { return 1; }
-    else if (ch >= 0xa3c && ch <= 0xa3c) { return 1; }
-    else if (ch >= 0xa41 && ch <= 0xa42) { return 1; }
-    else if (ch >= 0xa47 && ch <= 0xa48) { return 1; }
-    else if (ch >= 0xa4b && ch <= 0xa4d) { return 1; }
-    else if (ch >= 0xa51 && ch <= 0xa51) { return 1; }
-    else if (ch >= 0xa70 && ch <= 0xa71) { return 1; }
-    else if (ch >= 0xa75 && ch <= 0xa75) { return 1; }
-    else if (ch >= 0xa81 && ch <= 0xa82) { return 1; }
-    else if (ch >= 0xabc && ch <= 0xabc) { return 1; }
-    else if (ch >= 0xac1 && ch <= 0xac5) { return 1; }
-    else if (ch >= 0xac7 && ch <= 0xac8) { return 1; }
-    else if (ch >= 0xacd && ch <= 0xacd) { return 1; }
-    else if (ch >= 0xae2 && ch <= 0xae3) { return 1; }
-    else if (ch >= 0xb01 && ch <= 0xb01) { return 1; }
-    else if (ch >= 0xb3c && ch <= 0xb3c) { return 1; }
-    else if (ch >= 0xb3f && ch <= 0xb3f) { return 1; }
-    else if (ch >= 0xb41 && ch <= 0xb44) { return 1; }
-    else if (ch >= 0xb4d && ch <= 0xb4d) { return 1; }
-    else if (ch >= 0xb56 && ch <= 0xb56) { return 1; }
-    else if (ch >= 0xb62 && ch <= 0xb63) { return 1; }
-    else if (ch >= 0xb82 && ch <= 0xb82) { return 1; }
-    else if (ch >= 0xbc0 && ch <= 0xbc0) { return 1; }
-    else if (ch >= 0xbcd && ch <= 0xbcd) { return 1; }
-    else if (ch >= 0xc3e && ch <= 0xc40) { return 1; }
-    else if (ch >= 0xc46 && ch <= 0xc48) { return 1; }
-    else if (ch >= 0xc4a && ch <= 0xc4d) { return 1; }
-    else if (ch >= 0xc55 && ch <= 0xc56) { return 1; }
-    else if (ch >= 0xc62 && ch <= 0xc63) { return 1; }
-    else if (ch >= 0xcbc && ch <= 0xcbc) { return 1; }
-    else if (ch >= 0xcbf && ch <= 0xcbf) { return 1; }
-    else if (ch >= 0xcc6 && ch <= 0xcc6) { return 1; }
-    else if (ch >= 0xccc && ch <= 0xccd) { return 1; }
-    else if (ch >= 0xce2 && ch <= 0xce3) { return 1; }
-    else if (ch >= 0xd41 && ch <= 0xd44) { return 1; }
-    else if (ch >= 0xd4d && ch <= 0xd4d) { return 1; }
-    else if (ch >= 0xd62 && ch <= 0xd63) { return 1; }
-    else if (ch >= 0xdca && ch <= 0xdca) { return 1; }
-    else if (ch >= 0xdd2 && ch <= 0xdd4) { return 1; }
-    else if (ch >= 0xdd6 && ch <= 0xdd6) { return 1; }
-    else if (ch >= 0xe31 && ch <= 0xe31) { return 1; }
-    else if (ch >= 0xe34 && ch <= 0xe3a) { return 1; }
-    else if (ch >= 0xe47 && ch <= 0xe4e) { return 1; }
-    else if (ch >= 0xeb1 && ch <= 0xeb1) { return 1; }
-    else if (ch >= 0xeb4 && ch <= 0xeb9) { return 1; }
-    else if (ch >= 0xebb && ch <= 0xebc) { return 1; }
-    else if (ch >= 0xec8 && ch <= 0xecd) { return 1; }
-    else if (ch >= 0xf18 && ch <= 0xf19) { return 1; }
-    else if (ch >= 0xf35 && ch <= 0xf35) { return 1; }
-    else if (ch >= 0xf37 && ch <= 0xf37) { return 1; }
-    else if (ch >= 0xf39 && ch <= 0xf39) { return 1; }
-    else if (ch >= 0xf71 && ch <= 0xf7e) { return 1; }
-    else if (ch >= 0xf80 && ch <= 0xf84) { return 1; }
-    else if (ch >= 0xf86 && ch <= 0xf87) { return 1; }
-    else if (ch >= 0xf8d && ch <= 0xf97) { return 1; }
-    else if (ch >= 0xf99 && ch <= 0xfbc) { return 1; }
-    else if (ch >= 0xfc6 && ch <= 0xfc6) { return 1; }
-    else if (ch >= 0x102d && ch <= 0x1030) { return 1; }
-    else if (ch >= 0x1032 && ch <= 0x1037) { return 1; }
-    else if (ch >= 0x1039 && ch <= 0x103a) { return 1; }
-    else if (ch >= 0x103d && ch <= 0x103e) { return 1; }
-    else if (ch >= 0x1058 && ch <= 0x1059) { return 1; }
-    else if (ch >= 0x105e && ch <= 0x1060) { return 1; }
-    else if (ch >= 0x1071 && ch <= 0x1074) { return 1; }
-    else if (ch >= 0x1082 && ch <= 0x1082) { return 1; }
-    else if (ch >= 0x1085 && ch <= 0x1086) { return 1; }
-    else if (ch >= 0x108d && ch <= 0x108d) { return 1; }
-    else if (ch >= 0x109d && ch <= 0x109d) { return 1; }
-    else if (ch >= 0x135d && ch <= 0x135f) { return 1; }
-    else if (ch >= 0x1712 && ch <= 0x1714) { return 1; }
-    else if (ch >= 0x1732 && ch <= 0x1734) { return 1; }
-    else if (ch >= 0x1752 && ch <= 0x1753) { return 1; }
-    else if (ch >= 0x1772 && ch <= 0x1773) { return 1; }
-    else if (ch >= 0x17b4 && ch <= 0x17b5) { return 1; }
-    else if (ch >= 0x17b7 && ch <= 0x17bd) { return 1; }
-    else if (ch >= 0x17c6 && ch <= 0x17c6) { return 1; }
-    else if (ch >= 0x17c9 && ch <= 0x17d3) { return 1; }
-    else if (ch >= 0x17dd && ch <= 0x17dd) { return 1; }
-    else if (ch >= 0x180b && ch <= 0x180d) { return 1; }
-    else if (ch >= 0x18a9 && ch <= 0x18a9) { return 1; }
-    else if (ch >= 0x1920 && ch <= 0x1922) { return 1; }
-    else if (ch >= 0x1927 && ch <= 0x1928) { return 1; }
-    else if (ch >= 0x1932 && ch <= 0x1932) { return 1; }
-    else if (ch >= 0x1939 && ch <= 0x193b) { return 1; }
-    else if (ch >= 0x1a17 && ch <= 0x1a18) { return 1; }
-    else if (ch >= 0x1a56 && ch <= 0x1a56) { return 1; }
-    else if (ch >= 0x1a58 && ch <= 0x1a5e) { return 1; }
-    else if (ch >= 0x1a60 && ch <= 0x1a60) { return 1; }
-    else if (ch >= 0x1a62 && ch <= 0x1a62) { return 1; }
-    else if (ch >= 0x1a65 && ch <= 0x1a6c) { return 1; }
-    else if (ch >= 0x1a73 && ch <= 0x1a7c) { return 1; }
-    else if (ch >= 0x1a7f && ch <= 0x1a7f) { return 1; }
-    else if (ch >= 0x1b00 && ch <= 0x1b03) { return 1; }
-    else if (ch >= 0x1b34 && ch <= 0x1b34) { return 1; }
-    else if (ch >= 0x1b36 && ch <= 0x1b3a) { return 1; }
-    else if (ch >= 0x1b3c && ch <= 0x1b3c) { return 1; }
-    else if (ch >= 0x1b42 && ch <= 0x1b42) { return 1; }
-    else if (ch >= 0x1b6b && ch <= 0x1b73) { return 1; }
-    else if (ch >= 0x1b80 && ch <= 0x1b81) { return 1; }
-    else if (ch >= 0x1ba2 && ch <= 0x1ba5) { return 1; }
-    else if (ch >= 0x1ba8 && ch <= 0x1ba9) { return 1; }
-    else if (ch >= 0x1bab && ch <= 0x1bab) { return 1; }
-    else if (ch >= 0x1be6 && ch <= 0x1be6) { return 1; }
-    else if (ch >= 0x1be8 && ch <= 0x1be9) { return 1; }
-    else if (ch >= 0x1bed && ch <= 0x1bed) { return 1; }
-    else if (ch >= 0x1bef && ch <= 0x1bf1) { return 1; }
-    else if (ch >= 0x1c2c && ch <= 0x1c33) { return 1; }
-    else if (ch >= 0x1c36 && ch <= 0x1c37) { return 1; }
-    else if (ch >= 0x1cd0 && ch <= 0x1cd2) { return 1; }
-    else if (ch >= 0x1cd4 && ch <= 0x1ce0) { return 1; }
-    else if (ch >= 0x1ce2 && ch <= 0x1ce8) { return 1; }
-    else if (ch >= 0x1ced && ch <= 0x1ced) { return 1; }
-    else if (ch >= 0x1cf4 && ch <= 0x1cf4) { return 1; }
-    else if (ch >= 0x1dc0 && ch <= 0x1de6) { return 1; }
-    else if (ch >= 0x1dfc && ch <= 0x1dff) { return 1; }
-    else if (ch >= 0x20d0 && ch <= 0x20dc) { return 1; }
-    else if (ch >= 0x20e1 && ch <= 0x20e1) { return 1; }
-    else if (ch >= 0x20e5 && ch <= 0x20f0) { return 1; }
-    else if (ch >= 0x2cef && ch <= 0x2cf1) { return 1; }
-    else if (ch >= 0x2d7f && ch <= 0x2d7f) { return 1; }
-    else if (ch >= 0x2de0 && ch <= 0x2dff) { return 1; }
-    else if (ch >= 0x302a && ch <= 0x302d) { return 1; }
-    else if (ch >= 0x3099 && ch <= 0x309a) { return 1; }
-    else if (ch >= 0xa66f && ch <= 0xa66f) { return 1; }
-    else if (ch >= 0xa674 && ch <= 0xa67d) { return 1; }
-    else if (ch >= 0xa69f && ch <= 0xa69f) { return 1; }
-    else if (ch >= 0xa6f0 && ch <= 0xa6f1) { return 1; }
-    else if (ch >= 0xa802 && ch <= 0xa802) { return 1; }
-    else if (ch >= 0xa806 && ch <= 0xa806) { return 1; }
-    else if (ch >= 0xa80b && ch <= 0xa80b) { return 1; }
-    else if (ch >= 0xa825 && ch <= 0xa826) { return 1; }
-    else if (ch >= 0xa8c4 && ch <= 0xa8c4) { return 1; }
-    else if (ch >= 0xa8e0 && ch <= 0xa8f1) { return 1; }
-    else if (ch >= 0xa926 && ch <= 0xa92d) { return 1; }
-    else if (ch >= 0xa947 && ch <= 0xa951) { return 1; }
-    else if (ch >= 0xa980 && ch <= 0xa982) { return 1; }
-    else if (ch >= 0xa9b3 && ch <= 0xa9b3) { return 1; }
-    else if (ch >= 0xa9b6 && ch <= 0xa9b9) { return 1; }
-    else if (ch >= 0xa9bc && ch <= 0xa9bc) { return 1; }
-    else if (ch >= 0xaa29 && ch <= 0xaa2e) { return 1; }
-    else if (ch >= 0xaa31 && ch <= 0xaa32) { return 1; }
-    else if (ch >= 0xaa35 && ch <= 0xaa36) { return 1; }
-    else if (ch >= 0xaa43 && ch <= 0xaa43) { return 1; }
-    else if (ch >= 0xaa4c && ch <= 0xaa4c) { return 1; }
-    else if (ch >= 0xaab0 && ch <= 0xaab0) { return 1; }
-    else if (ch >= 0xaab2 && ch <= 0xaab4) { return 1; }
-    else if (ch >= 0xaab7 && ch <= 0xaab8) { return 1; }
-    else if (ch >= 0xaabe && ch <= 0xaabf) { return 1; }
-    else if (ch >= 0xaac1 && ch <= 0xaac1) { return 1; }
-    else if (ch >= 0xaaec && ch <= 0xaaed) { return 1; }
-    else if (ch >= 0xaaf6 && ch <= 0xaaf6) { return 1; }
-    else if (ch >= 0xabe5 && ch <= 0xabe5) { return 1; }
-    else if (ch >= 0xabe8 && ch <= 0xabe8) { return 1; }
-    else if (ch >= 0xabed && ch <= 0xabed) { return 1; }
-    else if (ch >= 0xfb1e && ch <= 0xfb1e) { return 1; }
-    else if (ch >= 0xfe00 && ch <= 0xfe0f) { return 1; }
-    else if (ch >= 0xfe20 && ch <= 0xfe26) { return 1; }
-    else if (ch >= 0x101fd && ch <= 0x101fd) { return 1; }
-    else if (ch >= 0x10a01 && ch <= 0x10a03) { return 1; }
-    else if (ch >= 0x10a05 && ch <= 0x10a06) { return 1; }
-    else if (ch >= 0x10a0c && ch <= 0x10a0f) { return 1; }
-    else if (ch >= 0x10a38 && ch <= 0x10a3a) { return 1; }
-    else if (ch >= 0x10a3f && ch <= 0x10a3f) { return 1; }
-    else if (ch >= 0x11001 && ch <= 0x11001) { return 1; }
-    else if (ch >= 0x11038 && ch <= 0x11046) { return 1; }
-    else if (ch >= 0x11080 && ch <= 0x11081) { return 1; }
-    else if (ch >= 0x110b3 && ch <= 0x110b6) { return 1; }
-    else if (ch >= 0x110b9 && ch <= 0x110ba) { return 1; }
-    else if (ch >= 0x11100 && ch <= 0x11102) { return 1; }
-    else if (ch >= 0x11127 && ch <= 0x1112b) { return 1; }
-    else if (ch >= 0x1112d && ch <= 0x11134) { return 1; }
-    else if (ch >= 0x11180 && ch <= 0x11181) { return 1; }
-    else if (ch >= 0x111b6 && ch <= 0x111be) { return 1; }
-    else if (ch >= 0x116ab && ch <= 0x116ab) { return 1; }
-    else if (ch >= 0x116ad && ch <= 0x116ad) { return 1; }
-    else if (ch >= 0x116b0 && ch <= 0x116b5) { return 1; }
-    else if (ch >= 0x116b7 && ch <= 0x116b7) { return 1; }
-    else if (ch >= 0x16f8f && ch <= 0x16f92) { return 1; }
-    else if (ch >= 0x1d167 && ch <= 0x1d169) { return 1; }
-    else if (ch >= 0x1d17b && ch <= 0x1d182) { return 1; }
-    else if (ch >= 0x1d185 && ch <= 0x1d18b) { return 1; }
-    else if (ch >= 0x1d1aa && ch <= 0x1d1ad) { return 1; }
-    else if (ch >= 0x1d242 && ch <= 0x1d244) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_mn_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_mn_low_bound[n] && ch <= esch_unicode_range_mn_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_nd_low_bound[] = 
+{
+    0x30, 
+    0x660, 
+    0x6f0, 
+    0x7c0, 
+    0x966, 
+    0x9e6, 
+    0xa66, 
+    0xae6, 
+    0xb66, 
+    0xbe6, 
+    0xc66, 
+    0xce6, 
+    0xd66, 
+    0xe50, 
+    0xed0, 
+    0xf20, 
+    0x1040, 
+    0x1090, 
+    0x17e0, 
+    0x1810, 
+    0x1946, 
+    0x19d0, 
+    0x1a80, 
+    0x1a90, 
+    0x1b50, 
+    0x1bb0, 
+    0x1c40, 
+    0x1c50, 
+    0xa620, 
+    0xa8d0, 
+    0xa900, 
+    0xa9d0, 
+    0xaa50, 
+    0xabf0, 
+    0xff10, 
+    0x104a0, 
+    0x11066, 
+    0x110f0, 
+    0x11136, 
+    0x111d0, 
+    0x116c0, 
+    0x1d7ce, 
+};
+static int
+esch_unicode_range_nd_up_bound[] = 
+{
+    0x39, 
+    0x669, 
+    0x6f9, 
+    0x7c9, 
+    0x96f, 
+    0x9ef, 
+    0xa6f, 
+    0xaef, 
+    0xb6f, 
+    0xbef, 
+    0xc6f, 
+    0xcef, 
+    0xd6f, 
+    0xe59, 
+    0xed9, 
+    0xf29, 
+    0x1049, 
+    0x1099, 
+    0x17e9, 
+    0x1819, 
+    0x194f, 
+    0x19d9, 
+    0x1a89, 
+    0x1a99, 
+    0x1b59, 
+    0x1bb9, 
+    0x1c49, 
+    0x1c59, 
+    0xa629, 
+    0xa8d9, 
+    0xa909, 
+    0xa9d9, 
+    0xaa59, 
+    0xabf9, 
+    0xff19, 
+    0x104a9, 
+    0x1106f, 
+    0x110f9, 
+    0x1113f, 
+    0x111d9, 
+    0x116c9, 
+    0x1d7ff, 
+};
 int
 esch_unicode_is_range_nd(esch_unicode ch)
 {
-    if (ch >= 0x30 && ch <= 0x39) { return 1; }
-    else if (ch >= 0x660 && ch <= 0x669) { return 1; }
-    else if (ch >= 0x6f0 && ch <= 0x6f9) { return 1; }
-    else if (ch >= 0x7c0 && ch <= 0x7c9) { return 1; }
-    else if (ch >= 0x966 && ch <= 0x96f) { return 1; }
-    else if (ch >= 0x9e6 && ch <= 0x9ef) { return 1; }
-    else if (ch >= 0xa66 && ch <= 0xa6f) { return 1; }
-    else if (ch >= 0xae6 && ch <= 0xaef) { return 1; }
-    else if (ch >= 0xb66 && ch <= 0xb6f) { return 1; }
-    else if (ch >= 0xbe6 && ch <= 0xbef) { return 1; }
-    else if (ch >= 0xc66 && ch <= 0xc6f) { return 1; }
-    else if (ch >= 0xce6 && ch <= 0xcef) { return 1; }
-    else if (ch >= 0xd66 && ch <= 0xd6f) { return 1; }
-    else if (ch >= 0xe50 && ch <= 0xe59) { return 1; }
-    else if (ch >= 0xed0 && ch <= 0xed9) { return 1; }
-    else if (ch >= 0xf20 && ch <= 0xf29) { return 1; }
-    else if (ch >= 0x1040 && ch <= 0x1049) { return 1; }
-    else if (ch >= 0x1090 && ch <= 0x1099) { return 1; }
-    else if (ch >= 0x17e0 && ch <= 0x17e9) { return 1; }
-    else if (ch >= 0x1810 && ch <= 0x1819) { return 1; }
-    else if (ch >= 0x1946 && ch <= 0x194f) { return 1; }
-    else if (ch >= 0x19d0 && ch <= 0x19d9) { return 1; }
-    else if (ch >= 0x1a80 && ch <= 0x1a89) { return 1; }
-    else if (ch >= 0x1a90 && ch <= 0x1a99) { return 1; }
-    else if (ch >= 0x1b50 && ch <= 0x1b59) { return 1; }
-    else if (ch >= 0x1bb0 && ch <= 0x1bb9) { return 1; }
-    else if (ch >= 0x1c40 && ch <= 0x1c49) { return 1; }
-    else if (ch >= 0x1c50 && ch <= 0x1c59) { return 1; }
-    else if (ch >= 0xa620 && ch <= 0xa629) { return 1; }
-    else if (ch >= 0xa8d0 && ch <= 0xa8d9) { return 1; }
-    else if (ch >= 0xa900 && ch <= 0xa909) { return 1; }
-    else if (ch >= 0xa9d0 && ch <= 0xa9d9) { return 1; }
-    else if (ch >= 0xaa50 && ch <= 0xaa59) { return 1; }
-    else if (ch >= 0xabf0 && ch <= 0xabf9) { return 1; }
-    else if (ch >= 0xff10 && ch <= 0xff19) { return 1; }
-    else if (ch >= 0x104a0 && ch <= 0x104a9) { return 1; }
-    else if (ch >= 0x11066 && ch <= 0x1106f) { return 1; }
-    else if (ch >= 0x110f0 && ch <= 0x110f9) { return 1; }
-    else if (ch >= 0x11136 && ch <= 0x1113f) { return 1; }
-    else if (ch >= 0x111d0 && ch <= 0x111d9) { return 1; }
-    else if (ch >= 0x116c0 && ch <= 0x116c9) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_nd_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_nd_low_bound[n] && ch <= esch_unicode_range_nd_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_nl_low_bound[] = 
+{
+    0x16ee, 
+    0x2160, 
+    0x2185, 
+    0x3007, 
+    0x3021, 
+    0x3038, 
+    0xa6e6, 
+    0x10140, 
+    0x10341, 
+    0x1034a, 
+    0x103d1, 
+    0x12400, 
+};
+static int
+esch_unicode_range_nl_up_bound[] = 
+{
+    0x16f0, 
+    0x2182, 
+    0x2188, 
+    0x3007, 
+    0x3029, 
+    0x303a, 
+    0xa6ef, 
+    0x10174, 
+    0x10341, 
+    0x1034a, 
+    0x103d5, 
+    0x12462, 
+};
 int
 esch_unicode_is_range_nl(esch_unicode ch)
 {
-    if (ch >= 0x16ee && ch <= 0x16f0) { return 1; }
-    else if (ch >= 0x2160 && ch <= 0x2182) { return 1; }
-    else if (ch >= 0x2185 && ch <= 0x2188) { return 1; }
-    else if (ch >= 0x3007 && ch <= 0x3007) { return 1; }
-    else if (ch >= 0x3021 && ch <= 0x3029) { return 1; }
-    else if (ch >= 0x3038 && ch <= 0x303a) { return 1; }
-    else if (ch >= 0xa6e6 && ch <= 0xa6ef) { return 1; }
-    else if (ch >= 0x10140 && ch <= 0x10174) { return 1; }
-    else if (ch >= 0x10341 && ch <= 0x10341) { return 1; }
-    else if (ch >= 0x1034a && ch <= 0x1034a) { return 1; }
-    else if (ch >= 0x103d1 && ch <= 0x103d5) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_nl_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_nl_low_bound[n] && ch <= esch_unicode_range_nl_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_no_low_bound[] = 
+{
+    0xb2, 
+    0xb9, 
+    0xbc, 
+    0x9f4, 
+    0xb72, 
+    0xbf0, 
+    0xc78, 
+    0xd70, 
+    0xf2a, 
+    0x1369, 
+    0x17f0, 
+    0x19da, 
+    0x2070, 
+    0x2074, 
+    0x2080, 
+    0x2150, 
+    0x2189, 
+    0x2460, 
+    0x24ea, 
+    0x2776, 
+    0x2cfd, 
+    0x3192, 
+    0x3220, 
+    0x3248, 
+    0x3251, 
+    0x3280, 
+    0x32b1, 
+    0xa830, 
+    0x10107, 
+    0x10175, 
+    0x1018a, 
+    0x10320, 
+    0x10858, 
+    0x10916, 
+    0x10a40, 
+    0x10a7d, 
+    0x10b58, 
+    0x10b78, 
+    0x10e60, 
+    0x11052, 
+    0x1d360, 
+    0x1f100, 
+};
+static int
+esch_unicode_range_no_up_bound[] = 
+{
+    0xb3, 
+    0xb9, 
+    0xbe, 
+    0x9f9, 
+    0xb77, 
+    0xbf2, 
+    0xc7e, 
+    0xd75, 
+    0xf33, 
+    0x137c, 
+    0x17f9, 
+    0x19da, 
+    0x2070, 
+    0x2079, 
+    0x2089, 
+    0x215f, 
+    0x2189, 
+    0x249b, 
+    0x24ff, 
+    0x2793, 
+    0x2cfd, 
+    0x3195, 
+    0x3229, 
+    0x324f, 
+    0x325f, 
+    0x3289, 
+    0x32bf, 
+    0xa835, 
+    0x10133, 
+    0x10178, 
+    0x1018a, 
+    0x10323, 
+    0x1085f, 
+    0x1091b, 
+    0x10a47, 
+    0x10a7e, 
+    0x10b5f, 
+    0x10b7f, 
+    0x10e7e, 
+    0x11065, 
+    0x1d371, 
+    0x1f10a, 
+};
 int
 esch_unicode_is_range_no(esch_unicode ch)
 {
-    if (ch >= 0xb2 && ch <= 0xb3) { return 1; }
-    else if (ch >= 0xb9 && ch <= 0xb9) { return 1; }
-    else if (ch >= 0xbc && ch <= 0xbe) { return 1; }
-    else if (ch >= 0x9f4 && ch <= 0x9f9) { return 1; }
-    else if (ch >= 0xb72 && ch <= 0xb77) { return 1; }
-    else if (ch >= 0xbf0 && ch <= 0xbf2) { return 1; }
-    else if (ch >= 0xc78 && ch <= 0xc7e) { return 1; }
-    else if (ch >= 0xd70 && ch <= 0xd75) { return 1; }
-    else if (ch >= 0xf2a && ch <= 0xf33) { return 1; }
-    else if (ch >= 0x1369 && ch <= 0x137c) { return 1; }
-    else if (ch >= 0x17f0 && ch <= 0x17f9) { return 1; }
-    else if (ch >= 0x19da && ch <= 0x19da) { return 1; }
-    else if (ch >= 0x2070 && ch <= 0x2070) { return 1; }
-    else if (ch >= 0x2074 && ch <= 0x2079) { return 1; }
-    else if (ch >= 0x2080 && ch <= 0x2089) { return 1; }
-    else if (ch >= 0x2150 && ch <= 0x215f) { return 1; }
-    else if (ch >= 0x2189 && ch <= 0x2189) { return 1; }
-    else if (ch >= 0x2460 && ch <= 0x249b) { return 1; }
-    else if (ch >= 0x24ea && ch <= 0x24ff) { return 1; }
-    else if (ch >= 0x2776 && ch <= 0x2793) { return 1; }
-    else if (ch >= 0x2cfd && ch <= 0x2cfd) { return 1; }
-    else if (ch >= 0x3192 && ch <= 0x3195) { return 1; }
-    else if (ch >= 0x3220 && ch <= 0x3229) { return 1; }
-    else if (ch >= 0x3248 && ch <= 0x324f) { return 1; }
-    else if (ch >= 0x3251 && ch <= 0x325f) { return 1; }
-    else if (ch >= 0x3280 && ch <= 0x3289) { return 1; }
-    else if (ch >= 0x32b1 && ch <= 0x32bf) { return 1; }
-    else if (ch >= 0xa830 && ch <= 0xa835) { return 1; }
-    else if (ch >= 0x10107 && ch <= 0x10133) { return 1; }
-    else if (ch >= 0x10175 && ch <= 0x10178) { return 1; }
-    else if (ch >= 0x1018a && ch <= 0x1018a) { return 1; }
-    else if (ch >= 0x10320 && ch <= 0x10323) { return 1; }
-    else if (ch >= 0x10858 && ch <= 0x1085f) { return 1; }
-    else if (ch >= 0x10916 && ch <= 0x1091b) { return 1; }
-    else if (ch >= 0x10a40 && ch <= 0x10a47) { return 1; }
-    else if (ch >= 0x10a7d && ch <= 0x10a7e) { return 1; }
-    else if (ch >= 0x10b58 && ch <= 0x10b5f) { return 1; }
-    else if (ch >= 0x10b78 && ch <= 0x10b7f) { return 1; }
-    else if (ch >= 0x10e60 && ch <= 0x10e7e) { return 1; }
-    else if (ch >= 0x11052 && ch <= 0x11065) { return 1; }
-    else if (ch >= 0x1d360 && ch <= 0x1d371) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_no_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_no_low_bound[n] && ch <= esch_unicode_range_no_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_pc_low_bound[] = 
+{
+    0x5f, 
+    0x203f, 
+    0x2054, 
+    0xfe33, 
+    0xfe4d, 
+    0xff3f, 
+};
+static int
+esch_unicode_range_pc_up_bound[] = 
+{
+    0x5f, 
+    0x2040, 
+    0x2054, 
+    0xfe34, 
+    0xfe4f, 
+    0xff3f, 
+};
 int
 esch_unicode_is_range_pc(esch_unicode ch)
 {
-    if (ch >= 0x5f && ch <= 0x5f) { return 1; }
-    else if (ch >= 0x203f && ch <= 0x2040) { return 1; }
-    else if (ch >= 0x2054 && ch <= 0x2054) { return 1; }
-    else if (ch >= 0xfe33 && ch <= 0xfe34) { return 1; }
-    else if (ch >= 0xfe4d && ch <= 0xfe4f) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_pc_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_pc_low_bound[n] && ch <= esch_unicode_range_pc_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_pd_low_bound[] = 
+{
+    0x2d, 
+    0x58a, 
+    0x5be, 
+    0x1400, 
+    0x1806, 
+    0x2010, 
+    0x2e17, 
+    0x2e1a, 
+    0x2e3a, 
+    0x301c, 
+    0x3030, 
+    0x30a0, 
+    0xfe31, 
+    0xfe58, 
+    0xfe63, 
+    0xff0d, 
+};
+static int
+esch_unicode_range_pd_up_bound[] = 
+{
+    0x2d, 
+    0x58a, 
+    0x5be, 
+    0x1400, 
+    0x1806, 
+    0x2015, 
+    0x2e17, 
+    0x2e1a, 
+    0x2e3b, 
+    0x301c, 
+    0x3030, 
+    0x30a0, 
+    0xfe32, 
+    0xfe58, 
+    0xfe63, 
+    0xff0d, 
+};
 int
 esch_unicode_is_range_pd(esch_unicode ch)
 {
-    if (ch >= 0x2d && ch <= 0x2d) { return 1; }
-    else if (ch >= 0x58a && ch <= 0x58a) { return 1; }
-    else if (ch >= 0x5be && ch <= 0x5be) { return 1; }
-    else if (ch >= 0x1400 && ch <= 0x1400) { return 1; }
-    else if (ch >= 0x1806 && ch <= 0x1806) { return 1; }
-    else if (ch >= 0x2010 && ch <= 0x2015) { return 1; }
-    else if (ch >= 0x2e17 && ch <= 0x2e17) { return 1; }
-    else if (ch >= 0x2e1a && ch <= 0x2e1a) { return 1; }
-    else if (ch >= 0x2e3a && ch <= 0x2e3b) { return 1; }
-    else if (ch >= 0x301c && ch <= 0x301c) { return 1; }
-    else if (ch >= 0x3030 && ch <= 0x3030) { return 1; }
-    else if (ch >= 0x30a0 && ch <= 0x30a0) { return 1; }
-    else if (ch >= 0xfe31 && ch <= 0xfe32) { return 1; }
-    else if (ch >= 0xfe58 && ch <= 0xfe58) { return 1; }
-    else if (ch >= 0xfe63 && ch <= 0xfe63) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_pd_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_pd_low_bound[n] && ch <= esch_unicode_range_pd_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_po_low_bound[] = 
+{
+    0x21, 
+    0x25, 
+    0x2a, 
+    0x2c, 
+    0x2e, 
+    0x3a, 
+    0x3f, 
+    0x5c, 
+    0xa1, 
+    0xa7, 
+    0xb6, 
+    0xbf, 
+    0x37e, 
+    0x387, 
+    0x55a, 
+    0x589, 
+    0x5c0, 
+    0x5c3, 
+    0x5c6, 
+    0x5f3, 
+    0x609, 
+    0x60c, 
+    0x61b, 
+    0x61e, 
+    0x66a, 
+    0x6d4, 
+    0x700, 
+    0x7f7, 
+    0x830, 
+    0x85e, 
+    0x964, 
+    0x970, 
+    0xaf0, 
+    0xdf4, 
+    0xe4f, 
+    0xe5a, 
+    0xf04, 
+    0xf14, 
+    0xf85, 
+    0xfd0, 
+    0xfd9, 
+    0x104a, 
+    0x10fb, 
+    0x1360, 
+    0x166d, 
+    0x16eb, 
+    0x1735, 
+    0x17d4, 
+    0x17d8, 
+    0x1800, 
+    0x1807, 
+    0x1944, 
+    0x1a1e, 
+    0x1aa0, 
+    0x1aa8, 
+    0x1b5a, 
+    0x1bfc, 
+    0x1c3b, 
+    0x1c7e, 
+    0x1cc0, 
+    0x1cd3, 
+    0x2016, 
+    0x2020, 
+    0x2030, 
+    0x203b, 
+    0x2041, 
+    0x2047, 
+    0x2053, 
+    0x2055, 
+    0x2cf9, 
+    0x2cfe, 
+    0x2d70, 
+    0x2e00, 
+    0x2e06, 
+    0x2e0b, 
+    0x2e0e, 
+    0x2e18, 
+    0x2e1b, 
+    0x2e1e, 
+    0x2e2a, 
+    0x2e30, 
+    0x3001, 
+    0x303d, 
+    0x30fb, 
+    0xa4fe, 
+    0xa60d, 
+    0xa673, 
+    0xa67e, 
+    0xa6f2, 
+    0xa874, 
+    0xa8ce, 
+    0xa8f8, 
+    0xa92e, 
+    0xa95f, 
+    0xa9c1, 
+    0xa9de, 
+    0xaa5c, 
+    0xaade, 
+    0xaaf0, 
+    0xabeb, 
+    0xfe10, 
+    0xfe19, 
+    0xfe30, 
+    0xfe45, 
+    0xfe49, 
+    0xfe50, 
+    0xfe54, 
+    0xfe5f, 
+    0xfe68, 
+    0xfe6a, 
+    0xff01, 
+    0xff05, 
+    0xff0a, 
+    0xff0c, 
+    0xff0e, 
+    0xff1a, 
+    0xff1f, 
+    0xff3c, 
+    0xff61, 
+    0xff64, 
+    0x10100, 
+    0x1039f, 
+    0x103d0, 
+    0x10857, 
+    0x1091f, 
+    0x1093f, 
+    0x10a50, 
+    0x10a7f, 
+    0x10b39, 
+    0x11047, 
+    0x110bb, 
+    0x110be, 
+    0x11140, 
+    0x111c5, 
+    0x12470, 
+};
+static int
+esch_unicode_range_po_up_bound[] = 
+{
+    0x23, 
+    0x27, 
+    0x2a, 
+    0x2c, 
+    0x2f, 
+    0x3b, 
+    0x40, 
+    0x5c, 
+    0xa1, 
+    0xa7, 
+    0xb7, 
+    0xbf, 
+    0x37e, 
+    0x387, 
+    0x55f, 
+    0x589, 
+    0x5c0, 
+    0x5c3, 
+    0x5c6, 
+    0x5f4, 
+    0x60a, 
+    0x60d, 
+    0x61b, 
+    0x61f, 
+    0x66d, 
+    0x6d4, 
+    0x70d, 
+    0x7f9, 
+    0x83e, 
+    0x85e, 
+    0x965, 
+    0x970, 
+    0xaf0, 
+    0xdf4, 
+    0xe4f, 
+    0xe5b, 
+    0xf12, 
+    0xf14, 
+    0xf85, 
+    0xfd4, 
+    0xfda, 
+    0x104f, 
+    0x10fb, 
+    0x1368, 
+    0x166e, 
+    0x16ed, 
+    0x1736, 
+    0x17d6, 
+    0x17da, 
+    0x1805, 
+    0x180a, 
+    0x1945, 
+    0x1a1f, 
+    0x1aa6, 
+    0x1aad, 
+    0x1b60, 
+    0x1bff, 
+    0x1c3f, 
+    0x1c7f, 
+    0x1cc7, 
+    0x1cd3, 
+    0x2017, 
+    0x2027, 
+    0x2038, 
+    0x203e, 
+    0x2043, 
+    0x2051, 
+    0x2053, 
+    0x205e, 
+    0x2cfc, 
+    0x2cff, 
+    0x2d70, 
+    0x2e01, 
+    0x2e08, 
+    0x2e0b, 
+    0x2e16, 
+    0x2e19, 
+    0x2e1b, 
+    0x2e1f, 
+    0x2e2e, 
+    0x2e39, 
+    0x3003, 
+    0x303d, 
+    0x30fb, 
+    0xa4ff, 
+    0xa60f, 
+    0xa673, 
+    0xa67e, 
+    0xa6f7, 
+    0xa877, 
+    0xa8cf, 
+    0xa8fa, 
+    0xa92f, 
+    0xa95f, 
+    0xa9cd, 
+    0xa9df, 
+    0xaa5f, 
+    0xaadf, 
+    0xaaf1, 
+    0xabeb, 
+    0xfe16, 
+    0xfe19, 
+    0xfe30, 
+    0xfe46, 
+    0xfe4c, 
+    0xfe52, 
+    0xfe57, 
+    0xfe61, 
+    0xfe68, 
+    0xfe6b, 
+    0xff03, 
+    0xff07, 
+    0xff0a, 
+    0xff0c, 
+    0xff0f, 
+    0xff1b, 
+    0xff20, 
+    0xff3c, 
+    0xff61, 
+    0xff65, 
+    0x10102, 
+    0x1039f, 
+    0x103d0, 
+    0x10857, 
+    0x1091f, 
+    0x1093f, 
+    0x10a58, 
+    0x10a7f, 
+    0x10b3f, 
+    0x1104d, 
+    0x110bc, 
+    0x110c1, 
+    0x11143, 
+    0x111c8, 
+    0x12473, 
+};
 int
 esch_unicode_is_range_po(esch_unicode ch)
 {
-    if (ch >= 0x21 && ch <= 0x23) { return 1; }
-    else if (ch >= 0x25 && ch <= 0x27) { return 1; }
-    else if (ch >= 0x2a && ch <= 0x2a) { return 1; }
-    else if (ch >= 0x2c && ch <= 0x2c) { return 1; }
-    else if (ch >= 0x2e && ch <= 0x2f) { return 1; }
-    else if (ch >= 0x3a && ch <= 0x3b) { return 1; }
-    else if (ch >= 0x3f && ch <= 0x40) { return 1; }
-    else if (ch >= 0x5c && ch <= 0x5c) { return 1; }
-    else if (ch >= 0xa1 && ch <= 0xa1) { return 1; }
-    else if (ch >= 0xa7 && ch <= 0xa7) { return 1; }
-    else if (ch >= 0xb6 && ch <= 0xb7) { return 1; }
-    else if (ch >= 0xbf && ch <= 0xbf) { return 1; }
-    else if (ch >= 0x37e && ch <= 0x37e) { return 1; }
-    else if (ch >= 0x387 && ch <= 0x387) { return 1; }
-    else if (ch >= 0x55a && ch <= 0x55f) { return 1; }
-    else if (ch >= 0x589 && ch <= 0x589) { return 1; }
-    else if (ch >= 0x5c0 && ch <= 0x5c0) { return 1; }
-    else if (ch >= 0x5c3 && ch <= 0x5c3) { return 1; }
-    else if (ch >= 0x5c6 && ch <= 0x5c6) { return 1; }
-    else if (ch >= 0x5f3 && ch <= 0x5f4) { return 1; }
-    else if (ch >= 0x609 && ch <= 0x60a) { return 1; }
-    else if (ch >= 0x60c && ch <= 0x60d) { return 1; }
-    else if (ch >= 0x61b && ch <= 0x61b) { return 1; }
-    else if (ch >= 0x61e && ch <= 0x61f) { return 1; }
-    else if (ch >= 0x66a && ch <= 0x66d) { return 1; }
-    else if (ch >= 0x6d4 && ch <= 0x6d4) { return 1; }
-    else if (ch >= 0x700 && ch <= 0x70d) { return 1; }
-    else if (ch >= 0x7f7 && ch <= 0x7f9) { return 1; }
-    else if (ch >= 0x830 && ch <= 0x83e) { return 1; }
-    else if (ch >= 0x85e && ch <= 0x85e) { return 1; }
-    else if (ch >= 0x964 && ch <= 0x965) { return 1; }
-    else if (ch >= 0x970 && ch <= 0x970) { return 1; }
-    else if (ch >= 0xaf0 && ch <= 0xaf0) { return 1; }
-    else if (ch >= 0xdf4 && ch <= 0xdf4) { return 1; }
-    else if (ch >= 0xe4f && ch <= 0xe4f) { return 1; }
-    else if (ch >= 0xe5a && ch <= 0xe5b) { return 1; }
-    else if (ch >= 0xf04 && ch <= 0xf12) { return 1; }
-    else if (ch >= 0xf14 && ch <= 0xf14) { return 1; }
-    else if (ch >= 0xf85 && ch <= 0xf85) { return 1; }
-    else if (ch >= 0xfd0 && ch <= 0xfd4) { return 1; }
-    else if (ch >= 0xfd9 && ch <= 0xfda) { return 1; }
-    else if (ch >= 0x104a && ch <= 0x104f) { return 1; }
-    else if (ch >= 0x10fb && ch <= 0x10fb) { return 1; }
-    else if (ch >= 0x1360 && ch <= 0x1368) { return 1; }
-    else if (ch >= 0x166d && ch <= 0x166e) { return 1; }
-    else if (ch >= 0x16eb && ch <= 0x16ed) { return 1; }
-    else if (ch >= 0x1735 && ch <= 0x1736) { return 1; }
-    else if (ch >= 0x17d4 && ch <= 0x17d6) { return 1; }
-    else if (ch >= 0x17d8 && ch <= 0x17da) { return 1; }
-    else if (ch >= 0x1800 && ch <= 0x1805) { return 1; }
-    else if (ch >= 0x1807 && ch <= 0x180a) { return 1; }
-    else if (ch >= 0x1944 && ch <= 0x1945) { return 1; }
-    else if (ch >= 0x1a1e && ch <= 0x1a1f) { return 1; }
-    else if (ch >= 0x1aa0 && ch <= 0x1aa6) { return 1; }
-    else if (ch >= 0x1aa8 && ch <= 0x1aad) { return 1; }
-    else if (ch >= 0x1b5a && ch <= 0x1b60) { return 1; }
-    else if (ch >= 0x1bfc && ch <= 0x1bff) { return 1; }
-    else if (ch >= 0x1c3b && ch <= 0x1c3f) { return 1; }
-    else if (ch >= 0x1c7e && ch <= 0x1c7f) { return 1; }
-    else if (ch >= 0x1cc0 && ch <= 0x1cc7) { return 1; }
-    else if (ch >= 0x1cd3 && ch <= 0x1cd3) { return 1; }
-    else if (ch >= 0x2016 && ch <= 0x2017) { return 1; }
-    else if (ch >= 0x2020 && ch <= 0x2027) { return 1; }
-    else if (ch >= 0x2030 && ch <= 0x2038) { return 1; }
-    else if (ch >= 0x203b && ch <= 0x203e) { return 1; }
-    else if (ch >= 0x2041 && ch <= 0x2043) { return 1; }
-    else if (ch >= 0x2047 && ch <= 0x2051) { return 1; }
-    else if (ch >= 0x2053 && ch <= 0x2053) { return 1; }
-    else if (ch >= 0x2055 && ch <= 0x205e) { return 1; }
-    else if (ch >= 0x2cf9 && ch <= 0x2cfc) { return 1; }
-    else if (ch >= 0x2cfe && ch <= 0x2cff) { return 1; }
-    else if (ch >= 0x2d70 && ch <= 0x2d70) { return 1; }
-    else if (ch >= 0x2e00 && ch <= 0x2e01) { return 1; }
-    else if (ch >= 0x2e06 && ch <= 0x2e08) { return 1; }
-    else if (ch >= 0x2e0b && ch <= 0x2e0b) { return 1; }
-    else if (ch >= 0x2e0e && ch <= 0x2e16) { return 1; }
-    else if (ch >= 0x2e18 && ch <= 0x2e19) { return 1; }
-    else if (ch >= 0x2e1b && ch <= 0x2e1b) { return 1; }
-    else if (ch >= 0x2e1e && ch <= 0x2e1f) { return 1; }
-    else if (ch >= 0x2e2a && ch <= 0x2e2e) { return 1; }
-    else if (ch >= 0x2e30 && ch <= 0x2e39) { return 1; }
-    else if (ch >= 0x3001 && ch <= 0x3003) { return 1; }
-    else if (ch >= 0x303d && ch <= 0x303d) { return 1; }
-    else if (ch >= 0x30fb && ch <= 0x30fb) { return 1; }
-    else if (ch >= 0xa4fe && ch <= 0xa4ff) { return 1; }
-    else if (ch >= 0xa60d && ch <= 0xa60f) { return 1; }
-    else if (ch >= 0xa673 && ch <= 0xa673) { return 1; }
-    else if (ch >= 0xa67e && ch <= 0xa67e) { return 1; }
-    else if (ch >= 0xa6f2 && ch <= 0xa6f7) { return 1; }
-    else if (ch >= 0xa874 && ch <= 0xa877) { return 1; }
-    else if (ch >= 0xa8ce && ch <= 0xa8cf) { return 1; }
-    else if (ch >= 0xa8f8 && ch <= 0xa8fa) { return 1; }
-    else if (ch >= 0xa92e && ch <= 0xa92f) { return 1; }
-    else if (ch >= 0xa95f && ch <= 0xa95f) { return 1; }
-    else if (ch >= 0xa9c1 && ch <= 0xa9cd) { return 1; }
-    else if (ch >= 0xa9de && ch <= 0xa9df) { return 1; }
-    else if (ch >= 0xaa5c && ch <= 0xaa5f) { return 1; }
-    else if (ch >= 0xaade && ch <= 0xaadf) { return 1; }
-    else if (ch >= 0xaaf0 && ch <= 0xaaf1) { return 1; }
-    else if (ch >= 0xabeb && ch <= 0xabeb) { return 1; }
-    else if (ch >= 0xfe10 && ch <= 0xfe16) { return 1; }
-    else if (ch >= 0xfe19 && ch <= 0xfe19) { return 1; }
-    else if (ch >= 0xfe30 && ch <= 0xfe30) { return 1; }
-    else if (ch >= 0xfe45 && ch <= 0xfe46) { return 1; }
-    else if (ch >= 0xfe49 && ch <= 0xfe4c) { return 1; }
-    else if (ch >= 0xfe50 && ch <= 0xfe52) { return 1; }
-    else if (ch >= 0xfe54 && ch <= 0xfe57) { return 1; }
-    else if (ch >= 0xfe5f && ch <= 0xfe61) { return 1; }
-    else if (ch >= 0xfe68 && ch <= 0xfe68) { return 1; }
-    else if (ch >= 0xfe6a && ch <= 0xfe6b) { return 1; }
-    else if (ch >= 0xff01 && ch <= 0xff03) { return 1; }
-    else if (ch >= 0xff05 && ch <= 0xff07) { return 1; }
-    else if (ch >= 0xff0a && ch <= 0xff0a) { return 1; }
-    else if (ch >= 0xff0c && ch <= 0xff0c) { return 1; }
-    else if (ch >= 0xff0e && ch <= 0xff0f) { return 1; }
-    else if (ch >= 0xff1a && ch <= 0xff1b) { return 1; }
-    else if (ch >= 0xff1f && ch <= 0xff20) { return 1; }
-    else if (ch >= 0xff3c && ch <= 0xff3c) { return 1; }
-    else if (ch >= 0xff61 && ch <= 0xff61) { return 1; }
-    else if (ch >= 0xff64 && ch <= 0xff65) { return 1; }
-    else if (ch >= 0x10100 && ch <= 0x10102) { return 1; }
-    else if (ch >= 0x1039f && ch <= 0x1039f) { return 1; }
-    else if (ch >= 0x103d0 && ch <= 0x103d0) { return 1; }
-    else if (ch >= 0x10857 && ch <= 0x10857) { return 1; }
-    else if (ch >= 0x1091f && ch <= 0x1091f) { return 1; }
-    else if (ch >= 0x1093f && ch <= 0x1093f) { return 1; }
-    else if (ch >= 0x10a50 && ch <= 0x10a58) { return 1; }
-    else if (ch >= 0x10a7f && ch <= 0x10a7f) { return 1; }
-    else if (ch >= 0x10b39 && ch <= 0x10b3f) { return 1; }
-    else if (ch >= 0x11047 && ch <= 0x1104d) { return 1; }
-    else if (ch >= 0x110bb && ch <= 0x110bc) { return 1; }
-    else if (ch >= 0x110be && ch <= 0x110c1) { return 1; }
-    else if (ch >= 0x11140 && ch <= 0x11143) { return 1; }
-    else if (ch >= 0x111c5 && ch <= 0x111c8) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_po_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_po_low_bound[n] && ch <= esch_unicode_range_po_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_sc_low_bound[] = 
+{
+    0x24, 
+    0xa2, 
+    0x58f, 
+    0x60b, 
+    0x9f2, 
+    0x9fb, 
+    0xaf1, 
+    0xbf9, 
+    0xe3f, 
+    0x17db, 
+    0x20a0, 
+    0xa838, 
+    0xfdfc, 
+    0xfe69, 
+    0xff04, 
+    0xffe0, 
+    0xffe5, 
+};
+static int
+esch_unicode_range_sc_up_bound[] = 
+{
+    0x24, 
+    0xa5, 
+    0x58f, 
+    0x60b, 
+    0x9f3, 
+    0x9fb, 
+    0xaf1, 
+    0xbf9, 
+    0xe3f, 
+    0x17db, 
+    0x20b9, 
+    0xa838, 
+    0xfdfc, 
+    0xfe69, 
+    0xff04, 
+    0xffe1, 
+    0xffe6, 
+};
 int
 esch_unicode_is_range_sc(esch_unicode ch)
 {
-    if (ch >= 0x24 && ch <= 0x24) { return 1; }
-    else if (ch >= 0xa2 && ch <= 0xa5) { return 1; }
-    else if (ch >= 0x58f && ch <= 0x58f) { return 1; }
-    else if (ch >= 0x60b && ch <= 0x60b) { return 1; }
-    else if (ch >= 0x9f2 && ch <= 0x9f3) { return 1; }
-    else if (ch >= 0x9fb && ch <= 0x9fb) { return 1; }
-    else if (ch >= 0xaf1 && ch <= 0xaf1) { return 1; }
-    else if (ch >= 0xbf9 && ch <= 0xbf9) { return 1; }
-    else if (ch >= 0xe3f && ch <= 0xe3f) { return 1; }
-    else if (ch >= 0x17db && ch <= 0x17db) { return 1; }
-    else if (ch >= 0x20a0 && ch <= 0x20b9) { return 1; }
-    else if (ch >= 0xa838 && ch <= 0xa838) { return 1; }
-    else if (ch >= 0xfdfc && ch <= 0xfdfc) { return 1; }
-    else if (ch >= 0xfe69 && ch <= 0xfe69) { return 1; }
-    else if (ch >= 0xff04 && ch <= 0xff04) { return 1; }
-    else if (ch >= 0xffe0 && ch <= 0xffe1) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_sc_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_sc_low_bound[n] && ch <= esch_unicode_range_sc_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_sk_low_bound[] = 
+{
+    0x5e, 
+    0x60, 
+    0xa8, 
+    0xaf, 
+    0xb4, 
+    0xb8, 
+    0x2c2, 
+    0x2d2, 
+    0x2e5, 
+    0x2ed, 
+    0x2ef, 
+    0x375, 
+    0x384, 
+    0x1fbd, 
+    0x1fbf, 
+    0x1fcd, 
+    0x1fdd, 
+    0x1fed, 
+    0x1ffd, 
+    0x309b, 
+    0xa700, 
+    0xa720, 
+    0xa789, 
+    0xfbb2, 
+    0xff3e, 
+    0xff40, 
+    0xffe3, 
+};
+static int
+esch_unicode_range_sk_up_bound[] = 
+{
+    0x5e, 
+    0x60, 
+    0xa8, 
+    0xaf, 
+    0xb4, 
+    0xb8, 
+    0x2c5, 
+    0x2df, 
+    0x2eb, 
+    0x2ed, 
+    0x2ff, 
+    0x375, 
+    0x385, 
+    0x1fbd, 
+    0x1fc1, 
+    0x1fcf, 
+    0x1fdf, 
+    0x1fef, 
+    0x1ffe, 
+    0x309c, 
+    0xa716, 
+    0xa721, 
+    0xa78a, 
+    0xfbc1, 
+    0xff3e, 
+    0xff40, 
+    0xffe3, 
+};
 int
 esch_unicode_is_range_sk(esch_unicode ch)
 {
-    if (ch >= 0x5e && ch <= 0x5e) { return 1; }
-    else if (ch >= 0x60 && ch <= 0x60) { return 1; }
-    else if (ch >= 0xa8 && ch <= 0xa8) { return 1; }
-    else if (ch >= 0xaf && ch <= 0xaf) { return 1; }
-    else if (ch >= 0xb4 && ch <= 0xb4) { return 1; }
-    else if (ch >= 0xb8 && ch <= 0xb8) { return 1; }
-    else if (ch >= 0x2c2 && ch <= 0x2c5) { return 1; }
-    else if (ch >= 0x2d2 && ch <= 0x2df) { return 1; }
-    else if (ch >= 0x2e5 && ch <= 0x2eb) { return 1; }
-    else if (ch >= 0x2ed && ch <= 0x2ed) { return 1; }
-    else if (ch >= 0x2ef && ch <= 0x2ff) { return 1; }
-    else if (ch >= 0x375 && ch <= 0x375) { return 1; }
-    else if (ch >= 0x384 && ch <= 0x385) { return 1; }
-    else if (ch >= 0x1fbd && ch <= 0x1fbd) { return 1; }
-    else if (ch >= 0x1fbf && ch <= 0x1fc1) { return 1; }
-    else if (ch >= 0x1fcd && ch <= 0x1fcf) { return 1; }
-    else if (ch >= 0x1fdd && ch <= 0x1fdf) { return 1; }
-    else if (ch >= 0x1fed && ch <= 0x1fef) { return 1; }
-    else if (ch >= 0x1ffd && ch <= 0x1ffe) { return 1; }
-    else if (ch >= 0x309b && ch <= 0x309c) { return 1; }
-    else if (ch >= 0xa700 && ch <= 0xa716) { return 1; }
-    else if (ch >= 0xa720 && ch <= 0xa721) { return 1; }
-    else if (ch >= 0xa789 && ch <= 0xa78a) { return 1; }
-    else if (ch >= 0xfbb2 && ch <= 0xfbc1) { return 1; }
-    else if (ch >= 0xff3e && ch <= 0xff3e) { return 1; }
-    else if (ch >= 0xff40 && ch <= 0xff40) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_sk_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_sk_low_bound[n] && ch <= esch_unicode_range_sk_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_sm_low_bound[] = 
+{
+    0x2b, 
+    0x3c, 
+    0x7c, 
+    0x7e, 
+    0xac, 
+    0xb1, 
+    0xd7, 
+    0xf7, 
+    0x3f6, 
+    0x606, 
+    0x2044, 
+    0x2052, 
+    0x207a, 
+    0x208a, 
+    0x2118, 
+    0x2140, 
+    0x214b, 
+    0x2190, 
+    0x219a, 
+    0x21a0, 
+    0x21a3, 
+    0x21a6, 
+    0x21ae, 
+    0x21ce, 
+    0x21d2, 
+    0x21d4, 
+    0x21f4, 
+    0x2308, 
+    0x2320, 
+    0x237c, 
+    0x239b, 
+    0x23dc, 
+    0x25b7, 
+    0x25c1, 
+    0x25f8, 
+    0x266f, 
+    0x27c0, 
+    0x27c7, 
+    0x27f0, 
+    0x2900, 
+    0x2999, 
+    0x29dc, 
+    0x29fe, 
+    0x2b30, 
+    0x2b47, 
+    0xfb29, 
+    0xfe62, 
+    0xfe64, 
+    0xff0b, 
+    0xff1c, 
+    0xff5c, 
+    0xff5e, 
+    0xffe2, 
+    0xffe9, 
+    0x1d6c1, 
+    0x1d6db, 
+    0x1d6fb, 
+    0x1d715, 
+    0x1d735, 
+    0x1d74f, 
+    0x1d76f, 
+    0x1d789, 
+    0x1d7a9, 
+    0x1d7c3, 
+    0x1eef0, 
+};
+static int
+esch_unicode_range_sm_up_bound[] = 
+{
+    0x2b, 
+    0x3e, 
+    0x7c, 
+    0x7e, 
+    0xac, 
+    0xb1, 
+    0xd7, 
+    0xf7, 
+    0x3f6, 
+    0x608, 
+    0x2044, 
+    0x2052, 
+    0x207c, 
+    0x208c, 
+    0x2118, 
+    0x2144, 
+    0x214b, 
+    0x2194, 
+    0x219b, 
+    0x21a0, 
+    0x21a3, 
+    0x21a6, 
+    0x21ae, 
+    0x21cf, 
+    0x21d2, 
+    0x21d4, 
+    0x22ff, 
+    0x230b, 
+    0x2321, 
+    0x237c, 
+    0x23b3, 
+    0x23e1, 
+    0x25b7, 
+    0x25c1, 
+    0x25ff, 
+    0x266f, 
+    0x27c4, 
+    0x27e5, 
+    0x27ff, 
+    0x2982, 
+    0x29d7, 
+    0x29fb, 
+    0x2aff, 
+    0x2b44, 
+    0x2b4c, 
+    0xfb29, 
+    0xfe62, 
+    0xfe66, 
+    0xff0b, 
+    0xff1e, 
+    0xff5c, 
+    0xff5e, 
+    0xffe2, 
+    0xffec, 
+    0x1d6c1, 
+    0x1d6db, 
+    0x1d6fb, 
+    0x1d715, 
+    0x1d735, 
+    0x1d74f, 
+    0x1d76f, 
+    0x1d789, 
+    0x1d7a9, 
+    0x1d7c3, 
+    0x1eef1, 
+};
 int
 esch_unicode_is_range_sm(esch_unicode ch)
 {
-    if (ch >= 0x2b && ch <= 0x2b) { return 1; }
-    else if (ch >= 0x3c && ch <= 0x3e) { return 1; }
-    else if (ch >= 0x7c && ch <= 0x7c) { return 1; }
-    else if (ch >= 0x7e && ch <= 0x7e) { return 1; }
-    else if (ch >= 0xac && ch <= 0xac) { return 1; }
-    else if (ch >= 0xb1 && ch <= 0xb1) { return 1; }
-    else if (ch >= 0xd7 && ch <= 0xd7) { return 1; }
-    else if (ch >= 0xf7 && ch <= 0xf7) { return 1; }
-    else if (ch >= 0x3f6 && ch <= 0x3f6) { return 1; }
-    else if (ch >= 0x606 && ch <= 0x608) { return 1; }
-    else if (ch >= 0x2044 && ch <= 0x2044) { return 1; }
-    else if (ch >= 0x2052 && ch <= 0x2052) { return 1; }
-    else if (ch >= 0x207a && ch <= 0x207c) { return 1; }
-    else if (ch >= 0x208a && ch <= 0x208c) { return 1; }
-    else if (ch >= 0x2118 && ch <= 0x2118) { return 1; }
-    else if (ch >= 0x2140 && ch <= 0x2144) { return 1; }
-    else if (ch >= 0x214b && ch <= 0x214b) { return 1; }
-    else if (ch >= 0x2190 && ch <= 0x2194) { return 1; }
-    else if (ch >= 0x219a && ch <= 0x219b) { return 1; }
-    else if (ch >= 0x21a0 && ch <= 0x21a0) { return 1; }
-    else if (ch >= 0x21a3 && ch <= 0x21a3) { return 1; }
-    else if (ch >= 0x21a6 && ch <= 0x21a6) { return 1; }
-    else if (ch >= 0x21ae && ch <= 0x21ae) { return 1; }
-    else if (ch >= 0x21ce && ch <= 0x21cf) { return 1; }
-    else if (ch >= 0x21d2 && ch <= 0x21d2) { return 1; }
-    else if (ch >= 0x21d4 && ch <= 0x21d4) { return 1; }
-    else if (ch >= 0x21f4 && ch <= 0x22ff) { return 1; }
-    else if (ch >= 0x2308 && ch <= 0x230b) { return 1; }
-    else if (ch >= 0x2320 && ch <= 0x2321) { return 1; }
-    else if (ch >= 0x237c && ch <= 0x237c) { return 1; }
-    else if (ch >= 0x239b && ch <= 0x23b3) { return 1; }
-    else if (ch >= 0x23dc && ch <= 0x23e1) { return 1; }
-    else if (ch >= 0x25b7 && ch <= 0x25b7) { return 1; }
-    else if (ch >= 0x25c1 && ch <= 0x25c1) { return 1; }
-    else if (ch >= 0x25f8 && ch <= 0x25ff) { return 1; }
-    else if (ch >= 0x266f && ch <= 0x266f) { return 1; }
-    else if (ch >= 0x27c0 && ch <= 0x27c4) { return 1; }
-    else if (ch >= 0x27c7 && ch <= 0x27e5) { return 1; }
-    else if (ch >= 0x27f0 && ch <= 0x27ff) { return 1; }
-    else if (ch >= 0x2900 && ch <= 0x2982) { return 1; }
-    else if (ch >= 0x2999 && ch <= 0x29d7) { return 1; }
-    else if (ch >= 0x29dc && ch <= 0x29fb) { return 1; }
-    else if (ch >= 0x29fe && ch <= 0x2aff) { return 1; }
-    else if (ch >= 0x2b30 && ch <= 0x2b44) { return 1; }
-    else if (ch >= 0x2b47 && ch <= 0x2b4c) { return 1; }
-    else if (ch >= 0xfb29 && ch <= 0xfb29) { return 1; }
-    else if (ch >= 0xfe62 && ch <= 0xfe62) { return 1; }
-    else if (ch >= 0xfe64 && ch <= 0xfe66) { return 1; }
-    else if (ch >= 0xff0b && ch <= 0xff0b) { return 1; }
-    else if (ch >= 0xff1c && ch <= 0xff1e) { return 1; }
-    else if (ch >= 0xff5c && ch <= 0xff5c) { return 1; }
-    else if (ch >= 0xff5e && ch <= 0xff5e) { return 1; }
-    else if (ch >= 0xffe2 && ch <= 0xffe2) { return 1; }
-    else if (ch >= 0xffe9 && ch <= 0xffec) { return 1; }
-    else if (ch >= 0x1d6c1 && ch <= 0x1d6c1) { return 1; }
-    else if (ch >= 0x1d6db && ch <= 0x1d6db) { return 1; }
-    else if (ch >= 0x1d6fb && ch <= 0x1d6fb) { return 1; }
-    else if (ch >= 0x1d715 && ch <= 0x1d715) { return 1; }
-    else if (ch >= 0x1d735 && ch <= 0x1d735) { return 1; }
-    else if (ch >= 0x1d74f && ch <= 0x1d74f) { return 1; }
-    else if (ch >= 0x1d76f && ch <= 0x1d76f) { return 1; }
-    else if (ch >= 0x1d789 && ch <= 0x1d789) { return 1; }
-    else if (ch >= 0x1d7a9 && ch <= 0x1d7a9) { return 1; }
-    else if (ch >= 0x1d7c3 && ch <= 0x1d7c3) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_sm_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_sm_low_bound[n] && ch <= esch_unicode_range_sm_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }
+#include "esch.h"
+static int
+esch_unicode_range_so_low_bound[] = 
+{
+    0xa6, 
+    0xa9, 
+    0xae, 
+    0xb0, 
+    0x482, 
+    0x60e, 
+    0x6de, 
+    0x6e9, 
+    0x6fd, 
+    0x7f6, 
+    0x9fa, 
+    0xb70, 
+    0xbf3, 
+    0xbfa, 
+    0xc7f, 
+    0xd79, 
+    0xf01, 
+    0xf13, 
+    0xf15, 
+    0xf1a, 
+    0xf34, 
+    0xf36, 
+    0xf38, 
+    0xfbe, 
+    0xfc7, 
+    0xfce, 
+    0xfd5, 
+    0x109e, 
+    0x1390, 
+    0x1940, 
+    0x19de, 
+    0x1b61, 
+    0x1b74, 
+    0x2100, 
+    0x2103, 
+    0x2108, 
+    0x2114, 
+    0x2116, 
+    0x211e, 
+    0x2125, 
+    0x2127, 
+    0x2129, 
+    0x212e, 
+    0x213a, 
+    0x214a, 
+    0x214c, 
+    0x214f, 
+    0x2195, 
+    0x219c, 
+    0x21a1, 
+    0x21a4, 
+    0x21a7, 
+    0x21af, 
+    0x21d0, 
+    0x21d3, 
+    0x21d5, 
+    0x2300, 
+    0x230c, 
+    0x2322, 
+    0x232b, 
+    0x237d, 
+    0x23b4, 
+    0x23e2, 
+    0x2400, 
+    0x2440, 
+    0x249c, 
+    0x2500, 
+    0x25b8, 
+    0x25c2, 
+    0x2600, 
+    0x2670, 
+    0x2701, 
+    0x2794, 
+    0x2800, 
+    0x2b00, 
+    0x2b45, 
+    0x2b50, 
+    0x2ce5, 
+    0x2e80, 
+    0x2e9b, 
+    0x2f00, 
+    0x2ff0, 
+    0x3004, 
+    0x3012, 
+    0x3020, 
+    0x3036, 
+    0x303e, 
+    0x3190, 
+    0x3196, 
+    0x31c0, 
+    0x3200, 
+    0x322a, 
+    0x3250, 
+    0x3260, 
+    0x328a, 
+    0x32c0, 
+    0x3300, 
+    0x4dc0, 
+    0xa490, 
+    0xa828, 
+    0xa836, 
+    0xa839, 
+    0xaa77, 
+    0xfdfd, 
+    0xffe4, 
+    0xffe8, 
+    0xffed, 
+    0xfffc, 
+    0x10137, 
+    0x10179, 
+    0x10190, 
+    0x101d0, 
+    0x1d000, 
+    0x1d100, 
+    0x1d129, 
+    0x1d16a, 
+    0x1d183, 
+    0x1d18c, 
+    0x1d1ae, 
+    0x1d200, 
+    0x1d245, 
+    0x1d300, 
+    0x1f000, 
+    0x1f030, 
+    0x1f0a0, 
+    0x1f0b1, 
+    0x1f0c1, 
+    0x1f0d1, 
+    0x1f110, 
+    0x1f130, 
+    0x1f170, 
+    0x1f1e6, 
+    0x1f210, 
+    0x1f240, 
+    0x1f250, 
+    0x1f300, 
+    0x1f330, 
+    0x1f337, 
+    0x1f380, 
+    0x1f3a0, 
+    0x1f3c6, 
+    0x1f3e0, 
+    0x1f400, 
+    0x1f440, 
+    0x1f442, 
+    0x1f4f9, 
+    0x1f500, 
+    0x1f540, 
+    0x1f550, 
+    0x1f5fb, 
+    0x1f645, 
+    0x1f680, 
+    0x1f700, 
+};
+static int
+esch_unicode_range_so_up_bound[] = 
+{
+    0xa6, 
+    0xa9, 
+    0xae, 
+    0xb0, 
+    0x482, 
+    0x60f, 
+    0x6de, 
+    0x6e9, 
+    0x6fe, 
+    0x7f6, 
+    0x9fa, 
+    0xb70, 
+    0xbf8, 
+    0xbfa, 
+    0xc7f, 
+    0xd79, 
+    0xf03, 
+    0xf13, 
+    0xf17, 
+    0xf1f, 
+    0xf34, 
+    0xf36, 
+    0xf38, 
+    0xfc5, 
+    0xfcc, 
+    0xfcf, 
+    0xfd8, 
+    0x109f, 
+    0x1399, 
+    0x1940, 
+    0x19ff, 
+    0x1b6a, 
+    0x1b7c, 
+    0x2101, 
+    0x2106, 
+    0x2109, 
+    0x2114, 
+    0x2117, 
+    0x2123, 
+    0x2125, 
+    0x2127, 
+    0x2129, 
+    0x212e, 
+    0x213b, 
+    0x214a, 
+    0x214d, 
+    0x214f, 
+    0x2199, 
+    0x219f, 
+    0x21a2, 
+    0x21a5, 
+    0x21ad, 
+    0x21cd, 
+    0x21d1, 
+    0x21d3, 
+    0x21f3, 
+    0x2307, 
+    0x231f, 
+    0x2328, 
+    0x237b, 
+    0x239a, 
+    0x23db, 
+    0x23f3, 
+    0x2426, 
+    0x244a, 
+    0x24e9, 
+    0x25b6, 
+    0x25c0, 
+    0x25f7, 
+    0x266e, 
+    0x26ff, 
+    0x2767, 
+    0x27bf, 
+    0x28ff, 
+    0x2b2f, 
+    0x2b46, 
+    0x2b59, 
+    0x2cea, 
+    0x2e99, 
+    0x2ef3, 
+    0x2fd5, 
+    0x2ffb, 
+    0x3004, 
+    0x3013, 
+    0x3020, 
+    0x3037, 
+    0x303f, 
+    0x3191, 
+    0x319f, 
+    0x31e3, 
+    0x321e, 
+    0x3247, 
+    0x3250, 
+    0x327f, 
+    0x32b0, 
+    0x32fe, 
+    0x33ff, 
+    0x4dff, 
+    0xa4c6, 
+    0xa82b, 
+    0xa837, 
+    0xa839, 
+    0xaa79, 
+    0xfdfd, 
+    0xffe4, 
+    0xffe8, 
+    0xffee, 
+    0xfffd, 
+    0x1013f, 
+    0x10189, 
+    0x1019b, 
+    0x101fc, 
+    0x1d0f5, 
+    0x1d126, 
+    0x1d164, 
+    0x1d16c, 
+    0x1d184, 
+    0x1d1a9, 
+    0x1d1dd, 
+    0x1d241, 
+    0x1d245, 
+    0x1d356, 
+    0x1f02b, 
+    0x1f093, 
+    0x1f0ae, 
+    0x1f0be, 
+    0x1f0cf, 
+    0x1f0df, 
+    0x1f12e, 
+    0x1f16b, 
+    0x1f19a, 
+    0x1f202, 
+    0x1f23a, 
+    0x1f248, 
+    0x1f251, 
+    0x1f320, 
+    0x1f335, 
+    0x1f37c, 
+    0x1f393, 
+    0x1f3c4, 
+    0x1f3ca, 
+    0x1f3f0, 
+    0x1f43e, 
+    0x1f440, 
+    0x1f4f7, 
+    0x1f4fc, 
+    0x1f53d, 
+    0x1f543, 
+    0x1f567, 
+    0x1f640, 
+    0x1f64f, 
+    0x1f6c5, 
+    0x1f773, 
+};
 int
 esch_unicode_is_range_so(esch_unicode ch)
 {
-    if (ch >= 0xa6 && ch <= 0xa6) { return 1; }
-    else if (ch >= 0xa9 && ch <= 0xa9) { return 1; }
-    else if (ch >= 0xae && ch <= 0xae) { return 1; }
-    else if (ch >= 0xb0 && ch <= 0xb0) { return 1; }
-    else if (ch >= 0x482 && ch <= 0x482) { return 1; }
-    else if (ch >= 0x60e && ch <= 0x60f) { return 1; }
-    else if (ch >= 0x6de && ch <= 0x6de) { return 1; }
-    else if (ch >= 0x6e9 && ch <= 0x6e9) { return 1; }
-    else if (ch >= 0x6fd && ch <= 0x6fe) { return 1; }
-    else if (ch >= 0x7f6 && ch <= 0x7f6) { return 1; }
-    else if (ch >= 0x9fa && ch <= 0x9fa) { return 1; }
-    else if (ch >= 0xb70 && ch <= 0xb70) { return 1; }
-    else if (ch >= 0xbf3 && ch <= 0xbf8) { return 1; }
-    else if (ch >= 0xbfa && ch <= 0xbfa) { return 1; }
-    else if (ch >= 0xc7f && ch <= 0xc7f) { return 1; }
-    else if (ch >= 0xd79 && ch <= 0xd79) { return 1; }
-    else if (ch >= 0xf01 && ch <= 0xf03) { return 1; }
-    else if (ch >= 0xf13 && ch <= 0xf13) { return 1; }
-    else if (ch >= 0xf15 && ch <= 0xf17) { return 1; }
-    else if (ch >= 0xf1a && ch <= 0xf1f) { return 1; }
-    else if (ch >= 0xf34 && ch <= 0xf34) { return 1; }
-    else if (ch >= 0xf36 && ch <= 0xf36) { return 1; }
-    else if (ch >= 0xf38 && ch <= 0xf38) { return 1; }
-    else if (ch >= 0xfbe && ch <= 0xfc5) { return 1; }
-    else if (ch >= 0xfc7 && ch <= 0xfcc) { return 1; }
-    else if (ch >= 0xfce && ch <= 0xfcf) { return 1; }
-    else if (ch >= 0xfd5 && ch <= 0xfd8) { return 1; }
-    else if (ch >= 0x109e && ch <= 0x109f) { return 1; }
-    else if (ch >= 0x1390 && ch <= 0x1399) { return 1; }
-    else if (ch >= 0x1940 && ch <= 0x1940) { return 1; }
-    else if (ch >= 0x19de && ch <= 0x19ff) { return 1; }
-    else if (ch >= 0x1b61 && ch <= 0x1b6a) { return 1; }
-    else if (ch >= 0x1b74 && ch <= 0x1b7c) { return 1; }
-    else if (ch >= 0x2100 && ch <= 0x2101) { return 1; }
-    else if (ch >= 0x2103 && ch <= 0x2106) { return 1; }
-    else if (ch >= 0x2108 && ch <= 0x2109) { return 1; }
-    else if (ch >= 0x2114 && ch <= 0x2114) { return 1; }
-    else if (ch >= 0x2116 && ch <= 0x2117) { return 1; }
-    else if (ch >= 0x211e && ch <= 0x2123) { return 1; }
-    else if (ch >= 0x2125 && ch <= 0x2125) { return 1; }
-    else if (ch >= 0x2127 && ch <= 0x2127) { return 1; }
-    else if (ch >= 0x2129 && ch <= 0x2129) { return 1; }
-    else if (ch >= 0x212e && ch <= 0x212e) { return 1; }
-    else if (ch >= 0x213a && ch <= 0x213b) { return 1; }
-    else if (ch >= 0x214a && ch <= 0x214a) { return 1; }
-    else if (ch >= 0x214c && ch <= 0x214d) { return 1; }
-    else if (ch >= 0x214f && ch <= 0x214f) { return 1; }
-    else if (ch >= 0x2195 && ch <= 0x2199) { return 1; }
-    else if (ch >= 0x219c && ch <= 0x219f) { return 1; }
-    else if (ch >= 0x21a1 && ch <= 0x21a2) { return 1; }
-    else if (ch >= 0x21a4 && ch <= 0x21a5) { return 1; }
-    else if (ch >= 0x21a7 && ch <= 0x21ad) { return 1; }
-    else if (ch >= 0x21af && ch <= 0x21cd) { return 1; }
-    else if (ch >= 0x21d0 && ch <= 0x21d1) { return 1; }
-    else if (ch >= 0x21d3 && ch <= 0x21d3) { return 1; }
-    else if (ch >= 0x21d5 && ch <= 0x21f3) { return 1; }
-    else if (ch >= 0x2300 && ch <= 0x2307) { return 1; }
-    else if (ch >= 0x230c && ch <= 0x231f) { return 1; }
-    else if (ch >= 0x2322 && ch <= 0x2328) { return 1; }
-    else if (ch >= 0x232b && ch <= 0x237b) { return 1; }
-    else if (ch >= 0x237d && ch <= 0x239a) { return 1; }
-    else if (ch >= 0x23b4 && ch <= 0x23db) { return 1; }
-    else if (ch >= 0x23e2 && ch <= 0x23f3) { return 1; }
-    else if (ch >= 0x2400 && ch <= 0x2426) { return 1; }
-    else if (ch >= 0x2440 && ch <= 0x244a) { return 1; }
-    else if (ch >= 0x249c && ch <= 0x24e9) { return 1; }
-    else if (ch >= 0x2500 && ch <= 0x25b6) { return 1; }
-    else if (ch >= 0x25b8 && ch <= 0x25c0) { return 1; }
-    else if (ch >= 0x25c2 && ch <= 0x25f7) { return 1; }
-    else if (ch >= 0x2600 && ch <= 0x266e) { return 1; }
-    else if (ch >= 0x2670 && ch <= 0x26ff) { return 1; }
-    else if (ch >= 0x2701 && ch <= 0x2767) { return 1; }
-    else if (ch >= 0x2794 && ch <= 0x27bf) { return 1; }
-    else if (ch >= 0x2800 && ch <= 0x28ff) { return 1; }
-    else if (ch >= 0x2b00 && ch <= 0x2b2f) { return 1; }
-    else if (ch >= 0x2b45 && ch <= 0x2b46) { return 1; }
-    else if (ch >= 0x2b50 && ch <= 0x2b59) { return 1; }
-    else if (ch >= 0x2ce5 && ch <= 0x2cea) { return 1; }
-    else if (ch >= 0x2e80 && ch <= 0x2e99) { return 1; }
-    else if (ch >= 0x2e9b && ch <= 0x2ef3) { return 1; }
-    else if (ch >= 0x2f00 && ch <= 0x2fd5) { return 1; }
-    else if (ch >= 0x2ff0 && ch <= 0x2ffb) { return 1; }
-    else if (ch >= 0x3004 && ch <= 0x3004) { return 1; }
-    else if (ch >= 0x3012 && ch <= 0x3013) { return 1; }
-    else if (ch >= 0x3020 && ch <= 0x3020) { return 1; }
-    else if (ch >= 0x3036 && ch <= 0x3037) { return 1; }
-    else if (ch >= 0x303e && ch <= 0x303f) { return 1; }
-    else if (ch >= 0x3190 && ch <= 0x3191) { return 1; }
-    else if (ch >= 0x3196 && ch <= 0x319f) { return 1; }
-    else if (ch >= 0x31c0 && ch <= 0x31e3) { return 1; }
-    else if (ch >= 0x3200 && ch <= 0x321e) { return 1; }
-    else if (ch >= 0x322a && ch <= 0x3247) { return 1; }
-    else if (ch >= 0x3250 && ch <= 0x3250) { return 1; }
-    else if (ch >= 0x3260 && ch <= 0x327f) { return 1; }
-    else if (ch >= 0x328a && ch <= 0x32b0) { return 1; }
-    else if (ch >= 0x32c0 && ch <= 0x32fe) { return 1; }
-    else if (ch >= 0x3300 && ch <= 0x33ff) { return 1; }
-    else if (ch >= 0x4dc0 && ch <= 0x4dff) { return 1; }
-    else if (ch >= 0xa490 && ch <= 0xa4c6) { return 1; }
-    else if (ch >= 0xa828 && ch <= 0xa82b) { return 1; }
-    else if (ch >= 0xa836 && ch <= 0xa837) { return 1; }
-    else if (ch >= 0xa839 && ch <= 0xa839) { return 1; }
-    else if (ch >= 0xaa77 && ch <= 0xaa79) { return 1; }
-    else if (ch >= 0xfdfd && ch <= 0xfdfd) { return 1; }
-    else if (ch >= 0xffe4 && ch <= 0xffe4) { return 1; }
-    else if (ch >= 0xffe8 && ch <= 0xffe8) { return 1; }
-    else if (ch >= 0xffed && ch <= 0xffee) { return 1; }
-    else if (ch >= 0xfffc && ch <= 0xfffd) { return 1; }
-    else if (ch >= 0x10137 && ch <= 0x1013f) { return 1; }
-    else if (ch >= 0x10179 && ch <= 0x10189) { return 1; }
-    else if (ch >= 0x10190 && ch <= 0x1019b) { return 1; }
-    else if (ch >= 0x101d0 && ch <= 0x101fc) { return 1; }
-    else if (ch >= 0x1d000 && ch <= 0x1d0f5) { return 1; }
-    else if (ch >= 0x1d100 && ch <= 0x1d126) { return 1; }
-    else if (ch >= 0x1d129 && ch <= 0x1d164) { return 1; }
-    else if (ch >= 0x1d16a && ch <= 0x1d16c) { return 1; }
-    else if (ch >= 0x1d183 && ch <= 0x1d184) { return 1; }
-    else if (ch >= 0x1d18c && ch <= 0x1d1a9) { return 1; }
-    else if (ch >= 0x1d1ae && ch <= 0x1d1dd) { return 1; }
-    else if (ch >= 0x1d200 && ch <= 0x1d241) { return 1; }
-    else if (ch >= 0x1d245 && ch <= 0x1d245) { return 1; }
-    else if (ch >= 0x1d300 && ch <= 0x1d356) { return 1; }
-    else if (ch >= 0x1f000 && ch <= 0x1f02b) { return 1; }
-    else if (ch >= 0x1f030 && ch <= 0x1f093) { return 1; }
-    else if (ch >= 0x1f0a0 && ch <= 0x1f0ae) { return 1; }
-    else if (ch >= 0x1f0b1 && ch <= 0x1f0be) { return 1; }
-    else if (ch >= 0x1f0c1 && ch <= 0x1f0cf) { return 1; }
-    else if (ch >= 0x1f0d1 && ch <= 0x1f0df) { return 1; }
-    else if (ch >= 0x1f110 && ch <= 0x1f12e) { return 1; }
-    else if (ch >= 0x1f130 && ch <= 0x1f16b) { return 1; }
-    else if (ch >= 0x1f170 && ch <= 0x1f19a) { return 1; }
-    else if (ch >= 0x1f1e6 && ch <= 0x1f202) { return 1; }
-    else if (ch >= 0x1f210 && ch <= 0x1f23a) { return 1; }
-    else if (ch >= 0x1f240 && ch <= 0x1f248) { return 1; }
-    else if (ch >= 0x1f250 && ch <= 0x1f251) { return 1; }
-    else if (ch >= 0x1f300 && ch <= 0x1f320) { return 1; }
-    else if (ch >= 0x1f330 && ch <= 0x1f335) { return 1; }
-    else if (ch >= 0x1f337 && ch <= 0x1f37c) { return 1; }
-    else if (ch >= 0x1f380 && ch <= 0x1f393) { return 1; }
-    else if (ch >= 0x1f3a0 && ch <= 0x1f3c4) { return 1; }
-    else if (ch >= 0x1f3c6 && ch <= 0x1f3ca) { return 1; }
-    else if (ch >= 0x1f3e0 && ch <= 0x1f3f0) { return 1; }
-    else if (ch >= 0x1f400 && ch <= 0x1f43e) { return 1; }
-    else if (ch >= 0x1f440 && ch <= 0x1f440) { return 1; }
-    else if (ch >= 0x1f442 && ch <= 0x1f4f7) { return 1; }
-    else if (ch >= 0x1f4f9 && ch <= 0x1f4fc) { return 1; }
-    else if (ch >= 0x1f500 && ch <= 0x1f53d) { return 1; }
-    else if (ch >= 0x1f540 && ch <= 0x1f543) { return 1; }
-    else if (ch >= 0x1f550 && ch <= 0x1f567) { return 1; }
-    else if (ch >= 0x1f5fb && ch <= 0x1f640) { return 1; }
-    else if (ch >= 0x1f645 && ch <= 0x1f64f) { return 1; }
-    else if (ch >= 0x1f680 && ch <= 0x1f6c5) { return 1; }
-    else { return 0; }
+    size_t n = 0;
+    for (; n < sizeof(esch_unicode_range_so_up_bound) / sizeof(esch_unicode); ++n)
+    {
+        if (!(ch >= esch_unicode_range_so_low_bound[n] && ch <= esch_unicode_range_so_up_bound[n]))
+            return 1;
+    }
+    return 0;
 }

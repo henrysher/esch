@@ -99,7 +99,7 @@ esch_alloc_malloc(esch_alloc* alloc, size_t size, void** ptr)
             "esch_alloc_malloc(): Fail to allocate",
             ESCH_ERROR_OUT_OF_MEMORY);
     alloc->allocate_count += 1;
-    bzero(new_buffer, size);
+    memset(new_buffer, 0, size);
     (*ptr) = new_buffer;
     new_buffer = NULL;
 Exit:
