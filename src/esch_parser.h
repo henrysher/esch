@@ -5,6 +5,7 @@
 #define _ESCH_PARSER_H_
 
 #include "esch.h"
+#include "esch_object.h"
 
 #ifdef __cplusplus
 extern "C" {

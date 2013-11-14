@@ -5,6 +5,7 @@
 #define _ESCH_LOG_H_
 
 #include "esch.h"
+#include "esch_object.h"
 #include <stdarg.h>
 
 #ifdef __cplusplus
@@ -22,7 +23,7 @@ esch_error esch_log_message_do_nothing(esch_log* log,
 
 struct esch_log
 {
-    esch_config base;
+    ESCH_COMMON_HEADER;
     error_log_func log_error;
     error_log_func log_info;
 };

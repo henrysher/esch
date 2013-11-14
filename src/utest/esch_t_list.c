@@ -7,7 +7,7 @@ test_list()
     esch_alloc* alloc = NULL;
     esch_log* log = NULL;
     esch_parser* parser = NULL;
-    esch_config config = { ESCH_TYPE_UNKNOWN, NULL, NULL };
+    esch_config* config = NULL;
     esch_list* lst = NULL;
     esch_log* do_nothing = NULL;
     (void)esch_log_new_do_nothing(&do_nothing);
@@ -17,33 +17,48 @@ test_list()
     log = g_testLog;
 #endif
 
-    config.log = g_testLog;
-    ret = esch_alloc_new_c_default(&config, &alloc);
+    ret = esch_alloc_new_c_default(g_testLog, &alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
 
-    config.alloc = alloc;
-    config.log = NULL;
-    ret = esch_list_new(&config, 0, &lst);
+    ret = esch_config_new(alloc, &config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create config", ret);
+
+    ret = esch_config_set_data(config, ESCH_CONFIG_ALLOC_KEY, alloc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:alloc:obj", ret);
+    ret = esch_config_set_data(config, ESCH_CONFIG_LOG_KEY, NULL);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:NULL", ret);
+
+    ret = esch_list_new(config, 0, &lst);
     ESCH_TEST_CHECK(ret == ESCH_ERROR_INVALID_PARAMETER && lst == NULL,
                     "Failed to create log - no log", ret);
 
-    config.alloc = NULL;
-    config.log = log;
-    ret = esch_list_new(&config, 0, &lst);
+    ret = esch_config_set_data(config, ESCH_CONFIG_ALLOC_KEY, NULL);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:alloc:NULL", ret);
+    ret = esch_config_set_data(config, ESCH_CONFIG_LOG_KEY, log);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:obj", ret);
+
+    ret = esch_list_new(config, 0, &lst);
     ESCH_TEST_CHECK(ret == ESCH_ERROR_INVALID_PARAMETER && lst == NULL,
                     "Failed to create log - no alloc", ret);
 
-    config.alloc = alloc;
-    config.log = log;
-    ret = esch_list_new(&config, 0, &lst);
+    ret = esch_config_set_data(config, ESCH_CONFIG_ALLOC_KEY, alloc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:alloc:obj", ret);
+    ret = esch_config_set_data(config, ESCH_CONFIG_LOG_KEY, log);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:obj", ret);
+
+    ret = esch_list_new(config, 0, &lst);
     ESCH_TEST_CHECK(ret == ESCH_OK && lst != NULL,
                     "Failed to create log - no alloc", ret);
 
-    ret = esch_list_delete(lst);
+    ret = esch_list_delete(lst, ESCH_FALSE);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete list.", ret);
+
+    ret = esch_config_delete(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete config object.", ret);
 
     ret = esch_alloc_delete(alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete alloc object.", ret);
+
 Exit:
     return ret;
 }

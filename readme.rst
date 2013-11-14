@@ -10,7 +10,9 @@ Introduction
 `Embedded SCHeme` is an implemetation of Scheme interpreter. It starts
 from a subset of R6RS_ standard, and may add features in future
 releases. The first goal is to make it as much compliant as R6RS_
-standard.
+standard. However, given the complexity of R6RS_ itself, the
+implementation may choose only a reasonable subset from first release.
+Other features may be added in the future.
 
 The second goal of Esch is to make this implementation small enough to
 be embedded into other programs. The code is written in C to keep

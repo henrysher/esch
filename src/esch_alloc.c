@@ -6,6 +6,7 @@
 #include <assert.h>
 #include "esch_alloc.h"
 #include "esch_debug.h"
+#include "esch_config.h"
 
 /**
  * Create a new esch_alloc object. With underlying allocator 
@@ -14,19 +15,18 @@
  * @return Error code.
  */
 esch_error
-esch_alloc_new_c_default(esch_config* config, esch_alloc** alloc)
+esch_alloc_new_c_default(esch_log* log, esch_alloc** alloc)
 {
     esch_error ret = ESCH_OK;
     esch_alloc* new_obj = NULL;
     ESCH_CHECK_PARAM_PUBLIC(alloc != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(config != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(config->log != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(log != NULL);
 
     new_obj = (esch_alloc*)malloc(sizeof(esch_alloc));
     ESCH_CHECK_NO_LOG(new_obj != NULL, ESCH_ERROR_OUT_OF_MEMORY);
     ESCH_GET_TYPE(new_obj) = ESCH_TYPE_ALLOC_C_DEFAULT;
     ESCH_GET_ALLOC(new_obj) = new_obj; /* No use */
-    ESCH_GET_LOG(new_obj) = config->log;
+    ESCH_GET_LOG(new_obj) = log;
     new_obj->allocate_count = 0;
     new_obj->deallocate_count = 0;
     (*alloc) = new_obj;
