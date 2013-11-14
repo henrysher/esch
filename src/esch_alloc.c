@@ -2,7 +2,7 @@
  */
 /* See Copyright notice in esch.h */
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 #include <assert.h>
 #include "esch_alloc.h"
 #include "esch_debug.h"

@@ -1,36 +1,51 @@
 #!/usr/bin/env scons
 # vim:ft=python
 import re
+import os
+import sys
 gcc_check = re.compile(r'gcc')
 gxx_check = re.compile(r'g\+\+')
 clangxx_check = re.compile(r'clang\+\+')
 clang_check = re.compile(r'clang')
+msvc_script_default = "c:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\VC\\bin\\vcvars32.bat"
 
-compiler = ARGUMENTS.get('cc', None)
 buildmode = ARGUMENTS.get('mode', 'release')
-if compiler is None:
-    env = Environment(CPPPATH=[ '.' ])
-    compiler = env['CC']
-else:
-    env = Environment(CPPPATH=[ '.' ], CC=compiler)
-
 ccflags_common  = []
 ccflags_debug   = []
 ccflags_release = []
-if compiler is not None:
-    if gxx_check.search(compiler) is not None:
-        ccflags_debug = ccflags_common + [ "-g" ]
-        ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
-    elif gcc_check.search(compiler) is not None:
-        ccflags_common = [ "-std=c89" ]
-        ccflags_debug = ccflags_common + [ "-g" ]
-        ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
-    elif clangxx_check.search(compiler) is not None:
-        ccflags_debug = ccflags_common + [ "-g" ]
-        ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
-    elif clang_check.search(compiler) is not None:
-        ccflags_debug = ccflags_common + [ "-g" ]
-        ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
+env = None
+if os.name == 'nt':
+    msvc_script = ARGUMENTS.get('msvc', None)
+    if msvc_script is None:
+        msvc_script = msvc_script_default
+    if not os.access(msvc_script, os.R_OK):
+        print("Error: MSVC script not found.\n\t%s" % msvc_script)
+        print("Specify one with `scons msvc=[path]")
+        sys.exit(1)
+    env = Environment(CPPPATH = ['.'], MSVC_USE_SCRIPT = msvc_script)
+    # XXX We don't support mingw32. Will do it later.
+    compiler = 'cl'
+else:
+    compiler = ARGUMENTS.get('cc', None)
+    if compiler is None:
+        env = Environment(CPPPATH=[ '.' ])
+        compiler = env['CC']
+    else:
+        env = Environment(CPPPATH=[ '.' ], CC=compiler)
+    if compiler is not None:
+        if gxx_check.search(compiler) is not None:
+            ccflags_debug = ccflags_common + [ "-g" ]
+            ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
+        elif gcc_check.search(compiler) is not None:
+            ccflags_common = [ "-std=c89" ]
+            ccflags_debug = ccflags_common + [ "-g" ]
+            ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
+        elif clangxx_check.search(compiler) is not None:
+            ccflags_debug = ccflags_common + [ "-g" ]
+            ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
+        elif clang_check.search(compiler) is not None:
+            ccflags_debug = ccflags_common + [ "-g" ]
+            ccflags_release = ccflags_common + [ "-O2", "-DNDEBUG" ]
 
 if buildmode.upper() == 'DEBUG':
     ccflags = ccflags_debug
