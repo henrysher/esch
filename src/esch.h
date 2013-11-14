@@ -62,7 +62,8 @@ typedef enum {
     ESCH_ERROR_INVALID_PARAMETER,
     ESCH_ERROR_INVALID_STATE,
     ESCH_ERROR_CONFIG_NOT_FOUND,
-    ESCH_ERROR_CONFIG_BAD_VALUE_TYPE
+    ESCH_ERROR_CONFIG_BAD_VALUE_TYPE,
+    ESCH_ERROR_OUT_OF_BOUND,
 } esch_error;
 
 typedef enum {
@@ -127,8 +128,6 @@ esch_error esch_config_set_data(esch_config* config, const char* key, void* data
  * 1. key = "config:alloc", value = esch_alloc
  * 2. key = "config:log", value = esch_log
  */
-/* --------------------- */
-
 /* --- Memory allocator --- */
 /* Default C alloc does not depend on esch_config. */
 esch_error esch_alloc_new_c_default(esch_log* log,
@@ -190,9 +189,7 @@ int esch_unicode_is_range_co(esch_unicode ch);
 
 /* --- List --- */
 /* XXX
- * This is a list used by both Scheme list and array. So it supports
- * accessors for both. However, do not try to access same list object in
- * both ways.
+ * This is a list to represent Scheme pair, list and array.
  *
  * The list accepts only valid esch_ objects.
  *
@@ -201,9 +198,10 @@ esch_error esch_list_new(esch_config* config, size_t initial_length,
                          esch_list** lst);
 esch_error esch_list_delete(esch_list* list, int delete_data);
 esch_error esch_list_get_length(esch_list* list, size_t* length);
-esch_error esch_list_get_by_index(esch_list* list,
-                                  int index,
-                                  esch_list_node** node);
+esch_error esch_list_get_node(esch_list* list, int index,
+                              esch_list_node** node);
+esch_error esch_list_get_data(esch_list* list, int index,
+                              esch_object** data);
 esch_error esch_list_get_first(esch_list* list, esch_list_node** node);
 esch_error esch_list_get_next(esch_list_node* node,
                               esch_list_node* next);
@@ -212,9 +210,7 @@ esch_error esch_list_get_prev(esch_list_node* item,
 esch_error esch_list_prepend(esch_list* list, esch_object* data);
 esch_error esch_list_append(esch_list* list, esch_object* data);
 
-/* I will not allow we create a new externally. */
-esch_error esch_list_node_get_data(esch_list_node* node, void** data);
-esch_error esch_list_node_delete(esch_list_node* node);
+esch_error esch_list_node_get_data(esch_list_node* node, esch_object** data);
 
 /* --- TODO Number -- */
 /* --- TODO Complex -- */
