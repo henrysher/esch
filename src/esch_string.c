@@ -391,7 +391,6 @@ esch_unicode_string_is_valid_identifier(const esch_unicode* unicode)
                 esch_unicode_is_range_no(*ptr) ||
                 esch_unicode_is_range_nl(*ptr))
     {
-        printf("!!%x\n", *ptr);
         return 0;
     }
     for (++ptr; *ptr != '\0'; ++ptr)
