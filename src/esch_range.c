@@ -27,7 +27,7 @@ esch_unicode_is_range_co(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_co_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_co_low_bound[n] && ch <= esch_unicode_range_co_up_bound[n]))
+        if (ch >= esch_unicode_range_co_low_bound[n] && ch <= esch_unicode_range_co_up_bound[n])
             return 1;
     }
     return 0;
@@ -1269,7 +1269,7 @@ esch_unicode_is_range_ll(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_ll_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_ll_low_bound[n] && ch <= esch_unicode_range_ll_up_bound[n]))
+        if (ch >= esch_unicode_range_ll_low_bound[n] && ch <= esch_unicode_range_ll_up_bound[n])
             return 1;
     }
     return 0;
@@ -1393,7 +1393,7 @@ esch_unicode_is_range_lm(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_lm_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_lm_low_bound[n] && ch <= esch_unicode_range_lm_up_bound[n]))
+        if (ch >= esch_unicode_range_lm_low_bound[n] && ch <= esch_unicode_range_lm_up_bound[n])
             return 1;
     }
     return 0;
@@ -2167,7 +2167,7 @@ esch_unicode_is_range_lo(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_lo_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_lo_low_bound[n] && ch <= esch_unicode_range_lo_up_bound[n]))
+        if (ch >= esch_unicode_range_lo_low_bound[n] && ch <= esch_unicode_range_lo_up_bound[n])
             return 1;
     }
     return 0;
@@ -2207,7 +2207,7 @@ esch_unicode_is_range_lt(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_lt_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_lt_low_bound[n] && ch <= esch_unicode_range_lt_up_bound[n]))
+        if (ch >= esch_unicode_range_lt_low_bound[n] && ch <= esch_unicode_range_lt_up_bound[n])
             return 1;
     }
     return 0;
@@ -3443,7 +3443,7 @@ esch_unicode_is_range_lu(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_lu_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_lu_low_bound[n] && ch <= esch_unicode_range_lu_up_bound[n]))
+        if (ch >= esch_unicode_range_lu_low_bound[n] && ch <= esch_unicode_range_lu_up_bound[n])
             return 1;
     }
     return 0;
@@ -3715,7 +3715,7 @@ esch_unicode_is_range_mc(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_mc_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_mc_low_bound[n] && ch <= esch_unicode_range_mc_up_bound[n]))
+        if (ch >= esch_unicode_range_mc_low_bound[n] && ch <= esch_unicode_range_mc_up_bound[n])
             return 1;
     }
     return 0;
@@ -4175,7 +4175,7 @@ esch_unicode_is_range_mn(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_mn_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_mn_low_bound[n] && ch <= esch_unicode_range_mn_up_bound[n]))
+        if (ch >= esch_unicode_range_mn_low_bound[n] && ch <= esch_unicode_range_mn_up_bound[n])
             return 1;
     }
     return 0;
@@ -4279,7 +4279,7 @@ esch_unicode_is_range_nd(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_nd_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_nd_low_bound[n] && ch <= esch_unicode_range_nd_up_bound[n]))
+        if (ch >= esch_unicode_range_nd_low_bound[n] && ch <= esch_unicode_range_nd_up_bound[n])
             return 1;
     }
     return 0;
@@ -4323,7 +4323,7 @@ esch_unicode_is_range_nl(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_nl_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_nl_low_bound[n] && ch <= esch_unicode_range_nl_up_bound[n]))
+        if (ch >= esch_unicode_range_nl_low_bound[n] && ch <= esch_unicode_range_nl_up_bound[n])
             return 1;
     }
     return 0;
@@ -4427,7 +4427,7 @@ esch_unicode_is_range_no(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_no_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_no_low_bound[n] && ch <= esch_unicode_range_no_up_bound[n]))
+        if (ch >= esch_unicode_range_no_low_bound[n] && ch <= esch_unicode_range_no_up_bound[n])
             return 1;
     }
     return 0;
@@ -4459,7 +4459,7 @@ esch_unicode_is_range_pc(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_pc_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_pc_low_bound[n] && ch <= esch_unicode_range_pc_up_bound[n]))
+        if (ch >= esch_unicode_range_pc_low_bound[n] && ch <= esch_unicode_range_pc_up_bound[n])
             return 1;
     }
     return 0;
@@ -4511,7 +4511,7 @@ esch_unicode_is_range_pd(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_pd_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_pd_low_bound[n] && ch <= esch_unicode_range_pd_up_bound[n]))
+        if (ch >= esch_unicode_range_pd_low_bound[n] && ch <= esch_unicode_range_pd_up_bound[n])
             return 1;
     }
     return 0;
@@ -4801,7 +4801,7 @@ esch_unicode_is_range_po(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_po_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_po_low_bound[n] && ch <= esch_unicode_range_po_up_bound[n]))
+        if (ch >= esch_unicode_range_po_low_bound[n] && ch <= esch_unicode_range_po_up_bound[n])
             return 1;
     }
     return 0;
@@ -4855,7 +4855,7 @@ esch_unicode_is_range_sc(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_sc_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_sc_low_bound[n] && ch <= esch_unicode_range_sc_up_bound[n]))
+        if (ch >= esch_unicode_range_sc_low_bound[n] && ch <= esch_unicode_range_sc_up_bound[n])
             return 1;
     }
     return 0;
@@ -4929,7 +4929,7 @@ esch_unicode_is_range_sk(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_sk_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_sk_low_bound[n] && ch <= esch_unicode_range_sk_up_bound[n]))
+        if (ch >= esch_unicode_range_sk_low_bound[n] && ch <= esch_unicode_range_sk_up_bound[n])
             return 1;
     }
     return 0;
@@ -5079,7 +5079,7 @@ esch_unicode_is_range_sm(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_sm_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_sm_low_bound[n] && ch <= esch_unicode_range_sm_up_bound[n]))
+        if (ch >= esch_unicode_range_sm_low_bound[n] && ch <= esch_unicode_range_sm_up_bound[n])
             return 1;
     }
     return 0;
@@ -5405,7 +5405,7 @@ esch_unicode_is_range_so(esch_unicode ch)
     size_t n = 0;
     for (; n < sizeof(esch_unicode_range_so_up_bound) / sizeof(esch_unicode); ++n)
     {
-        if (!(ch >= esch_unicode_range_so_low_bound[n] && ch <= esch_unicode_range_so_up_bound[n]))
+        if (ch >= esch_unicode_range_so_low_bound[n] && ch <= esch_unicode_range_so_up_bound[n])
             return 1;
     }
     return 0;

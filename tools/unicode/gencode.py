@@ -57,7 +57,7 @@ def parse_file(filename):
     print('    for (; n < sizeof(esch_unicode_range_%s_up_bound) / sizeof(esch_unicode); ++n)' %\
                         category)
     print('    {')
-    print('        if (!(ch >= esch_unicode_range_%s_low_bound[n] && ch <= esch_unicode_range_%s_up_bound[n]))' % \
+    print('        if (ch >= esch_unicode_range_%s_low_bound[n] && ch <= esch_unicode_range_%s_up_bound[n])' % \
             (category, category))
     print('            return 1;')
     print('    }')
