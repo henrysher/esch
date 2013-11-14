@@ -5,6 +5,11 @@ Task tracking board
 Reference:
 https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
 
+* Windows support
+  - Build on Windows.
+  - Known issue: Windows uses 16-bit wchar_t, it does not support all
+    Unicode points.
+
 * Support unicode when reading source code.
 
   - [DONE] Support Unicode conversion.
