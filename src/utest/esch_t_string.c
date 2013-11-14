@@ -113,6 +113,7 @@ esch_error test_identifier()
     /* Chinese: CJK Compat Ideograph, 'you' in Chinese, then a number */
     esch_unicode nl_str[] = { 0x2F804, 0x303A, 0 };
 
+    /*
     val = esch_unicode_is_ascii('A');
     ESCH_TEST_CHECK(val, "'A' should be digit", ESCH_ERROR_INVALID_PARAMETER);
     val = esch_unicode_is_ascii(128);
@@ -126,6 +127,8 @@ esch_error test_identifier()
     val = esch_unicode_string_is_valid_identifier(hello);
     ESCH_TEST_CHECK(!val, "'Hello(Chinese)' Should not be identifier",
             ESCH_ERROR_INVALID_PARAMETER);
+    */
+    printf(">>> start!\n");
     val = esch_unicode_string_is_valid_identifier(lo_str);
     ESCH_TEST_CHECK(val, "Lo string should be identifier",
             ESCH_ERROR_INVALID_PARAMETER);

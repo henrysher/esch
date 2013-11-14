@@ -28,17 +28,40 @@ def parse_file(filename):
             sequence_list.append(sequence)
             sequence = [ current_val ]
         line = fd.readline()
+    sequence_list.append(sequence)
 
-    print('int\nesch_unicode_is_range_%s(esch_unicode ch)' % \
-            os.path.splitext(os.path.basename(filename))[0])
+    category = os.path.basename(filename).split('.')[0]
+    up_bounds = []
+    low_bounds = []
+    for each_sequence in sequence_list:
+        low_bounds.append(each_sequence[0])
+        up_bounds.append(each_sequence[-1])
+
+    print("#include \"esch.h\"")
+    print('static int\nesch_unicode_range_%s_low_bound[] = ' % \
+            category)
     print('{')
-    first_sequence = sequence_list[0]
-    print('    if (ch >= 0x%x && ch <= 0x%x) { return 1; }' % \
-            (first_sequence[0], first_sequence[-1]))
-    for each_sequence in sequence_list[1:]:
-        print('    else if (ch >= 0x%x && ch <= 0x%x) { return 1; }' % \
-                (each_sequence[0], each_sequence[-1]))
-    print('    else { return 0; }')
+    for each_low_bound in low_bounds:
+        print('    0x%x, ' % each_low_bound)
+    print('};')
+    print('static int\nesch_unicode_range_%s_up_bound[] = ' % \
+            category)
+    print('{')
+    for each_up_bound in up_bounds:
+        print('    0x%x, ' % each_up_bound)
+    print('};')
+
+    print('int\nesch_unicode_is_range_%s(esch_unicode ch)' % category)
+    print('{')
+    print('    size_t n = 0;')
+    print('    for (; n < sizeof(esch_unicode_range_%s_up_bound) / sizeof(esch_unicode); ++n)' %\
+                        category)
+    print('    {')
+    print('        if (!(ch >= esch_unicode_range_%s_low_bound[n] && ch <= esch_unicode_range_%s_up_bound[n]))' % \
+            (category, category))
+    print('            return 1;')
+    print('    }')
+    print('    return 0;')
     print('}')
     fd.close()
 
