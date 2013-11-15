@@ -13,7 +13,7 @@ extern "C" {
 
 struct esch_string
 {
-    ESCH_COMMON_HEADER
+    ESCH_COMMON_HEADER;
     esch_utf8_char* utf8;
     esch_unicode* unicode;
     size_t utf8_len;

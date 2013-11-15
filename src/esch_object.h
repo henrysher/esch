@@ -21,7 +21,7 @@ struct esch_object
     esch_log*   log;        /**< Log object to write trace/errors.*/
 };
 
-#define ESCH_COMMON_HEADER    esch_object header;
+#define ESCH_COMMON_HEADER    esch_object header
 
 #define ESCH_GET_CONFIG(obj)         ((esch_object*)obj)
 #define ESCH_GET_TYPE(obj)           (((esch_object*)obj)->type)

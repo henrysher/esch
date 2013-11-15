@@ -25,6 +25,7 @@ if os.name == 'nt':
     env = Environment(CPPPATH = ['.'], MSVC_USE_SCRIPT = msvc_script)
     # XXX We don't support mingw32. Will do it later.
     compiler = 'cl'
+    ccflags_release = ccflags_common + [ "/DNDEBUG" ]
 else:
     compiler = ARGUMENTS.get('cc', None)
     if compiler is None:

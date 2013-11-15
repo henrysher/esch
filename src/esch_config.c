@@ -2,7 +2,7 @@
 #include "esch_debug.h"
 #include "esch_config.h"
 #include <assert.h>
-#include <strings.h>
+#include <string.h>
 
 const char* ESCH_CONFIG_ALLOC_KEY = "config:alloc";
 const char* ESCH_CONFIG_LOG_KEY = "config:log";
@@ -24,7 +24,7 @@ esch_config_new(esch_alloc* alloc, esch_config** config)
 
     ret = esch_alloc_malloc(alloc, sizeof(esch_config), (void**)&new_config);
     ESCH_CHECK(ret == ESCH_OK, alloc, "Can't malloc config", ret);
-    bzero(new_config, sizeof(esch_config));
+    memset(new_config, 0, sizeof(esch_config));
     ESCH_GET_TYPE(new_config) = ESCH_TYPE_CONFIG;
     ESCH_GET_ALLOC(new_config) = alloc;
     ret = esch_log_new_do_nothing(&do_nothing_log);

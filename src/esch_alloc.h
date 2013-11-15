@@ -11,7 +11,7 @@ extern "C" {
 
 struct esch_alloc
 {
-    ESCH_COMMON_HEADER
+    ESCH_COMMON_HEADER;
     int allocate_count; /**< How many buffer are allocated. */
     int deallocate_count; /**< How many buffer are freed. */
 };
