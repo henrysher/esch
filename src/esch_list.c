@@ -177,10 +177,10 @@ esch_error
 esch_list_get_node(esch_list* list, int index, esch_list_node** node)
 {
     esch_error ret = ESCH_OK;
+    esch_list_node* returned_node = NULL;
     ESCH_CHECK_PARAM_PUBLIC(list != NULL);
     ESCH_CHECK_PARAM_PUBLIC(index >= 0);
     ESCH_CHECK_PARAM_PUBLIC(node != NULL);
-    esch_list_node* returned_node = NULL;
 
     /* Search from head. */
     ESCH_CHECK_2((size_t)index >= list->length, list,

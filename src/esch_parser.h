@@ -31,7 +31,7 @@ enum esch_token_type
  */
 struct esch_parser
 {
-    ESCH_COMMON_HEADER
+    ESCH_COMMON_HEADER;
 };
 
 #define ESCH_IS_VALID_PARSER(obj) \

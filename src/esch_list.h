@@ -15,8 +15,8 @@ struct esch_list_node
      * another list. */
     struct esch_list* owner;
     esch_object* data;
-    esch_list_node* prev;
-    esch_list_node* next;
+    struct esch_list_node* prev;
+    struct esch_list_node* next;
 };
 
 /* 
@@ -30,7 +30,7 @@ struct esch_list_node
  * */
 struct esch_list
 {
-    ESCH_COMMON_HEADER
+    ESCH_COMMON_HEADER;
     size_t length; /* Length of assigned nodes */
     esch_list_node* node_block_head;
     esch_list_node* first_node;
