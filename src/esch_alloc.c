@@ -23,7 +23,7 @@ esch_alloc_new_c_default(esch_config* config, esch_alloc** alloc)
     ESCH_CHECK_PARAM_PUBLIC(alloc != NULL);
     ESCH_CHECK_PARAM_PUBLIC(config != NULL);
 
-    ret = esch_config_get_data(config, ESCH_CONFIG_KEY_LOG, (void**)&log);
+    ret = esch_config_get_obj(config, ESCH_CONFIG_KEY_LOG, (esch_object**)&log);
     ESCH_CHECK_NO_LOG(log != NULL, ESCH_ERROR_INVALID_PARAMETER);
 
     new_obj = (esch_alloc*)malloc(sizeof(esch_alloc));

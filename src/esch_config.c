@@ -4,8 +4,8 @@
 #include <assert.h>
 #include <string.h>
 
-const char* ESCH_CONFIG_KEY_ALLOC = "config:alloc";
-const char* ESCH_CONFIG_KEY_LOG = "config:log";
+const char* ESCH_CONFIG_KEY_ALLOC = "common:alloc";
+const char* ESCH_CONFIG_KEY_LOG = "common:log";
 
 /**
  * Create a new config object.
@@ -64,34 +64,184 @@ Exit:
     return ret;
 }
 
+/**
+ * Get an integer value in configuration.
+ * @param config Given config object.
+ * @param key Given key of configuration.
+ * @param value Returned integer value.
+ * @return Error code. ESCH_ERROR_NOT_FOUND if not found.
+ */
 esch_error
 esch_config_get_int(esch_config* config, const char* key, int* value)
 {
-    return ESCH_ERROR_NOT_IMPLEMENTED;
+    esch_error ret = ESCH_OK;
+    size_t i = 0;
+    ESCH_CHECK_PARAM_PUBLIC(config != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(key != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value != NULL);
+
+    ret = ESCH_ERROR_NOT_FOUND;
+    for (i = 0; i < ESCH_CONFIG_ITEMS; ++i)
+    {
+        if (strcmp(config->config[i].key, key) == 0
+                && config->config[i].type == ESCH_CONFIG_VALUE_TYPE_INTEGER)
+        {
+            (*value) = config->config[i].data.int_value;
+            ret = ESCH_OK;
+            break;
+        }
+    }
+Exit:
+    return ret;
 }
+
+/**
+ * Set a new integer to given key.
+ * @param config Given config object.
+ * @param key String key.
+ * @param obj New integer value.
+ * @return Return code. ESCH_ERROR_NOT_FOUND if key is not found.
+ */
 esch_error
 esch_config_set_int(esch_config* config, const char* key, int value)
 {
-    return ESCH_ERROR_NOT_IMPLEMENTED;
+    esch_error ret = ESCH_OK;
+    size_t i = 0;
+    ESCH_CHECK_PARAM_PUBLIC(config != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(key != NULL);
+    ret = ESCH_ERROR_NOT_FOUND;
+    for (i = 0; i < ESCH_CONFIG_ITEMS; ++i)
+    {
+        if (strcmp(config->config[i].key, key) == 0
+                && config->config[i].type == ESCH_CONFIG_VALUE_TYPE_INTEGER)
+        {
+            config->config[i].data.int_value = value;
+            ret = ESCH_OK;
+            break;
+        }
+    }
+Exit:
+    return ret;
 }
+/**
+ * Get a string value in configuration.
+ * @param config Given config object.
+ * @param key Given key of configuration.
+ * @param value Returned integer value.
+ * @return Error code. ESCH_ERROR_NOT_FOUND if not found.
+ */
 esch_error
 esch_config_get_str(esch_config* config, const char* key, char** value)
 {
-    return ESCH_ERROR_NOT_IMPLEMENTED;
+    esch_error ret = ESCH_OK;
+    size_t i = 0;
+    ESCH_CHECK_PARAM_PUBLIC(config != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(key != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value != NULL);
+
+    ret = ESCH_ERROR_NOT_FOUND;
+    for (i = 0; i < ESCH_CONFIG_ITEMS; ++i)
+    {
+        if (strcmp(config->config[i].key, key) == 0
+                && config->config[i].type == ESCH_CONFIG_VALUE_TYPE_STRING)
+        {
+            (*value) = config->config[i].data.str_value;
+            ret = ESCH_OK;
+            break;
+        }
+    }
+Exit:
+    return ret;
 }
+
+/**
+ * Set a new string to given key.
+ * @param config Given config object.
+ * @param key String key.
+ * @param obj New string. Can be NULL.
+ * @return Return code. ESCH_ERROR_NOT_FOUND if key is not found.
+ */
 esch_error
 esch_config_set_str(esch_config* config, const char* key, char* value)
 {
-    return ESCH_ERROR_NOT_IMPLEMENTED;
+    esch_error ret = ESCH_OK;
+    size_t i = 0;
+    ESCH_CHECK_PARAM_PUBLIC(config != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(key != NULL);
+    ret = ESCH_ERROR_NOT_FOUND;
+    for (i = 0; i < ESCH_CONFIG_ITEMS; ++i)
+    {
+        if (strcmp(config->config[i].key, key) == 0
+                && config->config[i].type == ESCH_CONFIG_VALUE_TYPE_STRING)
+        {
+            strncmp(config->config[i].data.str_value,
+                    value,
+                    ESCH_CONFIG_VALUE_STRING_LENGTH);
+            ret = ESCH_OK;
+            break;
+        }
+    }
+Exit:
+    return ret;
+
 }
+/**
+ * Get an esch_object value in configuration.
+ * @param config Given config object.
+ * @param key Given key of configuration.
+ * @param value Returned integer value.
+ * @return Error code. ESCH_ERROR_NOT_FOUND if not found.
+ */
 esch_error
-esch_config_get_data(esch_config* config, const char* key, void* data)
+esch_config_get_obj(esch_config* config, const char* key, esch_object** obj)
 {
-    return ESCH_ERROR_NOT_IMPLEMENTED;
+    esch_error ret = ESCH_OK;
+    size_t i = 0;
+    ESCH_CHECK_PARAM_PUBLIC(config != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(key != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(obj != NULL);
+
+    ret = ESCH_ERROR_NOT_FOUND;
+    for (i = 0; i < ESCH_CONFIG_ITEMS; ++i)
+    {
+        if (strcmp(config->config[i].key, key) == 0
+                && config->config[i].type == ESCH_CONFIG_VALUE_TYPE_OBJECT)
+        {
+            (*obj) = config->config[i].data.obj_value;
+            ret = ESCH_OK;
+            break;
+        }
+    }
+Exit:
+    return ret;
 }
+
+/**
+ * Set a new object to given key.
+ * @param config Given config object.
+ * @param key String key.
+ * @param obj New object. Can be NULL.
+ * @return Return code. ESCH_ERROR_NOT_FOUND if key is not found.
+ */
 esch_error
-esch_config_set_data(esch_config* config, const char* key, void* data)
+esch_config_set_obj(esch_config* config, const char* key, esch_object* obj)
 {
-    return ESCH_ERROR_NOT_IMPLEMENTED;
+    esch_error ret = ESCH_OK;
+    size_t i = 0;
+    ESCH_CHECK_PARAM_PUBLIC(config != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(key != NULL);
+    ret = ESCH_ERROR_NOT_FOUND;
+    for (i = 0; i < ESCH_CONFIG_ITEMS; ++i)
+    {
+        if (strcmp(config->config[i].key, key) == 0
+                && config->config[i].type == ESCH_CONFIG_VALUE_TYPE_OBJECT)
+        {
+            config->config[i].data.obj_value = obj;
+            ret = ESCH_OK;
+            break;
+        }
+    }
+Exit:
+    return ret;
 }
 

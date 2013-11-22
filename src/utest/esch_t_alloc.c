@@ -24,7 +24,7 @@ esch_error test_AllocCreateDeleteCDefault()
     ret = esch_config_new(&config);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create config", ret);
 
-    ret = esch_config_set_data(config, ESCH_CONFIG_KEY_LOG, log);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_LOG, (esch_object*)log);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:obj", ret);
 
     ret = esch_alloc_new_c_default(config, &alloc);

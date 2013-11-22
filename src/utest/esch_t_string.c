@@ -28,31 +28,35 @@ esch_error test_string()
     ret = esch_config_new(&config);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create config", ret);
 
-    ret = esch_config_set_data(config, ESCH_CONFIG_KEY_ALLOC, alloc);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_ALLOC, (esch_object*)alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:alloc:obj", ret);
-    ret = esch_config_set_data(config, ESCH_CONFIG_KEY_LOG, NULL);
-    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:NULL", ret);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_LOG, (esch_object*)log);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:log", ret);
 
     ret = esch_alloc_new_c_default(config, &alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
 
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_ALLOC, (esch_object*)alloc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:alloc:obj", ret);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_LOG, NULL);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:NULL", ret);
 
     ret = esch_string_new_from_utf8(config, input, 0, -1, &str);
     ESCH_TEST_CHECK(ret == ESCH_ERROR_INVALID_PARAMETER && str == NULL,
             "Failed to create string - no log", ret);
 
-    ret = esch_config_set_data(config, ESCH_CONFIG_KEY_ALLOC, NULL);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_ALLOC, NULL);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:alloc:NULL", ret);
-    ret = esch_config_set_data(config, ESCH_CONFIG_KEY_LOG, log);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_LOG, (esch_object*)log);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:obj", ret);
 
     ret = esch_string_new_from_utf8(config, input, 0, -1, &str);
     ESCH_TEST_CHECK(ret == ESCH_ERROR_INVALID_PARAMETER && str == NULL,
             "Failed to create string - no alloc", ret);
 
-    ret = esch_config_set_data(config, ESCH_CONFIG_KEY_ALLOC, alloc);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_ALLOC, (esch_object*)alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:alloc:obj", ret);
-    ret = esch_config_set_data(config, ESCH_CONFIG_KEY_LOG, log);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_LOG, (esch_object*)log);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:obj", ret);
 
     /* Check if a full string can be parsed */

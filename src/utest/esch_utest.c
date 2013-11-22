@@ -29,6 +29,12 @@ int main(int argc, char* argv[])
     ret = test_list();
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_list() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_list()");
+
+    ret = test_config();
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_config() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_config()");
+
+    esch_log_info(g_testLog, "All passed.");
 Exit:
     (void)esch_log_delete(g_testLog);
     return ret;

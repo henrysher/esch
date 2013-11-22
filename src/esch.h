@@ -54,8 +54,8 @@ extern "C" {
 
 /*
  * The configuration keys are pre-defined within configuration. List:
- * 1. key = "config:alloc", value = esch_alloc
- * 2. key = "config:log", value = esch_log
+ * 1. key = "common:alloc", value = esch_alloc
+ * 2. key = "common:log", value = esch_log
  */
 const char* ESCH_CONFIG_KEY_ALLOC;
 const char* ESCH_CONFIG_KEY_LOG;
@@ -66,8 +66,8 @@ typedef enum {
     ESCH_ERROR_OUT_OF_MEMORY,
     ESCH_ERROR_INVALID_PARAMETER,
     ESCH_ERROR_INVALID_STATE,
-    ESCH_ERROR_CONFIG_NOT_FOUND,
-    ESCH_ERROR_CONFIG_BAD_VALUE_TYPE,
+    ESCH_ERROR_NOT_FOUND,
+    ESCH_ERROR_BAD_VALUE_TYPE,
     ESCH_ERROR_OUT_OF_BOUND,
 } esch_error;
 
@@ -125,8 +125,8 @@ esch_error esch_config_get_int(esch_config* config, const char* key, int* value)
 esch_error esch_config_set_int(esch_config* config, const char* key, int value);
 esch_error esch_config_get_str(esch_config* config, const char* key, char** value);
 esch_error esch_config_set_str(esch_config* config, const char* key, char* value);
-esch_error esch_config_get_data(esch_config* config, const char* key, void* data);
-esch_error esch_config_set_data(esch_config* config, const char* key, void* data);
+esch_error esch_config_get_obj(esch_config* config, const char* key, esch_object** obj);
+esch_error esch_config_set_obj(esch_config* config, const char* key, esch_object* obj);
 
 /* --- Memory allocator --- */
 /* Default C alloc does not depend on esch_config. */

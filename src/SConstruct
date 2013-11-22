@@ -67,7 +67,8 @@ utest_src = [ 'utest/esch_utest.c', \
               'utest/esch_t_alloc.c', \
               'utest/esch_t_parser.c', \
               'utest/esch_t_string.c', \
-              'utest/esch_t_list.c' \
+              'utest/esch_t_list.c', \
+              'utest/esch_t_config.c' \
             ]
 esch_utest = env.Program('esch_utest', utest_src, LIBS=[ 'esch' ], \
                          LIBPATH=[ '.' ])
