@@ -8,22 +8,24 @@ typedef esch_error (*esch_container_delete_func)(esch_object*, int);
 static esch_object_delete_func
 primitive_delete_func_table[] =
 {
-    NULL,
+    NULL, /* First element must be kept NULL */
+    (esch_object_delete_func)esch_config_delete, /* ESCH_TYPE_CONFIG */
     (esch_object_delete_func)esch_string_delete, /* ESCH_TYPE_CHAR_AS_STRING */
     (esch_object_delete_func)esch_string_delete, /* ESCH_TYPE_STRING */
     (esch_object_delete_func)esch_string_delete, /* ESCH_TYPE_SYMBOL */
     NULL, /* ESCH_TYPE_NUMBER */
-    NULL
+    NULL /* Last element must be kept NULL */
 };
 static esch_container_delete_func
 container_delete_func_table[] =
 {
-    NULL,
-    (esch_container_delete_func)esch_list_delete, /* ESCH_TYPE_LIST */
-    NULL
+    NULL, /* First element must be kept NULL */
+    NULL, /* ESCH_TYPE_LIST */
+    NULL /* Last element must be kept NULL */
 };
 
-esch_error esch_object_delete(esch_object* data, int delete_data)
+esch_error
+esch_object_delete(esch_object* data, int delete_data)
 {
     esch_error ret = ESCH_OK;
     size_t idx = 0;
