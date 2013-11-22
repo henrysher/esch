@@ -32,6 +32,7 @@ esch_list_new(esch_config* config, size_t initial_length, esch_list** list)
     log = ESCH_INTERNAL_CONFIG_GET_LOG(config);
     ret = esch_alloc_malloc(alloc, sizeof(esch_list), (void**)&new_list);
     ESCH_CHECK(ret == ESCH_OK, log, "Can't malloc list", ret);
+    ESCH_GET_VERSION(new_list) = ESCH_VERSION;
     ESCH_GET_TYPE(new_list) = ESCH_TYPE_LIST;
     ESCH_GET_ALLOC(new_list) = alloc;
     ESCH_GET_LOG(new_list) = log;

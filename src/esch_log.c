@@ -7,20 +7,37 @@
 #include "esch_log.h"
 #include "esch_debug.h"
 
-static esch_alloc g_dummy_alloc = {
-    { ESCH_TYPE_ALLOC_DUMMY, &g_dummy_alloc, &g_esch_log_do_nothing },
+esch_alloc esch_dummy_alloc = {
+    {
+        ESCH_VERSION,
+        ESCH_TYPE_ALLOC_DUMMY,
+        &esch_dummy_alloc,
+        &esch_log_do_nothing
+    },
 };
-esch_log g_esch_log_printf = {
-    { ESCH_TYPE_LOG_PRINTF, &g_dummy_alloc, &g_esch_log_printf },
-    esch_log_error_printf, esch_log_info_printf
+esch_log esch_log_printf = {
+    {
+        ESCH_VERSION,
+        ESCH_TYPE_LOG_PRINTF,
+        &esch_dummy_alloc,
+        &esch_log_printf
+    },
+    esch_log_error_printf,
+    esch_log_info_printf
 };
-esch_log g_esch_log_do_nothing = {
-    { ESCH_TYPE_LOG_DO_NOTHING, &g_dummy_alloc, &g_esch_log_do_nothing },
-    esch_log_message_do_nothing, esch_log_message_do_nothing
+esch_log esch_log_do_nothing = {
+    {
+        ESCH_VERSION,
+        ESCH_TYPE_LOG_DO_NOTHING,
+        &esch_dummy_alloc,
+        &esch_log_do_nothing
+    },
+    esch_log_message_do_nothing,
+    esch_log_message_do_nothing
 };
 
 /* By default, the global log uses printf(). */
-esch_log* esch_global_log = &g_esch_log_printf;
+esch_log* esch_global_log = &esch_log_printf;
 
 /**
  * Create a log that print string to use printf().
@@ -35,7 +52,7 @@ esch_log_new_printf(esch_log** log)
 
     ESCH_CHECK_NO_LOG(log != NULL, ESCH_ERROR_INVALID_PARAMETER);
 
-    (*log) = &g_esch_log_printf;
+    (*log) = &esch_log_printf;
     assert(ESCH_IS_VALID_OBJECT(*log));
 Exit:
     return ret;
@@ -54,7 +71,7 @@ esch_log_new_do_nothing(esch_log** log)
 
     ESCH_CHECK_NO_LOG(log != NULL, ESCH_ERROR_INVALID_PARAMETER);
 
-    (*log) = &g_esch_log_do_nothing;
+    (*log) = &esch_log_do_nothing;
     assert(ESCH_IS_VALID_OBJECT(*log));
 Exit:
     return ret;
@@ -75,8 +92,8 @@ esch_log_error(esch_log* log, const char* fmt, ...)
     ESCH_CHECK_NO_LOG(log != NULL, ESCH_ERROR_INVALID_PARAMETER);
     ESCH_CHECK_NO_LOG(fmt != NULL, ESCH_ERROR_INVALID_PARAMETER);
     ESCH_CHECK_NO_LOG(ESCH_IS_VALID_OBJECT(log), ESCH_ERROR_INVALID_PARAMETER);
-    ESCH_CHECK_NO_LOG(log == &g_esch_log_do_nothing ||
-                      log == &g_esch_log_printf,
+    ESCH_CHECK_NO_LOG(log == &esch_log_do_nothing ||
+                      log == &esch_log_printf,
                      ESCH_ERROR_INVALID_PARAMETER);
 
     va_start(ap, fmt);
@@ -101,8 +118,8 @@ esch_log_info(esch_log* log, const char* fmt, ...)
     ESCH_CHECK_NO_LOG(log != NULL, ESCH_ERROR_INVALID_PARAMETER);
     ESCH_CHECK_NO_LOG(fmt != NULL, ESCH_ERROR_INVALID_PARAMETER);
     ESCH_CHECK_NO_LOG(ESCH_IS_VALID_OBJECT(log), ESCH_ERROR_INVALID_PARAMETER);
-    ESCH_CHECK_NO_LOG(log == &g_esch_log_do_nothing ||
-                      log == &g_esch_log_printf,
+    ESCH_CHECK_NO_LOG(log == &esch_log_do_nothing ||
+                      log == &esch_log_printf,
                      ESCH_ERROR_INVALID_PARAMETER);
 
     va_start(ap, fmt);
@@ -125,8 +142,8 @@ esch_log_delete(esch_log* log)
         return ret;
     }
     ESCH_CHECK_NO_LOG(ESCH_IS_VALID_OBJECT(log), ESCH_ERROR_INVALID_PARAMETER);
-    ESCH_CHECK_NO_LOG(log == &g_esch_log_do_nothing ||
-                      log == &g_esch_log_printf,
+    ESCH_CHECK_NO_LOG(log == &esch_log_do_nothing ||
+                      log == &esch_log_printf,
                      ESCH_ERROR_INVALID_PARAMETER);
     /* Just do nothing */
 Exit:

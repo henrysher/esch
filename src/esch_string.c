@@ -275,6 +275,7 @@ esch_string_new_from_utf8(esch_config* config, char* utf8,
     ret = decode_utf8(new_utf8, 0, len, config, &new_unicode, &unicode_len);
     ESCH_CHECK(ret == ESCH_OK, log, "Can't decode UTF-8", ret);
 
+    ESCH_GET_VERSION(new_str) = ESCH_VERSION;
     ESCH_GET_TYPE(new_str) = ESCH_TYPE_STRING;
     ESCH_GET_ALLOC(new_str) = alloc;
     ESCH_GET_LOG(new_str) = log;

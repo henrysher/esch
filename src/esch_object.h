@@ -16,6 +16,7 @@ extern "C" {
  */
 struct esch_object
 {
+    unsigned char version;  /**< Object version */
     esch_type   type;       /**< Registered type ID */
     esch_alloc* alloc;      /**< Allocator object to manage memory. */
     esch_log*   log;        /**< Log object to write trace/errors.*/
@@ -24,12 +25,14 @@ struct esch_object
 #define ESCH_COMMON_HEADER    esch_object header
 
 #define ESCH_GET_CONFIG(obj)         ((esch_object*)obj)
+#define ESCH_GET_VERSION(obj)        (((esch_object*)obj)->version)
 #define ESCH_GET_TYPE(obj)           (((esch_object*)obj)->type)
 #define ESCH_GET_LOG(obj)            (((esch_object*)obj)->log)
 #define ESCH_GET_ALLOC(obj)          (((esch_object*)obj)->alloc)
 
 #define ESCH_IS_VALID_OBJECT(obj) \
-    ((ESCH_GET_TYPE(obj) & ESCH_TYPE_MAGIC) == ESCH_TYPE_MAGIC && \
+    (ESCH_GET_VERSION(obj) == ESCH_VERSION && \
+     (ESCH_GET_TYPE(obj) & ESCH_TYPE_MAGIC) == ESCH_TYPE_MAGIC && \
      ESCH_GET_LOG(obj) != NULL && \
      ESCH_GET_ALLOC(obj) != NULL)
 

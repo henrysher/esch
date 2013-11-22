@@ -32,6 +32,7 @@ esch_parser_new(esch_config* config, esch_parser** parser)
     ret = esch_alloc_malloc(alloc, sizeof(esch_parser), (void**)&new_parser);
     ESCH_CHECK(ret == ESCH_OK, esch_global_log, "Can't malloc for parser", ret);
 
+    ESCH_GET_VERSION(new_parser) = ESCH_VERSION;
     ESCH_GET_TYPE(new_parser) = ESCH_TYPE_PARSER;
     ESCH_GET_LOG(new_parser) = log;
     ESCH_GET_ALLOC(new_parser) = alloc;

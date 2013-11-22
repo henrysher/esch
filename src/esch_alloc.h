@@ -17,10 +17,8 @@ struct esch_alloc
 };
 
 #define ESCH_IS_VALID_ALLOC(obj) \
-    (((ESCH_GET_TYPE(obj) == ESCH_TYPE_ALLOC_C_DEFAULT)) \
-     && \
-     ESCH_GET_ALLOC(obj) != NULL && \
-     ESCH_GET_LOG(obj) != NULL && \
+    (ESCH_IS_VALID_OBJECT(obj) && \
+     (ESCH_GET_TYPE(obj) == ESCH_TYPE_ALLOC_C_DEFAULT) && \
      ESCH_GET_ALLOC(obj) == (obj))
 
 #ifdef __cplusplus

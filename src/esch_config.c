@@ -1,6 +1,7 @@
 #include "esch.h"
 #include "esch_debug.h"
 #include "esch_config.h"
+#include "esch_log.h"
 #include <assert.h>
 #include <string.h>
 
@@ -24,8 +25,9 @@ esch_config_new(esch_config** config)
     ESCH_CHECK(new_config != NULL, esch_global_log,
             "Can't malloc config", ESCH_ERROR_INVALID_PARAMETER);
     memset(new_config, 0, sizeof(esch_config));
+    ESCH_GET_VERSION(new_config) = ESCH_VERSION;
     ESCH_GET_TYPE(new_config) = ESCH_TYPE_CONFIG;
-    ESCH_GET_ALLOC(new_config) = NULL;
+    ESCH_GET_ALLOC(new_config) = &esch_dummy_alloc;
     ret = esch_log_new_do_nothing(&do_nothing_log);
     ESCH_CHECK(ret == ESCH_OK, esch_global_log, "Can't create dummy log", ret);
     ESCH_GET_LOG(new_config) = do_nothing_log;

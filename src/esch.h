@@ -49,6 +49,8 @@ extern "C" {
  * This is the only public include file for Esch interpreter. 
  */
 
+#define ESCH_VERSION 1
+
 #define ESCH_FALSE 0
 #define ESCH_TRUE !(ESCH_FALSE)
 

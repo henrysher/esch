@@ -31,10 +31,8 @@ struct esch_config
 };
 
 #define ESCH_IS_VALID_CONFIG(obj) \
-    (((ESCH_GET_TYPE(obj) == ESCH_TYPE_CONFIG)) \
-     && \
-     ESCH_GET_ALLOC(obj) == NULL && \
-     ESCH_GET_LOG(obj) != NULL)
+    (ESCH_IS_VALID_OBJECT(obj) && \
+     (ESCH_GET_TYPE(obj) == ESCH_TYPE_CONFIG))
 
 #define ESCH_INTERNAL_CONFIG_GET_ALLOC(cfg) \
     ((esch_alloc*)(cfg->config[0].data.obj_value))

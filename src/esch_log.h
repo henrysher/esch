@@ -28,8 +28,9 @@ struct esch_log
     error_log_func log_info;
 };
 
-extern esch_log g_esch_log_printf;
-extern esch_log g_esch_log_do_nothing;
+extern esch_alloc esch_dummy_alloc;
+extern esch_log esch_log_printf;
+extern esch_log esch_log_do_nothing;
 
 #ifdef __cplusplus
 }
