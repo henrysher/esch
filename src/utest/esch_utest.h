@@ -15,10 +15,8 @@ extern esch_log* g_testLog;
 
 /* test cases */
 extern esch_error test_AllocCreateDeleteCDefault();
-extern esch_error test_parser();
 extern esch_error test_string();
 extern esch_error test_identifier();
-extern esch_error test_list();
 extern esch_error test_config();
 
 #ifdef __cplusplus

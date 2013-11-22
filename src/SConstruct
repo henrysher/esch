@@ -58,16 +58,14 @@ print("Build mode = %s, compiler = %s" % (buildmode, compiler))
 env.Append(CCFLAGS=ccflags)
 
 # Library
-libesch_src = ['esch_alloc.c', 'esch_log.c', 'esch_parser.c', \
-               'esch_string.c', 'esch_range.c', 'esch_list.c', \
+libesch_src = ['esch_alloc.c', 'esch_log.c', \
+               'esch_string.c', 'esch_range.c', \
                'esch_object.c', 'esch_config.c' ]
 esch = env.StaticLibrary('esch', libesch_src)
 # Unit test
 utest_src = [ 'utest/esch_utest.c', \
               'utest/esch_t_alloc.c', \
-              'utest/esch_t_parser.c', \
               'utest/esch_t_string.c', \
-              'utest/esch_t_list.c', \
               'utest/esch_t_config.c' \
             ]
 esch_utest = env.Program('esch_utest', utest_src, LIBS=[ 'esch' ], \
