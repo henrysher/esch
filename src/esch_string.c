@@ -259,7 +259,7 @@ esch_string_new_from_utf8(esch_config* config, char* utf8,
     else
     {
         ret = ESCH_ERROR_INVALID_PARAMETER;
-        ESCH_CHECK(ret, log, "Invalid length", ret);
+        ESCH_CHECK(ret, esch_global_log, "Invalid length", ret);
     }
 
     alloc = ESCH_INTERNAL_CONFIG_GET_ALLOC(config);
