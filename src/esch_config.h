@@ -13,7 +13,7 @@ extern "C" {
 
 #define ESCH_CONFIG_KEY_LENGTH 32
 #define ESCH_CONFIG_VALUE_STRING_LENGTH 255
-#define ESCH_CONFIG_ITEMS 2
+#define ESCH_CONFIG_ITEMS 4
 struct esch_config
 {
     ESCH_COMMON_HEADER;

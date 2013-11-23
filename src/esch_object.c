@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "esch.h"
 #include "esch_config.h"
 #include "esch_object.h"
@@ -20,12 +21,12 @@ static esch_container_delete_func
 container_delete_func_table[] =
 {
     NULL, /* First element must be kept NULL */
-    NULL, /* ESCH_TYPE_LIST */
+    (esch_container_delete_func)esch_vector_delete, /* ESCH_TYPE_VECTOR */
     NULL /* Last element must be kept NULL */
 };
 
 esch_error
-esch_object_delete(esch_object* data, int delete_data)
+esch_object_delete(esch_object* data, int delete_element)
 {
     esch_error ret = ESCH_OK;
     size_t idx = 0;
@@ -43,12 +44,14 @@ esch_object_delete(esch_object* data, int delete_data)
     else if (ESCH_IS_PRIMITIVE(data))
     {
         idx = (ESCH_GET_TYPE(data) & 0xF);
+        assert(primitive_delete_func_table[idx]);
         return primitive_delete_func_table[idx](data);
     }
     else if (ESCH_IS_CONTAINER(data))
     {
         idx = (ESCH_GET_TYPE(data) & 0xF);
-        return container_delete_func_table[idx](data, delete_data);
+        assert(container_delete_func_table[idx]);
+        return container_delete_func_table[idx](data, delete_element);
     }
     else
     {

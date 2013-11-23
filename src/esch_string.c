@@ -230,7 +230,7 @@ encode_utf8(esch_unicode* unicode, int begin, int end, esch_alloc* alloc, char**
  * @return Error code.
  */
 esch_error
-esch_string_new_from_utf8(esch_config* config, char* utf8,
+esch_string_new_from_utf8(esch_config* config, const char* utf8,
                           int begin, int end, esch_string** str)
 {
     esch_error ret = ESCH_OK;

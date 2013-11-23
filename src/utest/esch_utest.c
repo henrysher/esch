@@ -26,6 +26,10 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_config() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_config()");
 
+    ret = test_vector();
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vector() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_vector()");
+
     esch_log_info(g_testLog, "All passed.");
 Exit:
     (void)esch_log_delete(g_testLog);

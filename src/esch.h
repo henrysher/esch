@@ -53,14 +53,19 @@ extern "C" {
 
 #define ESCH_FALSE 0
 #define ESCH_TRUE !(ESCH_FALSE)
+typedef int ESCH_BOOL;
 
 /*
  * The configuration keys are pre-defined within configuration. List:
  * 1. key = "common:alloc", value = esch_alloc
  * 2. key = "common:log", value = esch_log
+ * 3. key = "vector:element_type", value = enum_type
+ * 4. key = "vector:initial_length", value = int
  */
 const char* ESCH_CONFIG_KEY_ALLOC;
 const char* ESCH_CONFIG_KEY_LOG;
+const char* ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE;
+const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH;
 
 typedef enum {
     ESCH_OK = 0,
@@ -94,7 +99,7 @@ typedef enum {
     ESCH_TYPE_STRING           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 3,
     ESCH_TYPE_SYMBOL           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 4,
     ESCH_TYPE_NUMBER           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 5,
-    ESCH_TYPE_LIST             = ESCH_TYPE_MAGIC | ESCH_TYPE_CONTAINER | 1,
+    ESCH_TYPE_VECTOR           = ESCH_TYPE_MAGIC | ESCH_TYPE_CONTAINER | 1,
 
     ESCH_TYPE_ALLOC_DUMMY      = ESCH_TYPE_MAGIC | ESCH_TYPE_NO_DELETE | 1,
     ESCH_TYPE_ALLOC_C_DEFAULT  = ESCH_TYPE_MAGIC | ESCH_TYPE_NO_DELETE | 2,
@@ -114,8 +119,7 @@ typedef struct esch_parser          esch_parser;
 typedef struct esch_parser_callback esch_parser_callback;
 typedef struct esch_ast             esch_ast;
 typedef struct esch_string          esch_string;
-typedef struct esch_list            esch_list;
-typedef struct esch_list_node       esch_list_node;
+typedef struct esch_vector          esch_vector;
 
 typedef char                        esch_utf8_char;
 typedef wchar_t                     esch_unicode;
@@ -148,7 +152,7 @@ esch_error esch_log_error(esch_log* log, const char* fmt, ...);
 esch_error esch_log_info(esch_log* log, const char* fmt, ...);
 
 /* --- String objects --- */
-esch_error esch_string_new_from_utf8(esch_config* config, char* utf8,
+esch_error esch_string_new_from_utf8(esch_config* config, const char* utf8,
                                      int begin, int end,
                                      esch_string** str);
 esch_error esch_string_delete(esch_string* str);
@@ -189,30 +193,22 @@ int esch_unicode_is_range_sk(esch_unicode ch);
 int esch_unicode_is_range_so(esch_unicode ch);
 int esch_unicode_is_range_co(esch_unicode ch);
 
-/* --- List --- */
+/* --- Vector --- */
 /* XXX
- * This is a list to represent Scheme pair, list and array.
+ * This is a vector to represent Scheme pair, list and array. It is used
+ * to represent a typed or non-typed array.
  *
- * The list accepts only valid esch_ objects.
+ * The vector accepts only valid esch_ objects.
  *
  */
-esch_error esch_list_new(esch_config* config, size_t initial_length,
-                         esch_list** lst);
-esch_error esch_list_delete(esch_list* list, int delete_data);
-esch_error esch_list_get_length(esch_list* list, size_t* length);
-esch_error esch_list_get_node(esch_list* list, int index,
-                              esch_list_node** node);
-esch_error esch_list_get_data(esch_list* list, int index,
-                              esch_object** data);
-esch_error esch_list_get_first(esch_list* list, esch_list_node** node);
-esch_error esch_list_get_next(esch_list_node* node,
-                              esch_list_node* next);
-esch_error esch_list_get_prev(esch_list_node* item, 
-                              esch_list_node* node);
-esch_error esch_list_prepend(esch_list* list, esch_object* data);
-esch_error esch_list_append(esch_list* list, esch_object* data);
+esch_error esch_vector_new(esch_config* config, esch_vector** vec);
+esch_error esch_vector_new_copy(esch_vector* original, esch_vector** vec);
+esch_error esch_vector_delete(esch_vector* vec, ESCH_BOOL delete_element);
+esch_error esch_vector_append(esch_vector* vec, esch_object* data);
+esch_error esch_vector_get_length(esch_vector* vec, size_t* length);
+esch_error esch_vector_get_data(esch_vector* vec, int index, esch_object* obj);
+esch_error esch_vector_get_element_type(esch_vector* vec, esch_type* type);
 
-esch_error esch_list_node_get_data(esch_list_node* node, esch_object** data);
 
 /* --- TODO Number -- */
 /* --- TODO Complex -- */

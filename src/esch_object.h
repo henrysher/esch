@@ -43,7 +43,7 @@ struct esch_object
 #define ESCH_IS_CONTAINER(obj) \
     ((ESCH_GET_TYPE(obj) & ESCH_TYPE_CONTAINER) == ESCH_TYPE_CONTAINER)
 
-esch_error esch_object_delete(esch_object* data, int delete_data);
+esch_error esch_object_delete(esch_object* data, int delete_element);
 
 #ifdef __cplusplus
 }

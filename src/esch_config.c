@@ -7,6 +7,8 @@
 
 const char* ESCH_CONFIG_KEY_ALLOC = "common:alloc";
 const char* ESCH_CONFIG_KEY_LOG = "common:log";
+const char* ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE = "vector:element_type";
+const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH = "vector:initial_length";
 
 /**
  * Create a new config object.
@@ -35,10 +37,18 @@ esch_config_new(esch_config** config)
     // Fill key in advance
     strncpy(new_config->config[0].key,
             ESCH_CONFIG_KEY_ALLOC, ESCH_CONFIG_KEY_LENGTH);
+    new_config->config[0].type = ESCH_CONFIG_VALUE_TYPE_OBJECT;
     strncpy(new_config->config[1].key,
             ESCH_CONFIG_KEY_LOG, ESCH_CONFIG_KEY_LENGTH);
-    new_config->config[0].type = ESCH_CONFIG_VALUE_TYPE_OBJECT;
     new_config->config[1].type = ESCH_CONFIG_VALUE_TYPE_OBJECT;
+    strncpy(new_config->config[2].key,
+            ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE, ESCH_CONFIG_KEY_LENGTH);
+    new_config->config[2].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
+    new_config->config[2].data.int_value = ESCH_TYPE_UNKNOWN;
+    strncpy(new_config->config[3].key,
+            ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH, ESCH_CONFIG_KEY_LENGTH);
+    new_config->config[3].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
+    new_config->config[3].data.int_value = 1;
 
     (*config) = new_config;
     new_config = NULL;
