@@ -18,7 +18,8 @@ extern esch_error test_AllocCreateDeleteCDefault();
 extern esch_error test_string();
 extern esch_error test_identifier();
 extern esch_error test_config();
-extern esch_error test_vector();
+extern esch_error test_vectorBase();
+extern esch_error test_vectorElementType();
 
 #ifdef __cplusplus
 }

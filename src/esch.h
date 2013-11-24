@@ -206,7 +206,7 @@ esch_error esch_vector_new_copy(esch_vector* original, esch_vector** vec);
 esch_error esch_vector_delete(esch_vector* vec, ESCH_BOOL delete_element);
 esch_error esch_vector_append(esch_vector* vec, esch_object* data);
 esch_error esch_vector_get_length(esch_vector* vec, size_t* length);
-esch_error esch_vector_get_data(esch_vector* vec, int index, esch_object* obj);
+esch_error esch_vector_get_data(esch_vector* vec, int index, esch_object** obj);
 esch_error esch_vector_get_element_type(esch_vector* vec, esch_type* type);
 
 

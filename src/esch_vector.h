@@ -13,10 +13,10 @@ extern "C" {
 struct esch_vector
 {
     ESCH_COMMON_HEADER;
-    esch_object* array;
-    size_t length;
-    esch_object* end;
-    esch_object* next;
+    size_t slots;
+    esch_object** begin;
+    esch_object** end;
+    esch_object** next;
     esch_type element_type;
 };
 

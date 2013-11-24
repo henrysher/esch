@@ -26,9 +26,13 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_config() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_config()");
 
-    ret = test_vector();
-    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vector() failed", ret);
-    esch_log_info(g_testLog, "[PASSED] test_vector()");
+    ret = test_vectorBase();
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorBase() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_vectorBase()");
+
+    ret = test_vectorElementType();
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorElementType() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_vectorElementType()");
 
     esch_log_info(g_testLog, "All passed.");
 Exit:
