@@ -4,10 +4,9 @@
 #include "esch_object.h"
 
 typedef esch_error (*esch_object_delete_func)(esch_object*);
-typedef esch_error (*esch_container_delete_func)(esch_object*, int);
 
 static esch_object_delete_func
-primitive_delete_func_table[] =
+delete_func_table[] =
 {
     NULL, /* First element must be kept NULL */
     (esch_object_delete_func)esch_config_delete, /* ESCH_TYPE_CONFIG */
@@ -15,18 +14,12 @@ primitive_delete_func_table[] =
     (esch_object_delete_func)esch_string_delete, /* ESCH_TYPE_STRING */
     (esch_object_delete_func)esch_string_delete, /* ESCH_TYPE_SYMBOL */
     NULL, /* ESCH_TYPE_NUMBER */
-    NULL /* Last element must be kept NULL */
-};
-static esch_container_delete_func
-container_delete_func_table[] =
-{
-    NULL, /* First element must be kept NULL */
-    (esch_container_delete_func)esch_vector_delete, /* ESCH_TYPE_VECTOR */
+    (esch_object_delete_func)esch_vector_delete, /* ESCH_TYPE_VECTOR */
     NULL /* Last element must be kept NULL */
 };
 
 esch_error
-esch_object_delete(esch_object* data, int delete_element)
+esch_object_delete(esch_object* data)
 {
     esch_error ret = ESCH_OK;
     size_t idx = 0;
@@ -41,17 +34,11 @@ esch_object_delete(esch_object* data, int delete_element)
     {
         return ESCH_ERROR_INVALID_PARAMETER;
     }
-    else if (ESCH_IS_PRIMITIVE(data))
+    else if (ESCH_IS_PRIMITIVE(data) || ESCH_IS_CONTAINER(data))
     {
         idx = (ESCH_GET_TYPE(data) & 0xF);
-        assert(primitive_delete_func_table[idx]);
-        return primitive_delete_func_table[idx](data);
-    }
-    else if (ESCH_IS_CONTAINER(data))
-    {
-        idx = (ESCH_GET_TYPE(data) & 0xF);
-        assert(container_delete_func_table[idx]);
-        return container_delete_func_table[idx](data, delete_element);
+        assert(delete_func_table[idx]);
+        return delete_func_table[idx](data);
     }
     else
     {

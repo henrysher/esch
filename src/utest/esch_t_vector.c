@@ -122,7 +122,7 @@ esch_error test_vectorBase()
     ret = ESCH_OK;
 
     /* Clean up */
-    ret = esch_vector_delete(vec, ESCH_FALSE);
+    ret = esch_vector_delete(vec);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete vector object.", ret);
 
     ret = esch_string_delete(str);
@@ -206,7 +206,7 @@ esch_error test_vectorElementType()
     ret = ESCH_OK;
 
     /* Clean up */
-    ret = esch_vector_delete(vec, ESCH_FALSE);
+    ret = esch_vector_delete(vec);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete vector object.", ret);
 
     ret = esch_string_delete(str);
@@ -260,6 +260,10 @@ esch_error test_vectorDeleteElement()
             ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE, ESCH_TYPE_STRING);
     ESCH_TEST_CHECK(ret == ESCH_OK,
                     "Failed to set config:vector:type", ret);
+    ret = esch_config_set_int(config,
+            ESCH_CONFIG_KEY_VECTOR_DELETE_ELEMENT, ESCH_TRUE);
+    ESCH_TEST_CHECK(ret == ESCH_OK,
+                    "Failed to set config:vector:delete_element", ret);
 
     ret = esch_vector_new(config, &vec);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create vector", ret);
@@ -280,7 +284,7 @@ esch_error test_vectorDeleteElement()
     ret = ESCH_OK;
 
     /* Clean up */
-    ret = esch_vector_delete(vec, ESCH_TRUE);
+    ret = esch_vector_delete(vec);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete vector object.", ret);
     /* String should be deleted, thus no assertion failure. */
 

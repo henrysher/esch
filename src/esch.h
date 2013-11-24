@@ -57,15 +57,17 @@ typedef int ESCH_BOOL;
 
 /*
  * The configuration keys are pre-defined within configuration. List:
- * 1. key = "common:alloc", value = esch_alloc
- * 2. key = "common:log", value = esch_log
- * 3. key = "vector:element_type", value = enum_type
- * 4. key = "vector:initial_length", value = int
+ * - key = "common:alloc", value = esch_alloc
+ * - key = "common:log", value = esch_log
+ * - key = "vector:element_type", value = enum_type
+ * - key = "vector:initial_length", value = int
+ * - key = "vector:delete_element", value = int
  */
 const char* ESCH_CONFIG_KEY_ALLOC;
 const char* ESCH_CONFIG_KEY_LOG;
 const char* ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE;
 const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH;
+const char* ESCH_CONFIG_KEY_VECTOR_DELETE_ELEMENT;
 
 typedef enum {
     ESCH_OK = 0,
@@ -93,13 +95,13 @@ typedef enum {
     ESCH_TYPE_PRIMITIVE        = ESCH_TYPE_MAGIC | 0x20,
     ESCH_TYPE_CONTAINER        = ESCH_TYPE_MAGIC | 0x30,
 
-    /* Concret types */
+    /* Concrete types */
     ESCH_TYPE_CONFIG           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 1,
     ESCH_TYPE_CHAR_AS_STRING   = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 2,
     ESCH_TYPE_STRING           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 3,
     ESCH_TYPE_SYMBOL           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 4,
     ESCH_TYPE_NUMBER           = ESCH_TYPE_MAGIC | ESCH_TYPE_PRIMITIVE | 5,
-    ESCH_TYPE_VECTOR           = ESCH_TYPE_MAGIC | ESCH_TYPE_CONTAINER | 1,
+    ESCH_TYPE_VECTOR           = ESCH_TYPE_MAGIC | ESCH_TYPE_CONTAINER | 6,
 
     ESCH_TYPE_ALLOC_DUMMY      = ESCH_TYPE_MAGIC | ESCH_TYPE_NO_DELETE | 1,
     ESCH_TYPE_ALLOC_C_DEFAULT  = ESCH_TYPE_MAGIC | ESCH_TYPE_NO_DELETE | 2,
@@ -202,7 +204,7 @@ int esch_unicode_is_range_co(esch_unicode ch);
  *
  */
 esch_error esch_vector_new(esch_config* config, esch_vector** vec);
-esch_error esch_vector_delete(esch_vector* vec, ESCH_BOOL delete_element);
+esch_error esch_vector_delete(esch_vector* vec);
 esch_error esch_vector_append(esch_vector* vec, esch_object* data);
 esch_error esch_vector_get_length(esch_vector* vec, size_t* length);
 esch_error esch_vector_get_data(esch_vector* vec, int index, esch_object** obj);

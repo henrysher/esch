@@ -9,6 +9,7 @@ const char* ESCH_CONFIG_KEY_ALLOC = "common:alloc";
 const char* ESCH_CONFIG_KEY_LOG = "common:log";
 const char* ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE = "vector:element_type";
 const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH = "vector:initial_length";
+const char* ESCH_CONFIG_KEY_VECTOR_DELETE_ELEMENT = "vecotr:delete_element";
 
 /**
  * Create a new config object.
@@ -49,6 +50,11 @@ esch_config_new(esch_config** config)
             ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH, ESCH_CONFIG_KEY_LENGTH);
     new_config->config[3].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
     new_config->config[3].data.int_value = 1;
+    strncpy(new_config->config[4].key,
+            ESCH_CONFIG_KEY_VECTOR_DELETE_ELEMENT, ESCH_CONFIG_KEY_LENGTH);
+    new_config->config[4].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
+    new_config->config[4].data.int_value = ESCH_FALSE;
+
 
     (*config) = new_config;
     new_config = NULL;

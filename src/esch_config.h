@@ -13,7 +13,7 @@ extern "C" {
 
 #define ESCH_CONFIG_KEY_LENGTH 32
 #define ESCH_CONFIG_VALUE_STRING_LENGTH 255
-#define ESCH_CONFIG_ITEMS 4
+#define ESCH_CONFIG_ITEMS 5
 struct esch_config
 {
     ESCH_COMMON_HEADER;
@@ -38,6 +38,12 @@ struct esch_config
     ((esch_alloc*)(cfg->config[0].data.obj_value))
 #define ESCH_INTERNAL_CONFIG_GET_LOG(cfg) \
     ((esch_log*)(cfg->config[1].data.obj_value))
+#define ESCH_INTERNAL_CONFIG_GET_VECOTR_ELEMENT_TYPE(cfg) \
+    ((esch_log*)(cfg->config[2].data.int_value))
+#define ESCH_INTERNAL_CONFIG_GET_VECOTR_INITIAL_LENGTH(cfg) \
+    ((int)(cfg->config[3].data.int_value))
+#define ESCH_INTERNAL_CONFIG_GET_VECOTR_DELETE_ELEMENT(cfg) \
+    ((int)(cfg->config[4].data.int_value))
 
 #ifdef __cplusplus
 }

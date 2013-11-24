@@ -18,6 +18,7 @@ struct esch_vector
     esch_object** end;
     esch_object** next;
     esch_type element_type;
+    unsigned char delete_element : 1;
 };
 
 #define ESCH_IS_VALID_VECTOR(obj) \

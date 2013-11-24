@@ -35,6 +35,7 @@ esch_vector_new(esch_config* config, esch_vector** vec)
     esch_log* log = NULL;
     esch_vector* new_vec = NULL;
     int initial_length = 0;
+    int delete_element = ESCH_FALSE;
     esch_object** array = NULL;
     esch_type element_type = ESCH_TYPE_UNKNOWN;
     ESCH_CHECK_PARAM_PUBLIC(config != NULL);
@@ -54,16 +55,15 @@ esch_vector_new(esch_config* config, esch_vector** vec)
                               (int*)&element_type);
     ESCH_CHECK(ret == ESCH_OK, log, "Failed to get element type", ret);
 
-    ret = esch_config_get_int(config,
-                              ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH,
-                              &initial_length);
-    ESCH_CHECK(ret == ESCH_OK, log, "Failed to get initial length", ret);
+    initial_length = ESCH_INTERNAL_CONFIG_GET_VECOTR_INITIAL_LENGTH(config);
     ESCH_CHECK_PARAM_PUBLIC(initial_length >= 0 &&
                             initial_length <= ESCH_VECTOR_MAX_LENGTH);
-
+    /* Adjust initial_length to a proper length for allocation. */
     initial_length = (initial_length <= ESCH_VECTOR_MINIMAL_INITIAL_LENGTH?
                       ESCH_VECTOR_MINIMAL_INITIAL_LENGTH:
                       esch_adjust_length_exp((size_t)initial_length));
+
+    delete_element = ESCH_INTERNAL_CONFIG_GET_VECOTR_DELETE_ELEMENT(config);
 
     ret = esch_alloc_malloc(alloc, sizeof(esch_object*) * (initial_length + 1),
                             (void**)&array);
@@ -82,6 +82,7 @@ esch_vector_new(esch_config* config, esch_vector** vec)
     new_vec->begin = array;
     new_vec->next = &(new_vec->begin[0]);
     new_vec->end = (new_vec->begin + new_vec->slots);
+    new_vec->delete_element = delete_element;
     array = NULL;
     (*vec) = new_vec;
     new_vec = NULL;
@@ -92,19 +93,18 @@ Exit:
     }
     if (new_vec != NULL)
     {
-        (void)esch_vector_delete(new_vec, ESCH_FALSE);
+        (void)esch_vector_delete(new_vec);
     }
     return ret;
 }
 
 /**
- * Delete vector object.
+ * Delete vector object. May also delete element if specified by config.
  * @param vec Given vector object.
- * @param delete_element Determine if element should be deleted.
  * @return Return code. ESCH_OK if success.
  */
 esch_error
-esch_vector_delete(esch_vector* vec, ESCH_BOOL delete_element)
+esch_vector_delete(esch_vector* vec)
 {
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;
@@ -114,12 +114,15 @@ esch_vector_delete(esch_vector* vec, ESCH_BOOL delete_element)
         goto Exit;
     }
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_VECTOR(vec));
-    if (delete_element)
+    if (vec->delete_element)
     {
         esch_object** element = vec->begin;
+
+        esch_log_info(ESCH_GET_LOG(vec),
+                "vector = 0x%x, delete_element = true", vec);
         for (; element != vec->end; ++element)
         {
-            ret = esch_object_delete((*element), delete_element);
+            ret = esch_object_delete((*element));
         }
     }
     alloc = ESCH_GET_ALLOC(vec);
