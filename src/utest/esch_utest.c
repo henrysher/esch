@@ -34,6 +34,10 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorElementType() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_vectorElementType()");
 
+    ret = test_vectorDeleteElement();
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorDeleteElement() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_vectorDeleteElement()");
+
     esch_log_info(g_testLog, "All passed.");
 Exit:
     (void)esch_log_delete(g_testLog);

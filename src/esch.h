@@ -202,7 +202,6 @@ int esch_unicode_is_range_co(esch_unicode ch);
  *
  */
 esch_error esch_vector_new(esch_config* config, esch_vector** vec);
-esch_error esch_vector_new_copy(esch_vector* original, esch_vector** vec);
 esch_error esch_vector_delete(esch_vector* vec, ESCH_BOOL delete_element);
 esch_error esch_vector_append(esch_vector* vec, esch_object* data);
 esch_error esch_vector_get_length(esch_vector* vec, size_t* length);

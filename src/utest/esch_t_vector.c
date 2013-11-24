@@ -133,8 +133,6 @@ esch_error test_vectorBase()
 
     ret = esch_config_delete(config);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete config object.", ret);
-
-
 Exit:
     return ret;
 }
@@ -219,8 +217,78 @@ esch_error test_vectorElementType()
 
     ret = esch_config_delete(config);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete config object.", ret);
+Exit:
+    return ret;
+}
 
+esch_error test_vectorDeleteElement()
+{
+    esch_error ret = ESCH_OK;
+    esch_alloc* alloc = NULL;
+    esch_parser* parser = NULL;
+    esch_config* config = NULL;
+    esch_vector* vec = NULL;
+    esch_string* str = NULL;
+    esch_log* log = NULL;
+    esch_log* do_nothing = NULL;
+    const char* input = "hello";
+    size_t length = 0;
 
+    (void)esch_log_new_do_nothing(&do_nothing);
+#ifdef NDEBUG
+    log = do_nothing;
+#else
+    log = g_testLog;
+#endif
+
+    ret = esch_config_new(&config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create config", ret);
+
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_ALLOC, (esch_object*)alloc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:alloc:obj", ret);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_LOG, (esch_object*)log);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:log", ret);
+
+    ret = esch_alloc_new_c_default(config, &alloc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
+
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_ALLOC, (esch_object*)alloc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:alloc:NULL", ret);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_LOG, (esch_object*)log);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:log", ret);
+    ret = esch_config_set_int(config,
+            ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE, ESCH_TYPE_STRING);
+    ESCH_TEST_CHECK(ret == ESCH_OK,
+                    "Failed to set config:vector:type", ret);
+
+    ret = esch_vector_new(config, &vec);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create vector", ret);
+    ESCH_TEST_CHECK(vec->slots == ESCH_VECTOR_MINIMAL_INITIAL_LENGTH,
+                    "Not default vector length", ret);
+
+    ret = esch_string_new_from_utf8(config, input, 0, -1, &str);
+    ESCH_TEST_CHECK(ret == ESCH_OK && str != NULL,
+            "Failed to create string - begin = 0, end = -1", ret);
+
+    esch_log_info(log, "Append object: str");
+    ret = esch_vector_append(vec, (esch_object*)str);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append object", ret);
+    ret = esch_vector_get_length(vec, &length);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to get vector length", ret);
+    ret = ESCH_ERROR_INVALID_STATE;
+    ESCH_TEST_CHECK(length == 1, "Initial vector length not 0", ret);
+    ret = ESCH_OK;
+
+    /* Clean up */
+    ret = esch_vector_delete(vec, ESCH_TRUE);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete vector object.", ret);
+    /* String should be deleted, thus no assertion failure. */
+
+    ret = esch_alloc_delete(alloc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete alloc object.", ret);
+
+    ret = esch_config_delete(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete config object.", ret);
 Exit:
     return ret;
 }

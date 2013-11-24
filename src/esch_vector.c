@@ -134,7 +134,6 @@ esch_vector_delete(esch_vector* vec, ESCH_BOOL delete_element)
 Exit:
     return ret;
 }
-esch_error esch_vector_new_copy(esch_vector* original, esch_vector** vec);
 
 /**
  * Append an object at the end of vector.
@@ -146,7 +145,6 @@ esch_error
 esch_vector_append(esch_vector* vec, esch_object* data)
 {
     esch_error ret = ESCH_OK;
-
     size_t new_slots = 0;
     esch_alloc* alloc = NULL;
     esch_object** new_array = NULL;
