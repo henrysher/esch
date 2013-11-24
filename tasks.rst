@@ -11,14 +11,25 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
     support all Unicode points.
   - Provide a build macro to remove support of unicode > 0xFFFF
 
-* Support unicode when reading source code.
+* String
 
   - [DONE] Support Unicode conversion.
   - [DONE] Support full esch_string interface.
-  - [POSTPONE] Support token escape.
   - [DONE] Provide helper functions to recognize input character range. 
+  - [THINKING] Totally remove wchat_t in code. Use pure UTF-8.
+
+* Scheme identifier
+  - [DONE] Support unicode identifier character checker.
+  - [POSTPONE] Support token escape.
+  - [BUG] Windows does not support UCS-4.
   - [POSTPONE] Support 0xFEFF Unicode indicator from input source code file.
 
 * Infrastructure
-  - [WORKING] Esch_config does not require esch_alloc.
-  - [WORKING] Default also take esch_config.
+  - [DONE] Esch_config does not require esch_alloc.
+  - [DONE] All objects take esch_config during initialization.
+
+* Vector
+  - [DONE] Basic vector support: create, delete, append, access.
+
+* BigInt
+  - [THINKING] Basic feature.
