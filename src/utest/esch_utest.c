@@ -14,14 +14,6 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_AllocCreateDeleteCDefault() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_AllocCreateDeleteCDefault()");
 
-    ret = test_string();
-    ESCH_TEST_CHECK(ret == ESCH_OK, "test_string() failed", ret);
-    esch_log_info(g_testLog, "[PASSED] test_string()");
-
-    ret = test_identifier();
-    ESCH_TEST_CHECK(ret == ESCH_OK, "test_identifier() failed", ret);
-    esch_log_info(g_testLog, "[PASSED] test_identifier()");
-
     ret = test_config();
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_config() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_config()");
@@ -37,6 +29,14 @@ int main(int argc, char* argv[])
     ret = test_vectorDeleteElement();
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorDeleteElement() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_vectorDeleteElement()");
+
+    ret = test_string();
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_string() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_string()");
+
+    ret = test_identifier();
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_identifier() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_identifier()");
 
     esch_log_info(g_testLog, "All passed.");
 Exit:
