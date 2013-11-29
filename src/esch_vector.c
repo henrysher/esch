@@ -151,6 +151,7 @@ esch_vector_append(esch_vector* vec, esch_object* data)
     size_t new_slots = 0;
     esch_alloc* alloc = NULL;
     esch_object** new_array = NULL;
+    esch_object** slot = NULL;
     ESCH_CHECK_PARAM_PUBLIC(vec != NULL);
     ESCH_CHECK_PARAM_PUBLIC(data != NULL);
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_VECTOR(vec));
@@ -189,7 +190,7 @@ esch_vector_append(esch_vector* vec, esch_object* data)
         ret = esch_alloc_free(alloc, existing);
         ESCH_CHECK(ret == ESCH_OK, vec, "Failed to free vec array", ret);
     }
-    esch_object** slot = vec->next;
+    slot = vec->next;
     ++vec->next;
     (*slot) = data;
 Exit:
