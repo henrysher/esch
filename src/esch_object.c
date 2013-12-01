@@ -13,7 +13,9 @@ delete_func_table[] =
     (esch_object_delete_func)esch_string_delete, /* ESCH_TYPE_CHAR_AS_STRING */
     (esch_object_delete_func)esch_string_delete, /* ESCH_TYPE_STRING */
     (esch_object_delete_func)esch_string_delete, /* ESCH_TYPE_SYMBOL */
-    NULL, /* ESCH_TYPE_NUMBER */
+    NULL, /* ESCH_TYPE_INTEGER */
+    NULL, /* ESCH_TYPE_FRACTION */
+    NULL, /* ESCH_TYPE_COMPLEX */
     (esch_object_delete_func)esch_vector_delete, /* ESCH_TYPE_VECTOR */
     NULL /* Last element must be kept NULL */
 };

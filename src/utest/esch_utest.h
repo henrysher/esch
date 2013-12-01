@@ -21,6 +21,7 @@ extern esch_error test_config();
 extern esch_error test_vectorBase();
 extern esch_error test_vectorElementType();
 extern esch_error test_vectorDeleteElement();
+extern esch_error test_integer();
 
 #ifdef __cplusplus
 }

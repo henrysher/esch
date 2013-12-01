@@ -30,6 +30,10 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorDeleteElement() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_vectorDeleteElement()");
 
+    ret = test_integer();
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_integer() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_integer()");
+
     ret = test_string();
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_string() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_string()");
