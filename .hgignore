@@ -4,7 +4,7 @@ src/\..*\.swp$
 src/.*\.o$
 src/.*\.obj$
 src/libesch\.a$
-src/libesch\.lib$
+src/esch\.lib$
 src/esch_utest$
 src/esch_utest.exe$
 .sconsign.dblite
