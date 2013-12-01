@@ -129,9 +129,9 @@ esch_integer_new_from_base10(esch_config* config,
         unsigned int lowbit = 0;
         unsigned int highbit = 0;
         esch_log_info(log, "Big integer detected: addr: 0x%x", begin);
-        buflen = ((end - begin) % 2 == 0?
-                      (end - begin) / 2:
-                      ((end - begin) / 2 + 1));
+        buflen = (((end - begin) & 0x1) == 0?
+                      ((end - begin) >> 1):
+                      (((end - begin) >> 1) + 1));
         ret = esch_alloc_malloc(alloc, buflen, (void**)&digit);
         memset(digit, 0, buflen);
         ESCH_CHECK(ret == ESCH_OK, log, "Can't malloc bigint", ret);
