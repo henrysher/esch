@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "esch_utest.h"
 #include "esch_debug.h"
 #include "esch_number.h"
@@ -71,7 +72,9 @@ esch_error test_integer()
             bigval1->value.bval.digit[6],
             bigval1->value.bval.digit[7],
             bigval1->value.bval.digit[8]);
-    ESCH_TEST_CHECK(strncmp(bigval1->value.bval.digit, bval_array, 9) == 0,
+    ESCH_TEST_CHECK(strncmp((const char*)bigval1->value.bval.digit,
+                            (const char*)bval_array,
+                            9) == 0,
                     "Bad integer storage", ret);
     ret = ESCH_OK;
 
@@ -93,7 +96,9 @@ esch_error test_integer()
             bigval2->value.bval.digit[5],
             bigval2->value.bval.digit[6],
             bigval2->value.bval.digit[7]);
-    ESCH_TEST_CHECK(strncmp(bigval2->value.bval.digit, bval_array, 8) == 0,
+    ESCH_TEST_CHECK(strncmp((const char*)bigval2->value.bval.digit,
+                            (const char*)bval_array,
+                            8) == 0,
                     "Bad integer storage", ret);
     ret = ESCH_OK;
 

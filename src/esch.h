@@ -213,9 +213,7 @@ esch_error esch_vector_get_data(esch_vector* vec, int index, esch_object** obj);
 esch_error esch_vector_get_element_type(esch_vector* vec, esch_type* type);
 
 
-/* --- TODO Number -- */
-/* --- TODO Complex -- */
-/* --- TODO Real -- */
+/* --- Number -- */
 
 /* --- Parser --- */
 esch_error esch_parser_new(esch_config* config, esch_parser** parser);
