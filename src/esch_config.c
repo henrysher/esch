@@ -35,7 +35,7 @@ esch_config_new(esch_config** config)
     ESCH_CHECK(ret == ESCH_OK, esch_global_log, "Can't create dummy log", ret);
     ESCH_GET_LOG(new_config) = do_nothing_log;
 
-    // Fill key in advance
+    /* Fill key in advance. */
     strncpy(new_config->config[0].key,
             ESCH_CONFIG_KEY_ALLOC, ESCH_CONFIG_KEY_LENGTH);
     new_config->config[0].type = ESCH_CONFIG_VALUE_TYPE_OBJECT;
