@@ -14,11 +14,8 @@ int main(int argc, char* argv[])
     esch_object* log_obj = NULL;
     esch_object* config_obj = NULL;
 
-#ifdef NDEBUG
-    ret = esch_log_new_do_nothing(NULL, &testLog);
-#else
     ret = esch_log_new_printf(NULL, &testLog);
-#endif
+
     g_testLog = testLog;
     ret = esch_alloc_new_c_default(NULL, &alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "main:Can't create alloc", ret);
