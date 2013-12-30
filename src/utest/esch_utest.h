@@ -14,7 +14,7 @@ extern esch_log* g_testLog;
     ESCH_CHECK(cond, g_testLog, msg, errorcode)
 
 /* test cases */
-extern esch_error test_AllocCreateDeleteCDefault();
+extern esch_error test_AllocCreateDeleteCDefault(esch_config* config);
 extern esch_error test_string();
 extern esch_error test_identifier();
 extern esch_error test_config();

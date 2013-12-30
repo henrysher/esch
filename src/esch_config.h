@@ -6,6 +6,7 @@
 
 #include "esch.h"
 #include "esch_object.h"
+#include "esch_type.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,10 +14,13 @@ extern "C" {
 
 #define ESCH_CONFIG_KEY_LENGTH 32
 #define ESCH_CONFIG_VALUE_STRING_LENGTH 255
-#define ESCH_CONFIG_ITEMS 5
+#define ESCH_CONFIG_ITEMS 6
 struct esch_config
 {
-    ESCH_COMMON_HEADER;
+    /*
+     * TODO We may consider changing to hashtable when configurable
+     * items keep growing.
+     */
     struct
     {
         esch_config_value_type type;
@@ -30,20 +34,20 @@ struct esch_config
     } config[ESCH_CONFIG_ITEMS];
 };
 
-#define ESCH_IS_VALID_CONFIG(obj) \
-    (ESCH_IS_VALID_OBJECT(obj) && \
-     (ESCH_GET_TYPE(obj) == ESCH_TYPE_CONFIG))
+struct esch_builtin_type esch_config_type;
 
-#define ESCH_INTERNAL_CONFIG_GET_ALLOC(cfg) \
-    ((esch_alloc*)(cfg->config[0].data.obj_value))
-#define ESCH_INTERNAL_CONFIG_GET_LOG(cfg) \
-    ((esch_log*)(cfg->config[1].data.obj_value))
-#define ESCH_INTERNAL_CONFIG_GET_VECOTR_ELEMENT_TYPE(cfg) \
-    ((esch_log*)(cfg->config[2].data.int_value))
-#define ESCH_INTERNAL_CONFIG_GET_VECOTR_INITIAL_LENGTH(cfg) \
+#define ESCH_IS_VALID_CONFIG(obj) \
+    (ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(obj)) && \
+     (ESCH_OBJECT_GET_TYPE(ESCH_CAST_TO_OBJECT(obj)) == &esch_config_type))
+
+#define ESCH_CONFIG_GET_ALLOC(cfg) \
+    ((esch_object*)(cfg->config[0].data.obj_value))
+#define ESCH_CONFIG_GET_LOG(cfg) \
+    ((esch_object*)(cfg->config[1].data.obj_value))
+#define ESCH_CONFIG_GET_GC(cfg) \
+    ((esch_object*)(cfg->config[2].data.obj_value))
+#define ESCH_CONFIG_GET_VECOTR_INITIAL_LENGTH(cfg) \
     ((int)(cfg->config[3].data.int_value))
-#define ESCH_INTERNAL_CONFIG_GET_VECOTR_DELETE_ELEMENT(cfg) \
-    ((int)(cfg->config[4].data.int_value))
 
 #ifdef __cplusplus
 }

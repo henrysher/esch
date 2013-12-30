@@ -7,9 +7,32 @@
 
 const char* ESCH_CONFIG_KEY_ALLOC = "common:alloc";
 const char* ESCH_CONFIG_KEY_LOG = "common:log";
-const char* ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE = "vector:element_type";
+const char* ESCH_CONFIG_KEY_GC = "common:gc";
 const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH = "vector:initial_length";
-const char* ESCH_CONFIG_KEY_VECTOR_DELETE_ELEMENT = "vecotr:delete_element";
+
+static esch_error esch_config_delete_s(esch_object* obj);
+static esch_error esch_config_new_s(esch_config*, esch_object** obj);
+
+struct esch_builtin_type esch_config_type =
+{
+    {
+        &(esch_config_type.type),
+        NULL,
+        &(esch_log_do_nothing.log),
+        NULL,
+        NULL,
+    },
+    {
+        ESCH_VERSION,
+        sizeof(esch_config),
+        esch_config_new_s,
+        esch_config_delete_s,
+        esch_type_default_non_copiable,
+        esch_type_default_no_string_form,
+        esch_type_default_no_doc,
+        esch_type_default_no_iterator
+    }
+};
 
 /**
  * Create a new config object.
@@ -17,23 +40,27 @@ const char* ESCH_CONFIG_KEY_VECTOR_DELETE_ELEMENT = "vecotr:delete_element";
  * @return error code. ESCH_OK if success, others on error.
  */
 esch_error
-esch_config_new(esch_config** config)
+esch_config_new(esch_log* log, esch_alloc* alloc, esch_config** config)
 {
     esch_error ret = ESCH_OK;
+    esch_object* new_obj = NULL;
     esch_config* new_config = NULL;
-    esch_log* do_nothing_log = NULL;
+    size_t size = 0;
+    ESCH_CHECK_PARAM_PUBLIC(log != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(alloc != NULL);
     ESCH_CHECK_PARAM_PUBLIC(config != NULL);
 
-    new_config = (esch_config*)malloc(sizeof(esch_config));
-    ESCH_CHECK(new_config != NULL, esch_global_log,
-            "Can't malloc config", ESCH_ERROR_INVALID_PARAMETER);
-    memset(new_config, 0, sizeof(esch_config));
-    ESCH_GET_VERSION(new_config) = ESCH_VERSION;
-    ESCH_GET_TYPE(new_config) = ESCH_TYPE_CONFIG;
-    ESCH_GET_ALLOC(new_config) = &esch_dummy_alloc;
-    ret = esch_log_new_do_nothing(&do_nothing_log);
-    ESCH_CHECK(ret == ESCH_OK, esch_global_log, "Can't create dummy log", ret);
-    ESCH_GET_LOG(new_config) = do_nothing_log;
+    size = sizeof(esch_object) + sizeof(esch_config);
+    ret = esch_alloc_realloc(alloc, NULL, size, (void**)&new_obj);
+    ESCH_CHECK(ret == ESCH_OK, esch_global_log,
+            "Can't create config", ESCH_ERROR_INVALID_PARAMETER);
+    new_config = ESCH_CAST_FROM_OBJECT(new_obj, esch_config);
+
+    ESCH_OBJECT_GET_TYPE(new_obj)    = &(esch_config_type.type);
+    ESCH_OBJECT_GET_ALLOC(new_obj)   = alloc;
+    ESCH_OBJECT_GET_LOG(new_obj)     = log;
+    ESCH_OBJECT_GET_GC(new_obj)      = NULL;
+    ESCH_OBJECT_GET_GC_ID(new_obj)   = NULL; /* Can't get managed. */
 
     /* Fill key in advance. */
     strncpy(new_config->config[0].key,
@@ -43,42 +70,21 @@ esch_config_new(esch_config** config)
             ESCH_CONFIG_KEY_LOG, ESCH_CONFIG_KEY_LENGTH);
     new_config->config[1].type = ESCH_CONFIG_VALUE_TYPE_OBJECT;
     strncpy(new_config->config[2].key,
-            ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE, ESCH_CONFIG_KEY_LENGTH);
-    new_config->config[2].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
-    new_config->config[2].data.int_value = ESCH_TYPE_UNKNOWN;
+            ESCH_CONFIG_KEY_GC, ESCH_CONFIG_KEY_LENGTH);
+    new_config->config[2].type = ESCH_CONFIG_VALUE_TYPE_OBJECT;
+
     strncpy(new_config->config[3].key,
             ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH, ESCH_CONFIG_KEY_LENGTH);
     new_config->config[3].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
     new_config->config[3].data.int_value = 1;
-    strncpy(new_config->config[4].key,
-            ESCH_CONFIG_KEY_VECTOR_DELETE_ELEMENT, ESCH_CONFIG_KEY_LENGTH);
-    new_config->config[4].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
-    new_config->config[4].data.int_value = ESCH_FALSE;
-
 
     (*config) = new_config;
     new_config = NULL;
 Exit:
     if (new_config != NULL)
     {
-        esch_config_delete(new_config);
+        (void)esch_alloc_free(alloc, (void*)new_obj);
     }
-    return ret;
-}
-
-/**
- * Delete a given config object.
- * @param config The config object to free.
- * @return error code. ESCH_OK if success, others on error.
- */
-esch_error
-esch_config_delete(esch_config* config)
-{
-    esch_error ret = ESCH_OK;
-    ESCH_CHECK_PARAM_PUBLIC(config != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_CONFIG(config));
-    free(config);
-Exit:
     return ret;
 }
 
@@ -261,5 +267,40 @@ esch_config_set_obj(esch_config* config, const char* key, esch_object* obj)
     }
 Exit:
     return ret;
+}
+
+static esch_error
+esch_config_new_s(esch_config* config, esch_object** obj)
+{
+    esch_error ret = ESCH_OK;
+    esch_config* new_config = NULL;
+    esch_alloc* alloc = NULL;
+    esch_log* log = NULL;
+    esch_object* alloc_obj = NULL;
+    esch_object* log_obj = NULL;
+
+    ESCH_CHECK_PARAM_PUBLIC(config != NULL);
+    log_obj = ESCH_CONFIG_GET_LOG(config);
+    alloc_obj = ESCH_CONFIG_GET_ALLOC(config);
+    ESCH_CHECK_PARAM_PUBLIC(log_obj != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(alloc_obj != NULL);
+    log = ESCH_CAST_FROM_OBJECT(log_obj, esch_log);
+    alloc = ESCH_CAST_FROM_OBJECT(alloc_obj, esch_alloc);
+
+    ret = esch_config_new(log, alloc, &new_config);
+    if (ret == ESCH_OK)
+    {
+        (*obj) = ESCH_CAST_TO_OBJECT(new_config);
+    }
+Exit:
+    return ret;
+}
+
+static esch_error
+esch_config_delete_s(esch_object* obj)
+{
+    (void)obj;
+    /* Just do nothing */
+    return ESCH_OK;
 }
 

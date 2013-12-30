@@ -12,25 +12,25 @@
 extern "C" {
 #endif /* __cplusplus */
 
-typedef esch_error (*error_log_func)(esch_log*, const char*, va_list);
-
-esch_error esch_log_error_printf(esch_log* log,
-                                 const char* fmt, va_list args);
-esch_error esch_log_info_printf(esch_log* log,
-                                const char* fmt, va_list args);
-esch_error esch_log_message_do_nothing(esch_log* log,
-                                       const char* fmt, va_list args);
+typedef esch_error (*error_log_f)(esch_log*, const char*, va_list);
 
 struct esch_log
 {
-    ESCH_COMMON_HEADER;
-    error_log_func log_error;
-    error_log_func log_info;
+    error_log_f log_error;
+    error_log_f log_info;
 };
 
-extern esch_alloc esch_dummy_alloc;
-extern esch_log esch_log_printf;
-extern esch_log esch_log_do_nothing;
+struct esch_log_builtin_static
+{
+    esch_object   header;
+    esch_log      log;
+};
+extern struct esch_log_builtin_static esch_log_do_nothing;
+
+#define ESCH_IS_VALID_LOG(log) \
+    (ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(log)) && \
+     (log)->log_error != NULL && \
+     (log)->log_info != NULL)
 
 #ifdef __cplusplus
 }

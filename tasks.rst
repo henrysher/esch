@@ -33,3 +33,13 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
 
 * BigInt
   - [THINKING] Basic feature.
+
+* New Object model.
+  - [DONE] Add esch_type to support defining new types.
+  - [DONE] Update esch_object to use esch_type.
+  - [DONE] Update esch_object to support GC.
+  - [DONE] Update alloc/config/log types to use new object model.
+  - [DONE] Add a dummy GC to unblock test.
+  - Update esch_integer, esch_vector, esch_string to use new model.
+
+* Define module format

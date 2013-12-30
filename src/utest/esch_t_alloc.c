@@ -1,91 +1,73 @@
 /* vim:ft=c expandtab tw=72 sw=4
  */
-#include <esch.h>
-#include <stdio.h>
+#include "esch.h"
 #include "esch_utest.h"
 #include "esch_debug.h"
+#include <stdio.h>
 
-esch_error test_AllocCreateDeleteCDefault()
+esch_error test_AllocCreateDeleteCDefault(esch_config* config)
 {
     esch_error ret = ESCH_OK;
-    esch_config* config = NULL;
     esch_alloc* alloc = NULL;
-    esch_log* log = NULL;
-    esch_log* do_nothing = NULL;
+    esch_alloc* alloc_with_config = NULL;
+    esch_object* alloc_obj = NULL;
+    esch_object* alloc_obj2 = NULL;
     char* str = NULL;
+    char* str2 = NULL;
 
-    (void)esch_log_new_do_nothing(&do_nothing);
-#ifdef NDEBUG
-    log = do_nothing;
-#else
-    log = g_testLog;
-#endif
-
-    ret = esch_config_new(&config);
-    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create config", ret);
-
-    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_LOG, (esch_object*)log);
-    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set config:log:obj", ret);
-
-    ret = esch_alloc_new_c_default(config, &alloc);
+    esch_log_info(g_testLog, "Case 1: Create alloc with or without config");
+    ret = esch_alloc_new_c_default(NULL, &alloc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
+    ret = esch_alloc_new_c_default(config, &alloc_with_config);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create alloc", ret);
 
-    ret = esch_alloc_malloc(alloc, sizeof(char) * 100, (void**)(&str));
+    ret = esch_object_cast_to_object(alloc, &alloc_obj);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to cast alloc object.", ret);
+    ret = esch_object_cast_to_object(alloc_with_config, &alloc_obj2);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to cast alloc2 object.", ret);
+
+    esch_log_info(g_testLog, "Case 2: Malloc buffer.");
+    ret = esch_alloc_realloc(alloc, NULL, sizeof(char) * 100, (void**)(&str));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to allocate memory", ret);
+    ESCH_TEST_CHECK(str[0] == '\0', "Memory is not cleared", ret);
+    str[0] = '1';
+    str[1] = '2';
 
-    /* Try raise an error when memory is leaked*/
-    ret = esch_alloc_delete(alloc);
-    ESCH_TEST_CHECK(ret != ESCH_OK, "Expect memory leak detected but not happening", ret);
+    esch_log_info(g_testLog, "Case 3: Realloc buffer.");
+    ret = esch_alloc_realloc(alloc, str, sizeof(char) * 300, (void**)(&str));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to realloc memory", ret);
+    ESCH_TEST_CHECK(str[0] == '1' && str[1] == '2',
+                    "Buffer is cleared unexpected.", ret);
 
-    (void)esch_log_info(g_testLog, "Memory leak detect. Now do right thing to free buffer.");
+    esch_log_info(g_testLog, "Case 3: Free with wrong alloc.");
+    ret = esch_alloc_realloc(alloc_with_config, NULL, sizeof(char) * 200,
+                            (void**)(&str2));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to allocate memory 2", ret);
+    ret = esch_alloc_free(alloc, str2);
+    ESCH_TEST_CHECK(ret == ESCH_ERROR_INVALID_STATE, "Failed to free memory", ret);
 
+    esch_log_info(g_testLog, "Case 4: Memory leak detection.");
+    ret = esch_object_delete(alloc_obj);
+    ESCH_TEST_CHECK(ret != ESCH_OK,
+            "Expect memory leak detected but not happening",
+            ESCH_ERROR_INVALID_STATE);
+    (void)esch_log_info(g_testLog,
+        "[PASSED] Memory leak detect. Now do right thing to free buffer.");
+
+    esch_log_info(g_testLog, "Case 5: Free buffer and delete object.");
+    ret = esch_alloc_free(alloc_with_config, str2);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to free memory str2", ret);
     ret = esch_alloc_free(alloc, str);
-    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to free memory", ret);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to free memory str", ret);
 
-    ret = esch_alloc_delete(alloc);
+    (void)esch_log_info(g_testLog, "Delete alloc_obj");
+    ret = esch_object_delete(alloc_obj);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete alloc object.", ret);
 
-    ret = esch_config_delete(config);
+    (void)esch_log_info(g_testLog, "Delete alloc_obj2");
+    ret = esch_object_delete(alloc_obj2);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete config object.", ret);
 Exit:
     return ret;
 }
-/*
- * +=================================================================+
- *
- * From: http://opensource.org/licenses/BSD-3-Clause 
- *
- * Copyright (c) 2013, Fuzhou Chen
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright
- * notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
- *
- * Neither the name of Fuzhou Chen nor other names of the contributors
- * may be used to endorse or promote products derived from this software
- * without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- * +=================================================================+
- */
 
