@@ -21,7 +21,7 @@ struct esch_type
     unsigned int               version;
     size_t                     object_size;
     esch_object_new_f          object_new;
-    esch_object_delete_f       object_delete;
+    esch_object_destructor_f   object_destructor;
     esch_object_copy_f         object_copy;
     esch_object_to_string_f    object_to_string;
     esch_object_get_doc_f      object_get_doc;
@@ -42,7 +42,7 @@ extern esch_type esch_meta_type;
 #define ESCH_TYPE_GET_VERSION(ti) ((ti)->version)
 #define ESCH_TYPE_GET_OBJECT_SIZE(ti) ((ti)->object_size)
 #define ESCH_TYPE_GET_OBJECT_NEW(ti) ((ti)->object_new)
-#define ESCH_TYPE_GET_OBJECT_DELETE(ti) ((ti)->object_delete)
+#define ESCH_TYPE_GET_OBJECT_DESTRUCTOR(ti) ((ti)->object_destructor)
 #define ESCH_TYPE_GET_OBJECT_COPY(ti) ((ti)->object_copy)
 #define ESCH_TYPE_GET_OBJECT_TO_STRING(ti) ((ti)->object_to_string)
 #define ESCH_TYPE_GET_OBJECT_GET_DOC(ti) ((ti)->object_get_doc)
@@ -53,7 +53,7 @@ extern esch_type esch_meta_type;
      (ESCH_OBJECT_GET_TYPE(ESCH_CAST_TO_OBJECT(ti)) == &esch_meta_type) && \
      ((ti)->object_size > sizeof(esch_object)) && \
      ((ti)->object_new != NULL) && \
-     ((ti)->object_delete != NULL) && \
+     ((ti)->object_destructor != NULL) && \
      ((ti)->object_copy != NULL) && \
      ((ti)->object_to_string != NULL) && \
      ((ti)->object_get_doc != NULL))

@@ -264,7 +264,7 @@ do_delete(esch_object* obj, esch_bool force_delete)
             ret = esch_gc_release(obj);
             ESCH_CHECK_1(ret == ESCH_OK, log,
                          "Can't release from GC: obj: 0x%x", obj, ret);
-            ret = type->object_delete(obj);
+            ret = type->object_destructor(obj);
             ESCH_CHECK_1(ret == ESCH_OK, log,
                          "Can't delete: obj: 0x%x", obj, ret);
             if (alloc != NULL)
@@ -288,7 +288,7 @@ do_delete(esch_object* obj, esch_bool force_delete)
     else
     {
         (void)esch_log_info(log, "Unmananged object. delete.");
-        ret = type->object_delete(obj);
+        ret = type->object_destructor(obj);
         ESCH_CHECK_1(ret == ESCH_OK,
                      log, "Can't delete: obj: 0x%x", obj, ret);
         if (alloc != NULL)

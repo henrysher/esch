@@ -11,7 +11,7 @@
 /*             Definitions for esch_log_do_nothing                   */
 /* ================================================================= */
 
-static esch_error esch_log_delete_s(esch_object* obj);
+static esch_error esch_log_destructor_s(esch_object* obj);
 static esch_error esch_log_new_do_nothing_s(esch_config* config,
                                             esch_object** obj);
 static esch_error esch_log_new_printf_s(esch_config* config,
@@ -36,7 +36,7 @@ struct esch_builtin_type esch_log_do_nothing_type =
         ESCH_VERSION,
         sizeof(esch_log),
         esch_log_new_do_nothing_s,
-        esch_log_delete_s,
+        esch_log_destructor_s,
         esch_type_default_non_copiable,
         esch_type_default_no_string_form,
         esch_type_default_no_doc,
@@ -56,7 +56,7 @@ struct esch_builtin_type esch_log_printf_type =
         ESCH_VERSION,
         sizeof(esch_log),
         esch_log_new_printf_s,
-        esch_log_delete_s,
+        esch_log_destructor_s,
         esch_type_default_non_copiable,
         esch_type_default_no_string_form,
         esch_type_default_no_doc,
@@ -195,7 +195,7 @@ Exit:
  * @return Error code;
  */
 static esch_error
-esch_log_delete_s(esch_object* obj)
+esch_log_destructor_s(esch_object* obj)
 {
     esch_error ret = ESCH_OK;
     if (obj == NULL) {

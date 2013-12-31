@@ -114,7 +114,7 @@ typedef wchar_t                     esch_unicode;
 
 /* Prototype of object/type methods */
 typedef esch_error (*esch_object_new_f)(esch_config*, esch_object**);
-typedef esch_error (*esch_object_delete_f)(esch_object*);
+typedef esch_error (*esch_object_destructor_f)(esch_object*);
 typedef esch_error (*esch_object_copy_f)(esch_object*, esch_object**);
 typedef esch_error (*esch_object_to_string_f)(esch_object*, esch_string**);
 typedef esch_error (*esch_object_get_doc_f)(esch_object*, esch_string**);
@@ -154,11 +154,11 @@ esch_error esch_type_set_object_new(esch_type* type,
 /**
  * Set object deleting method for given type.
  * @param Given type.
- * @param object_delete Function pointer to delete an object.
+ * @param object_destructor Function pointer to delete an object.
  * @return Returned code. ESCH_OK if success.
  */
-esch_error esch_type_set_object_delete(esch_type* type,
-                                   esch_object_delete_f object_delete);
+esch_error esch_type_set_object_destructor(esch_type* type,
+                           esch_object_destructor_f object_destructor);
 /**
  * Set object copying method for given type.
  * @param Given type.

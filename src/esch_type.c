@@ -65,13 +65,13 @@ Exit:
 
 esch_error
 esch_type_set_object_delete(esch_type* type,
-                            esch_object_delete_f object_delete)
+                            esch_object_destructor_f object_destructor)
 {
     esch_error ret = ESCH_OK;
     ESCH_CHECK_PARAM_PUBLIC(type != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(object_delete != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(object_destructor != NULL);
 
-    ESCH_TYPE_GET_OBJECT_DELETE(type) = object_delete;
+    ESCH_TYPE_GET_OBJECT_DESTRUCTOR(type) = object_destructor;
 Exit:
     return ret;
 }
@@ -162,10 +162,10 @@ esch_type_new_i(esch_config* config, esch_type** type)
     ESCH_CHECK(new_type != NULL, log, "Can't alloc new type.", ret);
     new_type = ESCH_CAST_FROM_OBJECT(new_obj, esch_type);
 
-    ESCH_TYPE_GET_OBJECT_SIZE(new_type)      = sizeof(esch_type);
-    ESCH_TYPE_GET_VERSION(new_type)          = ESCH_VERSION;
-    ESCH_TYPE_GET_OBJECT_NEW(new_type)       = NULL;
-    ESCH_TYPE_GET_OBJECT_DELETE(new_type)    = NULL;
+    ESCH_TYPE_GET_OBJECT_SIZE(new_type)          = sizeof(esch_type);
+    ESCH_TYPE_GET_VERSION(new_type)              = ESCH_VERSION;
+    ESCH_TYPE_GET_OBJECT_NEW(new_type)           = NULL;
+    ESCH_TYPE_GET_OBJECT_DESTRUCTOR(new_type)    = NULL;
     ESCH_TYPE_GET_OBJECT_COPY(new_type) =
                                       esch_type_default_non_copiable;
     ESCH_TYPE_GET_OBJECT_TO_STRING(new_type) =

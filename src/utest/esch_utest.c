@@ -15,8 +15,14 @@ int main(int argc, char* argv[])
     esch_object* config_obj = NULL;
 
     ret = esch_log_new_printf(NULL, &testLog);
-
+    if (ret != ESCH_OK)
+    {
+        printf("Failed to create initial log.\n");
+        ret = ESCH_ERROR_INVALID_STATE;
+        goto Exit;
+    }
     g_testLog = testLog;
+
     ret = esch_alloc_new_c_default(NULL, &alloc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "main:Can't create alloc", ret);
     ret = esch_config_new(testLog, alloc, &config);
@@ -30,8 +36,10 @@ int main(int argc, char* argv[])
     ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_LOG, log_obj);
 
     /* Really run test */
+    esch_log_info(testLog, "Start: test_AllocCreateDeleteCDefault()");
     ret = test_AllocCreateDeleteCDefault(config);
-    ESCH_TEST_CHECK(ret == ESCH_OK, "test_AllocCreateDeleteCDefault() failed", ret);
+    ESCH_TEST_CHECK(ret == ESCH_OK,
+                    "test_AllocCreateDeleteCDefault() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_AllocCreateDeleteCDefault()");
 
     /*
@@ -64,7 +72,7 @@ int main(int argc, char* argv[])
     esch_log_info(g_testLog, "[PASSED] test_identifier()");
     */
 
-    esch_log_info(g_testLog, "All passed.");
+    esch_log_info(testLog, "All passed.");
 Exit:
     (void)esch_object_delete(config_obj);
     (void)esch_object_delete(alloc_obj);
