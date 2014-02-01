@@ -29,7 +29,11 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "main:Can't create config", ret);
 
     ret = esch_object_cast_to_object(alloc, &alloc_obj);
+#ifdef NDEBUG
+    ret = esch_object_cast_to_object(esch_global_log, &log_obj);
+#else
     ret = esch_object_cast_to_object(testLog, &log_obj);
+#endif
     ret = esch_object_cast_to_object(config, &config_obj);
 
     ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_ALLOC, alloc_obj);

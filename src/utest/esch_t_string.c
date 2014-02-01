@@ -11,6 +11,7 @@ esch_error test_string(esch_config* config)
 {
     esch_error ret = ESCH_OK;
     esch_string* str = NULL;
+    esch_string* str_dup = NULL;
     esch_object* str_obj = NULL;
     /* Chinese: hello, UTF-8 and Unicode */
     char input[] = { 0xe4, 0xbd, 0xa0, 0xe5, 0xa5, 0xbd, 0x0 };
@@ -70,9 +71,27 @@ esch_error test_string(esch_config* config)
     ret = esch_string_new_from_utf8(config, input, 1, 5, &str);
     ESCH_TEST_CHECK(ret != ESCH_OK && str == NULL,
             "Unexpected: create bad string - begin = 1, end = 5", ret);
-    esch_log_info(g_testLog, "Error is detected. Nothing is allocated.");
+    esch_log_info(g_testLog,
+                  "Error (as expected) is detected. Nothing is allocated.");
     ret = ESCH_OK;
     esch_log_info(g_testLog, "[PASSED] Bad string test.");
+
+    esch_log_info(g_testLog, "Case 4: Duplicate existing string");
+    ret = esch_string_new_from_utf8(config, input, 0, -1, &str);
+    ESCH_TEST_CHECK(ret == ESCH_OK && str != NULL,
+            "Failed to create string - begin = 0, end = -1", ret);
+    ret = esch_string_duplicate(str, &str_dup);
+    ESCH_TEST_CHECK(ret == ESCH_OK && str_dup != NULL,
+            "Failed to create string - begin = 0, end = -1", ret);
+    ret = esch_object_cast_to_object(str, &str_obj);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "failed to cast to object", ret);
+    ret = esch_object_delete(str_obj);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete string", ret);
+    ret = esch_object_cast_to_object(str_dup, &str_obj);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "failed to cast to object", ret);
+    ret = esch_object_delete(str_obj);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete string", ret);
+    esch_log_info(g_testLog, "[PASSED] Duplicate existing string");
 
 Exit:
     return ret;

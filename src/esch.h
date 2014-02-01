@@ -262,7 +262,6 @@ esch_error esch_object_is_container(esch_object* obj, esch_bool* container);
  */
 esch_error esch_object_get_iterator(esch_object* obj, esch_iterator* iter);
 
-
 /**
  * Cast a concrete object to esch_object.
  * @param data A concrete object, for example, esch_string.
@@ -350,14 +349,46 @@ esch_error esch_runtime_register_type(esch_runtime* runtime,
                                        const char* name,
                                        esch_type* type);
 /* --- String objects --- */
+/**
+ * Create a new string from UTF-8 string. It also converts
+ * @param config Config object to set alloc and log.
+ * @param utf8 Input UTF-8 string.
+ * @param str Returned string object.
+ * @return Error code.
+ */
 esch_error esch_string_new_from_utf8(esch_config* config, const char* utf8,
                                      int begin, int end,
                                      esch_string** str);
-esch_error esch_string_new_from_string(esch_string* input,
-                                       esch_string** output);
+/**
+ * Duplicate a string with same configuration.
+ * @param input Original input string.
+ * @param output Output string. Must be freed with esch_object_delete()
+ * @return Return code.
+ */
+esch_error esch_string_duplicate(esch_string* input, esch_string** output);
+/**
+ * Get a reference to UTF-8 string of given string.
+ * @param str Give esch_string object
+ * @return The internal UTF-8 c-string, ending with '\0'.
+ */
 char* esch_string_get_utf8_ref(esch_string* str);
+/**
+ * Get a reference to UTF-8 string of given string.
+ * @param str Give esch_string object
+ * @return The internal Unicode c-string, ending with '\0'.
+ */
 esch_unicode* esch_string_get_unicode_ref(esch_string* str);
+/**
+ * Get length of given string in UTF-8 representation.
+ * @param str Give esch_string object
+ * @return Length of string, in UTF-8 representation, '\0' not included.
+ */
 size_t esch_string_get_utf8_length(esch_string* str);
+/**
+ * Get length of given string in Unicode representation.
+ * @param str Give esch_string object
+ * @return Length of string, in Unicode representation, '\0' not included.
+ */
 size_t esch_string_get_unicode_length(esch_string* str);
 
 int esch_unicode_string_is_valid_identifier(const esch_unicode* unicode);

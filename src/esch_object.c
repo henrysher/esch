@@ -309,7 +309,7 @@ do_delete(esch_object* obj, esch_bool force_delete)
     }
     else
     {
-        (void)esch_log_info(log, "Unmananged object. delete.");
+        (void)esch_log_info(log, "Unmanaged object. delete.");
         ret = type->object_destructor(obj);
         ESCH_CHECK_1(ret == ESCH_OK,
                      log, "Can't delete: obj: 0x%x", obj, ret);

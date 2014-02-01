@@ -60,13 +60,11 @@ esch_error test_AllocCreateDeleteCDefault(esch_config* config)
     ret = esch_alloc_free(alloc, str);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to free memory str", ret);
 
-    (void)esch_log_info(g_testLog, "Delete alloc_obj");
     ret = esch_object_delete(alloc_obj);
-    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete alloc object.", ret);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete alloc_obj.", ret);
 
-    (void)esch_log_info(g_testLog, "Delete alloc_obj2");
     ret = esch_object_delete(alloc_obj2);
-    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete config object.", ret);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete alloc_obj2.", ret);
 Exit:
     return ret;
 }
