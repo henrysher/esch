@@ -41,7 +41,6 @@ struct esch_alloc
  *    type, aloc, log, gc, gc_id.
  */
 
-#define ESCH_OBJECT_GET_CONFIG(obj)         ((obj)->config)
 #define ESCH_OBJECT_GET_TYPE(obj)           ((obj)->type)
 #define ESCH_OBJECT_GET_LOG(obj)            ((obj)->log)
 #define ESCH_OBJECT_GET_ALLOC(obj)          ((obj)->alloc)

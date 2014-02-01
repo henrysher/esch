@@ -5,8 +5,38 @@
 #include "esch_log.h"
 #include "esch_debug.h"
 #include "esch_config.h"
-#include <assert.h>
+#include "esch_alloc.h"
 #include <string.h>
+
+static esch_error
+esch_string_destructor_s(esch_object* obj);
+static esch_error
+esch_string_new_s(esch_config* config, esch_object** obj);
+static esch_error
+esch_string_copy_object_s(esch_object* input, esch_object** output);
+static esch_error
+esch_string_copy_string_s(esch_object* input, esch_string** output);
+
+struct esch_builtin_type esch_string_type = 
+{
+    {
+        &(esch_string_type.type),
+        NULL, /* No alloc */
+        &(esch_log_do_nothing.log),
+        NULL,
+        NULL,
+    },
+    {
+        ESCH_VERSION,
+        sizeof(esch_string),
+        esch_string_new_s,
+        esch_string_destructor_s,
+        esch_string_copy_object_s, /* String copy */
+        esch_string_copy_string_s, /* String.toString() */
+        esch_type_default_no_doc,
+        esch_type_default_no_iterator
+    },
+};
 
 enum esch_unicode_parse_state
 {
@@ -168,13 +198,13 @@ write_unicode_from_utf8(char* utf8, int begin, int end, esch_unicode* unicode)
                 default:
                     /* Impossible to happen: we've got correct
                      * calcaulation. */
-                    assert(0);
+                    ESCH_CHECK_PARAM_INTERNAL(0);
                     state = ESCH_WRONG_BYTE;
                     break;
             }
         }
     }
-    assert(state != ESCH_WRONG_BYTE);
+    ESCH_CHECK_PARAM_INTERNAL(state != ESCH_WRONG_BYTE);
     unicode[unicode_idx] = L'\0';
     return;
 }
@@ -192,15 +222,15 @@ decode_utf8(char* utf8, int begin, int end,
     esch_alloc* alloc = NULL;
     esch_log* log = NULL;
 
-    alloc = ESCH_INTERNAL_CONFIG_GET_ALLOC(config);
-    log = ESCH_INTERNAL_CONFIG_GET_LOG(config);
+    alloc = ESCH_CAST_FROM_OBJECT(ESCH_CONFIG_GET_ALLOC(config), esch_alloc);
+    log = ESCH_CAST_FROM_OBJECT(ESCH_CONFIG_GET_LOG(config), esch_log);
 
     len = utf8_get_unicode_len(utf8, begin, end, &bad_index);
     ESCH_CHECK_1(len >= 0, log, "Bad Unicode at index %d", bad_index,
                  ESCH_ERROR_INVALID_PARAMETER);
 
     buf_size = sizeof(esch_unicode) * (len + 1);
-    ret = esch_alloc_malloc(alloc, buf_size, (void**)&new_str);
+    ret = esch_alloc_realloc(alloc, NULL, buf_size, (void**)&new_str);
     ESCH_CHECK(ret == ESCH_OK, log, "Can't malloc new buffer", ret);
     write_unicode_from_utf8(utf8, begin, end, new_str);
     (*str) = new_str;
@@ -234,19 +264,29 @@ esch_string_new_from_utf8(esch_config* config, const char* utf8,
                           int begin, int end, esch_string** str)
 {
     esch_error ret = ESCH_OK;
+    esch_object* new_obj = NULL;
     esch_string* new_str = NULL;
+    esch_object* alloc_obj = NULL;
+    esch_object* log_obj = NULL;
     esch_alloc* alloc = NULL;
     esch_log* log = NULL;
-    char* new_utf8 = NULL;
+    esch_utf8* new_utf8 = NULL;
+    esch_unicode* new_unicode = NULL;
     size_t len = 0;
     size_t unicode_len = 0;
-    esch_unicode* new_unicode = NULL;
-    ESCH_CHECK_PARAM_PUBLIC(config != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_CONFIG(config));
     ESCH_CHECK_PARAM_PUBLIC(utf8 != NULL);
     ESCH_CHECK_PARAM_PUBLIC(str != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_INTERNAL_CONFIG_GET_ALLOC(config) != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_INTERNAL_CONFIG_GET_LOG(config) != NULL);
+
+    ESCH_CHECK_PARAM_PUBLIC(config != NULL);
+    log_obj = ESCH_CONFIG_GET_LOG(config);
+    alloc_obj = ESCH_CONFIG_GET_ALLOC(config);
+    ESCH_CHECK_PARAM_PUBLIC(log_obj != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(alloc_obj != NULL);
+
+    log = ESCH_CAST_FROM_OBJECT(log_obj, esch_log);
+    alloc = ESCH_CAST_FROM_OBJECT(alloc_obj, esch_alloc);
+    ESCH_CHECK_PARAM_INTERNAL(log != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(alloc != NULL);
 
     if (begin == 0 && end < 0)
     {
@@ -259,62 +299,40 @@ esch_string_new_from_utf8(esch_config* config, const char* utf8,
     else
     {
         ret = ESCH_ERROR_INVALID_PARAMETER;
-        ESCH_CHECK(ret, esch_global_log, "Invalid length", ret);
+        ESCH_CHECK(ret, log, "Invalid length", ret);
     }
 
-    alloc = ESCH_INTERNAL_CONFIG_GET_ALLOC(config);
-    log = ESCH_INTERNAL_CONFIG_GET_LOG(config);
-
-    ret = esch_alloc_malloc(alloc, sizeof(esch_string), (void**)&new_str);
-    ESCH_CHECK(ret == ESCH_OK, log, "Can't malloc for string", ret);
-
-    ret = esch_alloc_malloc(alloc, sizeof(char) * (len + 1), (void**)&new_utf8);
+    ret = esch_alloc_realloc(alloc, NULL, sizeof(char) * (len + 1),
+                             (void**)&new_utf8);
     ESCH_CHECK(ret == ESCH_OK, log, "Can't malloc UTF-8", ret);
     (void)strncpy(new_utf8, (utf8 + begin), len);
 
     ret = decode_utf8(new_utf8, 0, len, config, &new_unicode, &unicode_len);
     ESCH_CHECK(ret == ESCH_OK, log, "Can't decode UTF-8", ret);
 
-    ESCH_GET_VERSION(new_str) = ESCH_VERSION;
-    ESCH_GET_TYPE(new_str) = ESCH_TYPE_STRING;
-    ESCH_GET_ALLOC(new_str) = alloc;
-    ESCH_GET_LOG(new_str) = log;
+    ret = esch_object_new_i(config, &(esch_string_type.type), &new_obj);
+    ESCH_CHECK(ret == ESCH_OK, log, "Can't create string object", ret);
+    new_str = ESCH_CAST_FROM_OBJECT(new_obj, esch_string);
+
     new_str->utf8 = new_utf8;
     new_str->unicode = new_unicode;
     new_str->utf8_len = len;
     new_str->unicode_len = unicode_len;
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_STRING(new_str));
     (*str) = new_str;
 
     new_str = NULL;
     new_utf8 = NULL;
     new_unicode = NULL;
-    assert(ESCH_IS_VALID_STRING(*str));
+    new_obj = NULL;
 Exit:
     esch_alloc_free(alloc, new_utf8);
     esch_alloc_free(alloc, new_unicode);
     esch_alloc_free(alloc, new_str);
-    return ret;
-}
-/**
- * Delete a string object.
- * @param str Given string object.
- * @return Errot code.
- */
-esch_error
-esch_string_delete(esch_string* str)
-{
-    esch_error ret = ESCH_OK;
-    esch_alloc* alloc = NULL;
-    if (str == NULL)
+    if (new_obj != NULL)
     {
-        return ret;
+        esch_object_delete(new_obj);
     }
-
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_STRING(str));
-    esch_alloc_free(ESCH_GET_ALLOC(str), str->utf8);
-    esch_alloc_free(ESCH_GET_ALLOC(str), str->unicode);
-    esch_alloc_free(ESCH_GET_ALLOC(str), str);
-Exit:
     return ret;
 }
 
@@ -327,8 +345,9 @@ char*
 esch_string_get_utf8_ref(esch_string* str)
 {
     /* NOTE: For performance consideration, we don't check input. */
-    assert(str != NULL && ESCH_IS_VALID_STRING(str));
-    return str->utf8;
+    ESCH_CHECK_PARAM_INTERNAL(str != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_STRING(str));
+    return (str == NULL? NULL: str->utf8);
 }
 
 /**
@@ -340,8 +359,9 @@ esch_unicode*
 esch_string_get_unicode_ref(esch_string* str)
 {
     /* NOTE: For performance consideration, we don't check input. */
-    assert(str != NULL && ESCH_IS_VALID_STRING(str));
-    return str->unicode;
+    ESCH_CHECK_PARAM_INTERNAL(str != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_STRING(str));
+    return (str == NULL? NULL: str->unicode);
 }
 
 /**
@@ -353,8 +373,9 @@ size_t
 esch_string_get_utf8_length(esch_string* str)
 {
     /* NOTE: For performance consideration, we don't check input. */
-    assert(str != NULL && ESCH_IS_VALID_STRING(str));
-    return str->utf8_len;
+    ESCH_CHECK_PARAM_INTERNAL(str != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_STRING(str));
+    return (str == NULL? 0: str->utf8_len);
 }
 
 /**
@@ -366,8 +387,9 @@ size_t
 esch_string_get_unicode_length(esch_string* str)
 {
     /* NOTE: For performance consideration, we don't check input. */
-    assert(str != NULL && ESCH_IS_VALID_STRING(str));
-    return str->unicode_len;
+    ESCH_CHECK_PARAM_INTERNAL(str != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_STRING(str));
+    return (str == NULL? 0: str->unicode_len);
 }
 
 int
@@ -434,3 +456,144 @@ esch_unicode_string_is_valid_identifier(const esch_unicode* unicode)
     return 1;
 }
 
+esch_error
+esch_string_new_from_string(esch_string* input, esch_string** output)
+{
+    esch_error ret = ESCH_OK;
+    esch_string* new_str = NULL;
+    esch_object* input_obj = NULL;
+    esch_config* config = NULL;
+    esch_log* log = NULL;
+    esch_alloc* alloc = NULL;
+    esch_gc* gc = NULL;
+
+    ESCH_CHECK_PARAM_PUBLIC(input != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_STRING(input));
+    input_obj = ESCH_CAST_TO_OBJECT(input);
+
+    gc = ESCH_OBJECT_GET_GC(input_obj);
+    ESCH_CHECK_PARAM_INTERNAL(gc != NULL);
+    log = ESCH_OBJECT_GET_LOG(input_obj);
+    ESCH_CHECK_PARAM_INTERNAL(log != NULL);
+    alloc = ESCH_OBJECT_GET_ALLOC(input_obj);
+    ESCH_CHECK_PARAM_INTERNAL(alloc != NULL);
+
+    ret = esch_config_new(log, alloc, &config);
+    ESCH_CHECK(ret == ESCH_OK, log, "Can't alloc config", ret);
+
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_GC,
+                              ESCH_CAST_TO_OBJECT(gc));
+    ESCH_CHECK(ret == ESCH_OK, log, "Can't set GC", ret);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_ALLOC,
+                              ESCH_CAST_TO_OBJECT(alloc));
+    ESCH_CHECK(ret == ESCH_OK, log, "Can't set alloc", ret);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_LOG,
+                              ESCH_CAST_TO_OBJECT(log));
+    ESCH_CHECK(ret == ESCH_OK, log, "Can't set log", ret);
+
+    ret = esch_string_new_from_utf8(config, input->utf8, 0, -1, &new_str);
+    ESCH_CHECK(ret == ESCH_OK, log, "Can't copy string", ret);
+
+    (*output) = new_str;
+    new_str = NULL;
+Exit:
+    if (new_str != NULL)
+    {
+        (void)esch_object_delete(ESCH_CAST_TO_OBJECT(new_str));
+    }
+    if (config != NULL)
+    {
+        (void)esch_object_delete(ESCH_CAST_TO_OBJECT(config));
+    }
+    return ret;
+}
+
+static esch_error
+esch_string_destructor_s(esch_object* obj)
+{
+    esch_error ret = ESCH_OK;
+    esch_string* str = NULL;
+    esch_alloc* alloc = NULL;
+    esch_log* log = NULL;
+
+    if (obj == NULL)
+    {
+        return ret;
+    }
+
+    str = ESCH_CAST_FROM_OBJECT(obj, esch_string);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_STRING(str));
+    log = ESCH_OBJECT_GET_LOG(obj);
+    alloc = ESCH_OBJECT_GET_ALLOC(obj);
+    ESCH_CHECK_PARAM_INTERNAL(log != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(alloc != NULL);
+    ret = esch_alloc_free(alloc, str->utf8);
+    ESCH_CHECK(ret == ESCH_OK, log, "Can't free UTF-8 string", ret);
+    ret = esch_alloc_free(alloc, str->unicode);
+    ESCH_CHECK(ret == ESCH_OK, log, "Can't free Unicode string", ret);
+
+    str->utf8 = NULL;
+    str->unicode = NULL;
+    str->utf8_len = 0;
+    str->unicode_len = 0;
+Exit:
+    return ret;
+}
+
+static esch_error
+esch_string_new_s(esch_config* config, esch_object** obj)
+{
+    /*
+     * Note: I set it to return NOT_SUPPORTED because esch does not want
+     * string being changed after it's created.
+     * This is NOT a bug or not implemeted feature. Just not supported.
+     */
+    (void)config;
+    (void)obj;
+    return ESCH_ERROR_NOT_SUPPORTED;
+}
+
+static esch_error
+esch_string_copy_object_s(esch_object* input, esch_object** output)
+{
+    esch_error ret = ESCH_OK;
+    esch_string* str = NULL;
+    esch_string* out_str = NULL;
+    ESCH_CHECK_PARAM_PUBLIC(input != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(output != NULL);
+
+    str = ESCH_CAST_FROM_OBJECT(input, esch_string);
+    ESCH_CHECK_PARAM_PUBLIC(str != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_STRING(str));
+    ret = esch_string_new_from_string(str, &out_str);
+    if (out_str != NULL)
+    {
+        /* All error handlings should have been handled within
+         * esch_string_new_from_string() */
+        (*output) = ESCH_CAST_TO_OBJECT(out_str);
+    }
+Exit:
+    return ret;
+}
+static esch_error
+esch_string_copy_string_s(esch_object* input, esch_string** output)
+{
+    esch_error ret = ESCH_OK;
+    esch_string* str = NULL;
+    esch_string* out_str = NULL;
+    ESCH_CHECK_PARAM_PUBLIC(input != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(output != NULL);
+
+    str = ESCH_CAST_FROM_OBJECT(input, esch_string);
+    ESCH_CHECK_PARAM_PUBLIC(str != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_STRING(str));
+    ret = esch_string_new_from_string(str, &out_str);
+    if (out_str != NULL)
+    {
+        /* All error handlings should have been handled within
+         * esch_string_new_from_string() */
+        (*output) = out_str;
+    }
+Exit:
+    return ret;
+}

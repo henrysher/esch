@@ -38,7 +38,8 @@ struct esch_builtin_type esch_config_type;
 
 #define ESCH_IS_VALID_CONFIG(obj) \
     (ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(obj)) && \
-     (ESCH_OBJECT_GET_TYPE(ESCH_CAST_TO_OBJECT(obj)) == &esch_config_type))
+     (ESCH_OBJECT_GET_TYPE(ESCH_CAST_TO_OBJECT(obj)) == \
+          &(esch_config_type.type)))
 
 #define ESCH_CONFIG_GET_ALLOC(cfg) \
     ((esch_object*)(cfg->config[0].data.obj_value))

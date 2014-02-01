@@ -18,10 +18,10 @@ typedef esch_error (*esch_gc_release_f)(esch_gc*, esch_object*);
 
 struct esch_gc
 {
-    esch_gc_perform_gc_f gc_perform_gc;
-    esch_gc_register_f   gc_register;
-    esch_gc_retain_f     gc_retain;
-    esch_gc_release_f    gc_release;
+    esch_gc_perform_gc_f perform_gc;
+    esch_gc_register_f   register_obj;
+    esch_gc_retain_f     retain;
+    esch_gc_release_f    release;
 };
 
 union esch_gc_mark_sweep_tracking_slots
@@ -38,6 +38,13 @@ struct esch_gc_mark_sweep
     esch_object** first_available_slot;
     unsigned char* mark_table;
 };
+
+#define ESCH_IS_VALID_GC(gc) \
+    (ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(gc)) && \
+     gc->perform_gc != NULL && \
+     gc->register_obj != NULL && \
+     gc->retain != NULL && \
+     gc->release != NULL)
 
 #ifdef __cplusplus
 }

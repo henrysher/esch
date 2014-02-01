@@ -13,16 +13,14 @@ extern "C" {
 
 struct esch_string
 {
-    ESCH_COMMON_HEADER;
-    esch_utf8_char* utf8;
-    esch_unicode* unicode;
+    esch_utf8* utf8;
     size_t utf8_len;
+    esch_unicode* unicode;
     size_t unicode_len;
 };
 
 #define ESCH_IS_VALID_STRING(obj) \
-    (ESCH_GET_TYPE(obj) == ESCH_TYPE_STRING && \
-     ESCH_IS_VALID_OBJECT(obj) && \
+    (ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(obj)) && \
      (obj)->utf8 != NULL && \
      (obj)->unicode != NULL)
 

@@ -30,7 +30,6 @@ esch_alloc_free(esch_alloc* alloc, void* ptr)
 {
     esch_error ret = ESCH_OK;
     ESCH_CHECK_PARAM_PUBLIC(alloc != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(ptr != NULL);
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_ALLOC(alloc));
     ret = esch_alloc_free_i(alloc, ptr);
 Exit:

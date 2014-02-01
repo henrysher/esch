@@ -42,6 +42,7 @@
 #define _ESCH_ESCH_H_
 
 #include <stddef.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -108,8 +109,8 @@ typedef struct esch_parser_callback esch_parser_callback;
 typedef struct esch_ast             esch_ast;
 typedef struct esch_string          esch_string;
 typedef struct esch_vector          esch_vector;
-typedef char                        esch_utf8_char;
-typedef wchar_t                     esch_unicode;
+typedef char                        esch_utf8;
+typedef int32_t                     esch_unicode;
 
 
 /* Prototype of object/type methods */
@@ -352,7 +353,8 @@ esch_error esch_runtime_register_type(esch_runtime* runtime,
 esch_error esch_string_new_from_utf8(esch_config* config, const char* utf8,
                                      int begin, int end,
                                      esch_string** str);
-esch_error esch_string_delete(esch_string* str);
+esch_error esch_string_new_from_string(esch_string* input,
+                                       esch_string** output);
 char* esch_string_get_utf8_ref(esch_string* str);
 esch_unicode* esch_string_get_unicode_ref(esch_string* str);
 size_t esch_string_get_utf8_length(esch_string* str);

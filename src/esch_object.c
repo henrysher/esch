@@ -7,16 +7,44 @@
 #include "esch_debug.h"
 #include <assert.h>
 
+/*
+ * -----------------------------------------------------------------
+ * Public interface. Used by esch.h.
+ * -----------------------------------------------------------------
+ */
 esch_error
 esch_object_new(esch_config* config, esch_type* type, esch_object** obj)
 {
     esch_error ret = ESCH_OK;
+    esch_object* alloc_obj = NULL;
+    esch_object* log_obj = NULL;
+    esch_object* gc_obj = NULL;
+    esch_alloc* alloc = NULL;
+    esch_log* log = NULL;
+    esch_gc* gc = NULL;
+
     ESCH_CHECK_PARAM_PUBLIC(config != NULL);
     ESCH_CHECK_PARAM_PUBLIC(type != NULL);
     ESCH_CHECK_PARAM_PUBLIC(obj != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_CONFIG(config));
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_TYPE(type));
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_CONFIG_GET_ALLOC(config) != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_CONFIG_GET_LOG(config) != NULL);
+
+    alloc_obj = ESCH_CONFIG_GET_ALLOC(config);
+    log_obj = ESCH_CONFIG_GET_LOG(config);
+    gc_obj = ESCH_CONFIG_GET_GC(config);
+    ESCH_CHECK_PARAM_PUBLIC(alloc_obj != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(log_obj != NULL);
+
+    alloc = ESCH_CAST_FROM_OBJECT(alloc_obj, esch_alloc);
+    log = ESCH_CAST_FROM_OBJECT(log_obj, esch_log);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_ALLOC(alloc));
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_LOG(log));
+
+    if (gc_obj != NULL)
+    {
+        gc = ESCH_CAST_FROM_OBJECT(gc_obj, esch_gc);
+        ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_GC(gc));
+    }
     ret = esch_object_new_i(config, type, obj);
 Exit:
     return ret;
@@ -133,48 +161,41 @@ Exit:
     return ret;
 }
 
-/* ----------------------------------------------------------------- */
-/*                       Internal functions                          */
-/* ----------------------------------------------------------------- */
+/*
+ * -----------------------------------------------------------------
+ * Internal functions. Used only within internal esch function.
+ * -----------------------------------------------------------------
+ */
 esch_error
 esch_object_new_i(esch_config* config, esch_type* type, esch_object** obj)
 {
     esch_error ret = ESCH_OK;
     size_t obj_size = 0;
+    esch_object* alloc_obj = NULL;
+    esch_object* log_obj = NULL;
+    esch_object* gc_obj = NULL;
     esch_alloc* alloc = NULL;
     esch_log* log = NULL;
     esch_gc*  gc = NULL;
     esch_object* new_object = NULL;
     void* new_gc_id = NULL;
 
-    ret = esch_config_get_obj(config, ESCH_CONFIG_KEY_LOG,
-                              (esch_object**)&log);
-    if (log == NULL)
-    {
-        log = esch_global_log;
-    }
-    ret = esch_config_get_obj(config, ESCH_CONFIG_KEY_ALLOC,
-                              (esch_object**)&alloc);
-    ESCH_CHECK_1(ret == ESCH_OK, log, "No alloc. type: 0x%x", type, ret);
-    ret = esch_config_get_obj(config, ESCH_CONFIG_KEY_GC,
-                              (esch_object**)&gc);
+    ESCH_CHECK_PARAM_INTERNAL(type != NULL);
+
+    alloc_obj = ESCH_CONFIG_GET_ALLOC(config);
+    log_obj = ESCH_CONFIG_GET_LOG(config);
+    gc_obj = ESCH_CONFIG_GET_GC(config);
+    ESCH_CHECK_PARAM_INTERNAL(alloc_obj != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(log_obj != NULL);
+
+    alloc = ESCH_CAST_FROM_OBJECT(alloc_obj, esch_alloc);
+    log = ESCH_CAST_FROM_OBJECT(log_obj, esch_log);
+    gc = (gc_obj == NULL? NULL: ESCH_CAST_FROM_OBJECT(gc_obj, esch_gc));
+
     /* Always check binary compatibilities. */
     ESCH_CHECK_3(type->version == ESCH_VERSION, log,
             "Bad version: expected: %d, got: %d, type: 0x%x",
             ESCH_VERSION, type->version, type, ret);
-    if (ret != ESCH_OK)
-    {
-        if (ret == ESCH_ERROR_NOT_FOUND)
-        {
-            (void)esch_log_info(esch_global_log, "GC not specified.");
-            assert(gc == NULL);
-        }
-        else
-        {
-            ESCH_CHECK_1(ret == ESCH_OK,
-                         log, "Bad GC. type: 0x%x", type, ret);
-        }
-    }
     ESCH_CHECK_1(ESCH_TYPE_GET_OBJECT_SIZE(type) >= 0,
             log,
             "Object size smaller than 0. type: 0x%x", type, ret);
@@ -189,7 +210,7 @@ esch_object_new_i(esch_config* config, esch_type* type, esch_object** obj)
     {
         ESCH_CHECK_1((ret == ESCH_OK || ret == ESCH_ERROR_OUT_OF_MEMORY),
                 log,
-                "Can't malloc (without GC). type: 0x%x", type,
+                "Can't malloc (with GC). type: 0x%x", type,
                 ret);
         if (ret == ESCH_ERROR_OUT_OF_MEMORY)
         {
@@ -201,7 +222,8 @@ esch_object_new_i(esch_config* config, esch_type* type, esch_object** obj)
             ret = esch_alloc_realloc(alloc, NULL,
                                      obj_size, (void**)&new_object);
             ESCH_CHECK_1(ret == ESCH_OK, log,
-                         "Can't malloc after GC. type: 0x%x", type, ret);
+                         "FATAL: Can't malloc after GC. type: 0x%x", type,
+                         ret);
             ret = esch_gc_register(gc, new_object);
             ESCH_CHECK_1(ret == ESCH_OK, log,
                     "Can't register to GC. type: 0x%x", type, ret);
