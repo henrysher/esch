@@ -10,13 +10,13 @@ const char* ESCH_CONFIG_KEY_LOG = "common:log";
 const char* ESCH_CONFIG_KEY_GC = "common:gc";
 const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH = "vector:initial_length";
 
-static esch_error esch_config_destructor_s(esch_object* obj);
-static esch_error esch_config_new_s(esch_config*, esch_object** obj);
+static esch_error esch_config_destructor(esch_object* obj);
+static esch_error esch_config_new_as_object(esch_config*, esch_object** obj);
 
 struct esch_builtin_type esch_config_type =
 {
     {
-        &(esch_config_type.type),
+        &(esch_meta_type.type),
         NULL,
         &(esch_log_do_nothing.log),
         NULL,
@@ -25,8 +25,8 @@ struct esch_builtin_type esch_config_type =
     {
         ESCH_VERSION,
         sizeof(esch_config),
-        esch_config_new_s,
-        esch_config_destructor_s,
+        esch_config_new_as_object,
+        esch_config_destructor,
         esch_type_default_non_copiable,
         esch_type_default_no_string_form,
         esch_type_default_no_doc,
@@ -270,7 +270,7 @@ Exit:
 }
 
 static esch_error
-esch_config_new_s(esch_config* config, esch_object** obj)
+esch_config_new_as_object(esch_config* config, esch_object** obj)
 {
     esch_error ret = ESCH_OK;
     esch_config* new_config = NULL;
@@ -297,7 +297,7 @@ Exit:
 }
 
 static esch_error
-esch_config_destructor_s(esch_object* obj)
+esch_config_destructor(esch_object* obj)
 {
     (void)obj;
     /* Just do nothing */

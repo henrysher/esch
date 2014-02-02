@@ -11,11 +11,11 @@
 /*             Definitions for esch_log_do_nothing                   */
 /* ================================================================= */
 
-static esch_error esch_log_destructor_s(esch_object* obj);
-static esch_error esch_log_new_do_nothing_s(esch_config* config,
-                                            esch_object** obj);
-static esch_error esch_log_new_printf_s(esch_config* config,
-                                        esch_object** obj);
+static esch_error esch_log_destructor(esch_object* obj);
+static esch_error esch_log_new_do_nothing_as_object(esch_config* config,
+                                                    esch_object** obj);
+static esch_error esch_log_new_printf_as_object(esch_config* config,
+                                                esch_object** obj);
 static esch_error esch_log_error_printf(esch_log* log,
                                 const char* fmt, va_list args);
 static esch_error esch_log_info_printf(esch_log* log,
@@ -26,7 +26,7 @@ static esch_error esch_log_message_do_nothing(esch_log* log,
 struct esch_builtin_type esch_log_do_nothing_type = 
 {
     {
-        &(esch_log_do_nothing_type.type),
+        &(esch_meta_type.type),
         NULL, /* No alloc */
         &(esch_log_do_nothing.log),
         NULL,
@@ -35,8 +35,8 @@ struct esch_builtin_type esch_log_do_nothing_type =
     {
         ESCH_VERSION,
         sizeof(esch_log),
-        esch_log_new_do_nothing_s,
-        esch_log_destructor_s,
+        esch_log_new_do_nothing_as_object,
+        esch_log_destructor,
         esch_type_default_non_copiable,
         esch_type_default_no_string_form,
         esch_type_default_no_doc,
@@ -46,7 +46,7 @@ struct esch_builtin_type esch_log_do_nothing_type =
 struct esch_builtin_type esch_log_printf_type = 
 {
     {
-        &(esch_log_printf_type.type),
+        &(esch_meta_type.type),
         NULL, /* No Alloc */
         &(esch_log_do_nothing.log),
         NULL,
@@ -55,8 +55,8 @@ struct esch_builtin_type esch_log_printf_type =
     {
         ESCH_VERSION,
         sizeof(esch_log),
-        esch_log_new_printf_s,
-        esch_log_destructor_s,
+        esch_log_new_printf_as_object,
+        esch_log_destructor,
         esch_type_default_non_copiable,
         esch_type_default_no_string_form,
         esch_type_default_no_doc,
@@ -195,7 +195,7 @@ Exit:
  * @return Error code;
  */
 static esch_error
-esch_log_destructor_s(esch_object* obj)
+esch_log_destructor(esch_object* obj)
 {
     esch_error ret = ESCH_OK;
     if (obj == NULL) {
@@ -216,7 +216,7 @@ Exit:
 }
 
 static esch_error
-esch_log_new_do_nothing_s(esch_config* config, esch_object** obj)
+esch_log_new_do_nothing_as_object(esch_config* config, esch_object** obj)
 {
     esch_error ret = ESCH_OK;
     esch_log* log = NULL;
@@ -229,7 +229,7 @@ esch_log_new_do_nothing_s(esch_config* config, esch_object** obj)
 }
 
 static esch_error
-esch_log_new_printf_s(esch_config* config, esch_object** obj)
+esch_log_new_printf_as_object(esch_config* config, esch_object** obj)
 {
     esch_error ret = ESCH_OK;
     esch_log* log = NULL;

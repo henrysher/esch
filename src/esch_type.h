@@ -38,7 +38,7 @@ struct esch_builtin_type
     esch_type   type;
 };
 
-extern esch_type esch_meta_type;
+extern struct esch_builtin_type esch_meta_type;
 #define ESCH_TYPE_GET_VERSION(ti) ((ti)->version)
 #define ESCH_TYPE_GET_OBJECT_SIZE(ti) ((ti)->object_size)
 #define ESCH_TYPE_GET_OBJECT_NEW(ti) ((ti)->object_new)
@@ -50,7 +50,8 @@ extern esch_type esch_meta_type;
 
 #define ESCH_IS_VALID_TYPE(ti) \
     (((ti)->version == ESCH_VERSION) && \
-     (ESCH_OBJECT_GET_TYPE(ESCH_CAST_TO_OBJECT(ti)) == &esch_meta_type) && \
+     (ESCH_OBJECT_GET_TYPE(ESCH_CAST_TO_OBJECT(ti)) == \
+          &esch_meta_type.type) && \
      ((ti)->object_size > sizeof(esch_object)) && \
      ((ti)->object_new != NULL) && \
      ((ti)->object_destructor != NULL) && \

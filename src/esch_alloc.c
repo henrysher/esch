@@ -58,10 +58,10 @@ esch_alloc_free_i(esch_alloc* alloc, void* ptr)
 /* ================================================================= */
 
 static esch_error
-esch_alloc_new_c_default_s(esch_config* config, esch_object** obj);
+esch_alloc_new_c_default_as_object(esch_config* config, esch_object** obj);
 
 static esch_error
-esch_alloc_destructor_c_default_s(esch_object* obj);
+esch_alloc_destructor_c_default(esch_object* obj);
 
 static esch_error
 esch_alloc_realloc_c_default(esch_alloc* alloc,
@@ -72,7 +72,7 @@ esch_alloc_free_c_default(esch_alloc* alloc, void* ptr);
 struct esch_builtin_type esch_alloc_c_default_type =
 {
     {
-        &(esch_alloc_c_default_type.type),
+        &(esch_meta_type.type),
         NULL, /* No log */
         &(esch_log_do_nothing.log),
         NULL,
@@ -81,8 +81,8 @@ struct esch_builtin_type esch_alloc_c_default_type =
     {
         ESCH_VERSION,
         sizeof(esch_alloc_c_default),
-        esch_alloc_new_c_default_s,
-        esch_alloc_destructor_c_default_s,
+        esch_alloc_new_c_default_as_object,
+        esch_alloc_destructor_c_default,
         esch_type_default_non_copiable,
         esch_type_default_no_string_form,
         esch_type_default_no_doc,
@@ -250,7 +250,7 @@ Exit:
  * @return Error code.
  */
 static esch_error
-esch_alloc_destructor_c_default_s(esch_object* obj)
+esch_alloc_destructor_c_default(esch_object* obj)
 {
     esch_error ret = ESCH_OK;
     esch_log* log = NULL;
@@ -277,7 +277,7 @@ Exit:
 }
 
 static esch_error
-esch_alloc_new_c_default_s(esch_config* config, esch_object** obj)
+esch_alloc_new_c_default_as_object(esch_config* config, esch_object** obj)
 {
     esch_error ret = ESCH_OK;
     esch_alloc* alloc = NULL;

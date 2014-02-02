@@ -28,7 +28,7 @@ decode_utf8(char* utf8, int begin, int end,
 struct esch_builtin_type esch_string_type = 
 {
     {
-        &(esch_string_type.type),
+        &(esch_meta_type.type),
         NULL, /* No alloc */
         &(esch_log_do_nothing.log),
         NULL, /* Non-GC object */

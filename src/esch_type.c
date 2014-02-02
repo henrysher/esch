@@ -14,16 +14,25 @@ esch_type_delete_s(esch_object* obj);
 /* ----------------------------------------------------------------- */
 /*                         Public functions                          */
 /* ----------------------------------------------------------------- */
-esch_type esch_meta_type =
+struct esch_builtin_type esch_meta_type =
 {
-    sizeof(esch_type),
-    ESCH_VERSION,
-    esch_type_new_s,
-    esch_type_delete_s,
-    esch_type_default_non_copiable,
-    esch_type_default_no_string_form,
-    esch_type_default_no_doc,
-    esch_type_default_no_iterator
+    {
+        &(esch_meta_type.type),
+        NULL,
+        &(esch_log_do_nothing.log),
+        NULL,
+        NULL,
+    },
+    {
+        sizeof(esch_type),
+        ESCH_VERSION,
+        esch_type_new_s,
+        esch_type_delete_s,
+        esch_type_default_non_copiable,
+        esch_type_default_no_string_form,
+        esch_type_default_no_doc,
+        esch_type_default_no_iterator
+    }
 };
 
 esch_error
@@ -158,7 +167,7 @@ esch_type_new_i(esch_config* config, esch_type** type)
     assert(log_obj != NULL);
     log = ESCH_CAST_FROM_OBJECT(log_obj, esch_log);
 
-    ret = esch_object_new_i(config, &esch_meta_type, &new_obj);
+    ret = esch_object_new_i(config, &(esch_meta_type.type), &new_obj);
     ESCH_CHECK(new_type != NULL, log, "Can't alloc new type.", ret);
     new_type = ESCH_CAST_FROM_OBJECT(new_obj, esch_type);
 
