@@ -36,9 +36,10 @@ struct esch_config
 
 struct esch_builtin_type esch_config_type;
 
-#define ESCH_IS_VALID_CONFIG(obj) \
-    (ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(obj)) && \
-     (ESCH_OBJECT_GET_TYPE(ESCH_CAST_TO_OBJECT(obj)) == \
+#define ESCH_IS_VALID_CONFIG(cfg) \
+    ((cfg) != NULL && \
+     ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(cfg)) && \
+     (ESCH_OBJECT_GET_TYPE(ESCH_CAST_TO_OBJECT(cfg)) == \
           &(esch_config_type.type)))
 
 #define ESCH_CONFIG_GET_ALLOC(cfg) \

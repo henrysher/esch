@@ -57,7 +57,8 @@ struct esch_alloc
  * alloc object. So we don't check obj->alloc.
  */
 #define ESCH_IS_VALID_OBJECT(obj) \
-    ((ESCH_OBJECT_GET_TYPE(obj) != NULL) && \
+    (obj != NULL && \
+     (ESCH_OBJECT_GET_TYPE(obj) != NULL) && \
      (ESCH_TYPE_GET_VERSION(ESCH_OBJECT_GET_TYPE(obj)) == ESCH_VERSION) && \
      (ESCH_OBJECT_GET_LOG(obj) != NULL))
 

@@ -425,19 +425,40 @@ int esch_unicode_is_range_co(esch_unicode ch);
 
 /* --- Vector --- */
 /* XXX
- * This is a vector to represent Scheme pair, list and array. It is used
- * to represent a typed or non-typed array.
- *
- * The vector accepts only valid esch_ objects.
- *
+ * This is a vector to represent Scheme pair, list and array. It's used
+ * to represent a non-typed array.
+ * The vector accepts only valid esch_objects.
+ */
+
+/**
+ * Create a new vector.
+ * @param config Configuration. Give element type and initial length.
+ * @param vec Returned vector object.
+ * @return Return code. ESCH_OK if success.
  */
 esch_error esch_vector_new(esch_config* config, esch_vector** vec);
-esch_error esch_vector_delete(esch_vector* vec);
+/**
+ * Append an object at the end of vector.
+ * @param vec Given vector object.
+ * @param data A new object. Can't be NULL.
+ * @return Return code. ESCH_OK if success.
+ */
 esch_error esch_vector_append(esch_vector* vec, esch_object* data);
+/**
+ * Get length of given vector.
+ * @param vec Given vector object.
+ * @param length Length of given vector.
+ * @return Return code. ESCH_OK if success.
+ */
 esch_error esch_vector_get_length(esch_vector* vec, size_t* length);
+/**
+ * Get element by array.
+ * @param vec Given vector object.
+ * @param index Given index. Negative index means starting from end.
+ * @param obj Returned object. Unchanged if an error is raised.
+ * @return Return code. ESCH_OK if success.
+ */
 esch_error esch_vector_get_data(esch_vector* vec, int index, esch_object** obj);
-esch_error esch_vector_get_element_type(esch_vector* vec, esch_type* type);
-
 
 /* --- Number -- */
 

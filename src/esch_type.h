@@ -49,7 +49,8 @@ extern struct esch_builtin_type esch_meta_type;
 #define ESCH_TYPE_GET_OBJECT_GET_ITERATOR(ti) ((ti)->object_get_iterator)
 
 #define ESCH_IS_VALID_TYPE(ti) \
-    (((ti)->version == ESCH_VERSION) && \
+    ((ti) != NULL && \
+     ((ti)->version == ESCH_VERSION) && \
      (ESCH_OBJECT_GET_TYPE(ESCH_CAST_TO_OBJECT(ti)) == \
           &esch_meta_type.type) && \
      ((ti)->object_size > sizeof(esch_object)) && \

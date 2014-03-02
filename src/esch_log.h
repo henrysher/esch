@@ -28,7 +28,8 @@ struct esch_log_builtin_static
 extern struct esch_log_builtin_static esch_log_do_nothing;
 
 #define ESCH_IS_VALID_LOG(log) \
-    (ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(log)) && \
+    ((log) != NULL && \
+     ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(log)) && \
      (log)->log_error != NULL && \
      (log)->log_info != NULL)
 

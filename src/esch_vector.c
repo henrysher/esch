@@ -9,80 +9,81 @@
 #include "esch_config.h"
 #include "esch_object.h"
 
-const size_t ESCH_VECTOR_MINIMAL_INITIAL_LENGTH = 32;
+const size_t ESCH_VECTOR_MINIMAL_INITIAL_LENGTH = 31;
 const size_t ESCH_VECTOR_MAX_LENGTH = (INT_MAX / sizeof(esch_vector*));
 
-size_t
-esch_adjust_length_exp(size_t length)
-{
-    size_t bit = 0;
-    size_t shift = 0;
-    for (bit = length; bit != 0; (bit >>= 1), ++shift);
-    return (size_t)(1 << shift);
-}
+static size_t
+esch_adjust_length_exp(size_t length);
+static esch_error
+esch_vector_new_as_object(esch_config* config, esch_object** obj);
+static esch_error
+esch_vector_destructor(esch_object* obj);
+static esch_error
+esch_vector_copy_object(esch_object* input, esch_object* output);
+static esch_error
+esch_vector_get_iterator(esch_object* obj, esch_iterator* iter);
 
-/**
- * Create a new vector.
- * @param config Configuration. Give element type and initial length.
- * @param vec Returned vector object.
- * @return Return code. ESCH_OK if success.
- */
+struct esch_builtin_type esch_vector_type = 
+{
+    {
+        &(esch_meta_type.type),
+        NULL, /* No alloc */
+        &(esch_log_do_nothing.log),
+        NULL, /* Non-GC object */
+        NULL,
+    },
+    {
+        ESCH_VERSION,
+        sizeof(esch_vector),
+        esch_vecotr_new_as_object,
+        esch_vector_destructor,
+        esch_vector_copy_object, /* vector.copy */
+        esch_type_default_no_string_form, /* String.toString() */
+        esch_type_default_no_doc,
+        esch_vector_get_iterator
+    },
+};
+
 esch_error
 esch_vector_new(esch_config* config, esch_vector** vec)
 {
     esch_error ret = ESCH_OK;
+    esch_object* alloc_obj = NULL;
+    esch_object* log_obj = NULL;
     esch_alloc* alloc = NULL;
     esch_log* log = NULL;
+    esch_object* vec_obj = NULL;
     esch_vector* new_vec = NULL;
-    int initial_length = 0;
+    int initial_length = ESCH_VECTOR_MINIMAL_INITIAL_LENGTH;
     int delete_element = ESCH_FALSE;
     esch_object** array = NULL;
-    esch_type element_type = ESCH_TYPE_UNKNOWN;
     ESCH_CHECK_PARAM_PUBLIC(config != NULL);
     ESCH_CHECK_PARAM_PUBLIC(vec != NULL);
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_CONFIG(config));
 
-    alloc = ESCH_INTERNAL_CONFIG_GET_ALLOC(config);
-    log = ESCH_INTERNAL_CONFIG_GET_LOG(config);
-    ESCH_CHECK_PARAM_PUBLIC(alloc != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(log != NULL);
+    alloc_obj = ESCH_CONFIG_GET_ALLOC(config);
+    log_obj = ESCH_CONFIG_GET_LOG(config);
+    ESCH_CHECK_PARAM_PUBLIC(alloc_obj != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(log_obj != NULL);
 
-    ret = esch_alloc_malloc(alloc, sizeof(esch_vector), (void**)&new_vec);
-    ESCH_CHECK(ret == ESCH_OK, esch_global_log, "Failed to malloc vector", ret);
+    alloc = ESCH_CAST_FROM_OBJECT(alloc_obj, esch_alloc);
+    log = ESCH_CAST_FROM_OBJECT(log_obj, esch_log);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_ALLOC(alloc));
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_LOG(log));
 
-    ret = esch_config_get_int(config,
-                              ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE,
-                              (int*)&element_type);
-    ESCH_CHECK(ret == ESCH_OK, log, "Failed to get element type", ret);
+    ret = esch_alloc_realloc(alloc, NULL,
+                             sizeof(esch_object*) * (initial_length + 1),
+                             (void**)&array);
+    ESCH_CHECK(ret == ESCH_OK, log, "Failed to allocate array", ret);
 
-    initial_length = ESCH_INTERNAL_CONFIG_GET_VECOTR_INITIAL_LENGTH(config);
-    ESCH_CHECK_PARAM_PUBLIC(initial_length >= 0 &&
-                            initial_length <= ESCH_VECTOR_MAX_LENGTH);
-    /* Adjust initial_length to a proper length for allocation. */
-    initial_length = (initial_length <= ESCH_VECTOR_MINIMAL_INITIAL_LENGTH?
-                      ESCH_VECTOR_MINIMAL_INITIAL_LENGTH:
-                      esch_adjust_length_exp((size_t)initial_length));
+    ret = esch_object_new_i(config, &(esch_vector_type.type), &vec_obj);
+    ESCH_CHECK(ret == ESCH_OK, log, "Failed to new vector object", ret);
+    new_vec = ESCH_CAST_TO_OBJECT(vec_obj);
 
-    delete_element = ESCH_INTERNAL_CONFIG_GET_VECOTR_DELETE_ELEMENT(config);
-
-    ret = esch_alloc_malloc(alloc, sizeof(esch_object*) * (initial_length + 1),
-                            (void**)&array);
-    ESCH_CHECK(ret == ESCH_OK, log, "Failed to get initial length", ret);
-
-    (void)esch_log_info(log,
-            "Vector element type = %d, initial length = %d",
-            element_type, initial_length);
-
-    ESCH_GET_VERSION(new_vec) = ESCH_VERSION;
-    ESCH_GET_TYPE(new_vec) = ESCH_TYPE_VECTOR;
-    ESCH_GET_ALLOC(new_vec) = alloc;
-    ESCH_GET_LOG(new_vec) = log;
     new_vec->slots = (size_t)initial_length;
-    new_vec->element_type = element_type;
     new_vec->begin = array;
     new_vec->next = &(new_vec->begin[0]);
     new_vec->end = (new_vec->begin + new_vec->slots);
-    new_vec->delete_element = delete_element;
     array = NULL;
     (*vec) = new_vec;
     new_vec = NULL;
@@ -93,57 +94,11 @@ Exit:
     }
     if (new_vec != NULL)
     {
-        (void)esch_vector_delete(new_vec);
+        (void)esch_object_delete(vec_obj);
     }
     return ret;
 }
 
-/**
- * Delete vector object. May also delete element if specified by config.
- * @param vec Given vector object.
- * @return Return code. ESCH_OK if success.
- */
-esch_error
-esch_vector_delete(esch_vector* vec)
-{
-    esch_error ret = ESCH_OK;
-    esch_alloc* alloc = NULL;
-    esch_log* log = NULL;
-    if (vec == NULL)
-    {
-        goto Exit;
-    }
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_VECTOR(vec));
-    if (vec->delete_element)
-    {
-        esch_object** element = vec->begin;
-
-        esch_log_info(ESCH_GET_LOG(vec),
-                "vector = 0x%x, delete_element = true", vec);
-        for (; element != vec->end; ++element)
-        {
-            ret = esch_object_delete((*element));
-        }
-    }
-    alloc = ESCH_GET_ALLOC(vec);
-    log = ESCH_GET_LOG(vec);
-    assert(alloc != NULL);
-    assert(log != NULL);
-
-    ret = esch_alloc_free(alloc, vec->begin);
-    ESCH_CHECK(ret == ESCH_OK, log, "Failed to free vector array", ret);
-    ret = esch_alloc_free(alloc, vec);
-    ESCH_CHECK(ret == ESCH_OK, log, "Failed to free vector", ret);
-Exit:
-    return ret;
-}
-
-/**
- * Append an object at the end of vector.
- * @param vec Given vector object.
- * @param data A new object. Can't be NULL.
- * @return Return code. ESCH_OK if success.
- */
 esch_error
 esch_vector_append(esch_vector* vec, esch_object* data)
 {
@@ -156,39 +111,26 @@ esch_vector_append(esch_vector* vec, esch_object* data)
     ESCH_CHECK_PARAM_PUBLIC(data != NULL);
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_VECTOR(vec));
 
-    if (vec->element_type != ESCH_TYPE_UNKNOWN)
-    {
-        if (vec->element_type != ESCH_GET_TYPE(data))
-        {
-            esch_log_info(ESCH_GET_LOG(vec),
-                    "Data type mismatch: given 0x%x, expect 0x%x",
-                    ESCH_GET_TYPE(data), vec->element_type);
-            ret = ESCH_ERROR_BAD_VALUE_TYPE;
-            goto Exit;
-        }
-    }
 
     if (vec->next == vec->end) /* vector buffer is full */
     {
         esch_object** existing = NULL;
         esch_log_info(ESCH_GET_LOG(vec), "Enlarge vector 0x%x", vec);
         new_slots = vec->slots * 2;
-        alloc = ESCH_GET_ALLOC(vec);
-        assert(alloc != NULL);
-        ret = esch_alloc_malloc(alloc,
+
+        alloc = ESCH_OBJECT_GET_ALLOC(ESCH_CAST_TO_OBJECT(vect));
+        ESCH_CHECK_PARAM_INTERNAL(alloc != NULL);
+        ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_ALLOC(alloc));
+
+        ret = esch_alloc_realloc(alloc, vec->begin,
                                 sizeof(esch_object*) * (new_slots + 1),
                                 (void**)&new_array);
         ESCH_CHECK(ret == ESCH_OK, vec, "Failed to reallocate vec", ret);
-        memcpy(new_array, vec->begin, sizeof(esch_object*) * vec->slots);
-        existing = vec->begin;
 
         vec->begin = new_array;
         vec->next = vec->begin + vec->slots;
         vec->end = vec->begin + new_slots;
         vec->slots = new_slots;
-
-        ret = esch_alloc_free(alloc, existing);
-        ESCH_CHECK(ret == ESCH_OK, vec, "Failed to free vec array", ret);
     }
     slot = vec->next;
     ++vec->next;
@@ -197,12 +139,6 @@ Exit:
     return ret;
 }
 
-/**
- * Get length of given vector.
- * @param vec Given vector object.
- * @param length Length of given vector.
- * @return Return code. ESCH_OK if success.
- */
 esch_error
 esch_vector_get_length(esch_vector* vec, size_t* length)
 {
@@ -215,13 +151,6 @@ Exit:
     return ret;
 }
 
-/**
- * Get element by array.
- * @param vec Given vector object.
- * @param index Given index. Negative index means starting from end.
- * @param obj Returned object. Unchanged if an error is raised.
- * @return Return code. ESCH_OK if success.
- */
 esch_error
 esch_vector_get_data(esch_vector* vec, int index, esch_object** obj)
 {
@@ -249,20 +178,111 @@ Exit:
     return ret;
 }
 
-/**
- * Get element type of given vector.
- * @param vec Given vector object.
- * @param element_type Returned type of given vector.
- * @return Return code. ESCH_OK if success.
+/*
+ * -----------------------------------------------------------------
+ * Internal functions. Used only within vector
+ * -----------------------------------------------------------------
  */
-esch_error
-esch_vector_get_element_type(esch_vector* vec, esch_type* element_type)
+static size_t
+esch_adjust_length_exp(size_t length)
+{
+    size_t bit = 0;
+    size_t shift = 0;
+    for (bit = length; bit != 0; (bit >>= 1), ++shift);
+    return (size_t)(1 << shift);
+}
+
+static esch_error
+esch_vector_new_as_object(esch_config* config, esch_object** obj)
 {
     esch_error ret = ESCH_OK;
-    ESCH_CHECK_PARAM_PUBLIC(vec != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(element_type != NULL);
+    esch_vector* vec = NULL;
+
+    ret = esch_vector_new(config, &vec);
+    if (ret == ESCH_OK)
+    {
+        (*obj) = ESCH_CAST_TO_OBJECT(vec);
+    }
+    return ret;
+}
+
+static esch_error
+esch_vector_destructor(esch_object* obj)
+{
+    esch_error ret = ESCH_OK;
+    esch_vector* vec = NULL;
+    esch_alloc* alloc = NULL;
+
+    ESCH_CHECK_PARAM_INTERNAL(obj != NULL);
+    alloc = ESCH_OBJECT_GET_ALLOC(obj);
+    ESCH_CHECK_PARAM_INTERNAL(alloc != NULL);
+    vec = ESCH_CAST_FROM_OBJECT(obj, esch_vector);
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_VECTOR(vec));
-    (*element_type) = vec->element_type;
+
+    ret = esch_alloc_free(alloc, vec->begin);
+    vec->begin = NULL;
+    vec->end = NULL;
+    vec->next = NULL;
+    vec->slots = 0;
 Exit:
     return ret;
 }
+
+static esch_error
+esch_vector_copy_object(esch_object* input, esch_object** output)
+{
+    esch_error ret = ESCH_OK;
+    esch_object* vec_obj = NULL;
+    esch_vector* new_vec = NULL;
+    esch_vector* vec = NULL;
+    esch_alloc* alloc = NULL;
+    esch_log* log = NULL;
+    esch_gc* gc = NULL;
+    esch_config* config = NULL;
+
+    ESCH_CHECK_PARAM_INTERNAL(input != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(output != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_OBJECT(input));
+    vec = ESCH_CAST_FROM_OBJECT(input, esch_vector);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_VECTOR(vec));
+
+    alloc = ESCH_OBJECT_GET_ALLOC(input);
+    log = ESCH_OBJECT_GET_LOG(input);
+    gc = ESCH_OBJECT_GET_GC(input);
+
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_ALLOC(alloc));
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_LOG(log));
+    ESCH_CHECK_PARAM_INTERNAL((gc == NULL || ESCH_IS_VALID_GC(gc)));
+
+    ret = esch_config_new(log, alloc, &config);
+    ESCH_CHECK(ret == ESCH_OK, log, "Can't create config", ret);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_ALLOC,
+                              ESCH_CAST_TO_OBJECT(alloc));
+    ESCH_CHECK(ret == ESCH_OK, log, "Can't insert alloc", ret);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_LOG,
+                              ESCH_CAST_TO_OBJECT(log));
+    ESCH_CHECK(ret == ESCH_OK, log, "Can't insert log", ret);
+    if (gc != NULL)
+    {
+        ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_GC,
+                                  ESCH_CAST_TO_OBJECT(gc));
+        ESCH_CHECK(ret == ESCH_OK, log, "Can't insert gc", ret);
+    }
+
+    ret = esch_object_new_i(config, &(esch_vector_type.type), &vec_obj);
+    ESCH_CHECK(ret == ESCH_OK, log, "Can't create new vector", ret);
+    vec_obj = ESCH_CAST_FROM_OBJECT(vec_obj, esch_vector);
+
+    if (vec->slots <= new_vec->slots)
+    {
+        memcpy(new_vec->begin, vec->begin,
+               sizeof(esch_object*) * (vec->slots));
+        new_vec->slots = vec->slots;
+        new_vec->end = (new_vec->begin + new_vec->slots);
+    }
+Exit:
+    return ret;
+}
+static esch_error
+esch_vector_get_iterator(esch_object* obj, esch_iterator* iter);
+

@@ -19,10 +19,11 @@ struct esch_string
     size_t unicode_len;
 };
 
-#define ESCH_IS_VALID_STRING(obj) \
-    (ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(obj)) && \
-     (obj)->utf8 != NULL && \
-     (obj)->unicode != NULL)
+#define ESCH_IS_VALID_STRING(str) \
+    ((str) != NULL && \
+     ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(str)) && \
+     (str)->utf8 != NULL && \
+     (str)->unicode != NULL)
 
 #ifdef __cplusplus
 }

@@ -40,11 +40,12 @@ struct esch_gc_mark_sweep
 };
 
 #define ESCH_IS_VALID_GC(gc) \
-    (ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(gc)) && \
-     gc->perform_gc != NULL && \
-     gc->register_obj != NULL && \
-     gc->retain != NULL && \
-     gc->release != NULL)
+    ((gc) != NULL && \
+     ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(gc)) && \
+     (gc)->perform_gc != NULL && \
+     (gc)->register_obj != NULL && \
+     (gc)->retain != NULL && \
+     (gc)->release != NULL)
 
 #ifdef __cplusplus
 }

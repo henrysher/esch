@@ -277,12 +277,12 @@ do_delete(esch_object* obj, esch_bool force_delete)
 
     if (gc != NULL)
     {
-        (void)esch_log_info(log,
+        esch_log_info(log,
                 "Mananged object: obj: 0x%x, gc: 0x%x, force: %d",
                 obj, gc, force_delete);
         if (force_delete)
         {
-            (void)esch_log_info(log, "Force delete.");
+            esch_log_info(log, "Force delete.");
             ret = esch_gc_release(obj);
             ESCH_CHECK_1(ret == ESCH_OK, log,
                          "Can't release from GC: obj: 0x%x", obj, ret);
@@ -295,6 +295,10 @@ do_delete(esch_object* obj, esch_bool force_delete)
                 ESCH_CHECK_1(ret == ESCH_OK, log,
                              "Can't free: obj: 0x%x", obj, ret);
             }
+            else
+            {
+                esch_log_info(log, "No alloc attached. Do nothing.");
+            }
         }
         else
         {
@@ -302,6 +306,7 @@ do_delete(esch_object* obj, esch_bool force_delete)
              * Inform GC to release this object. It may or may not call
              * type->object_delete(), depending on the logic of GC.
              */
+            esch_log_info(log, "Inform GC to release object.");
             ret = esch_gc_release(obj);
             ESCH_CHECK_1(ret == ESCH_OK, log,
                          "Can't release: obj: 0x%x", obj, ret);
@@ -318,6 +323,10 @@ do_delete(esch_object* obj, esch_bool force_delete)
             ret = esch_alloc_free(alloc, obj);
             ESCH_CHECK_1(ret == ESCH_OK,
                          log, "Can't free: obj: 0x%x", obj, ret);
+        }
+        else
+        {
+            esch_log_info(log, "No alloc attached. Do nothing.");
         }
     }
 Exit:
