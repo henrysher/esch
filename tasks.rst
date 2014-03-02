@@ -40,6 +40,14 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
   - [DONE] Update esch_object to support GC.
   - [DONE] Update alloc/config/log types to use new object model.
   - [DONE] Add a dummy GC to unblock test.
-  - Update esch_integer, esch_vector, esch_string to use new model.
+  - Update esch_integer
+  - Update esch_vector
+  - Update esch_string
+
+* Implement a working mark-and-sweep GC.
+
+* Implement list type (requires GC for verification)
+
+* Implement a memory-saving character type.
 
 * Define module format
