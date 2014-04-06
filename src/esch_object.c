@@ -59,18 +59,7 @@ esch_object_delete(esch_object* obj)
         return ret;
     }
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_OBJECT(obj));
-    /* 
-     * The second parameter must be set to ESCH_FALSE. So the behavior
-     * of object lifetime management is fully delegated to GC when it's
-     * registered, or directly get deleted when not managed by GC.
-     *
-     * We enforce this rule, because this is a public interface for
-     * third-party develoeprs. We don't want developer bypass GC
-     * management, even if they really know what they are doing. Make
-     * sure they depend on our esch_object interfaces to get a
-     * consistent behavior.
-     */
-    ret = esch_object_delete_i(obj, ESCH_FALSE);
+    ret = esch_object_delete_i(obj);
 Exit:
     return ret;
 }
@@ -214,25 +203,28 @@ esch_object_new_i(esch_config* config, esch_type* type, esch_object** obj)
                 ret);
         if (ret == ESCH_ERROR_OUT_OF_MEMORY)
         {
-            ret = esch_gc_perform_gc(gc, alloc);
-            ESCH_CHECK_1(ret == ESCH_OK,
-                         log, "Can't trigger GC. obj: 0x%x", gc, ret);
+            (void)esch_log_info(log, "object:new: OOM. Trigger GC.");
+            ret = esch_gc_recycle_i(gc);
+            ESCH_CHECK_1(ret == ESCH_OK, log,
+                    "object:new: Can't trigger GC. obj: 0x%x", gc, ret);
             /* Now try allcoate memory again. Be sure that we don't run
              * all the time. */
             ret = esch_alloc_realloc(alloc, NULL,
                                      obj_size, (void**)&new_object);
             ESCH_CHECK_1(ret == ESCH_OK, log,
-                         "FATAL: Can't malloc after GC. type: 0x%x", type,
-                         ret);
-            ret = esch_gc_register(gc, new_object);
-            ESCH_CHECK_1(ret == ESCH_OK, log,
-                    "Can't register to GC. type: 0x%x", type, ret);
+                         "FATAL: Can't malloc after GC. type: 0x%x",
+                         type, ret);
         }
+        (void)esch_log_info(log, "object:new: Try attach GC.");
+        ret = esch_gc_attach_i(gc, new_object);
+        ESCH_CHECK_1(ret == ESCH_OK, log,
+                "object:new: Can't attach to GC. type: 0x%x", type, ret);
     }
     else
     {
         ESCH_CHECK_1(ret == ESCH_OK, log,
-                "Can't malloc (without GC). type: 0x%x", type, ret);
+                "object:new: Can't malloc (without GC). type: 0x%x",
+                type, ret);
     }
 
     /*
@@ -250,13 +242,13 @@ esch_object_new_i(esch_config* config, esch_type* type, esch_object** obj)
 Exit:
     if (new_object != NULL)
     {
-        (void)esch_object_delete_i(new_object, ESCH_TRUE);
+        (void)esch_object_delete_i(new_object);
     }
     return ret;
 }
 
 static esch_error
-do_delete(esch_object* obj, esch_bool force_delete)
+delete_single_object_i(esch_object* obj)
 {
     esch_error ret = ESCH_OK;
     esch_log* log = NULL;
@@ -278,43 +270,20 @@ do_delete(esch_object* obj, esch_bool force_delete)
     if (gc != NULL)
     {
         esch_log_info(log,
-                "Mananged object: obj: 0x%x, gc: 0x%x, force: %d",
-                obj, gc, force_delete);
-        if (force_delete)
-        {
-            esch_log_info(log, "Force delete.");
-            ret = esch_gc_release(obj);
-            ESCH_CHECK_1(ret == ESCH_OK, log,
-                         "Can't release from GC: obj: 0x%x", obj, ret);
-            ret = type->object_destructor(obj);
-            ESCH_CHECK_1(ret == ESCH_OK, log,
-                         "Can't delete: obj: 0x%x", obj, ret);
-            if (alloc != NULL)
-            {
-                ret = esch_alloc_free(alloc, obj);
-                ESCH_CHECK_1(ret == ESCH_OK, log,
-                             "Can't free: obj: 0x%x", obj, ret);
-            }
-            else
-            {
-                esch_log_info(log, "No alloc attached. Do nothing.");
-            }
-        }
-        else
-        {
-            /* 
-             * Inform GC to release this object. It may or may not call
-             * type->object_delete(), depending on the logic of GC.
-             */
-            esch_log_info(log, "Inform GC to release object.");
-            ret = esch_gc_release(obj);
-            ESCH_CHECK_1(ret == ESCH_OK, log,
-                         "Can't release: obj: 0x%x", obj, ret);
-        }
+                "object:delete: Mananged: obj: 0x%x, gc: 0x%x",
+                obj, gc);
+        /* 
+         * Inform GC to release this object. It may or may not call
+         * destructor, depending on the logic of GC.
+         */
+        esch_log_info(log, "Inform GC to release object.");
+        ret = esch_gc_detach_i(gc, obj);
+        ESCH_CHECK_1(ret == ESCH_OK, log,
+                "Can't release: obj: 0x%x", obj, ret);
     }
     else
     {
-        (void)esch_log_info(log, "Unmanaged object. delete.");
+        (void)esch_log_info(log, "object:delete: Unmanaged object.");
         ret = type->object_destructor(obj);
         ESCH_CHECK_1(ret == ESCH_OK,
                      log, "Can't delete: obj: 0x%x", obj, ret);
@@ -334,7 +303,7 @@ Exit:
 }
 
 esch_error
-esch_object_delete_i(esch_object* obj, esch_bool force_delete)
+esch_object_delete_i(esch_object* obj)
 {
     esch_error ret = ESCH_OK;
     esch_type* type = NULL;
@@ -370,11 +339,11 @@ esch_object_delete_i(esch_object* obj, esch_bool force_delete)
             ESCH_CHECK_2(ret == ESCH_OK, log,
                     "Can't enumerate iterator: container: 0x%x, count:%d",
                     obj, count, ret);
-            ret = do_delete(element, force_delete);
+            ret = delete_single_object_i(element);
             iter.get_next(&iter);
         }
     }
-    ret = do_delete(obj, force_delete);
+    ret = delete_single_object_i(obj);
 Exit:
     return ret;
 }

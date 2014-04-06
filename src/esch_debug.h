@@ -58,7 +58,6 @@ extern "C" {
     } \
 }
 
-
 #ifdef NDEBUG
 #    define ESCH_CHECK_PARAM_PUBLIC(cond) \
         ESCH_CHECK_NO_LOG(cond, ESCH_ERROR_INVALID_PARAMETER)
@@ -68,6 +67,7 @@ extern "C" {
 #endif /* NDEBUG */
 
 #define ESCH_CHECK_PARAM_INTERNAL(cond) assert(cond);
+#define ESCH_ASSERT(cond) assert(cond);
 
 #ifdef __cplusplus
 }

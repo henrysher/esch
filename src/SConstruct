@@ -54,7 +54,7 @@ elif buildmode.upper() == 'RELEASE':
     ccflags = ccflags_release
 else:
     print("Warning: Unknown mode = %s, fallback to release", buildmode)
-print("Build mode = %s, compiler = %s" % (buildmode, compiler))
+print("Parameter: mode = %s, cc = %s" % (buildmode, compiler))
 env.Append(CCFLAGS=ccflags)
 
 # Library
@@ -73,6 +73,7 @@ esch = env.StaticLibrary('esch', libesch_src)
 utest_src = [ 'utest/esch_utest.c', \
               'utest/esch_t_alloc.c', \
               'utest/esch_t_string.c', \
+              'utest/esch_t_gc.c', \
 #              'utest/esch_t_config.c', \
 #              'utest/esch_t_vector.c', \
 #              'utest/esch_t_number.c' \

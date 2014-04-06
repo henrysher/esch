@@ -21,19 +21,11 @@ struct esch_object
 };
 
 /*
-struct esch_alloc
-{
-    ESCH_COMMON_HEADER;
-    esch_alloc_realloc_f alloc_realloc;
-    esch_alloc_free_f    alloc_free;
-};
-*/
-/*
  * Rules for type system.
  * 1. User can customize either primitive or container type.
  * 2. When defining container type, it must define iterator.
  * 3. All types must function when either registered to GC or not.
- * 4. The common function, esch_object_destroy() is the only public
+ * 4. The common function, esch_object_delete() is the only public
  *    interface.
  * 5. The esch_object_*() functions takes care of all functions.
  * 6. All managed objects must satrt from ESCH_COMMON_HEADER.
@@ -64,7 +56,7 @@ struct esch_alloc
 
 esch_error esch_object_new_i(esch_config* config, esch_type* type,
                              esch_object** obj);
-esch_error esch_object_delete_i(esch_object* obj, esch_bool force_delete);
+esch_error esch_object_delete_i(esch_object* obj);
 esch_error esch_object_get_iterator_i(esch_object* obj, esch_iterator* iter);
 
 #ifdef __cplusplus

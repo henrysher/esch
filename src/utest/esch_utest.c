@@ -56,6 +56,11 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_identifier() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_identifier()");
 
+    esch_log_info(testLog, "Start: test_gc()");
+    ret = test_gc(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_gc() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_gc()");
+
     /*
     ret = test_config();
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_config() failed", ret);

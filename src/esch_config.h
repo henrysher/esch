@@ -34,7 +34,7 @@ struct esch_config
     } config[ESCH_CONFIG_ITEMS];
 };
 
-struct esch_builtin_type esch_config_type;
+extern struct esch_builtin_type esch_config_type;
 
 #define ESCH_IS_VALID_CONFIG(cfg) \
     ((cfg) != NULL && \
@@ -50,6 +50,8 @@ struct esch_builtin_type esch_config_type;
     ((esch_object*)(cfg->config[2].data.obj_value))
 #define ESCH_CONFIG_GET_VECOTR_INITIAL_LENGTH(cfg) \
     ((int)(cfg->config[3].data.int_value))
+#define ESCH_CONFIG_GET_GC_NAIVE_INITIAL_CELLS(cfg) \
+    ((int)(cfg->config[4].data.int_value))
 
 #ifdef __cplusplus
 }

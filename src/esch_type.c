@@ -187,10 +187,7 @@ esch_type_new_i(esch_config* config, esch_type** type)
     (*type) = new_type;
     new_type = NULL;
 Exit:
-    if (new_type)
-    {
-        esch_object_delete_i(new_obj, ESCH_FALSE);
-    }
+    assert(new_type == NULL);
     return ret;
 }
 

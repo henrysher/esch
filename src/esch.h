@@ -60,6 +60,7 @@ extern "C" {
 #define ESCH_FALSE 0
 #define ESCH_TRUE !(ESCH_FALSE)
 typedef unsigned char esch_bool;
+typedef unsigned char esch_byte;
 
 /*
  * The configuration keys are pre-defined within configuration. List:
@@ -70,12 +71,12 @@ typedef unsigned char esch_bool;
  * - key = "vector:initial_length", value = int
  * - key = "vector:delete_element", value = int
  */
-const char* ESCH_CONFIG_KEY_ALLOC;
-const char* ESCH_CONFIG_KEY_LOG;
-const char* ESCH_CONFIG_KEY_GC;
-const char* ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE;
-const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH;
-const char* ESCH_CONFIG_KEY_VECTOR_DELETE_ELEMENT;
+extern const char* ESCH_CONFIG_KEY_ALLOC;
+extern const char* ESCH_CONFIG_KEY_LOG;
+extern const char* ESCH_CONFIG_KEY_GC;
+extern const char* ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE;
+extern const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH;
+extern const char* ESCH_CONFIG_KEY_GC_NAIVE_INITIAL_CELLS;
 
 typedef enum {
     ESCH_OK = 0,
@@ -333,11 +334,14 @@ esch_error esch_log_error(esch_log* log, const char* fmt, ...);
 esch_error esch_log_info(esch_log* log, const char* fmt, ...);
 
 /* --- Garbage collector -- */
-esch_error esch_gc_new_mark_sweep(esch_config* config, esch_gc** gc);
-esch_error esch_gc_perform_gc(esch_gc* gc, esch_alloc* alloc);
-esch_error esch_gc_register(esch_gc* gc, esch_object* obj);
-esch_error esch_gc_retain(esch_object* obj);
-esch_error esch_gc_release(esch_object* obj);
+/**
+ * Create a new mark-and-sweep GC object.
+ * @param config Given config object.
+ * @param gc Returned GC object.
+ * @return Return code. ESCH_OK for OK.
+ */
+esch_error esch_gc_new_naive_mark_sweep(esch_config* config, esch_gc** gc);
+esch_error esch_gc_recycle(esch_gc* gc);
 
 
 /* --- Runtime --- */

@@ -125,7 +125,7 @@ esch_alloc_new_c_default(esch_config* config, esch_alloc** alloc)
     ESCH_CHECK(buffer != NULL, log, "Can't malloc() default alloc", ret);
     ret = ESCH_OK;
 
-    new_obj = (esch_object*)(buffer + sizeof(esch_alloc*));
+    new_obj = (esch_object*)((esch_byte*)buffer + sizeof(esch_alloc*));
     new_alloc = ESCH_CAST_FROM_OBJECT(new_obj, esch_alloc_c_default);
     new_alloc->base.realloc = esch_alloc_realloc_c_default;
     new_alloc->base.free = esch_alloc_free_c_default;
@@ -178,11 +178,11 @@ esch_alloc_realloc_c_default(esch_alloc* alloc,
     old_buffer = in;
     if (in != NULL)
     {
-        esch_alloc** obj = (esch_alloc**)(in - sizeof(esch_alloc*));
+        esch_alloc** obj = (esch_alloc**)((esch_byte*)in - sizeof(esch_alloc*));
         ESCH_CHECK_1((*obj) == alloc, log,
                      "malloc: Bad alloc cookie, cookie = 0x%x",
                      (*obj), ESCH_ERROR_INVALID_STATE);
-        old_buffer = in - sizeof(esch_alloc*);
+        old_buffer = (esch_byte*)in - sizeof(esch_alloc*);
     }
 
     size_with_cookie = size + sizeof(esch_alloc*);
@@ -201,7 +201,7 @@ esch_alloc_realloc_c_default(esch_alloc* alloc,
     alloc_c->allocate_count += 1;
     cookie = (esch_alloc**)new_buffer;
     (*cookie) = alloc;
-    (*out) = new_buffer + sizeof(esch_alloc*);
+    (*out) = (esch_byte*)new_buffer + sizeof(esch_alloc*);
     new_buffer = NULL;
 Exit:
     if (new_buffer != NULL) {
@@ -232,7 +232,8 @@ esch_alloc_free_c_default(esch_alloc* alloc, void* ptr)
     ESCH_CHECK_PARAM_PUBLIC(log != NULL);
     if (ptr != NULL)
     {
-        esch_alloc** cookie = (esch_alloc**)(ptr - sizeof(esch_alloc*));
+        esch_alloc** cookie =
+            (esch_alloc**)((esch_byte*)ptr - sizeof(esch_alloc*));
         ESCH_CHECK_1((*cookie) == alloc, log,
                      "malloc: Bad alloc cookie, cookie = 0x%x",
                      (*cookie), ESCH_ERROR_INVALID_STATE);

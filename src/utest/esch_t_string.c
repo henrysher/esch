@@ -7,6 +7,48 @@
 #include "esch_config.h"
 #include "esch_alloc.h"
 
+static size_t unicode_len_i(esch_unicode* ustr)
+{
+    size_t i = 0;
+    while((*ustr) != '\0')
+    {
+        ++ustr;
+        ++i;
+    }
+    return i;
+}
+
+static int
+unicode_compare_i(esch_unicode* left, esch_unicode* right)
+{
+    int ret = 0;
+    while((*left) != '\0' && (*right) != '\0')
+    {
+        if ((*left) == (*right))
+        {
+            ++left;
+            ++right;
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+    if ((*left) == '\0' && (*right) == '\0')
+    {
+        return 0;
+    }
+    else if ((*left) < (*right))
+    {
+        return -1;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
 esch_error test_string(esch_config* config)
 {
     esch_error ret = ESCH_OK;
@@ -24,12 +66,13 @@ esch_error test_string(esch_config* config)
     ESCH_TEST_CHECK(ret == ESCH_OK && str != NULL,
             "Failed to create string - begin = 0, end = -1", ret);
     ret = ESCH_ERROR_INVALID_STATE;
-    ESCH_TEST_CHECK(wcslen(str->unicode) == 2,
+    ESCH_TEST_CHECK(unicode_len_i(str->unicode) == 2,
             "Unicode conversion error: length != 2 - begin = 3, end = 6", ret);
     ret = ESCH_ERROR_INVALID_STATE;
-    ESCH_TEST_CHECK(wcscmp(str->unicode, output) == 0,
+    ESCH_TEST_CHECK(unicode_compare_i(str->unicode, output) == 0,
             "Unicode conversion error - begin = 0, end = -1", ret);
-    ESCH_TEST_CHECK(wcscmp(str->unicode, esch_string_get_unicode_ref(str)) == 0,
+    ESCH_TEST_CHECK(unicode_compare_i(str->unicode,
+                        esch_string_get_unicode_ref(str)) == 0,
             "Internal Unicode different - begin = 0, end = -1", ret);
     ESCH_TEST_CHECK(strcmp(str->utf8, esch_string_get_utf8_ref(str)) == 0,
             "Internal UTF-8 different - begin = 0, end = -1", ret);
@@ -108,6 +151,8 @@ esch_error test_identifier()
     /* Chinese: CJK Compat Ideograph, 'you' in Chinese, then a number */
     esch_unicode nl_str[] = { 0x2F804, 0x303A, 0 };
 
+    esch_unicode identifier[] = { '1', 'A', 'B', 'C', '0' };
+
     val = esch_unicode_is_ascii('A');
     ESCH_TEST_CHECK(val, "'A' should be digit", ESCH_ERROR_INVALID_PARAMETER);
     val = esch_unicode_is_ascii(128);
@@ -124,7 +169,7 @@ esch_error test_identifier()
     val = esch_unicode_string_is_valid_identifier(lo_str);
     ESCH_TEST_CHECK(val, "Lo string should be identifier",
             ESCH_ERROR_INVALID_PARAMETER);
-    val = esch_unicode_string_is_valid_identifier(L"1ABC");
+    val = esch_unicode_string_is_valid_identifier(identifier);
     ESCH_TEST_CHECK(!val, "'1ABC' should not be identifier",
             ESCH_ERROR_INVALID_PARAMETER);
     val = esch_unicode_string_is_valid_identifier(nl_str);

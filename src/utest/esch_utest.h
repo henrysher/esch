@@ -15,13 +15,14 @@ extern esch_log* g_testLog;
 
 /* test cases */
 extern esch_error test_AllocCreateDeleteCDefault(esch_config* config);
-extern esch_error test_string();
+extern esch_error test_string(esch_config* config);
 extern esch_error test_identifier();
 extern esch_error test_config();
 extern esch_error test_vectorBase();
 extern esch_error test_vectorElementType();
 extern esch_error test_vectorDeleteElement();
 extern esch_error test_integer();
+extern esch_error test_gc(esch_config* config);
 
 #ifdef __cplusplus
 }

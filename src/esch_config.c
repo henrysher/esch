@@ -9,6 +9,7 @@ const char* ESCH_CONFIG_KEY_ALLOC = "common:alloc";
 const char* ESCH_CONFIG_KEY_LOG = "common:log";
 const char* ESCH_CONFIG_KEY_GC = "common:gc";
 const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH = "vector:initial_length";
+const char* ESCH_CONFIG_KEY_GC_NAIVE_INITIAL_CELLS = "gc:naive:initial_cells";
 
 static esch_error esch_config_destructor(esch_object* obj);
 static esch_error esch_config_new_as_object(esch_config*, esch_object** obj);
@@ -62,7 +63,7 @@ esch_config_new(esch_log* log, esch_alloc* alloc, esch_config** config)
     ESCH_OBJECT_GET_GC(new_obj)      = NULL;
     ESCH_OBJECT_GET_GC_ID(new_obj)   = NULL; /* Can't get managed. */
 
-    /* Fill key in advance. */
+    /* Fill preset keys */
     strncpy(new_config->config[0].key,
             ESCH_CONFIG_KEY_ALLOC, ESCH_CONFIG_KEY_LENGTH);
     new_config->config[0].type = ESCH_CONFIG_VALUE_TYPE_OBJECT;
@@ -77,6 +78,11 @@ esch_config_new(esch_log* log, esch_alloc* alloc, esch_config** config)
             ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH, ESCH_CONFIG_KEY_LENGTH);
     new_config->config[3].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
     new_config->config[3].data.int_value = 1;
+
+    strncpy(new_config->config[4].key,
+            ESCH_CONFIG_KEY_GC_NAIVE_INITIAL_CELLS, ESCH_CONFIG_KEY_LENGTH);
+    new_config->config[4].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
+    new_config->config[4].data.int_value = 4096;
 
     (*config) = new_config;
     new_config = NULL;

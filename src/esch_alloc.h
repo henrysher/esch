@@ -23,8 +23,6 @@ struct esch_alloc_c_default
 };
 typedef struct esch_alloc_c_default esch_alloc_c_default;
 
-struct esch_builtin_type esch_alloc_c_default_type;
-
 #define ESCH_IS_VALID_ALLOC(alloc) \
     ((alloc) != NULL && \
      ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(alloc)) && \
