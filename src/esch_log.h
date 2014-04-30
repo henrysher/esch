@@ -17,6 +17,7 @@ typedef esch_error (*error_log_f)(esch_log*, const char*, va_list);
 struct esch_log
 {
     error_log_f log_error;
+    error_log_f log_warn;
     error_log_f log_info;
 };
 

@@ -20,6 +20,8 @@ static esch_error esch_log_error_printf(esch_log* log,
                                 const char* fmt, va_list args);
 static esch_error esch_log_info_printf(esch_log* log,
                                 const char* fmt, va_list args);
+static esch_error esch_log_warn_printf(esch_log* log,
+                                const char* fmt, va_list args);
 static esch_error esch_log_message_do_nothing(esch_log* log,
                                 const char* fmt, va_list args);
 
@@ -76,6 +78,7 @@ struct esch_log_builtin_static esch_log_do_nothing =
     },
     {
         esch_log_message_do_nothing,
+        esch_log_message_do_nothing,
         esch_log_message_do_nothing
     },
 };
@@ -90,6 +93,7 @@ static struct esch_log_builtin_static esch_log_printf =
     },
     {
         esch_log_error_printf,
+        esch_log_warn_printf,
         esch_log_info_printf
     },
 };
@@ -143,12 +147,6 @@ Exit:
     return ret;
 }
 
-/**
- * Public function to log error.
- * @param log The log object.
- * @param fmt Format string follos variable arguments.
- * @return Error code;
- */
 esch_error
 esch_log_error(esch_log* log, const char* fmt, ...)
 {
@@ -166,12 +164,6 @@ Exit:
     return ret;
 }
 
-/**
- * Public function to log general information.
- * @param log The log object.
- * @param fmt Format string follos variable arguments.
- * @return Error code;
- */
 esch_error
 esch_log_info(esch_log* log, const char* fmt, ...)
 {
@@ -188,6 +180,24 @@ esch_log_info(esch_log* log, const char* fmt, ...)
 Exit:
     return ret;
 }
+
+esch_error
+esch_log_warn(esch_log* log, const char* fmt, ...)
+{
+    esch_error ret = ESCH_OK;
+    va_list ap;
+
+    ESCH_CHECK_NO_LOG(log != NULL, ESCH_ERROR_INVALID_PARAMETER);
+    ESCH_CHECK_NO_LOG(fmt != NULL, ESCH_ERROR_INVALID_PARAMETER);
+    ESCH_CHECK_NO_LOG(ESCH_IS_VALID_LOG(log), ESCH_ERROR_INVALID_PARAMETER);
+
+    va_start(ap, fmt);
+    ret = log->log_warn(log, fmt, ap);
+    va_end(ap);
+Exit:
+    return ret;
+}
+
 
 /**
  * Delete a log object.
@@ -241,13 +251,6 @@ esch_log_new_printf_as_object(esch_config* config, esch_object** obj)
     return ret;
 }
 
-/**
- * Function to log error. Belongs to do-printf log.
- * @param log The log object.
- * @param fmt Format string follos variable arguments.
- * @param args Variable length of arguments.
- * @return Error code;
- */
 static esch_error
 esch_log_error_printf(esch_log* log, const char* fmt, va_list args)
 {
@@ -258,13 +261,6 @@ esch_log_error_printf(esch_log* log, const char* fmt, va_list args)
     return ESCH_OK;
 }
 
-/**
- * Function to log error. Belongs to do-printf log.
- * @param log The log object.
- * @param fmt Format string follos variable arguments.
- * @param args Variable length of arguments.
- * @return Error code;
- */
 static esch_error
 esch_log_info_printf(esch_log* log, const char* fmt, va_list args)
 {
@@ -275,6 +271,15 @@ esch_log_info_printf(esch_log* log, const char* fmt, va_list args)
     return ESCH_OK;
 }
 
+static esch_error
+esch_log_warn_printf(esch_log* log, const char* fmt, va_list args)
+{
+    (void)log;
+    printf("[WARN]  ");
+    vprintf(fmt, args);
+    printf("\n");
+    return ESCH_OK;
+}
 
 /**
  * Function to log any information. Belongs to do-nothing log.

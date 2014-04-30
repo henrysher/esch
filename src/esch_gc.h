@@ -20,42 +20,45 @@ extern "C" {
 
 /* Attach object to GC system. */
 typedef esch_error (*esch_gc_attach_f)(esch_gc*, esch_object*);
-/* Detach object to GC system. */
-typedef esch_error (*esch_gc_detach_f)(esch_gc*, esch_object*);
 /* Recycle objects for GC. */
 typedef esch_error (*esch_gc_recycle_f)(esch_gc*);
 
 /* Internal function for esch_object. */
 esch_error esch_gc_attach_i(esch_gc* gc, esch_object* obj);
-esch_error esch_gc_detach_i(esch_gc* gc, esch_object* obj);
 esch_error esch_gc_recycle_i(esch_gc* gc);
 
-struct esch_gc_cell
+union esch_object_or_next
 {
-    unsigned char* inuse_flags;
-    esch_object** objects;
-    esch_object* available_object_slot;
-    int object_count;
+    esch_object* obj;
+    size_t next;
 };
 
 struct esch_gc
 {
     esch_gc_attach_f     attach;
-    esch_gc_detach_f     detach;
     esch_gc_recycle_f    recycle;
-    struct esch_gc_cell  cell;
+
+    unsigned char* inuse_flags;
+    union esch_object_or_next* slots;
+    esch_object** recycle_stack;
+    esch_object*  root;
+    size_t available_slot_offset;
+    size_t slot_count;
 };
 
-extern const int ESCH_GC_NAIVE_DEFAULT_CELLS;
+extern const int ESCH_GC_NAIVE_DEFAULT_SLOTS;
 
 #define ESCH_IS_VALID_GC(gc) \
     ((gc) != NULL && \
      ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(gc)) && \
+     ESCH_CAST_TO_OBJECT(gc)->gc == NULL && \
      (gc)->attach != NULL && \
-     (gc)->detach != NULL && \
      (gc)->recycle != NULL && \
-     (gc)->cell.inuse_flags != NULL && \
-     (gc)->cell.objects != NULL)
+     (gc)->inuse_flags != NULL && \
+     (gc)->slots != NULL && \
+     (gc)->recycle_stack != NULL && \
+     (gc)->available_slot_offset > 0 && \
+     (gc)->available_slot_offset < (gc)->slot_count)
 
 #ifdef __cplusplus
 }

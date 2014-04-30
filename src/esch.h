@@ -59,8 +59,6 @@ extern "C" {
 
 #define ESCH_FALSE 0
 #define ESCH_TRUE !(ESCH_FALSE)
-typedef unsigned char esch_bool;
-typedef unsigned char esch_byte;
 
 /*
  * The configuration keys are pre-defined within configuration. List:
@@ -76,7 +74,8 @@ extern const char* ESCH_CONFIG_KEY_LOG;
 extern const char* ESCH_CONFIG_KEY_GC;
 extern const char* ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE;
 extern const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH;
-extern const char* ESCH_CONFIG_KEY_GC_NAIVE_INITIAL_CELLS;
+extern const char* ESCH_CONFIG_KEY_GC_NAIVE_INITIAL_SLOTS;
+extern const char* ESCH_CONFIG_KEY_GC_NAIVE_ROOT;
 
 typedef enum {
     ESCH_OK = 0,
@@ -88,6 +87,13 @@ typedef enum {
     ESCH_ERROR_BAD_VALUE_TYPE,
     ESCH_ERROR_OUT_OF_BOUND,
     ESCH_ERROR_NOT_SUPPORTED,
+    ESCH_ERROR_DELETE_MANAGED_OBJECT,
+    ESCH_ERROR_OBJECT_ALLOC_MISSING,
+    ESCH_ERROR_OBJECT_LOG_MISSING,
+    ESCH_ERROR_OBJECT_GC_MISSING,
+    ESCH_ERROR_OBJECT_UNEXPECTED_GC_ATTACHED,
+    ESCH_ERROR_GC_ROOT_MISSING,
+    ESCH_ERROR_GC_ROOT_NOT_CONTAINER,
 } esch_error;
 
 typedef enum {
@@ -112,7 +118,10 @@ typedef struct esch_string          esch_string;
 typedef struct esch_vector          esch_vector;
 typedef char                        esch_utf8;
 typedef int32_t                     esch_unicode;
-
+typedef unsigned char               esch_bool;
+typedef unsigned char               esch_byte;
+typedef enum esch_element_type      esch_element_type;
+typedef struct esch_element         esch_element;
 
 /* Prototype of object/type methods */
 typedef esch_error (*esch_object_new_f)(esch_config*, esch_object**);
@@ -207,6 +216,33 @@ esch_error esch_type_is_valid_type(esch_type* type, esch_bool* valid);
  * The data structure to allow contianer type define an iterator. It's
  * used to access element of container type.
  */
+enum esch_element_type
+{
+    ESCH_ELEMENT_TYPE_UNKNOWN = 0,
+    ESCH_ELEMENT_TYPE_CHAR,
+    ESCH_ELEMENT_TYPE_UNICODE,
+    ESCH_ELEMENT_TYPE_INTEGER,
+    ESCH_ELEMENT_TYPE_FLOAT,
+    ESCH_ELEMENT_TYPE_OBJECT
+};
+
+/**
+ * Data structure to represent iterator element. Support different types
+ * of values.
+ */
+struct esch_element
+{
+    enum esch_element_type element_type;
+    union
+    {
+        esch_byte    bval; /**< byte element */
+        esch_unicode uval; /**< unicode element */
+        int          ival; /**< integer element */
+        double       fval; /**< float element (implemented as double) */
+        esch_object* oval; /**< object element */
+    };
+};
+
 struct esch_iterator
 {
     esch_object* container;
@@ -330,7 +366,26 @@ extern esch_log* esch_global_log;
 esch_error esch_log_new_do_nothing(esch_config* config, esch_log** log);
 esch_error esch_log_new_printf(esch_config* config, esch_log** log);
 esch_error esch_log_delete(esch_log* log);
+/**
+ * Public function to log error.
+ * @param log The log object.
+ * @param fmt Format string follos variable arguments.
+ * @return Error code;
+ */
 esch_error esch_log_error(esch_log* log, const char* fmt, ...);
+/**
+ * Public function to log warning.
+ * @param log The log object.
+ * @param fmt Format string follos variable arguments.
+ * @return Error code;
+ */
+esch_error esch_log_warn(esch_log* log, const char* fmt, ...);
+/**
+ * Public function to log general information.
+ * @param log The log object.
+ * @param fmt Format string follos variable arguments.
+ * @return Error code;
+ */
 esch_error esch_log_info(esch_log* log, const char* fmt, ...);
 
 /* --- Garbage collector -- */

@@ -22,29 +22,20 @@ static int
 unicode_compare_i(esch_unicode* left, esch_unicode* right)
 {
     int ret = 0;
-    while((*left) != '\0' && (*right) != '\0')
-    {
-        if ((*left) == (*right))
-        {
+    while((*left) != '\0' && (*right) != '\0') {
+        if ((*left) == (*right)) {
             ++left;
             ++right;
             continue;
-        }
-        else
-        {
+        } else {
             break;
         }
     }
-    if ((*left) == '\0' && (*right) == '\0')
-    {
+    if ((*left) == '\0' && (*right) == '\0') {
         return 0;
-    }
-    else if ((*left) < (*right))
-    {
+    } else if ((*left) < (*right)) {
         return -1;
-    }
-    else
-    {
+    } else {
         return 1;
     }
 }

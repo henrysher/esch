@@ -14,9 +14,7 @@ extern "C" {
 struct esch_vector
 {
     size_t slots;
-    esch_object** begin;
-    esch_object** end;
-    esch_object** next;
+    esch_object** array;
 };
 
 struct esch_builtin_type esch_vector_type;
@@ -25,7 +23,7 @@ struct esch_builtin_type esch_vector_type;
     ((vec) != NULL && \
      ESCH_IS_VALID_OBJECT(ESCH_CAST_TO_OBJECT(vec)) && \
      (ESCH_OBJECT_GET_TYPE(ESCH_CAST_TO_OBJECT(vect)) == \
-          esch_vector_type.type) \
+      esch_vector_type.type) \
      )
 
 const size_t ESCH_VECTOR_MINIMAL_INITIAL_LENGTH;

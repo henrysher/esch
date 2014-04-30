@@ -5,7 +5,6 @@
 #include "esch_object.h"
 #include "esch_gc.h"
 #include "esch_debug.h"
-#include <assert.h>
 
 /*
  * -----------------------------------------------------------------
@@ -59,6 +58,13 @@ esch_object_delete(esch_object* obj)
         return ret;
     }
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_OBJECT(obj));
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_LOG(obj->log));
+    /* 
+     * For public interface we prevent user delete a managed object.
+     */
+    ESCH_CHECK_1((obj->gc == NULL && obj->gc_id == NULL), obj->log,
+            "object:delete: Can't delete an GC-awared object: %x", obj,
+            ESCH_ERROR_DELETE_MANAGED_OBJECT);
     ret = esch_object_delete_i(obj);
 Exit:
     return ret;
@@ -247,8 +253,8 @@ Exit:
     return ret;
 }
 
-static esch_error
-delete_single_object_i(esch_object* obj)
+esch_error
+esch_object_delete_i(esch_object* obj)
 {
     esch_error ret = ESCH_OK;
     esch_log* log = NULL;
@@ -263,87 +269,23 @@ delete_single_object_i(esch_object* obj)
     gc    = ESCH_OBJECT_GET_GC(obj);
     gc_id = ESCH_OBJECT_GET_GC_ID(obj);
 
-    assert(type != NULL);
-    assert(log != NULL);
-    assert(((gc && gc_id) || (!gc && !gc_id)));
+    ESCH_ASSERT(type != NULL);
+    ESCH_ASSERT(log != NULL);
+    ESCH_ASSERT(!gc && !gc_id);
 
-    if (gc != NULL)
+    (void)esch_log_info(log, "object:delete: For delete object");
+    ret = type->object_destructor(obj);
+    ESCH_CHECK_1(ret == ESCH_OK, log, "Dtor fails: obj: 0x%x", obj, ret);
+    if (alloc != NULL)
     {
-        esch_log_info(log,
-                "object:delete: Mananged: obj: 0x%x, gc: 0x%x",
-                obj, gc);
-        /* 
-         * Inform GC to release this object. It may or may not call
-         * destructor, depending on the logic of GC.
-         */
-        esch_log_info(log, "Inform GC to release object.");
-        ret = esch_gc_detach_i(gc, obj);
-        ESCH_CHECK_1(ret == ESCH_OK, log,
-                "Can't release: obj: 0x%x", obj, ret);
+        ret = esch_alloc_free(alloc, obj);
+        ESCH_CHECK_1(ret == ESCH_OK,
+                log, "Can't free: obj: 0x%x", obj, ret);
     }
     else
     {
-        (void)esch_log_info(log, "object:delete: Unmanaged object.");
-        ret = type->object_destructor(obj);
-        ESCH_CHECK_1(ret == ESCH_OK,
-                     log, "Can't delete: obj: 0x%x", obj, ret);
-        if (alloc != NULL)
-        {
-            ret = esch_alloc_free(alloc, obj);
-            ESCH_CHECK_1(ret == ESCH_OK,
-                         log, "Can't free: obj: 0x%x", obj, ret);
-        }
-        else
-        {
-            esch_log_info(log, "No alloc attached. Do nothing.");
-        }
+        esch_log_info(log, "object:delete: No alloc. Do nothing");
     }
-Exit:
-    return ret;
-}
-
-esch_error
-esch_object_delete_i(esch_object* obj)
-{
-    esch_error ret = ESCH_OK;
-    esch_type* type = NULL;
-    esch_alloc* alloc = NULL;
-    esch_log* log = NULL;
-    esch_gc* gc = NULL;
-    void* gc_id = NULL;
-    esch_iterator iter = {0};
-    esch_object* element = NULL;
-    size_t count = 0;
-
-    type  = ESCH_OBJECT_GET_TYPE(obj);
-    gc_id = ESCH_OBJECT_GET_GC_ID(obj);
-    alloc = ESCH_OBJECT_GET_ALLOC(obj);
-    log   = ESCH_OBJECT_GET_LOG(obj);
-    gc    = ESCH_OBJECT_GET_GC(obj);
-
-    assert(type != NULL);
-    assert(log != NULL);
-    assert(((gc && gc_id) || (!gc && !gc_id)));
-
-    if (ESCH_TYPE_IS_CONTAINER(type))
-    {
-        /* Container objects should never delete element object
-         * themselves.
-         */
-        ret = esch_object_get_iterator_i(obj, &iter);
-        ESCH_CHECK_1(ret == ESCH_OK, log,
-                "Can't get iterator: obj: 0x%x", obj, ret);
-        for (count = 0; iter.iterator != NULL; ++count)
-        {
-            ret = iter.get_value(&iter, &element);
-            ESCH_CHECK_2(ret == ESCH_OK, log,
-                    "Can't enumerate iterator: container: 0x%x, count:%d",
-                    obj, count, ret);
-            ret = delete_single_object_i(element);
-            iter.get_next(&iter);
-        }
-    }
-    ret = delete_single_object_i(obj);
 Exit:
     return ret;
 }

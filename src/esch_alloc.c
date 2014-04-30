@@ -166,18 +166,17 @@ esch_alloc_realloc_c_default(esch_alloc* alloc,
     void* old_buffer = NULL;
     esch_alloc** cookie = NULL;
 
-    ESCH_CHECK_PARAM_PUBLIC(alloc != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(size > 0);
-    ESCH_CHECK_PARAM_PUBLIC(out != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(alloc != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(size > 0);
+    ESCH_CHECK_PARAM_INTERNAL(out != NULL);
     alloc_c = (esch_alloc_c_default*)alloc;
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_C_DEFAULT_ALLOC(alloc_c));
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_C_DEFAULT_ALLOC(alloc_c));
 
     log = ESCH_OBJECT_GET_LOG(ESCH_CAST_TO_OBJECT(alloc));
-    ESCH_CHECK_PARAM_PUBLIC(log != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(log != NULL);
 
     old_buffer = in;
-    if (in != NULL)
-    {
+    if (in != NULL) {
         esch_alloc** obj = (esch_alloc**)((esch_byte*)in - sizeof(esch_alloc*));
         ESCH_CHECK_1((*obj) == alloc, log,
                      "malloc: Bad alloc cookie, cookie = 0x%x",
@@ -190,12 +189,9 @@ esch_alloc_realloc_c_default(esch_alloc* alloc,
     ESCH_CHECK(new_buffer != NULL, log,
             "esch_alloc_malloc(): Fail to allocate",
             ESCH_ERROR_OUT_OF_MEMORY);
-    if (in == NULL)
-    {
+    if (in == NULL) {
         memset(new_buffer, 0, size_with_cookie);
-    }
-    if (in != NULL)
-    {
+    } else {
         alloc_c->deallocate_count += 1;
     }
     alloc_c->allocate_count += 1;
