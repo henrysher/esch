@@ -40,11 +40,15 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
   - [DONE] Update esch_object to support GC.
   - [DONE] Update alloc/config/log types to use new object model.
   - [DONE] Add a dummy GC to unblock test.
-  - Update esch_integer
-  - Update esch_vector
-  - Update esch_string
+  - [DROP] Update esch_integer
+  - [DROP] Update esch_vector
+  - [DONE] Update esch_string
 
 * Implement a working mark-and-sweep GC.
+  - [DONE] Basic logic for naive GC.
+  - Use esch_iterator to iterate primitive and object.
+  - Implement esch_vector (fix length array) and test.
+  - Update GC to make unit test fully pass (esch_vector as gc root).
 
 * Implement list type (requires GC for verification)
 
