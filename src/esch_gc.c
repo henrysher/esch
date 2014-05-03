@@ -8,13 +8,13 @@
 #include <string.h>
 
 #define ESCH_GC_MARK_INUSE(gc, obj) { \
-    gc->inuse_flags[((size_t)((obj)->gc_id) >> 8)] |= \
-                            (0x1 << ((size_t)((obj)->gc_id) & 0xFF));\
+    gc->inuse_flags[((size_t)((obj)->gc_id) >> 3)] |= \
+                            (0x1 << ((size_t)((obj)->gc_id) & 0xF));\
 }
 
-#define ESCH_GC_IS_MARKED(gc, obj) \
-    (gc->inuse_flags[((size_t)((obj)->gc_id) >> 8)] & \
-                              (0x1 << ((size_t)((obj)->gc_id) & 0xFF)))
+#define ESCH_GC_IS_MARKED(gc, gc_id) \
+    (gc->inuse_flags[((size_t)(gc_id) >> 3)] & \
+                              (0x1 << ((size_t)(gc_id) & 0xF)))
 
 const int ESCH_GC_NAIVE_DEFAULT_SLOTS = 4096;
 static esch_error
@@ -66,21 +66,31 @@ esch_gc_destructor_i(esch_object* obj)
     ESCH_ASSERT(alloc != NULL && ESCH_IS_VALID_ALLOC(alloc));
     ESCH_ASSERT(log != NULL && ESCH_IS_VALID_LOG(log));
 
+    /* Make sure every managed is deleted. */
+    for (i = 0; i < gc->slot_count; ++i) {
+        if (ESCH_GC_IS_MARKED(gc, i)) {
+            esch_log_info(log, "delete object[%d] = %x", i,
+                          gc->slots[i].obj);
+            gc->slots[i].obj->gc = NULL;
+            gc->slots[i].obj->gc_id = 0;
+            ret = esch_object_delete_i(gc->slots[i].obj);
+            if (ret != ESCH_OK) {
+                esch_log_warn(log,
+                        "gc:recycle: Can't delete object: %x (ignore)",
+                        gc->slots[i].obj);
+            }
+        }
+    }
 
-    /* We don't do much on GC deleting. Just validate that all objects
-     * are deleted (so the last slot must be 0). If not, there must
-     * be something wrong. */
-    i = gc->available_slot_offset;
-    while(gc->slots[i].next != 0) {
-        i = gc->slots[i].next;
-    }
-    i = gc->slots[i].next;
-    if (i != 0) {
-        esch_log_error(log, "GC:destructor: non-freed obj: %x", 
-                (gc->slots[i]));
-    }
+    ESCH_CHECK_1(ret == ESCH_OK, log,
+                 "gc:attach: FATAL: Can't delete root: %x", obj, ret);
+    /* Always delete root has been deleted. */
+    gc->root->gc = NULL;
+    gc->root->gc_id = 0;
+
     (void)esch_alloc_free(alloc, gc->slots);
     (void)esch_alloc_free(alloc, gc->inuse_flags);
+    (void)esch_alloc_free(alloc, gc->recycle_stack);
     /* Note: Don't destroy itself. Will be handled by esch_object */
 Exit:
     return ret;
@@ -165,7 +175,7 @@ esch_gc_naive_mark_sweep_attach_i(esch_gc* gc, esch_object* obj)
 
     obj->gc = gc;
     obj->gc_id = (void*)new_offset;
-    ESCH_ASSERT(!ESCH_GC_IS_MARKED(gc, obj));
+    ESCH_ASSERT(!ESCH_GC_IS_MARKED(gc, obj->gc_id));
 Exit:
     esch_alloc_free_i(alloc, new_slots);
     esch_alloc_free_i(alloc, new_flags);
@@ -208,7 +218,12 @@ esch_gc_naive_mark_sweep_recycle_i(esch_gc* gc)
      *
      * Meanwhile, recycle_stack is also used to store unused objects
      */
+    /* Step 1: Mark every object as deletable. */
     memset(gc->inuse_flags, 0, sizeof(esch_byte) / 8 * gc->slot_count);
+    /* 
+     * Step 2: Search objects from root node, and mark reachable object
+     * as in-use.
+     */
     stack_ptr = &(gc->recycle_stack[0]);
     (*(stack_ptr++)) = gc->root; /* Root is always in use */
     do
@@ -254,10 +269,13 @@ esch_gc_naive_mark_sweep_recycle_i(esch_gc* gc)
     ESCH_ASSERT(gc->slots[0].obj == gc->root);
     ESCH_GC_MARK_INUSE(gc, gc->slots[0].obj);
 
-    gc->available_slot_offset = 0;
+    /* Step 3: Delete all objects marked as deletable. */
+    /* gc->available_slot_offset = 0; */
     for (free_objs = 0, i = 1; i < gc->slot_count; ++i) {
-        /* First element is root, which is always in use. */
-        if (!ESCH_GC_IS_MARKED(gc, gc->slots[i].obj)) {
+        /* Skip i = 0 because first element is root, which is always
+         * in use.
+         */
+        if (!ESCH_GC_IS_MARKED(gc, i)) {
             ret = esch_object_delete_i(gc->slots[i].obj);
             if (ret != ESCH_OK) {
                 esch_log_warn(log,
@@ -282,9 +300,8 @@ esch_gc_naive_mark_sweep_recycle_i(esch_gc* gc)
     }
     return ret;
 }
-
 static esch_error
-esch_gc_new_naive_mark_sweep_i(esch_config* config, esch_object** obj)
+esch_gc_new_naive_mark_sweep_i(esch_config* config, esch_object** gc)
 {
     esch_error ret = ESCH_OK;
     esch_object* new_obj = NULL;
@@ -299,7 +316,7 @@ esch_gc_new_naive_mark_sweep_i(esch_config* config, esch_object** obj)
     int i = 0;
 
     initial_slots = ESCH_CONFIG_GET_GC_NAIVE_INITIAL_SLOTS(config);
-    if (initial_slots < 0) {
+    if (initial_slots <= ESCH_GC_NAIVE_DEFAULT_SLOTS) {
         initial_slots = ESCH_GC_NAIVE_DEFAULT_SLOTS;
     }
     alloc = ESCH_CAST_FROM_OBJECT(ESCH_CONFIG_GET_ALLOC(config), esch_alloc);
@@ -315,7 +332,8 @@ esch_gc_new_naive_mark_sweep_i(esch_config* config, esch_object** obj)
 
     /* Now create object */
     (void)esch_log_info(log, "GC:new: Prepare slots");
-    ret = esch_alloc_realloc_i(alloc, NULL, initial_slots, (void**)&inuse_flags);
+    ret = esch_alloc_realloc_i(alloc, NULL, (initial_slots / 8),
+                               (void**)&inuse_flags);
     ESCH_CHECK(ret == ESCH_OK, log, "GC:naive_new:Can't create flags", ret);
     ret = esch_alloc_realloc_i(alloc, NULL,
                     sizeof(union esch_object_or_next) * initial_slots,
@@ -340,10 +358,6 @@ esch_gc_new_naive_mark_sweep_i(esch_config* config, esch_object** obj)
     for(i = 1; i < initial_slots - 1; ++i) {
         slots[i + 1].next = i;
     }
-    /* Let GC manage root */
-    root->gc = new_gc;
-    root->gc_id = (void*)0;
-    new_gc->root = root;
 
     /* Always start from last slot */
     new_gc->available_slot_offset = (initial_slots - 1);
@@ -353,7 +367,14 @@ esch_gc_new_naive_mark_sweep_i(esch_config* config, esch_object** obj)
     new_gc->slots = slots;
     new_gc->recycle_stack = recycle_stack;
     new_gc->slot_count = initial_slots;
-    (*obj) = new_obj;
+    /* Let GC manage root */
+    root->gc = new_gc;
+    root->gc_id = (void*)0;
+    new_gc->root = root;
+    ESCH_GC_MARK_INUSE(new_gc, root);
+
+    (*gc) = new_obj;
+
     inuse_flags = NULL;
     slots = NULL;
     recycle_stack = NULL;

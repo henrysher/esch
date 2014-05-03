@@ -68,12 +68,10 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorIteration() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_vectorIteration()");
 
-    /*
-    esch_log_info(testLog, "Start: test_gc()");
-    ret = test_gc(config);
-    ESCH_TEST_CHECK(ret == ESCH_OK, "test_gc() failed", ret);
-    esch_log_info(g_testLog, "[PASSED] test_gc()");
-    */
+    esch_log_info(testLog, "Start: test_gcCreateDelete()");
+    ret = test_gcCreateDelete(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_gcCreateDelete() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_gcCreateDelete()");
 
     /*
     ret = test_config();
