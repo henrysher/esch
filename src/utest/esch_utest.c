@@ -64,6 +64,9 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorElementType() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_vectorElementType()");
 
+    ret = test_vectorIteration(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorIteration() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_vectorIteration()");
 
     /*
     esch_log_info(testLog, "Start: test_gc()");

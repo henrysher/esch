@@ -20,6 +20,7 @@ extern esch_error test_identifier();
 extern esch_error test_config(esch_config* config);
 extern esch_error test_vectorBase(esch_config* config);
 extern esch_error test_vectorElementType(esch_config* config);
+extern esch_error test_vectorIteration(esch_config* config);
 extern esch_error test_integer();
 extern esch_error test_gc(esch_config* config);
 

@@ -53,7 +53,6 @@ extern struct esch_builtin_type esch_meta_type;
      ((ti)->version == ESCH_VERSION) && \
      (ESCH_OBJECT_GET_TYPE(ESCH_CAST_TO_OBJECT(ti)) == \
           &esch_meta_type.type) && \
-     ((ti)->object_size > sizeof(esch_object)) && \
      ((ti)->object_new != NULL) && \
      ((ti)->object_destructor != NULL) && \
      ((ti)->object_copy != NULL) && \

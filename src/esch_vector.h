@@ -17,7 +17,6 @@ struct esch_vector
     size_t slots;
     esch_object** begin;
     esch_object** next; /* Next available slot */
-    esch_object** end; /* End of slots */
 };
 
 #define ESCH_IS_VALID_VECTOR(vec) \

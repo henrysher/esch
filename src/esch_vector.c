@@ -8,7 +8,7 @@
 #include "esch_debug.h"
 #include "esch_config.h"
 #include "esch_object.h"
-
+#include "esch_gc.h"
 const size_t ESCH_VECTOR_MINIMAL_INITIAL_LENGTH = 31;
 const size_t ESCH_VECTOR_MAX_LENGTH = (INT_MAX / sizeof(esch_vector*));
 
@@ -126,11 +126,11 @@ esch_vector_new_i(esch_config* config, esch_vector** vec)
     ret = esch_object_new_i(config, &(esch_vector_type.type), &vec_obj);
     ESCH_CHECK(ret == ESCH_OK, log, "Failed to new vector object", ret);
     new_vec = ESCH_CAST_FROM_OBJECT(vec_obj, esch_vector);
+    ESCH_ASSERT(ESCH_IS_VALID_TYPE(&(esch_vector_type.type)));
 
     new_vec->slots = (size_t)initial_length;
     new_vec->begin = array;
     new_vec->next = &(new_vec->begin[0]);
-    new_vec->end = (new_vec->begin + new_vec->slots);
     array = NULL;
     (*vec) = new_vec;
     new_vec = NULL;
@@ -162,7 +162,7 @@ esch_vector_append(esch_vector* vec, esch_object* data)
     alloc = ESCH_OBJECT_GET_ALLOC(ESCH_CAST_TO_OBJECT(vec));
     log = ESCH_OBJECT_GET_LOG(ESCH_CAST_TO_OBJECT(vec));
 
-    if (vec->next == vec->end) /* vector buffer is full */
+    if (vec->next == vec->begin + vec->slots) /* vector buffer is full */
     {
         new_slots = vec->slots * 2;
 
@@ -176,7 +176,6 @@ esch_vector_append(esch_vector* vec, esch_object* data)
 
         vec->begin = new_array;
         vec->next = vec->begin + vec->slots;
-        vec->end = vec->begin + new_slots;
         vec->slots = new_slots;
     }
     slot = vec->next;
@@ -247,7 +246,6 @@ esch_vector_destructor_i(esch_object* obj)
 
     ret = esch_alloc_free(alloc, vec->begin);
     vec->begin = NULL;
-    vec->end = NULL;
     vec->next = NULL;
     vec->slots = 0;
     /* Object ref is deleted. */
@@ -264,7 +262,6 @@ esch_vector_copy_object_i(esch_object* input, esch_object** output)
      * configuration when creating a new object.
      */
     esch_error ret = ESCH_OK;
-    esch_object* vec_obj = NULL;
     esch_vector* new_vec = NULL;
     esch_vector* vec = NULL;
     esch_alloc* alloc = NULL;
@@ -305,15 +302,14 @@ esch_vector_copy_object_i(esch_object* input, esch_object** output)
                               vec->slots);
     ESCH_CHECK(ret == ESCH_OK, log, "vec:Can't set initial length", ret);
 
-    ret = esch_object_new_i(config, &(esch_vector_type.type), &vec_obj);
+    ret = esch_vector_new_i(config, &new_vec);
     ESCH_CHECK(ret == ESCH_OK, log, "vec:Can't create new vector", ret);
-    new_vec = ESCH_CAST_FROM_OBJECT(vec_obj, esch_vector);
-
     /*
      * Copy connects so two vectors contains same objects.
      * NOTE: We don't do real deep copy.
      */
     memcpy(new_vec->begin, vec->begin, sizeof(esch_object*) * (vec->slots));
+    new_vec->next = new_vec->begin + (vec->next - vec->begin);
 
     (*output) = ESCH_CAST_TO_OBJECT(new_vec);
 
@@ -321,7 +317,6 @@ Exit:
     esch_object_delete_i(ESCH_CAST_TO_OBJECT(config));
     return ret;
 }
-
 static esch_error
 esch_vector_get_value_i(esch_iterator* iter, esch_element* element)
 {
@@ -335,8 +330,8 @@ esch_vector_get_value_i(esch_iterator* iter, esch_element* element)
     vec = ESCH_CAST_FROM_OBJECT(iter->container, esch_vector);
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_VECTOR(vec));
 
-    offset = (size_t)iter->iterator;
-    if (vec->begin + offset >= vec->end) {
+    offset = (size_t)(iter->iterator);
+    if (offset >= vec->next - vec->begin) {
         element->type = ESCH_ELEMENT_TYPE_END;
         element->val.o = 0;
     } else {
