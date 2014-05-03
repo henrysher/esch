@@ -46,9 +46,10 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
 
 * Implement a working mark-and-sweep GC.
   - [DONE] Basic logic for naive GC.
-  - Use esch_iterator to iterate primitive and object.
-  - Implement esch_vector (fix length array) and test.
+  - [DONE] Use esch_iterator to iterate primitive and object.
+  - [DONE] Implement esch_vector (fix length array) and test.
   - Update GC to make unit test fully pass (esch_vector as gc root).
+  - Update esch_string to allow iteration.
 
 * Implement list type (requires GC for verification)
 
