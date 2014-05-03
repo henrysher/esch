@@ -56,27 +56,26 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_identifier() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_identifier()");
 
+    ret = test_vectorBase(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorBase() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_vectorBase()");
+
+    ret = test_vectorElementType(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorElementType() failed", ret);
+    esch_log_info(g_testLog, "[PASSED] test_vectorElementType()");
+
+
+    /*
     esch_log_info(testLog, "Start: test_gc()");
     ret = test_gc(config);
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_gc() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_gc()");
+    */
 
     /*
     ret = test_config();
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_config() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_config()");
-
-    ret = test_vectorBase();
-    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorBase() failed", ret);
-    esch_log_info(g_testLog, "[PASSED] test_vectorBase()");
-
-    ret = test_vectorElementType();
-    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorElementType() failed", ret);
-    esch_log_info(g_testLog, "[PASSED] test_vectorElementType()");
-
-    ret = test_vectorDeleteElement();
-    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorDeleteElement() failed", ret);
-    esch_log_info(g_testLog, "[PASSED] test_vectorDeleteElement()");
 
     ret = test_integer();
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_integer() failed", ret);

@@ -273,7 +273,6 @@ esch_object_delete_i(esch_object* obj)
     ESCH_ASSERT(log != NULL);
     ESCH_ASSERT(!gc && !gc_id);
 
-    (void)esch_log_info(log, "object:delete: For delete object");
     ret = type->object_destructor(obj);
     ESCH_CHECK_1(ret == ESCH_OK, log, "Dtor fails: obj: 0x%x", obj, ret);
     if (alloc != NULL)
@@ -302,11 +301,12 @@ esch_object_get_iterator_i(esch_object* obj, esch_iterator* iter)
     if (ESCH_TYPE_IS_PRIMITIVE(type))
     {
         /* Primitive does not have iterator. Change nothing. */
-        (void)esch_log_info(log, "get_iterator(): primitive type");
+        (void)esch_log_error(log, "get_iterator: primitive type.");
         ret = ESCH_ERROR_NOT_SUPPORTED;
     }
     else
     {
+        (void)esch_log_info(log, "get_iterator(): container type.");
         ret = (ESCH_TYPE_GET_OBJECT_GET_ITERATOR(type))(obj, iter);
     }
     return ret;

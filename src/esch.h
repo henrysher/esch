@@ -58,7 +58,7 @@ extern "C" {
 #define ESCH_TYPE_MAGIC 0xEC00
 
 #define ESCH_FALSE 0
-#define ESCH_TRUE !(ESCH_FALSE)
+#define ESCH_TRUE (~(ESCH_FALSE))
 
 /*
  * The configuration keys are pre-defined within configuration. List:
@@ -77,7 +77,7 @@ extern const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH;
 extern const char* ESCH_CONFIG_KEY_GC_NAIVE_INITIAL_SLOTS;
 extern const char* ESCH_CONFIG_KEY_GC_NAIVE_ROOT;
 
-typedef enum {
+typedef enum esch_error {
     ESCH_OK = 0,
     ESCH_ERROR_NOT_IMPLEMENTED,
     ESCH_ERROR_OUT_OF_MEMORY,
@@ -96,17 +96,32 @@ typedef enum {
     ESCH_ERROR_GC_ROOT_NOT_CONTAINER,
 } esch_error;
 
-typedef enum {
+typedef enum esch_config_value_type {
     ESCH_CONFIG_VALUE_TYPE_UNKNOWN = 0,
     ESCH_CONFIG_VALUE_TYPE_INTEGER,
     ESCH_CONFIG_VALUE_TYPE_STRING,
     ESCH_CONFIG_VALUE_TYPE_OBJECT,
 } esch_config_value_type;
 
+/**
+ * The data structure to allow contianer type define an iterator. It's
+ * used to access element of container type.
+ */
+typedef enum esch_element_type
+{
+    ESCH_ELEMENT_TYPE_END = 0,
+    ESCH_ELEMENT_TYPE_CHAR,
+    ESCH_ELEMENT_TYPE_UNICODE,
+    ESCH_ELEMENT_TYPE_INTEGER,
+    ESCH_ELEMENT_TYPE_FLOAT,
+    ESCH_ELEMENT_TYPE_OBJECT
+} esch_element_type;
+
 /* Basic types */
 typedef struct esch_type            esch_type;
 typedef struct esch_object          esch_object;
 typedef struct esch_iterator        esch_iterator;
+typedef struct esch_element         esch_element;
 typedef struct esch_config          esch_config;
 typedef struct esch_alloc           esch_alloc;
 typedef struct esch_log             esch_log;
@@ -120,8 +135,6 @@ typedef char                        esch_utf8;
 typedef int32_t                     esch_unicode;
 typedef unsigned char               esch_bool;
 typedef unsigned char               esch_byte;
-typedef enum esch_element_type      esch_element_type;
-typedef struct esch_element         esch_element;
 
 /* Prototype of object/type methods */
 typedef esch_error (*esch_object_new_f)(esch_config*, esch_object**);
@@ -130,7 +143,7 @@ typedef esch_error (*esch_object_copy_f)(esch_object*, esch_object**);
 typedef esch_error (*esch_object_to_string_f)(esch_object*, esch_string**);
 typedef esch_error (*esch_object_get_doc_f)(esch_object*, esch_string**);
 typedef esch_error (*esch_object_get_iterator_f)(esch_object*, esch_iterator*);
-typedef esch_error (*esch_iterator_get_value_f)(esch_iterator*, esch_object**);
+typedef esch_error (*esch_iterator_get_value_f)(esch_iterator*, esch_element*);
 typedef esch_error (*esch_iterator_get_next_f)(esch_iterator*);
 typedef esch_error (*esch_alloc_realloc_f)(esch_alloc*, void*, size_t, void**);
 typedef esch_error (*esch_alloc_free_f)(esch_alloc*, void*);
@@ -213,34 +226,20 @@ esch_error esch_type_is_valid_type(esch_type* type, esch_bool* valid);
 /*                        Object model                               */
 /* ----------------------------------------------------------------- */
 /**
- * The data structure to allow contianer type define an iterator. It's
- * used to access element of container type.
- */
-enum esch_element_type
-{
-    ESCH_ELEMENT_TYPE_UNKNOWN = 0,
-    ESCH_ELEMENT_TYPE_CHAR,
-    ESCH_ELEMENT_TYPE_UNICODE,
-    ESCH_ELEMENT_TYPE_INTEGER,
-    ESCH_ELEMENT_TYPE_FLOAT,
-    ESCH_ELEMENT_TYPE_OBJECT
-};
-
-/**
  * Data structure to represent iterator element. Support different types
  * of values.
  */
 struct esch_element
 {
-    enum esch_element_type element_type;
+    enum esch_element_type type;
     union
     {
-        esch_byte    bval; /**< byte element */
-        esch_unicode uval; /**< unicode element */
-        int          ival; /**< integer element */
-        double       fval; /**< float element (implemented as double) */
-        esch_object* oval; /**< object element */
-    };
+        esch_byte    b; /**< byte element */
+        esch_unicode u; /**< unicode element */
+        int          i; /**< integer element */
+        double       f; /**< float element (implemented as double) */
+        esch_object* o; /**< object element */
+    } val;
 };
 
 struct esch_iterator

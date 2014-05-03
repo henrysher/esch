@@ -177,7 +177,8 @@ esch_gc_naive_mark_sweep_recycle_i(esch_gc* gc)
 {
     esch_error ret = ESCH_OK;
     esch_log* log = NULL;
-    esch_object* element = NULL;
+    esch_element element = { ESCH_ELEMENT_TYPE_END, 0 };
+    esch_object* child = NULL;
     esch_object** stack_ptr = NULL;
     esch_type* element_type = NULL;
     esch_iterator iter = {0};
@@ -215,28 +216,36 @@ esch_gc_naive_mark_sweep_recycle_i(esch_gc* gc)
         ret = esch_object_get_iterator_i(*(stack_ptr - 1), &iter);
         ESCH_ASSERT(ret == ESCH_OK);
         ESCH_GC_MARK_INUSE(gc, *(stack_ptr - 1));
-        while(iter.iterator != NULL) {
+        while(ESCH_TRUE) {
             ret = iter.get_value(&iter, &element);
             ESCH_ASSERT(ret == ESCH_OK);
+            if (element.type == ESCH_ELEMENT_TYPE_END) {
+                esch_log_info(log, "gc:recycle: end of objects.");
+                break;
+            } else if (element.type != ESCH_ELEMENT_TYPE_OBJECT) {
+                esch_log_info(log, "gc:recycle: primitive type, skip.");
+                continue;
+            }
             /* IMPORTANT
-             * I set assertion because I don't find a way to behave
+             * I set assertion because I can't find a way to behave
              * correctly if I mix two GC systems in one object system,
-             * at least for now.
+             * without causing semantic problems.
              *
              * If anyone know how to do it, please ping me.
              */
-            ESCH_ASSERT(element->gc == gc);
-
-            element_type = ESCH_OBJECT_GET_TYPE(element);
+            child = element.val.o;
+            ESCH_ASSERT(child != NULL);
+            ESCH_ASSERT(child->gc == gc);
+            element_type = ESCH_OBJECT_GET_TYPE(child);
             ESCH_ASSERT(element_type != NULL);
             ESCH_ASSERT(ESCH_IS_VALID_TYPE(element_type));
             if (ESCH_TYPE_IS_CONTAINER(element_type)) {
-                /* Container. Mark itself and push it in stack. */
-                ESCH_GC_MARK_INUSE(gc, element);
-                (*(stack_ptr++)) = element;
+                esch_log_info(log, "gc:recycle: container. Mark/stack.");
+                ESCH_GC_MARK_INUSE(gc, child);
+                (*(stack_ptr++)) = child;
             } else {
-                /* Primitive type, just mark it as in-use. */
-                ESCH_GC_MARK_INUSE(gc, element);
+                esch_log_info(log, "gc:recycle: non-container. Mark.");
+                ESCH_GC_MARK_INUSE(gc, child);
             }
         }
     } while(stack_ptr != &(gc->recycle_stack[0]));
