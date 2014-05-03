@@ -48,11 +48,22 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
   - [DONE] Basic logic for naive GC.
   - [DONE] Use esch_iterator to iterate primitive and object.
   - [DONE] Implement esch_vector (fix length array) and test.
-  - Update GC to make unit test fully pass (esch_vector as gc root).
-  - Update esch_string to allow iteration.
+  - [DONE] Update GC to make unit test fully pass (esch_vector as gc root).
 
 * Implement list type (requires GC for verification)
+  - Update esch_string to allow iteration.
+  - Implement list type with GC.
+
+* Allow vector store primitive types.
 
 * Implement a memory-saving character type.
 
-* Define module format
+* Implement a big integer.
+
+* Implement Scheme syntax (without module).
+
+* Implement VM.
+
+* Refactor iterator (maybe we should hide the data structure).
+
+* Define module system.
