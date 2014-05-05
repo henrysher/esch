@@ -66,11 +66,13 @@ esch_gc_destructor_i(esch_object* obj)
     ESCH_ASSERT(alloc != NULL && ESCH_IS_VALID_ALLOC(alloc));
     ESCH_ASSERT(log != NULL && ESCH_IS_VALID_LOG(log));
 
-    /* Make sure every managed is deleted. */
+    /* Make sure every managed object is deleted. */
     for (i = 0; i < gc->slot_count; ++i) {
         if (ESCH_GC_IS_MARKED(gc, i)) {
             esch_log_info(log, "delete object[%d] = %x", i,
                           gc->slots[i].obj);
+            ESCH_ASSERT(ESCH_IS_VALID_OBJECT(gc->slots[i].obj));
+            ESCH_ASSERT(gc->slots[i].obj->gc == gc);
             gc->slots[i].obj->gc = NULL;
             gc->slots[i].obj->gc_id = 0;
             ret = esch_object_delete_i(gc->slots[i].obj);
@@ -276,6 +278,10 @@ esch_gc_naive_mark_sweep_recycle_i(esch_gc* gc)
          * in use.
          */
         if (!ESCH_GC_IS_MARKED(gc, i)) {
+            ESCH_ASSERT(ESCH_IS_VALID_OBJECT(gc->slots[i].obj));
+            ESCH_ASSERT(gc->slots[i].obj->gc == gc);
+            gc->slots[i].obj->gc = NULL;
+            gc->slots[i].obj->gc_id = 0;
             ret = esch_object_delete_i(gc->slots[i].obj);
             if (ret != ESCH_OK) {
                 esch_log_warn(log,
