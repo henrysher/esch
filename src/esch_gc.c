@@ -258,11 +258,17 @@ esch_gc_naive_mark_sweep_recycle_i(esch_gc* gc)
             ESCH_ASSERT(ESCH_IS_VALID_TYPE(element_type));
             if (ESCH_TYPE_IS_CONTAINER(element_type)) {
                 esch_log_info(log, "gc:recycle: container. Mark/stack.");
-                ESCH_GC_MARK_INUSE(gc, child);
-                (*(stack_ptr++)) = child;
+                /* Never mark twice so we won't fall into endless loop
+                 * if we hit a reference circle. */
+                if (!ESCH_GC_IS_MARKED(gc, child->gc_id)) {
+                    ESCH_GC_MARK_INUSE(gc, child);
+                    (*(stack_ptr++)) = child;
+                }
             } else {
                 esch_log_info(log, "gc:recycle: non-container. Mark.");
-                ESCH_GC_MARK_INUSE(gc, child);
+                if (!ESCH_GC_IS_MARKED(gc, child->gc_id)) {
+                    ESCH_GC_MARK_INUSE(gc, child);
+                }
             }
         }
     } while(stack_ptr != &(gc->recycle_stack[0]));
