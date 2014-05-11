@@ -1,6 +1,7 @@
 #include "esch_utest.h"
 #include "esch_gc.h"
 #include "esch_vector.h"
+#include "esch_config.h"
 
 esch_error test_gcCreateDelete(esch_config* config)
 {
@@ -68,5 +69,154 @@ esch_error test_gcCreateDelete(esch_config* config)
     ret = esch_object_delete(ESCH_CAST_TO_OBJECT(gc3));
     gc3 = NULL;
 Exit:
+    return ret;
+}
+esch_error test_gcRecycleLogic(esch_config* config)
+{
+    esch_error ret = ESCH_OK;
+    esch_gc* gc = NULL;
+    esch_gc* bad_gc = NULL;
+    esch_vector* root_scope = NULL;
+    esch_vector* child_scope_1_1 = NULL;
+    esch_vector* child_scope_1_2 = NULL;
+    esch_vector* child_scope_2_1 = NULL;
+    esch_string* str1 = NULL;
+    esch_type* tt = NULL;
+    esch_type* tt2 = NULL;
+    esch_vector* circle1 = NULL;
+    esch_vector* circle2 = NULL;
+    esch_vector* circle3 = NULL;
+    esch_vector* circle4 = NULL;
+
+    /*
+     * Test scenario:
+     * 0. esch_object should honor gc object in config.
+     * 1. gc should never be managed by another gc.
+     * 2. A scope may hold non-container object. Not be freed.
+     * 3. A scope may hold child container. Must be visited.
+     * 4. A child scope may hold child container. Must be visited.
+     * 5. Reference circle should not affect releasing.
+     */
+    ret = esch_vector_new(config, &root_scope);
+    ESCH_TEST_CHECK(ret == ESCH_OK && root_scope,
+                    "Failed to create gc root", ret);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_GC_NAIVE_ROOT,
+                              ESCH_CAST_TO_OBJECT(root_scope));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set gc root", ret);
+
+    ret = esch_gc_new_naive_mark_sweep(config, &gc);
+    ESCH_TEST_CHECK(ret == ESCH_OK && gc, "Failed to create gc", ret);
+
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_GC,
+                              ESCH_CAST_TO_OBJECT(gc));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set gc", ret);
+
+    ret = esch_gc_new_naive_mark_sweep(config, &bad_gc);
+    ESCH_TEST_CHECK(ret == ESCH_ERROR_OBJECT_UNEXPECTED_GC_ATTACHED
+                        && bad_gc == NULL,
+                    "Expect a failure when creating GC with GC", ret);
+
+    /* Prepare environment. */
+
+    /* NOTE: This is safe because public interface will not expose
+     * definition of esch_object.
+     */
+    esch_log_info(g_testLog,
+            "0. GC setting shall be picked up with new object.");
+    ret = esch_string_new_from_utf8(config, "hello", 0, -1, &str1);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create string", ret);
+    ESCH_TEST_CHECK(ESCH_CAST_TO_OBJECT(str1)->gc == gc,
+                    "GC is not attached", ret);
+
+    esch_log_info(g_testLog, "2. Scope may hold non-conainer types.");
+    ret = esch_type_new(config, &tt);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create tt", ret);
+    ret = esch_vector_append(root_scope, ESCH_CAST_TO_OBJECT(tt));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to touch tt to scope", ret);
+    ret = esch_type_new(config, &tt2);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create tt2", ret);
+    /* Structure:
+     *
+     * root_scope -
+     *     tt
+     *     child_scope_1_1 - (scope with container, but no children)
+     *         str1
+     *     child_scope_1_2 - (scepe with container, and has children)
+     *         child_scope_2_1 -
+     *             circle1 and circle2 form a refernece circle.
+     * circle3 and circle4 form a refernece circle.
+     * tt2
+     */
+    esch_log_info(g_testLog, "3. Scope may hold container objects.");
+    ret = esch_vector_new(config, &child_scope_1_1);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create scope11", ret);
+    ret = esch_vector_append(root_scope, ESCH_CAST_TO_OBJECT(child_scope_1_1));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append scope11", ret);
+
+    ret = esch_vector_new(config, &child_scope_1_2);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create scope12", ret);
+    ret = esch_vector_append(root_scope, ESCH_CAST_TO_OBJECT(child_scope_1_2));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append scope12", ret);
+
+    ret = esch_vector_new(config, &child_scope_2_1);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create scope21", ret);
+    ret = esch_vector_append(child_scope_1_1, ESCH_CAST_TO_OBJECT(str1));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append scope12", ret);
+
+
+    esch_log_info(g_testLog, "4. A child scope may hold child container.");
+    ret = esch_vector_append(child_scope_1_2,
+                             ESCH_CAST_TO_OBJECT(child_scope_2_1));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append scope21", ret);
+
+
+    esch_log_info(g_testLog,
+            "5. Reference circle should not affect releasing.");
+    ret = esch_vector_new(config, &circle1);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create circle1", ret);
+    ret = esch_vector_new(config, &circle2);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create circle2", ret);
+    ret = esch_vector_new(config, &circle3);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create circle3", ret);
+    ret = esch_vector_new(config, &circle4);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create circle4", ret);
+
+    ret = esch_vector_append(child_scope_2_1, ESCH_CAST_TO_OBJECT(circle1));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append circle2", ret);
+
+    ret = esch_vector_append(circle1, ESCH_CAST_TO_OBJECT(circle2));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append circle2", ret);
+    ret = esch_vector_append(circle2, ESCH_CAST_TO_OBJECT(circle1));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append circle1", ret);
+
+    ret = esch_vector_append(circle3, ESCH_CAST_TO_OBJECT(circle4));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append circle4", ret);
+    ret = esch_vector_append(circle4, ESCH_CAST_TO_OBJECT(circle3));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append circle3", ret);
+
+    /* Now we can really start. */
+    ret = esch_gc_recycle(gc);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to do recycle", ret);
+    /* After here, we should verify:
+     * str1 is deleted.
+     * circle3 and circle4 are deleted.
+     */
+    ret = esch_object_delete(ESCH_CAST_TO_OBJECT(gc));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete GC", ret);
+
+    gc = NULL;
+
+    /* TODO Need a callback system in GC to verify object deleting. */
+    /* TODO Need method for vector to clear or remove single element. */
+    /* TODO Make string become container. */
+    /* TODO We should add case when list object is implemented.  */
+    /* TODO Stack full.  */
+Exit:
+    if (gc != NULL)
+    {
+        (void)esch_config_set_obj(config, ESCH_CONFIG_KEY_GC, NULL);
+        (void)esch_config_set_obj(config, ESCH_CONFIG_KEY_GC_NAIVE_ROOT, NULL);
+        ret = esch_object_delete(ESCH_CAST_TO_OBJECT(gc));
+    }
     return ret;
 }

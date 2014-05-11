@@ -24,8 +24,8 @@ struct esch_builtin_type esch_meta_type =
         NULL,
     },
     {
-        sizeof(esch_type),
         ESCH_VERSION,
+        sizeof(esch_type),
         esch_type_new_s,
         esch_type_delete_s,
         esch_type_default_non_copiable,
@@ -168,7 +168,7 @@ esch_type_new_i(esch_config* config, esch_type** type)
     log = ESCH_CAST_FROM_OBJECT(log_obj, esch_log);
 
     ret = esch_object_new_i(config, &(esch_meta_type.type), &new_obj);
-    ESCH_CHECK(new_type != NULL, log, "Can't alloc new type.", ret);
+    ESCH_CHECK(new_obj != NULL, log, "Can't alloc new type", ret);
     new_type = ESCH_CAST_FROM_OBJECT(new_obj, esch_type);
 
     ESCH_TYPE_GET_OBJECT_SIZE(new_type)          = sizeof(esch_type);

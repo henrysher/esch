@@ -176,6 +176,7 @@ esch_alloc_realloc_c_default(esch_alloc* alloc,
     ESCH_CHECK_PARAM_INTERNAL(log != NULL);
 
     old_buffer = in;
+    /* TODO Make sure realloc always set new allocated memory to NULL */
     if (in != NULL) {
         esch_alloc** obj = (esch_alloc**)((esch_byte*)in - sizeof(esch_alloc*));
         ESCH_CHECK_1((*obj) == alloc, log,

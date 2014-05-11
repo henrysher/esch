@@ -73,6 +73,11 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_gcCreateDelete() failed", ret);
     esch_log_info(g_testLog, "[PASSED] test_gcCreateDelete()");
 
+    esch_log_info(testLog, "Start: test_gcRecycleLogic()");
+    ret = test_gcRecycleLogic(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_gcRecycleLogic() failed", ret);
+    esch_log_info(testLog, "[PASSED]: test_gcRecycleLogic()");
+
     /*
     ret = test_config();
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_config() failed", ret);

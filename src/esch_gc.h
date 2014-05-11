@@ -30,7 +30,7 @@ esch_error esch_gc_recycle_i(esch_gc* gc);
 union esch_object_or_next
 {
     esch_object* obj;
-    size_t next;
+    size_t next; /* Index to next object */
 };
 
 /*
@@ -73,7 +73,7 @@ union esch_object_or_next
  * Step 3 starts after step 2. It visits every bit of inuse_flags, and
  * delete the corresponding objects in `slots' array, if it's not marked
  * as in-use. After the object is deleted, the slot it takes is returned
- * to linked list head by `available_slot_offset'.
+ * to linked list head by `usable_slot'.
  *
  * Data structure used in steps:
  *
@@ -83,9 +83,9 @@ union esch_object_or_next
  *
  * The `slots' array is not full all the time. To manage the unallocated
  * slots without resizing/moving, the available slots are constructed as
- * an linked list, refereneced by its index. The `available_slot_offset'
+ * an linked list, refereneced by its index. The `usable_slot'
  * field is introduced, indicate the beginning of available slots. The
- * value of `available_slot_offset' always starts from last element in
+ * value of `usable_slot' always starts from last element in
  * `slots' array.
  *
  * NOTE: the first element in `slots' array is always root.
@@ -100,7 +100,7 @@ struct esch_gc
     union esch_object_or_next* slots;
     esch_object** recycle_stack;
     esch_object*  root;
-    size_t available_slot_offset;
+    size_t usable_slot;
     size_t slot_count;
 };
 
@@ -115,8 +115,8 @@ extern const int ESCH_GC_NAIVE_DEFAULT_SLOTS;
      (gc)->inuse_flags != NULL && \
      (gc)->slots != NULL && \
      (gc)->recycle_stack != NULL && \
-     (gc)->available_slot_offset > 0 && \
-     (gc)->available_slot_offset < (gc)->slot_count)
+     (gc)->usable_slot > 0 && \
+     (gc)->usable_slot < (gc)->slot_count)
 
 #ifdef __cplusplus
 }

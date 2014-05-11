@@ -7,14 +7,16 @@
 #include "esch_debug.h"
 #include <string.h>
 
-#define ESCH_GC_MARK_INUSE(gc, obj) { \
-    gc->inuse_flags[((size_t)((obj)->gc_id) >> 3)] |= \
-                            (0x1 << ((size_t)((obj)->gc_id) & 0xF));\
+#define ROOT_INDEX 0
+#define MOD8(n) ((size_t)n - (((size_t)n >> 3) << 3))
+#define DIV8(n) ((size_t)n >> 3)
+
+#define ESCH_GC_MARK_INUSE(gc, idx) { \
+    gc->inuse_flags[DIV8(idx)] |= (0x1 << MOD8(idx));\
 }
 
-#define ESCH_GC_IS_MARKED(gc, gc_id) \
-    (gc->inuse_flags[((size_t)(gc_id) >> 3)] & \
-                              (0x1 << ((size_t)(gc_id) & 0xF)))
+#define ESCH_GC_IS_MARKED(gc, idx) \
+    ((gc->inuse_flags[DIV8(idx)] & (0x1 << MOD8(idx))))
 
 const int ESCH_GC_NAIVE_DEFAULT_SLOTS = 4096;
 static esch_error
@@ -66,29 +68,13 @@ esch_gc_destructor_i(esch_object* obj)
     ESCH_ASSERT(alloc != NULL && ESCH_IS_VALID_ALLOC(alloc));
     ESCH_ASSERT(log != NULL && ESCH_IS_VALID_LOG(log));
 
-    /* Make sure every managed object is deleted. */
-    for (i = 0; i < gc->slot_count; ++i) {
-        if (ESCH_GC_IS_MARKED(gc, i)) {
-            esch_log_info(log, "delete object[%d] = %x", i,
-                          gc->slots[i].obj);
-            ESCH_ASSERT(ESCH_IS_VALID_OBJECT(gc->slots[i].obj));
-            ESCH_ASSERT(gc->slots[i].obj->gc == gc);
-            gc->slots[i].obj->gc = NULL;
-            gc->slots[i].obj->gc_id = 0;
-            ret = esch_object_delete_i(gc->slots[i].obj);
-            if (ret != ESCH_OK) {
-                esch_log_warn(log,
-                        "gc:recycle: Can't delete object: %x (ignore)",
-                        gc->slots[i].obj);
-            }
-        }
-    }
-
-    ESCH_CHECK_1(ret == ESCH_OK, log,
-                 "gc:attach: FATAL: Can't delete root: %x", obj, ret);
+    /* Perform recycle: Simply remove root and make */
+    ESCH_ASSERT(gc->root == gc->slots[ROOT_INDEX].obj);
+    gc->root = NULL;
+    ret = esch_gc_naive_mark_sweep_recycle_i(gc);
+    ESCH_CHECK(ret == ESCH_OK, log,
+                 "gc:dtor: FATAL: Can't clear objects.", ret);
     /* Always delete root has been deleted. */
-    gc->root->gc = NULL;
-    gc->root->gc_id = 0;
 
     (void)esch_alloc_free(alloc, gc->slots);
     (void)esch_alloc_free(alloc, gc->inuse_flags);
@@ -110,6 +96,7 @@ esch_gc_naive_mark_sweep_attach_i(esch_gc* gc, esch_object* obj)
     union esch_object_or_next* new_slots = NULL;
     esch_byte* new_flags = NULL;
     size_t new_offset = 0;
+    esch_object** new_recycle_stack = NULL;
 
     ESCH_ASSERT(gc != NULL);
     ESCH_ASSERT(ESCH_IS_VALID_GC(gc));
@@ -127,12 +114,12 @@ esch_gc_naive_mark_sweep_attach_i(esch_gc* gc, esch_object* obj)
     /* Do now allow object switch from one GC system to another.
      * We do this because there's no cheap and clean way to remove an
      * object from esch's GC system. */
-    ret = ESCH_ERROR_INVALID_STATE;
-    ESCH_ASSERT(obj->gc != NULL && obj->gc != gc);
-    ESCH_CHECK_1(obj->gc != NULL && obj->gc != gc, log,
-            "gc:attach: FATAL: switch GC system: obj: %x", obj, ret);
+    ESCH_ASSERT(obj->gc == NULL);
+    ESCH_CHECK_1(obj->gc == NULL, log,
+            "gc:attach: FATAL: switch GC system: obj: %x", obj,
+            ESCH_ERROR_INVALID_STATE);
 
-    if (gc->slots[gc->available_slot_offset].obj == gc->root) {
+    if (gc->slots[gc->usable_slot].obj == gc->root) {
         /* Running out of slots. Need to allocate new */
         int i = 0;
         (void)esch_log_info(log,
@@ -151,6 +138,12 @@ esch_gc_naive_mark_sweep_attach_i(esch_gc* gc, esch_object* obj)
                                    (void**)&new_flags);
         ESCH_CHECK(ret == ESCH_OK, log,
                 "gc:attach: FATAL: Can't allocate new flags", ret);
+        ret = esch_alloc_realloc_i(alloc, gc->recycle_stack,
+                                   sizeof(esch_object*) * (new_count + 1),
+                                   (void**)&new_recycle_stack);
+        ESCH_CHECK(ret == ESCH_OK, log,
+                   "GC:attach:Can't allocate new recycle stack", ret);
+
         /* Content of original buffer has been moved to new buffer,
          * Now update availability slot list. */
         new_slots[gc->slot_count].obj = gc->root;
@@ -161,17 +154,18 @@ esch_gc_naive_mark_sweep_attach_i(esch_gc* gc, esch_object* obj)
         gc->slot_count = new_count;
         gc->slots = new_slots;
         gc->inuse_flags = new_flags;
+        gc->recycle_stack = new_recycle_stack;
         /* Always count availability chain from last element */
-        gc->available_slot_offset = new_count -1;
+        gc->usable_slot = new_count -1;
 
         new_slots = NULL;
         new_flags = NULL;
     }
-    new_offset = gc->available_slot_offset;
+    new_offset = gc->usable_slot;
     (void)esch_log_info(log,
             "gc:attach: Allocate new slot: id: %d", new_offset);
 
-    gc->available_slot_offset = gc->slots[gc->available_slot_offset].next;
+    gc->usable_slot = gc->slots[gc->usable_slot].next;
     allocated_slot = &(gc->slots[new_offset].obj);
     (*allocated_slot) = obj;
 
@@ -181,6 +175,7 @@ esch_gc_naive_mark_sweep_attach_i(esch_gc* gc, esch_object* obj)
 Exit:
     esch_alloc_free_i(alloc, new_slots);
     esch_alloc_free_i(alloc, new_flags);
+    esch_alloc_free_i(alloc, new_recycle_stack);
     return ret;
 }
 
@@ -205,8 +200,6 @@ esch_gc_naive_mark_sweep_recycle_i(esch_gc* gc)
 
     /* Please also note that we don't allocate anything here, because
      * recycle() happens only when system is running out of memory. */
-    esch_log_info(log, "gc:recycle: Trigger GC on root: %x", gc->root);
-    ESCH_ASSERT(ESCH_TYPE_IS_CONTAINER(ESCH_OBJECT_GET_TYPE(gc->root)));
 
     /* This is a classical (and slow) mark-and-sweep algorithm.
      * 1. Mark all objects as deletable, then
@@ -221,65 +214,90 @@ esch_gc_naive_mark_sweep_recycle_i(esch_gc* gc)
      * Meanwhile, recycle_stack is also used to store unused objects
      */
     /* Step 1: Mark every object as deletable. */
-    memset(gc->inuse_flags, 0, sizeof(esch_byte) / 8 * gc->slot_count);
+    memset(gc->inuse_flags, 0, gc->slot_count / 8);
+    /* Step 1.5: Keep non-allocated slots out of deletable list. This
+     * may happen when user triggers recycle() before we are running
+     * out of slots.
+     */
+    if (gc->usable_slot != ROOT_INDEX) {
+        size_t each_index = gc->usable_slot;
+        size_t unused_id = 0;
+        while(each_index != ROOT_INDEX) {
+            unused_id = (&gc->slots[each_index] - &gc->slots[0]);
+            ESCH_GC_MARK_INUSE(gc, unused_id);
+            each_index = gc->slots[each_index].next;
+        }
+    }
     /* 
      * Step 2: Search objects from root node, and mark reachable object
      * as in-use.
      */
-    stack_ptr = &(gc->recycle_stack[0]);
-    (*(stack_ptr++)) = gc->root; /* Root is always in use */
-    do
-    {
-        ret = esch_object_get_iterator_i(*(stack_ptr - 1), &iter);
-        ESCH_ASSERT(ret == ESCH_OK);
-        ESCH_GC_MARK_INUSE(gc, *(stack_ptr - 1));
-        while(ESCH_TRUE) {
-            ret = iter.get_value(&iter, &element);
+    if (gc->root == NULL) {
+        esch_log_info(log, "gc:recycle: Trigger GC from dtor");
+        ESCH_ASSERT(!ESCH_GC_IS_MARKED(gc, 0));
+    } else {
+        esch_log_info(log, "gc:recycle: Trigger GC on root: %x", gc->root);
+        ESCH_ASSERT(ESCH_TYPE_IS_CONTAINER(ESCH_OBJECT_GET_TYPE(gc->root)));
+        stack_ptr = &(gc->recycle_stack[0]);
+        (*stack_ptr) = gc->root; /* Root is always in use */
+        do {
+            ret = esch_object_get_iterator_i(*stack_ptr, &iter);
             ESCH_ASSERT(ret == ESCH_OK);
-            if (element.type == ESCH_ELEMENT_TYPE_END) {
-                esch_log_info(log, "gc:recycle: end of objects.");
-                break;
-            } else if (element.type != ESCH_ELEMENT_TYPE_OBJECT) {
-                esch_log_info(log, "gc:recycle: primitive type, skip.");
-                continue;
-            }
-            /* IMPORTANT
-             * I set assertion because I can't find a way to behave
-             * correctly if I mix two GC systems in one object system,
-             * without causing semantic problems.
-             *
-             * If anyone know how to do it, please ping me.
-             */
-            child = element.val.o;
-            ESCH_ASSERT(child != NULL);
-            ESCH_ASSERT(child->gc == gc);
-            element_type = ESCH_OBJECT_GET_TYPE(child);
-            ESCH_ASSERT(element_type != NULL);
-            ESCH_ASSERT(ESCH_IS_VALID_TYPE(element_type));
-            if (ESCH_TYPE_IS_CONTAINER(element_type)) {
-                esch_log_info(log, "gc:recycle: container. Mark/stack.");
-                /* Never mark twice so we won't fall into endless loop
-                 * if we hit a reference circle. */
-                if (!ESCH_GC_IS_MARKED(gc, child->gc_id)) {
-                    ESCH_GC_MARK_INUSE(gc, child);
-                    (*(stack_ptr++)) = child;
+            ESCH_GC_MARK_INUSE(gc, (*stack_ptr)->gc_id);
+            while(ESCH_TRUE) {
+                ret = iter.get_value(&iter, &element);
+                ESCH_ASSERT(ret == ESCH_OK);
+                if (element.type == ESCH_ELEMENT_TYPE_END) {
+                    esch_log_info(log, "gc:recycle: end of objects.");
+                    break;
+                } else if (element.type != ESCH_ELEMENT_TYPE_OBJECT) {
+                    esch_log_info(log, "gc:recycle: primitive type, skip.");
+                    ret = iter.get_next(&iter);
+                    continue;
                 }
-            } else {
-                esch_log_info(log, "gc:recycle: non-container. Mark.");
+                /* IMPORTANT
+                 * I set assertion because I can't find a way to behave
+                 * correctly if I mix two GC systems in one object system,
+                 * without causing semantic problems.
+                 *
+                 * If anyone know how to do it, please ping me.
+                 */
+                child = element.val.o;
+                ESCH_ASSERT(child != NULL);
+                ESCH_ASSERT(child->gc == gc);
+                element_type = ESCH_OBJECT_GET_TYPE(child);
+                ESCH_ASSERT(element_type != NULL);
+                ESCH_ASSERT(ESCH_IS_VALID_TYPE(element_type));
+                /* Never mark twice so we won't fall into endless
+                 * loop if we hit a reference circle. */
                 if (!ESCH_GC_IS_MARKED(gc, child->gc_id)) {
-                    ESCH_GC_MARK_INUSE(gc, child);
+                    ESCH_GC_MARK_INUSE(gc, child->gc_id);
                 }
+                if (ESCH_TYPE_IS_CONTAINER(element_type)) {
+                    esch_log_info(log, "gc:recycle: container:stack.");
+                    (*(++stack_ptr)) = child;
+                } else {
+                    esch_log_info(log, "gc:recycle: non-container:mark.");
+                }
+                ret = iter.get_next(&iter);
             }
-        }
-    } while(stack_ptr != &(gc->recycle_stack[0]));
-    /* By now we have marked all required objects, free the rest and
-     * rebuild availability slot list. */
-    ESCH_ASSERT(gc->slots[0].obj == gc->root);
-    ESCH_GC_MARK_INUSE(gc, gc->slots[0].obj);
-
-    /* Step 3: Delete all objects marked as deletable. */
-    /* gc->available_slot_offset = 0; */
-    for (free_objs = 0, i = 1; i < gc->slot_count; ++i) {
+            (*(stack_ptr--)) = NULL; // Done for current node.
+        } while(stack_ptr != &(gc->recycle_stack[0]));
+        /* TODO Optimization: Don't always trigger GC so fast. We may
+         * consider cancel GC if the memory slot is enough. But it does
+         * not have to be implemented in GC.
+         */
+        /* By now we have marked all required objects, free the rest and
+         * rebuild availability slot list. */
+        ESCH_ASSERT(gc->slots[ROOT_INDEX].obj == gc->root);
+        ESCH_GC_MARK_INUSE(gc, gc->slots[ROOT_INDEX].obj->gc_id);
+    }
+    /*
+     * Step 3: Delete all objects marked as deletable.
+     * NOTE: When destructor calls recycle(), it directly comes to here,
+     * so all objects are freed, including root.
+     */
+    for (free_objs = 0, i = 0; i < gc->slot_count; ++i) {
         /* Skip i = 0 because first element is root, which is always
          * in use.
          */
@@ -294,8 +312,8 @@ esch_gc_naive_mark_sweep_recycle_i(esch_gc* gc)
                         "gc:recycle: Can't delete object: %x (ignore)",
                         gc->slots[i].obj);
             }
-            gc->slots[i].next = gc->available_slot_offset;
-            gc->available_slot_offset = i;
+            gc->slots[i].next = gc->usable_slot;
+            gc->usable_slot = i;
             ++free_objs;
         }
     }
@@ -336,6 +354,7 @@ esch_gc_new_naive_mark_sweep_i(esch_config* config, esch_object** gc)
     log = ESCH_CAST_FROM_OBJECT(ESCH_CONFIG_GET_LOG(config), esch_log);
     root = ESCH_CONFIG_GET_GC_NAIVE_ROOT(config);
 
+    ESCH_ASSERT(ESCH_CONFIG_GET_GC(config) == NULL);
     ESCH_ASSERT(alloc != NULL && ESCH_IS_VALID_ALLOC(alloc));
     ESCH_ASSERT(log != NULL && ESCH_IS_VALID_LOG(log));
     ESCH_ASSERT(root != NULL && ESCH_IS_VALID_OBJECT(root));
@@ -353,7 +372,7 @@ esch_gc_new_naive_mark_sweep_i(esch_config* config, esch_object** gc)
     ESCH_CHECK(ret == ESCH_OK, log, "GC:naive_new:Can't create slots", ret);
 
     ret = esch_alloc_realloc_i(alloc, NULL,
-                    sizeof(esch_object*) * initial_slots,
+                    sizeof(esch_object*) * (initial_slots + 1),
                     (void**)&recycle_stack);
     ESCH_CHECK(ret == ESCH_OK, log, "GC:naive_new:Can't create stack", ret);
 
@@ -366,13 +385,13 @@ esch_gc_new_naive_mark_sweep_i(esch_config* config, esch_object** gc)
      * slots can be returned in different order when it's returned. */
 
     /* First object is reversed as END_OF_LIST mark. Others are linked. */
-    slots[0].obj = root;
+    slots[ROOT_INDEX].obj = root;
     for(i = 1; i < initial_slots - 1; ++i) {
         slots[i + 1].next = i;
     }
 
     /* Always start from last slot */
-    new_gc->available_slot_offset = (initial_slots - 1);
+    new_gc->usable_slot = (initial_slots - 1);
     new_gc->attach = esch_gc_naive_mark_sweep_attach_i;
     new_gc->recycle = esch_gc_naive_mark_sweep_recycle_i;
     new_gc->inuse_flags = inuse_flags;
@@ -381,9 +400,9 @@ esch_gc_new_naive_mark_sweep_i(esch_config* config, esch_object** gc)
     new_gc->slot_count = initial_slots;
     /* Let GC manage root */
     root->gc = new_gc;
-    root->gc_id = (void*)0;
+    root->gc_id = (void*)ROOT_INDEX;
     new_gc->root = root;
-    ESCH_GC_MARK_INUSE(new_gc, root);
+    ESCH_GC_MARK_INUSE(new_gc, root->gc_id);
 
     (*gc) = new_obj;
 
@@ -464,6 +483,18 @@ esch_gc_attach_i(esch_gc* gc, esch_object* obj)
     ESCH_ASSERT(ESCH_IS_VALID_GC(gc));
 
     ret = esch_gc_naive_mark_sweep_attach_i(gc, obj);
+Exit:
+    return ret;
+}
+
+esch_error
+esch_gc_recycle(esch_gc* gc)
+{
+    esch_error ret = ESCH_OK;
+    ESCH_CHECK_PARAM_PUBLIC(gc != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_GC(gc));
+
+    ret = esch_gc_naive_mark_sweep_recycle_i(gc);
 Exit:
     return ret;
 }

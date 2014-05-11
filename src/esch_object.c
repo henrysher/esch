@@ -201,6 +201,7 @@ esch_object_new_i(esch_config* config, esch_type* type, esch_object** obj)
      */
     obj_size = sizeof(esch_object) + ESCH_TYPE_GET_OBJECT_SIZE(type);
     ret = esch_alloc_realloc(alloc, NULL, obj_size, (void**)&new_object);
+
     if (gc != NULL)
     {
         ESCH_CHECK_1((ret == ESCH_OK || ret == ESCH_ERROR_OUT_OF_MEMORY),
@@ -221,6 +222,9 @@ esch_object_new_i(esch_config* config, esch_type* type, esch_object** obj)
                          "FATAL: Can't malloc after GC. type: 0x%x",
                          type, ret);
         }
+        ESCH_OBJECT_GET_TYPE(new_object)  = type;
+        ESCH_OBJECT_GET_ALLOC(new_object) = alloc;
+        ESCH_OBJECT_GET_LOG(new_object)   = log;
         (void)esch_log_info(log, "object:new: Try attach GC.");
         ret = esch_gc_attach_i(gc, new_object);
         ESCH_CHECK_1(ret == ESCH_OK, log,
@@ -231,18 +235,17 @@ esch_object_new_i(esch_config* config, esch_type* type, esch_object** obj)
         ESCH_CHECK_1(ret == ESCH_OK, log,
                 "object:new: Can't malloc (without GC). type: 0x%x",
                 type, ret);
+        ESCH_OBJECT_GET_TYPE(new_object)  = type;
+        ESCH_OBJECT_GET_ALLOC(new_object) = alloc;
+        ESCH_OBJECT_GET_LOG(new_object)   = log;
     }
 
     /*
      * Final assignment. Make sure the object is initialized without any
      * risks of partial initialization.
      */
-    ESCH_OBJECT_GET_TYPE(new_object)    = type;
-    ESCH_OBJECT_GET_ALLOC(new_object)   = alloc;
-    ESCH_OBJECT_GET_LOG(new_object)     = log;
     /* ESCH_OBJECT_GET_GC(new_object) is already assigned. */
     /* ESCH_OBJECT_GET_GC_ID(new_object) is already assigned. */
-
     (*obj) = new_object;
     new_object = NULL;
 Exit:
