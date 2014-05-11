@@ -51,12 +51,12 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
   - [DONE] Update GC to make unit test fully pass (esch_vector as gc root).
   - [DONE] Add more test cases to cover multiple scenarios.
   - Add stress to simulate memory exhausting scenario.
-  - Think about it. Do we really need to dynamically expand GC slots?
+  - [DONE] Set GC slots resizing configurable.
 
 * Implement list type (requires GC for verification)
   - Update esch_string to allow iteration.
   - Implement list type with GC.
-  - Think about it. Do we really need to dynamically expand vector?
+  - [DONE] Set vector slots resizing configurable.
 
 * Allow vector store primitive types.
 

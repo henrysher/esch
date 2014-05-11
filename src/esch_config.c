@@ -9,9 +9,11 @@
 const char* ESCH_CONFIG_KEY_ALLOC = "common:alloc";
 const char* ESCH_CONFIG_KEY_LOG = "common:log";
 const char* ESCH_CONFIG_KEY_GC = "common:gc";
-const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH = "vector:initial_length";
-const char* ESCH_CONFIG_KEY_GC_NAIVE_INITIAL_SLOTS = "gc:naive:initial_slots";
+const char* ESCH_CONFIG_KEY_VECTOR_LENGTH = "vector:length";
+const char* ESCH_CONFIG_KEY_VECTOR_ENLARGE = "vector:enlarge";
+const char* ESCH_CONFIG_KEY_GC_NAIVE_SLOTS = "gc:naive:slots";
 const char* ESCH_CONFIG_KEY_GC_NAIVE_ROOT = "gc:naive:root";
+const char* ESCH_CONFIG_KEY_GC_NAIVE_ENLARGE = "gc:naive:enlarge";
 
 static esch_error esch_config_destructor(esch_object* obj);
 static esch_error esch_config_new_as_object(esch_config*, esch_object** obj);
@@ -69,28 +71,39 @@ esch_config_new(esch_log* log, esch_alloc* alloc, esch_config** config)
     strncpy(new_config->config[0].key,
             ESCH_CONFIG_KEY_ALLOC, ESCH_CONFIG_KEY_LENGTH);
     new_config->config[0].type = ESCH_CONFIG_VALUE_TYPE_OBJECT;
+
     strncpy(new_config->config[1].key,
             ESCH_CONFIG_KEY_LOG, ESCH_CONFIG_KEY_LENGTH);
     new_config->config[1].type = ESCH_CONFIG_VALUE_TYPE_OBJECT;
+
     strncpy(new_config->config[2].key,
             ESCH_CONFIG_KEY_GC, ESCH_CONFIG_KEY_LENGTH);
     new_config->config[2].type = ESCH_CONFIG_VALUE_TYPE_OBJECT;
 
     strncpy(new_config->config[3].key,
-            ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH, ESCH_CONFIG_KEY_LENGTH);
+            ESCH_CONFIG_KEY_VECTOR_LENGTH, ESCH_CONFIG_KEY_LENGTH);
     new_config->config[3].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
     new_config->config[3].data.int_value = 1;
 
     strncpy(new_config->config[4].key,
-            ESCH_CONFIG_KEY_GC_NAIVE_INITIAL_SLOTS, ESCH_CONFIG_KEY_LENGTH);
+            ESCH_CONFIG_KEY_VECTOR_ENLARGE, ESCH_CONFIG_KEY_LENGTH);
     new_config->config[4].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
-    new_config->config[4].data.int_value = ESCH_GC_NAIVE_DEFAULT_SLOTS;
+    new_config->config[4].data.int_value = ESCH_FALSE;
 
     strncpy(new_config->config[5].key,
-            ESCH_CONFIG_KEY_GC_NAIVE_ROOT, ESCH_CONFIG_KEY_LENGTH);
-    new_config->config[5].type = ESCH_CONFIG_VALUE_TYPE_OBJECT;
-    new_config->config[5].data.obj_value = NULL;
+            ESCH_CONFIG_KEY_GC_NAIVE_SLOTS, ESCH_CONFIG_KEY_LENGTH);
+    new_config->config[5].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
+    new_config->config[5].data.int_value = ESCH_GC_NAIVE_DEFAULT_SLOTS;
 
+    strncpy(new_config->config[6].key,
+            ESCH_CONFIG_KEY_GC_NAIVE_ROOT, ESCH_CONFIG_KEY_LENGTH);
+    new_config->config[6].type = ESCH_CONFIG_VALUE_TYPE_OBJECT;
+    new_config->config[6].data.obj_value = NULL;
+
+    strncpy(new_config->config[7].key,
+            ESCH_CONFIG_KEY_GC_NAIVE_ENLARGE, ESCH_CONFIG_KEY_LENGTH);
+    new_config->config[7].type = ESCH_CONFIG_VALUE_TYPE_INTEGER;
+    new_config->config[7].data.int_value = ESCH_FALSE;
 
     (*config) = new_config;
     new_config = NULL;

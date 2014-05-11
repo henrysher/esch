@@ -96,6 +96,7 @@ struct esch_gc
     esch_gc_attach_f     attach;
     esch_gc_recycle_f    recycle;
 
+    esch_bool enlarge;
     unsigned char* inuse_flags;
     union esch_object_or_next* slots;
     esch_object** recycle_stack;

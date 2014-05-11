@@ -14,7 +14,7 @@ extern "C" {
 
 #define ESCH_CONFIG_KEY_LENGTH 32
 #define ESCH_CONFIG_VALUE_STRING_LENGTH 255
-#define ESCH_CONFIG_ITEMS 6
+#define ESCH_CONFIG_ITEMS 8
 struct esch_config
 {
     /*
@@ -48,12 +48,16 @@ extern struct esch_builtin_type esch_config_type;
     ((esch_object*)(cfg->config[1].data.obj_value))
 #define ESCH_CONFIG_GET_GC(cfg) \
     ((esch_object*)(cfg->config[2].data.obj_value))
-#define ESCH_CONFIG_GET_VECOTR_INITIAL_LENGTH(cfg) \
+#define ESCH_CONFIG_GET_VECOTR_LENGTH(cfg) \
     ((int)(cfg->config[3].data.int_value))
-#define ESCH_CONFIG_GET_GC_NAIVE_INITIAL_SLOTS(cfg) \
+#define ESCH_CONFIG_GET_VECTOR_ENLARGE(cfg) \
     ((int)(cfg->config[4].data.int_value))
+#define ESCH_CONFIG_GET_GC_NAIVE_SLOTS(cfg) \
+    ((int)(cfg->config[5].data.int_value))
 #define ESCH_CONFIG_GET_GC_NAIVE_ROOT(cfg) \
-    ((esch_object*)(cfg->config[5].data.obj_value))
+    ((esch_object*)(cfg->config[6].data.obj_value))
+#define ESCH_CONFIG_GET_GC_NAIVE_ENLARGE(cfg) \
+    ((int)(cfg->config[7].data.int_value))
 
 #ifdef __cplusplus
 }

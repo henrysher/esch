@@ -113,7 +113,7 @@ esch_vector_new_i(esch_config* config, esch_vector** vec)
     ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_ALLOC(alloc));
     ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_LOG(log));
 
-    initial_length = ESCH_CONFIG_GET_VECOTR_INITIAL_LENGTH(config);
+    initial_length = ESCH_CONFIG_GET_VECOTR_LENGTH(config);
     if (initial_length < ESCH_VECTOR_MINIMAL_INITIAL_LENGTH) {
         initial_length = ESCH_VECTOR_MINIMAL_INITIAL_LENGTH;
     }
@@ -128,6 +128,8 @@ esch_vector_new_i(esch_config* config, esch_vector** vec)
     new_vec = ESCH_CAST_FROM_OBJECT(vec_obj, esch_vector);
     ESCH_ASSERT(ESCH_IS_VALID_TYPE(&(esch_vector_type.type)));
 
+    new_vec->enlarge = (ESCH_CONFIG_GET_VECTOR_ENLARGE(config)?
+                        ESCH_TRUE: ESCH_FALSE);
     new_vec->slots = (size_t)initial_length;
     new_vec->begin = array;
     new_vec->next = &(new_vec->begin[0]);
@@ -162,24 +164,31 @@ esch_vector_append(esch_vector* vec, esch_object* data)
     alloc = ESCH_OBJECT_GET_ALLOC(ESCH_CAST_TO_OBJECT(vec));
     log = ESCH_OBJECT_GET_LOG(ESCH_CAST_TO_OBJECT(vec));
 
-    if (vec->next == vec->begin + vec->slots) /* vector buffer is full */
-    {
-        new_slots = vec->slots * 2;
+    if (vec->next == vec->begin + vec->slots) {
+        /* vector buffer is full */
+        if (vec->enlarge) {
+            new_slots = vec->slots * 2;
+            ESCH_ASSERT(alloc != NULL);
+            ESCH_ASSERT(ESCH_IS_VALID_ALLOC(alloc));
 
-        ESCH_CHECK_PARAM_INTERNAL(alloc != NULL);
-        ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_ALLOC(alloc));
+            ret = esch_alloc_realloc(alloc, vec->begin,
+                                     sizeof(esch_object*) * (new_slots + 1),
+                                     (void**)&new_array);
+            ESCH_CHECK(ret == ESCH_OK, log,
+                       "vec:append:Failed to reallocate vec", ret);
 
-        ret = esch_alloc_realloc(alloc, vec->begin,
-                                sizeof(esch_object*) * (new_slots + 1),
-                                (void**)&new_array);
-        ESCH_CHECK(ret == ESCH_OK, vec, "Failed to reallocate vec", ret);
-
-        vec->begin = new_array;
-        vec->next = vec->begin + vec->slots;
-        vec->slots = new_slots;
+            vec->begin = new_array;
+            vec->next = vec->begin + vec->slots;
+            vec->slots = new_slots;
+        } else {
+            /* Enlarge is not allowed. It's by default. */
+            esch_log_error(log, "vec:append:Enlarge is disabled.");
+            ret = ESCH_ERROR_CONTAINER_FULL;
+            goto Exit;
+        }
     }
     slot = vec->next;
-    ++vec->next;
+    vec->next += 1;
     (*slot) = data;
 Exit:
     return ret;
@@ -297,8 +306,7 @@ esch_vector_copy_object_i(esch_object* input, esch_object** output)
                                   ESCH_CAST_TO_OBJECT(gc));
         ESCH_CHECK(ret == ESCH_OK, log, "vec:Can't insert gc", ret);
     }
-    ret = esch_config_set_int(config,
-                              ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH,
+    ret = esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_LENGTH,
                               vec->slots);
     ESCH_CHECK(ret == ESCH_OK, log, "vec:Can't set initial length", ret);
 

@@ -14,6 +14,7 @@ extern "C" {
 
 struct esch_vector
 {
+    esch_bool enlarge;
     size_t slots;
     esch_object** begin;
     esch_object** next; /* Next available slot */

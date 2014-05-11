@@ -26,6 +26,8 @@ esch_error test_vectorBase(esch_config* config)
     log = ESCH_CAST_FROM_OBJECT(log_obj, esch_log);
     alloc = ESCH_CAST_FROM_OBJECT(alloc_obj, esch_alloc);
 
+    ret = esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_ENLARGE, 1);
+
     ret = esch_vector_new(config, &vec);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create vector", ret);
     ESCH_TEST_CHECK(vec->slots == ESCH_VECTOR_MINIMAL_INITIAL_LENGTH,
@@ -94,6 +96,8 @@ esch_error test_vectorBase(esch_config* config)
     ret = esch_object_delete(ESCH_CAST_TO_OBJECT(str));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete str object.", ret);
 Exit:
+    /* Set it back so other objects can initialize with default value. */
+    (void)esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_ENLARGE, 0);
     return ret;
 }
 
@@ -191,6 +195,7 @@ esch_error test_vectorIteration(esch_config* config)
     size_t length = 0;
     size_t i = 0;
 
+    ret = esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_ENLARGE, 1);
     ret = esch_config_get_obj(config, ESCH_CONFIG_KEY_LOG, &log_obj);
     ret = esch_config_get_obj(config, ESCH_CONFIG_KEY_ALLOC, &alloc_obj);
     log = ESCH_CAST_FROM_OBJECT(log_obj, esch_log);
@@ -256,6 +261,69 @@ esch_error test_vectorIteration(esch_config* config)
         ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete str.", ret);
     }
 Exit:
+    (void)esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_ENLARGE, 0);
+    return ret;
+}
+
+esch_error test_vectorResizeFlag(esch_config* config)
+{
+    esch_error ret = ESCH_OK;
+    esch_vector* vec_fixed = NULL;
+    esch_vector* vec_dyn = NULL;
+    size_t elements = ESCH_VECTOR_MINIMAL_INITIAL_LENGTH * 3;
+    size_t i = 0;
+    size_t length = 0;
+
+    ret = esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_LENGTH,
+                              elements);
+    ret = esch_vector_new(config, &vec_fixed);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "fixed:Failed to create vector", ret);
+    ESCH_TEST_CHECK(vec_fixed->slots == elements, "fixed:Not new size", ret);
+
+    ret = esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_ENLARGE, 1);
+    ret = esch_vector_new(config, &vec_dyn);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "dyn:Failed to create vector", ret);
+    ESCH_TEST_CHECK(vec_dyn->slots == elements, "dyn:Not new size", ret);
+
+    for (i = 0; i < elements; ++i) {
+        ret = esch_vector_append(vec_fixed, ESCH_CAST_TO_OBJECT(vec_fixed));
+        ESCH_TEST_CHECK(ret == ESCH_OK, "fixed:Can't append element", ret);
+        ret = esch_vector_get_length(vec_fixed, &length);
+        ESCH_TEST_CHECK(length == i + 1, "fixed:Can't append element",
+                        ESCH_ERROR_OUT_OF_BOUND);
+    }
+
+    ret = esch_vector_append(vec_fixed, ESCH_CAST_TO_OBJECT(vec_fixed));
+    ESCH_TEST_CHECK(ret == ESCH_ERROR_CONTAINER_FULL,
+                    "fixed:(error as expected) Can't append element", ret);
+    ret = esch_vector_get_length(vec_fixed, &length);
+    ESCH_TEST_CHECK(length == elements, "fixed:Can't append element",
+                    ESCH_ERROR_INVALID_STATE);
+
+    for (i = 0; i < elements; ++i) {
+        ret = esch_vector_append(vec_dyn, ESCH_CAST_TO_OBJECT(vec_dyn));
+        ESCH_TEST_CHECK(ret == ESCH_OK, "dyn:Can't append element", ret);
+        ret = esch_vector_get_length(vec_dyn, &length);
+        ESCH_TEST_CHECK(length == i + 1, "dyn:Can't append element",
+                        ESCH_ERROR_OUT_OF_BOUND);
+    }
+    ret = esch_vector_append(vec_dyn, ESCH_CAST_TO_OBJECT(vec_dyn));
+    ESCH_TEST_CHECK(ret == ESCH_OK,
+                    "dyn:Supposed length should be enlarged", ret);
+    ret = esch_vector_get_length(vec_dyn, &length);
+    ESCH_TEST_CHECK(length == elements + 1, "dyn:Suppose should append",
+                    ESCH_ERROR_INVALID_STATE);
+
+Exit:
+    if (vec_fixed != NULL) {
+        (void)esch_object_delete(ESCH_CAST_TO_OBJECT(vec_fixed));
+    }
+    if (vec_dyn != NULL) {
+        (void)esch_object_delete(ESCH_CAST_TO_OBJECT(vec_dyn));
+    }
+    /* Set default value. */
+    (void)esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_ENLARGE, 0);
+    (void)esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_LENGTH, 1);
     return ret;
 }
 

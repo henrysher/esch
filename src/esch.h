@@ -73,9 +73,11 @@ extern const char* ESCH_CONFIG_KEY_ALLOC;
 extern const char* ESCH_CONFIG_KEY_LOG;
 extern const char* ESCH_CONFIG_KEY_GC;
 extern const char* ESCH_CONFIG_KEY_VECTOR_ELEMENT_TYPE;
-extern const char* ESCH_CONFIG_KEY_VECTOR_INITIAL_LENGTH;
-extern const char* ESCH_CONFIG_KEY_GC_NAIVE_INITIAL_SLOTS;
+extern const char* ESCH_CONFIG_KEY_VECTOR_LENGTH;
+extern const char* ESCH_CONFIG_KEY_VECTOR_ENLARGE;
+extern const char* ESCH_CONFIG_KEY_GC_NAIVE_SLOTS;
 extern const char* ESCH_CONFIG_KEY_GC_NAIVE_ROOT;
+extern const char* ESCH_CONFIG_KEY_GC_NAIVE_ENLARGE;
 
 typedef enum esch_error {
     ESCH_OK = 0,
@@ -94,6 +96,7 @@ typedef enum esch_error {
     ESCH_ERROR_OBJECT_UNEXPECTED_GC_ATTACHED,
     ESCH_ERROR_GC_ROOT_MISSING,
     ESCH_ERROR_GC_ROOT_NOT_CONTAINER,
+    ESCH_ERROR_CONTAINER_FULL,
 } esch_error;
 
 typedef enum esch_config_value_type {

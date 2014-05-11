@@ -40,7 +40,7 @@ esch_error test_gcCreateDelete(esch_config* config)
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set GC root", ret);
 
     ret = esch_config_set_int(config,
-                              ESCH_CONFIG_KEY_GC_NAIVE_INITIAL_SLOTS, -1);
+                              ESCH_CONFIG_KEY_GC_NAIVE_SLOTS, -1);
     ret = esch_gc_new_naive_mark_sweep(config, &gc2);
     ESCH_TEST_CHECK(ret == ESCH_OK && gc2 != NULL,
                     "Failed to create gc2", ret);
@@ -60,7 +60,7 @@ esch_error test_gcCreateDelete(esch_config* config)
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set GC root", ret);
 
     ret = esch_config_set_int(config,
-                              ESCH_CONFIG_KEY_GC_NAIVE_INITIAL_SLOTS, 256);
+                              ESCH_CONFIG_KEY_GC_NAIVE_SLOTS, 256);
     ret = esch_gc_new_naive_mark_sweep(config, &gc3);
     ESCH_TEST_CHECK(ret == ESCH_OK && gc3 != NULL,
                     "Failed to create gc3", ret);
