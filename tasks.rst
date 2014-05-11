@@ -49,18 +49,31 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
   - [DONE] Use esch_iterator to iterate primitive and object.
   - [DONE] Implement esch_vector (fix length array) and test.
   - [DONE] Update GC to make unit test fully pass (esch_vector as gc root).
+  - [DONE] Add more test cases to cover multiple scenarios.
+  - Add stress to simulate memory exhausting scenario.
+  - Think about it. Do we really need to dynamically expand GC slots?
 
 * Implement list type (requires GC for verification)
   - Update esch_string to allow iteration.
   - Implement list type with GC.
+  - Think about it. Do we really need to dynamically expand vector?
 
 * Allow vector store primitive types.
 
 * Implement a memory-saving character type.
 
+* Implement function/stack objects.
+  - Implement replacable call stack.
+  - Implmenet replacable definition scope.
+
 * Implement a big integer.
 
 * Implement Scheme syntax (without module).
+  - Implement define variable.
+  - Implement lambda.
+  - Implement function call.
+
+* Implement module system.
 
 * Implement VM.
 
