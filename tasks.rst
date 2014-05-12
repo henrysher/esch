@@ -55,28 +55,34 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
 
 * Implement list type (requires GC for verification)
   - Update esch_string to allow iteration.
-  - Implement list type with GC.
+  - Implement list/pair type with GC.
+  - Implement null type.
   - [DONE] Set vector slots resizing configurable.
 
 * Allow vector store primitive types.
 
 * Implement a memory-saving character type.
+  - Hold string with both Unicode and UTF-8. (Debatable)
 
 * Implement function/stack objects.
   - Implement replacable call stack.
   - Implmenet replacable definition scope.
-
-* Implement a big integer.
 
 * Implement Scheme syntax (without module).
   - Implement define variable.
   - Implement lambda.
   - Implement function call.
 
+* Implement syntax definition.
+
 * Implement module system.
 
-* Implement VM.
+* Implement runtime engine (aka. VM).
+  - Design bytecode format.
+  - Now config object contains instance specific data, it may change all
+    the time. so -
+    * We need each thread holding one global config object. When
+      creating an object in this thread, the values may be changed.
+    * Extend esch_object for lock support.
 
-* Refactor iterator (maybe we should hide the data structure).
-
-* Define module system.
+* Implement a big integer.
