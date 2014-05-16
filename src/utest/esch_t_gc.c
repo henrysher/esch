@@ -64,13 +64,26 @@ esch_error test_gcCreateDelete(esch_config* config)
     ret = esch_gc_new_naive_mark_sweep(config, &gc3);
     ESCH_TEST_CHECK(ret == ESCH_OK && gc3 != NULL,
                     "Failed to create gc3", ret);
-    ESCH_TEST_CHECK(gc3->slot_count == ESCH_GC_NAIVE_DEFAULT_SLOTS,
-                    "Slot count is incorrect", ret);
+    ESCH_TEST_CHECK(gc3->slot_count == 256,
+                    "Slot count is incorrect", ESCH_ERROR_INVALID_STATE);
     ret = esch_object_delete(ESCH_CAST_TO_OBJECT(gc3));
     gc3 = NULL;
 Exit:
+    if (gc1 != NULL)
+    {
+        esch_object_delete(ESCH_CAST_TO_OBJECT(gc1));
+    }
+    if (gc2 != NULL)
+    {
+        esch_object_delete(ESCH_CAST_TO_OBJECT(gc2));
+    }
+    if (gc3 != NULL)
+    {
+        esch_object_delete(ESCH_CAST_TO_OBJECT(gc3));
+    }
     return ret;
 }
+
 esch_error test_gcRecycleLogic(esch_config* config)
 {
     esch_error ret = ESCH_OK;
@@ -111,6 +124,8 @@ esch_error test_gcRecycleLogic(esch_config* config)
                               ESCH_CAST_TO_OBJECT(gc));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set gc", ret);
 
+    esch_log_info(g_testLog,
+            "1. GC should never be managed by another GC.");
     ret = esch_gc_new_naive_mark_sweep(config, &bad_gc);
     ESCH_TEST_CHECK(ret == ESCH_ERROR_OBJECT_UNEXPECTED_GC_ATTACHED
                         && bad_gc == NULL,
@@ -194,7 +209,6 @@ esch_error test_gcRecycleLogic(esch_config* config)
     ret = esch_vector_append(circle4, ESCH_CAST_TO_OBJECT(circle3));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append circle3", ret);
 
-    /* Now we can really start. */
     ret = esch_gc_recycle(gc);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to do recycle", ret);
     /* After here, we should verify:
@@ -203,7 +217,6 @@ esch_error test_gcRecycleLogic(esch_config* config)
      */
     ret = esch_object_delete(ESCH_CAST_TO_OBJECT(gc));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to delete GC", ret);
-
     gc = NULL;
 
     /* TODO Need a callback system in GC to verify object deleting. */
@@ -214,9 +227,146 @@ esch_error test_gcRecycleLogic(esch_config* config)
 Exit:
     if (gc != NULL)
     {
-        (void)esch_config_set_obj(config, ESCH_CONFIG_KEY_GC, NULL);
-        (void)esch_config_set_obj(config, ESCH_CONFIG_KEY_GC_NAIVE_ROOT, NULL);
         ret = esch_object_delete(ESCH_CAST_TO_OBJECT(gc));
     }
+    (void)esch_config_set_obj(config, ESCH_CONFIG_KEY_GC, NULL);
+    (void)esch_config_set_obj(config, ESCH_CONFIG_KEY_GC_NAIVE_ROOT, NULL);
     return ret;
 }
+
+esch_error test_gcNoExpand(esch_config* config)
+{
+    esch_error ret = ESCH_OK;
+    esch_gc* gc = NULL;
+    esch_vector* root = NULL;
+    esch_alloc* alloc = NULL;
+    esch_string** objs = NULL;
+    size_t i = 0;
+    const size_t shortlen = 32;
+
+
+    alloc = ESCH_CAST_FROM_OBJECT(ESCH_CONFIG_GET_ALLOC(config),
+                                  esch_alloc);
+
+    esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_LENGTH, shortlen);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_GC_NAIVE_SLOTS, shortlen);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_ENLARGE, 0);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_GC_NAIVE_ENLARGE, 0);
+
+    ret = esch_vector_new(config, &root);
+    ESCH_TEST_CHECK(ret == ESCH_OK && root,
+                    "Failed to create gc root", ret);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_GC_NAIVE_ROOT,
+                              ESCH_CAST_TO_OBJECT(root));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set gc root", ret);
+
+    ret = esch_gc_new_naive_mark_sweep(config, &gc);
+    ESCH_TEST_CHECK(ret == ESCH_OK && gc, "Failed to create gc", ret);
+
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_GC,
+                              ESCH_CAST_TO_OBJECT(gc));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set gc", ret);
+
+    /* Now we can start. */
+    esch_log_info(g_testLog, "Case 1: fill all slots.");
+    esch_alloc_realloc(alloc, NULL, sizeof(esch_string*) * shortlen,
+                       (void**)&objs);
+    for (i = 0; i < shortlen - 1; ++i) {
+        ret = esch_string_new_from_utf8(config, "Value", 0, -1, &objs[i]);
+        ESCH_TEST_CHECK(ret == ESCH_OK && objs[i],
+                        "Can't create objects within slot", ret);
+    }
+    esch_log_info(g_testLog, "Case 2: Slot overflow");
+    ret = esch_string_new_from_utf8(config, "Value", 0, -1, &objs[i]);
+    ESCH_TEST_CHECK(ret == ESCH_ERROR_CONTAINER_FULL && objs[i] == NULL,
+                    "Can't create objects within slot", ret);
+    ESCH_TEST_CHECK(gc->slot_count == shortlen,
+                    "Slot count should be expanded.",
+                    ESCH_ERROR_INVALID_STATE);
+    ret = esch_object_delete(ESCH_CAST_TO_OBJECT(gc));
+    ESCH_TEST_CHECK(ret == ESCH_OK,
+                    "Can't create objects within slot", ret);
+    gc = NULL;
+
+Exit:
+    if (gc != NULL)
+    {
+        esch_object_delete(ESCH_CAST_TO_OBJECT(gc));
+    }
+    esch_config_set_obj(config, ESCH_CONFIG_KEY_GC, NULL);
+    esch_config_set_obj(config, ESCH_CONFIG_KEY_GC_NAIVE_ROOT, NULL);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_LENGTH, -1);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_GC_NAIVE_SLOTS, -1);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_ENLARGE, 0);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_GC_NAIVE_ENLARGE, 0);
+
+    esch_alloc_free(alloc, objs);
+    return ret;
+}
+
+esch_error test_gcExpand(esch_config* config)
+{
+    esch_error ret = ESCH_OK;
+    esch_gc* gc = NULL;
+    esch_vector* root = NULL;
+    esch_alloc* alloc = NULL;
+    esch_string** objs = NULL;
+    size_t i = 0;
+    const size_t shortlen = 32;
+
+
+    alloc = ESCH_CAST_FROM_OBJECT(ESCH_CONFIG_GET_ALLOC(config),
+                                  esch_alloc);
+
+    esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_LENGTH, shortlen);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_GC_NAIVE_SLOTS, shortlen);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_ENLARGE, 1);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_GC_NAIVE_ENLARGE, 1);
+
+    ret = esch_vector_new(config, &root);
+    ESCH_TEST_CHECK(ret == ESCH_OK && root,
+                    "Failed to create gc root", ret);
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_GC_NAIVE_ROOT,
+                              ESCH_CAST_TO_OBJECT(root));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set gc root", ret);
+
+    ret = esch_gc_new_naive_mark_sweep(config, &gc);
+    ESCH_TEST_CHECK(ret == ESCH_OK && gc, "Failed to create gc", ret);
+
+    ret = esch_config_set_obj(config, ESCH_CONFIG_KEY_GC,
+                              ESCH_CAST_TO_OBJECT(gc));
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to set gc", ret);
+
+    /* Now we can start. */
+    esch_log_info(g_testLog, "Case 1: fill all slots.");
+    esch_alloc_realloc(alloc, NULL, sizeof(esch_string*) * shortlen,
+                       (void**)&objs);
+    for (i = 0; i < shortlen; ++i) {
+        ret = esch_string_new_from_utf8(config, "Value", 0, -1, &objs[i]);
+        ESCH_TEST_CHECK(ret == ESCH_OK && objs[i],
+                        "Can't create objects within slot", ret);
+    }
+    ESCH_TEST_CHECK(gc->slot_count == shortlen * 2,
+                    "Slot count should be expanded.",
+                    ESCH_ERROR_INVALID_STATE);
+    ret = esch_object_delete(ESCH_CAST_TO_OBJECT(gc));
+    ESCH_TEST_CHECK(ret == ESCH_OK,
+                    "Can't create objects within slot", ret);
+    gc = NULL;
+
+Exit:
+    if (gc != NULL)
+    {
+        esch_object_delete(ESCH_CAST_TO_OBJECT(gc));
+    }
+    esch_config_set_obj(config, ESCH_CONFIG_KEY_GC, NULL);
+    esch_config_set_obj(config, ESCH_CONFIG_KEY_GC_NAIVE_ROOT, NULL);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_LENGTH, -1);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_GC_NAIVE_SLOTS, -1);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_VECTOR_ENLARGE, 0);
+    esch_config_set_int(config, ESCH_CONFIG_KEY_GC_NAIVE_ENLARGE, 0);
+
+    esch_alloc_free(alloc, objs);
+    return ret;
+}
+

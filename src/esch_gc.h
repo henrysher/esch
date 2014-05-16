@@ -116,7 +116,7 @@ extern const int ESCH_GC_NAIVE_DEFAULT_SLOTS;
      (gc)->inuse_flags != NULL && \
      (gc)->slots != NULL && \
      (gc)->recycle_stack != NULL && \
-     (gc)->usable_slot > 0 && \
+     (gc)->usable_slot >= 0 && \
      (gc)->usable_slot < (gc)->slot_count)
 
 #ifdef __cplusplus

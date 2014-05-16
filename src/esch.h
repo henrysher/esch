@@ -145,10 +145,13 @@ typedef esch_error (*esch_object_destructor_f)(esch_object*);
 typedef esch_error (*esch_object_copy_f)(esch_object*, esch_object**);
 typedef esch_error (*esch_object_to_string_f)(esch_object*, esch_string**);
 typedef esch_error (*esch_object_get_doc_f)(esch_object*, esch_string**);
-typedef esch_error (*esch_object_get_iterator_f)(esch_object*, esch_iterator*);
-typedef esch_error (*esch_iterator_get_value_f)(esch_iterator*, esch_element*);
+typedef esch_error (*esch_object_get_iterator_f)(esch_object*,
+                                                 esch_iterator*);
+typedef esch_error (*esch_iterator_get_value_f)(esch_iterator*,
+                                                esch_element*);
 typedef esch_error (*esch_iterator_get_next_f)(esch_iterator*);
-typedef esch_error (*esch_alloc_realloc_f)(esch_alloc*, void*, size_t, void**);
+typedef esch_error (*esch_alloc_realloc_f)(esch_alloc*, void*, size_t,
+                                           void**);
 typedef esch_error (*esch_alloc_free_f)(esch_alloc*, void*);
 
 
@@ -283,14 +286,16 @@ esch_error esch_object_get_type(esch_object* obj, esch_type** type);
  * @param primitive Returned parameter. True if object is primitive. 
  * @return Returned code. ESCH_OK if success.
  */
-esch_error esch_object_is_primitive(esch_object* obj, esch_bool* primitive);
+esch_error esch_object_is_primitive(esch_object* obj,
+                                    esch_bool* primitive);
 /**
  * Check if given object is primitive.
  * @param obj Given object.
  * @param primitive Returned parameter. True if object is container. 
  * @return Returned code. ESCH_OK if success.
  */
-esch_error esch_object_is_container(esch_object* obj, esch_bool* container);
+esch_error esch_object_is_container(esch_object* obj,
+                                    esch_bool* container);
 
 /**
  * Return an iterator structure for container object.
@@ -346,7 +351,8 @@ esch_error esch_config_set_obj(esch_config* config,
  * @param alloc Returned allocator object.
  * @return Error code.
  */
-esch_error esch_alloc_new_c_default(esch_config* config, esch_alloc** alloc);
+esch_error esch_alloc_new_c_default(esch_config* config,
+                                    esch_alloc** alloc);
 /**
  * Allocate a new buffer or resize an existing buffer.
  * @param alloc The esch_alloc object to allocate buffer.
@@ -519,7 +525,8 @@ esch_error esch_vector_get_length(esch_vector* vec, size_t* length);
  * @param obj Returned object. Unchanged if an error is raised.
  * @return Return code. ESCH_OK if success.
  */
-esch_error esch_vector_get_data(esch_vector* vec, int index, esch_object** obj);
+esch_error esch_vector_get_data(esch_vector* vec, int index,
+                                esch_object** obj);
 
 /* --- Number -- */
 

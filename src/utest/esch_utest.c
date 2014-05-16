@@ -83,6 +83,16 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_gcRecycleLogic() failed", ret);
     esch_log_info(testLog, "[PASSED]: test_gcRecycleLogic()");
 
+    esch_log_info(testLog, "Start: test_gcNoExpand()");
+    ret = test_gcNoExpand(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_gcNoExpand() failed", ret);
+    esch_log_info(testLog, "[PASSED]: test_gcNoExpand()");
+
+    esch_log_info(testLog, "Start: test_gcExpand()");
+    ret = test_gcExpand(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_gcExpand() failed", ret);
+    esch_log_info(testLog, "[PASSED]: test_gcExpand()");
+
     /*
     ret = test_config();
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_config() failed", ret);

@@ -251,7 +251,9 @@ esch_object_new_i(esch_config* config, esch_type* type, esch_object** obj)
 Exit:
     if (new_object != NULL)
     {
-        (void)esch_object_delete_i(new_object);
+        /* In this case, the object is not fully created. The only thing
+         * we can do is to free the memory. */
+        (void)esch_alloc_free(alloc, (void*)new_object);
     }
     return ret;
 }

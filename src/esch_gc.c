@@ -119,14 +119,14 @@ esch_gc_naive_mark_sweep_attach_i(esch_gc* gc, esch_object* obj)
             "gc:attach: FATAL: switch GC system: obj: %x", obj,
             ESCH_ERROR_INVALID_STATE);
 
-    if (gc->slots[gc->usable_slot].obj == gc->root) {
+    if (gc->usable_slot == ROOT_INDEX) {
         if (gc->enlarge) {
             /* Running out of slots. */
             int i = 0;
-            (void)esch_log_info(log,
-                    "gc:attach: No more slot. Reallocate. %d",
-                    gc->slot_count);
             new_count = gc->slot_count * 2;
+            (void)esch_log_info(log,
+                    "gc:attach: No more slot. Reallocate. %d -> %d",
+                    gc->slot_count, new_count);
 
             /* Reallocate a larger buffer */
             ret = esch_alloc_realloc_i(alloc, gc->slots,
@@ -135,7 +135,7 @@ esch_gc_naive_mark_sweep_attach_i(esch_gc* gc, esch_object* obj)
             ESCH_CHECK(ret == ESCH_OK, log,
                     "gc:attach: FATAL: Can't allocate new slots", ret);
             ret = esch_alloc_realloc_i(alloc, gc->inuse_flags,
-                                       sizeof(esch_byte) / 8 * new_count,
+                                       sizeof(esch_byte) * new_count / 8, 
                                        (void**)&new_flags);
             ESCH_CHECK(ret == ESCH_OK, log,
                     "gc:attach: FATAL: Can't allocate new flags", ret);
@@ -147,8 +147,8 @@ esch_gc_naive_mark_sweep_attach_i(esch_gc* gc, esch_object* obj)
 
             /* Content of original buffer has been moved to new buffer,
              * Now update availability slot list. */
-            new_slots[gc->slot_count].obj = gc->root;
-            for (i = gc->slot_count + 1; i < new_count - 1; ++i) {
+            new_slots[gc->slot_count].next = ROOT_INDEX;
+            for (i = gc->slot_count; i < new_count - 1; ++i) {
                 new_slots[i + 1].next = i;
             }
 
@@ -161,6 +161,7 @@ esch_gc_naive_mark_sweep_attach_i(esch_gc* gc, esch_object* obj)
 
             new_slots = NULL;
             new_flags = NULL;
+            new_recycle_stack = NULL;
         } else {
             esch_log_error(log, "gc:attach:Enlarge is disabled.");
             ret = ESCH_ERROR_CONTAINER_FULL;
@@ -177,7 +178,6 @@ esch_gc_naive_mark_sweep_attach_i(esch_gc* gc, esch_object* obj)
 
     obj->gc = gc;
     obj->gc_id = (void*)new_offset;
-    ESCH_ASSERT(!ESCH_GC_IS_MARKED(gc, obj->gc_id));
 Exit:
     esch_alloc_free_i(alloc, new_slots);
     esch_alloc_free_i(alloc, new_flags);
@@ -352,7 +352,7 @@ esch_gc_new_naive_mark_sweep_i(esch_config* config, esch_object** gc)
     int i = 0;
 
     initial_slots = ESCH_CONFIG_GET_GC_NAIVE_SLOTS(config);
-    if (initial_slots <= ESCH_GC_NAIVE_DEFAULT_SLOTS) {
+    if (initial_slots <= 0) {
         initial_slots = ESCH_GC_NAIVE_DEFAULT_SLOTS;
     }
     alloc = ESCH_CAST_FROM_OBJECT(ESCH_CONFIG_GET_ALLOC(config), esch_alloc);
@@ -490,7 +490,7 @@ esch_gc_attach_i(esch_gc* gc, esch_object* obj)
     ESCH_ASSERT(gc != NULL);
     ESCH_ASSERT(ESCH_IS_VALID_GC(gc));
 
-    ret = esch_gc_naive_mark_sweep_attach_i(gc, obj);
+    ret = gc->attach(gc, obj);
 Exit:
     return ret;
 }
