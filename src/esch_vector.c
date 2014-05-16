@@ -326,25 +326,25 @@ Exit:
     return ret;
 }
 static esch_error
-esch_vector_get_value_i(esch_iterator* iter, esch_element* element)
+esch_vector_get_value_i(esch_iterator* iter, esch_value* value)
 {
     esch_error ret = ESCH_OK;
     size_t offset = 0;
     esch_vector* vec = NULL;
     
     ESCH_CHECK_PARAM_PUBLIC(iter != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(element != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value != NULL);
     ESCH_CHECK_PARAM_PUBLIC(iter->container != NULL);
     vec = ESCH_CAST_FROM_OBJECT(iter->container, esch_vector);
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_VECTOR(vec));
 
     offset = (size_t)(iter->iterator);
     if (offset >= vec->next - vec->begin) {
-        element->type = ESCH_ELEMENT_TYPE_END;
-        element->val.o = 0;
+        value->type = ESCH_VALUE_TYPE_END;
+        value->val.o = 0;
     } else {
-        element->type = ESCH_ELEMENT_TYPE_OBJECT;
-        element->val.o = vec->begin[offset];
+        value->type = ESCH_VALUE_TYPE_OBJECT;
+        value->val.o = vec->begin[offset];
     }
 Exit:
     return ret;

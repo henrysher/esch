@@ -190,7 +190,7 @@ esch_gc_naive_mark_sweep_recycle_i(esch_gc* gc)
 {
     esch_error ret = ESCH_OK;
     esch_log* log = NULL;
-    esch_element element = { ESCH_ELEMENT_TYPE_END, 0 };
+    esch_value element = { ESCH_VALUE_TYPE_END, 0 };
     esch_object* child = NULL;
     esch_object** stack_ptr = NULL;
     esch_type* element_type = NULL;
@@ -253,10 +253,10 @@ esch_gc_naive_mark_sweep_recycle_i(esch_gc* gc)
             while(ESCH_TRUE) {
                 ret = iter.get_value(&iter, &element);
                 ESCH_ASSERT(ret == ESCH_OK);
-                if (element.type == ESCH_ELEMENT_TYPE_END) {
+                if (element.type == ESCH_VALUE_TYPE_END) {
                     esch_log_info(log, "gc:recycle: end of objects.");
                     break;
-                } else if (element.type != ESCH_ELEMENT_TYPE_OBJECT) {
+                } else if (element.type != ESCH_VALUE_TYPE_OBJECT) {
                     esch_log_info(log, "gc:recycle: primitive type, skip.");
                     ret = iter.get_next(&iter);
                     continue;

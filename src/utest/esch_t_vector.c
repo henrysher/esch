@@ -151,7 +151,7 @@ EnumerateAndCompare(esch_log* log, esch_vector* vec,
                     esch_string* str[], size_t len)
 {
     esch_iterator iter;
-    esch_element element;
+    esch_value element;
     esch_error ret = ESCH_OK;
     size_t i = 0;
     ret = esch_object_get_iterator(ESCH_CAST_TO_OBJECT(vec), &iter);
@@ -160,10 +160,10 @@ EnumerateAndCompare(esch_log* log, esch_vector* vec,
         ret = iter.get_value(&iter, &element);
         ESCH_TEST_CHECK(ret == ESCH_OK, "Can't get element",
                         ESCH_ERROR_BAD_VALUE_TYPE);
-        if (element.type == ESCH_ELEMENT_TYPE_END) {
+        if (element.type == ESCH_VALUE_TYPE_END) {
             break;
         }
-        ESCH_TEST_CHECK(element.type == ESCH_ELEMENT_TYPE_OBJECT,
+        ESCH_TEST_CHECK(element.type == ESCH_VALUE_TYPE_OBJECT,
                 "Element type is wrong", ESCH_ERROR_BAD_VALUE_TYPE);
         ESCH_TEST_CHECK(element.val.o != NULL,
                 "Element is not object", ESCH_ERROR_BAD_VALUE_TYPE);
