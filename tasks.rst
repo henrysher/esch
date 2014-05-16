@@ -59,6 +59,9 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
   - [DONE] Set vector slots resizing configurable.
 
 * Allow vector store primitive types.
+  - Update esch_element to esch_value
+  - Update esch_vector to allow storing esch_value.
+  - Code
 
 * Implement a memory-saving character type.
 

@@ -502,7 +502,7 @@ esch_gc_recycle(esch_gc* gc)
     ESCH_CHECK_PARAM_PUBLIC(gc != NULL);
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_GC(gc));
 
-    ret = esch_gc_naive_mark_sweep_recycle_i(gc);
+    ret = esch_gc_recycle_i(gc);
 Exit:
     return ret;
 }
@@ -514,7 +514,7 @@ esch_gc_recycle_i(esch_gc* gc)
     ESCH_ASSERT(gc != NULL);
     ESCH_ASSERT(ESCH_IS_VALID_GC(gc));
 
-    ret = esch_gc_naive_mark_sweep_recycle_i(gc);
+    gc->recycle(gc);
 Exit:
     return ret;
 }
