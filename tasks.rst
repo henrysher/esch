@@ -44,13 +44,13 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
   - [DROP] Update esch_vector
   - [DONE] Update esch_string
 
-* Implement a working mark-and-sweep GC.
+* [DONE] Implement a working mark-and-sweep GC.
   - [DONE] Basic logic for naive GC.
   - [DONE] Use esch_iterator to iterate primitive and object.
   - [DONE] Implement esch_vector (fix length array) and test.
   - [DONE] Update GC to make unit test fully pass (esch_vector as gc root).
   - [DONE] Add more test cases to cover multiple scenarios.
-  - Add stress to simulate memory exhausting scenario.
+  - [DONE] Add stress to simulate memory exhausting scenario.
   - [DONE] Set GC slots resizing configurable.
 
 * Implement list type (requires GC for verification)
@@ -62,7 +62,6 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
 * Allow vector store primitive types.
   - Update esch_element to esch_value
   - Update esch_vector to allow storing esch_value.
-  - Code
 
 * Implement a memory-saving character type.
   - Hold string with both Unicode and UTF-8. (Debatable)
