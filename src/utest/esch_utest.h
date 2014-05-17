@@ -22,6 +22,7 @@ extern esch_error test_vectorBase(esch_config* config);
 extern esch_error test_vectorElementType(esch_config* config);
 extern esch_error test_vectorIteration(esch_config* config);
 extern esch_error test_vectorResizeFlag(esch_config* config);
+extern esch_error test_vectorDifferentValues(esch_config* config);
 extern esch_error test_integer();
 extern esch_error test_gcCreateDelete(esch_config* config);
 extern esch_error test_gcRecycleLogic(esch_config* config);

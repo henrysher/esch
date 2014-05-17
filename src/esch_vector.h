@@ -12,12 +12,13 @@
 extern "C" {
 #endif /* __cplusplus */
 
+
 struct esch_vector
 {
     esch_bool enlarge;
     size_t slots;
-    esch_object** begin;
-    esch_object** next; /* Next available slot */
+    esch_value* begin;
+    esch_value* next; /* Next available slot */
 };
 
 #define ESCH_IS_VALID_VECTOR(vec) \

@@ -59,9 +59,10 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
   - Implement null type.
   - [DONE] Set vector slots resizing configurable.
 
-* Allow vector store primitive types.
-  - Update esch_element to esch_value
-  - Update esch_vector to allow storing esch_value.
+* [DONE] Allow vector store primitive types.
+  - [DONE] Update esch_element to esch_value
+  - [DONE] Update esch_vector to allow storing esch_value.
+  - [DONE] Optimize vector element access by removing if-type check.
 
 * Implement a memory-saving character type.
   - Hold string with both Unicode and UTF-8. (Debatable)

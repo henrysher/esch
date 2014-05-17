@@ -113,12 +113,14 @@ typedef enum esch_config_value_type {
  */
 typedef enum esch_value_type
 {
-    ESCH_VALUE_TYPE_END = 0,
-    ESCH_VALUE_TYPE_CHAR,
+    ESCH_VALUE_TYPE_UNKNOWN = 0,
+    ESCH_VALUE_TYPE_BYTE,
     ESCH_VALUE_TYPE_UNICODE,
     ESCH_VALUE_TYPE_INTEGER,
     ESCH_VALUE_TYPE_FLOAT,
-    ESCH_VALUE_TYPE_OBJECT
+    ESCH_VALUE_TYPE_OBJECT,
+    ESCH_VALUE_TYPE_NIL,
+    ESCH_VALUE_TYPE_END,
 } esch_value_type;
 
 /* Basic types */
@@ -505,13 +507,50 @@ int esch_unicode_is_range_co(esch_unicode ch);
  * @return Return code. ESCH_OK if success.
  */
 esch_error esch_vector_new(esch_config* config, esch_vector** vec);
+
+/**
+ * Append a value at the end of vector.
+ * @param vec Given vector object.
+ * @param obj A new object. Can't be NULL.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_append_value(esch_vector* vec, esch_value* value);
+
 /**
  * Append an object at the end of vector.
  * @param vec Given vector object.
- * @param data A new object. Can't be NULL.
+ * @param obj A new object. Can't be NULL.
  * @return Return code. ESCH_OK if success.
  */
-esch_error esch_vector_append(esch_vector* vec, esch_object* data);
+esch_error esch_vector_append_object(esch_vector* vec, esch_object* obj);
+/**
+ * Append a byte value at the end of vector.
+ * @param vec Given vector object.
+ * @param b A new byte.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_append_byte(esch_vector* vec, esch_byte b);
+/**
+ * Append a unicode value at the end of vector.
+ * @param vec Given vector object.
+ * @param u A new unicode value.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_append_unicode(esch_vector* vec, esch_unicode u);
+/**
+ * Append an integer value at the end of vector.
+ * @param vec Given vector object.
+ * @param i A new integer value.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_append_integer(esch_vector* vec, int i);
+/**
+ * Append a float value at the end of vector.
+ * @param vec Given vector object.
+ * @param f A new float value.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_append_float(esch_vector* vec, double f);
 /**
  * Get length of given vector.
  * @param vec Given vector object.
@@ -519,15 +558,117 @@ esch_error esch_vector_append(esch_vector* vec, esch_object* data);
  * @return Return code. ESCH_OK if success.
  */
 esch_error esch_vector_get_length(esch_vector* vec, size_t* length);
+
 /**
- * Get element by array.
+ * Get arbitary element from vector.
+ * @param vec Given vector object.
+ * @param index Given index. Negative index means starting from end.
+ * @param expected_type Type, or ignore if set to ESCH_VALUE_TYPE_END.
+ * @param value Returned value. Unchanged if an error is raised.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_get_value(esch_vector* vec, int index,
+                                 esch_value_type expected_type,
+                                 esch_value* value);
+/**
+ * Set element to vector.
+ * @param vec Given vector object.
+ * @param index Given index. Negative index means starting from end.
+ * @param value New value.
+ * @return Return code. ESCH_OK if success.
+ */
+
+esch_error esch_vector_set_value(esch_vector* vec, int index,
+                                 esch_value* value);
+
+/**
+ * Get object element from vector.
  * @param vec Given vector object.
  * @param index Given index. Negative index means starting from end.
  * @param obj Returned object. Unchanged if an error is raised.
  * @return Return code. ESCH_OK if success.
  */
-esch_error esch_vector_get_data(esch_vector* vec, int index,
-                                esch_object** obj);
+esch_error esch_vector_get_object(esch_vector* vec, int index,
+                                  esch_object** obj);
+/**
+ * Get byte element from vector.
+ * @param vec Given vector object.
+ * @param index Given index. Negative index means starting from end.
+ * @param i Returned object. Unchanged if an error is raised.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_get_byte(esch_vector* vec, int index,
+                                esch_byte* b);
+/**
+ * Get unicode element from vector.
+ * @param vec Given vector object.
+ * @param index Given index. Negative index means starting from end.
+ * @param u Returned unicode. Unchanged if an error is raised.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_get_unicode(esch_vector* vec, int index,
+                                   esch_unicode* u);
+/**
+ * Get integer element from vector.
+ * @param vec Given vector object.
+ * @param index Given index. Negative index means starting from end.
+ * @param i Returned integer. Unchanged if an error is raised.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_get_integer(esch_vector* vec, int index, int* i);
+/**
+ * Get float element from vector.
+ * @param vec Given vector object.
+ * @param index Given index. Negative index means starting from end.
+ * @param f Returned float. Unchanged if an error is raised.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_get_float(esch_vector* vec, int index, double* f);
+
+/**
+ * Set object element in vector.
+ * @param vec Given vector object.
+ * @param index Given index. Negative index means starting from end.
+ * @param obj New object. Unchanged if an error is raised.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_set_object(esch_vector* vec, int index,
+                                  esch_object* obj);
+/**
+ * Set byte element in vector.
+ * @param vec Given vector object.
+ * @param index Given index. Negative index means starting from end.
+ * @param b New byte. Unchanged if an error is raised.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_set_byte(esch_vector* vec, int index,
+                                esch_byte b);
+/**
+ * Set unicode element in vector.
+ * @param vec Given vector object.
+ * @param index Given index. Negative index means starting from end.
+ * @param u New unicode. Unchanged if an error is raised.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_set_unicode(esch_vector* vec, int index,
+                                   esch_unicode u);
+/**
+ * Set integer element in vector.
+ * @param vec Given vector object.
+ * @param index Given index. Negative index means starting from end.
+ * @param i New integer. Unchanged if an error is raised.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_set_integer(esch_vector* vec, int index, int i);
+/**
+ * Set float element in vector.
+ * @param vec Given vector object.
+ * @param index Given index. Negative index means starting from end.
+ * @param f New float. Unchanged if an error is raised.
+ * @return Return code. ESCH_OK if success.
+ */
+esch_error esch_vector_set_float(esch_vector* vec, int index, double f);
+
 
 /* --- Number -- */
 

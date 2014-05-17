@@ -9,8 +9,10 @@
 #include "esch_config.h"
 #include "esch_object.h"
 #include "esch_gc.h"
+#include "esch_value.h"
+
 const size_t ESCH_VECTOR_MINIMAL_INITIAL_LENGTH = 31;
-const size_t ESCH_VECTOR_MAX_LENGTH = (INT_MAX / sizeof(esch_vector*));
+const size_t ESCH_VECTOR_MAX_LENGTH = (INT_MAX / sizeof(esch_value));
 
 static esch_error
 esch_vector_new_i(esch_config* config, esch_vector** vec);
@@ -97,7 +99,7 @@ esch_vector_new_i(esch_config* config, esch_vector** vec)
     esch_object* vec_obj = NULL;
     esch_vector* new_vec = NULL;
     int initial_length = 0;
-    esch_object** array = NULL;
+    esch_value* array = NULL;
 
     ESCH_CHECK_PARAM_INTERNAL(config != NULL);
     ESCH_CHECK_PARAM_INTERNAL(vec != NULL);
@@ -119,7 +121,7 @@ esch_vector_new_i(esch_config* config, esch_vector** vec)
     }
 
     ret = esch_alloc_realloc(alloc, NULL,
-                             sizeof(esch_object*) * (initial_length + 1),
+                             sizeof(esch_value) * (initial_length + 1),
                              (void**)&array);
     ESCH_CHECK(ret == ESCH_OK, log, "Failed to allocate array", ret);
 
@@ -149,52 +151,6 @@ Exit:
 }
 
 esch_error
-esch_vector_append(esch_vector* vec, esch_object* data)
-{
-    esch_error ret = ESCH_OK;
-    size_t new_slots = 0;
-    esch_alloc* alloc = NULL;
-    esch_log* log = NULL;
-    esch_object** new_array = NULL;
-    esch_object** slot = NULL;
-    ESCH_CHECK_PARAM_PUBLIC(vec != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(data != NULL);
-    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_VECTOR(vec));
-
-    alloc = ESCH_OBJECT_GET_ALLOC(ESCH_CAST_TO_OBJECT(vec));
-    log = ESCH_OBJECT_GET_LOG(ESCH_CAST_TO_OBJECT(vec));
-
-    if (vec->next == vec->begin + vec->slots) {
-        /* vector buffer is full */
-        if (vec->enlarge) {
-            new_slots = vec->slots * 2;
-            ESCH_ASSERT(alloc != NULL);
-            ESCH_ASSERT(ESCH_IS_VALID_ALLOC(alloc));
-
-            ret = esch_alloc_realloc(alloc, vec->begin,
-                                     sizeof(esch_object*) * (new_slots + 1),
-                                     (void**)&new_array);
-            ESCH_CHECK(ret == ESCH_OK, log,
-                       "vec:append:Failed to reallocate vec", ret);
-
-            vec->begin = new_array;
-            vec->next = vec->begin + vec->slots;
-            vec->slots = new_slots;
-        } else {
-            /* Enlarge is not allowed. It's by default. */
-            esch_log_error(log, "vec:append:Enlarge is disabled.");
-            ret = ESCH_ERROR_CONTAINER_FULL;
-            goto Exit;
-        }
-    }
-    slot = vec->next;
-    vec->next += 1;
-    (*slot) = data;
-Exit:
-    return ret;
-}
-
-esch_error
 esch_vector_get_length(esch_vector* vec, size_t* length)
 {
     esch_error ret = ESCH_OK;
@@ -202,35 +158,6 @@ esch_vector_get_length(esch_vector* vec, size_t* length)
     ESCH_CHECK_PARAM_PUBLIC(length != NULL);
     ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_VECTOR(vec));
     (*length) = (vec->next - vec->begin);
-Exit:
-    return ret;
-}
-
-esch_error
-esch_vector_get_data(esch_vector* vec, int index, esch_object** obj)
-{
-    esch_error ret = ESCH_OK;
-    int real_index = 0;
-    esch_log* log = NULL;
-
-    ESCH_CHECK_PARAM_PUBLIC(vec != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(obj != NULL);
-    ESCH_CHECK_PARAM_PUBLIC(ESCH_IS_VALID_VECTOR(vec));
-    log = ESCH_OBJECT_GET_LOG(ESCH_CAST_TO_OBJECT(vec));
-    real_index = index;
-    if (real_index < 0)
-    {
-        real_index += (vec->next - vec->begin);
-    }
-    if (real_index >= 0 && vec->next - vec->begin > real_index)
-    {
-        (*obj) = vec->begin[real_index];
-    }
-    else
-    {
-        esch_log_info(log, "vec:obj = 0x%x, invalid index = %d", vec, index);
-        ret = ESCH_ERROR_OUT_OF_BOUND;
-    }
 Exit:
     return ret;
 }
@@ -316,7 +243,7 @@ esch_vector_copy_object_i(esch_object* input, esch_object** output)
      * Copy connects so two vectors contains same objects.
      * NOTE: We don't do real deep copy.
      */
-    memcpy(new_vec->begin, vec->begin, sizeof(esch_object*) * (vec->slots));
+    memcpy(new_vec->begin, vec->begin, sizeof(esch_value) * (vec->slots));
     new_vec->next = new_vec->begin + (vec->next - vec->begin);
 
     (*output) = ESCH_CAST_TO_OBJECT(new_vec);
@@ -326,7 +253,7 @@ Exit:
     return ret;
 }
 static esch_error
-esch_vector_get_value_i(esch_iterator* iter, esch_value* value)
+esch_vector_iterator_get_value_i(esch_iterator* iter, esch_value* value)
 {
     esch_error ret = ESCH_OK;
     size_t offset = 0;
@@ -343,8 +270,7 @@ esch_vector_get_value_i(esch_iterator* iter, esch_value* value)
         value->type = ESCH_VALUE_TYPE_END;
         value->val.o = 0;
     } else {
-        value->type = ESCH_VALUE_TYPE_OBJECT;
-        value->val.o = vec->begin[offset];
+        (*value) = vec->begin[offset];
     }
 Exit:
     return ret;
@@ -382,8 +308,265 @@ esch_vector_get_iterator_i(esch_object* obj, esch_iterator* iter)
 
     iter->container = obj;
     iter->iterator = (void*)0;
-    iter->get_value = esch_vector_get_value_i;
+    iter->get_value = esch_vector_iterator_get_value_i;
     iter->get_next = esch_vector_get_next_i;
+Exit:
+    return ret;
+}
+
+/*
+ * =================================================================
+ * Getter & setter
+ * =================================================================
+ */
+esch_error
+esch_vector_append_value_i(esch_vector* vec, esch_value* value)
+{
+    esch_error ret = ESCH_OK;
+    size_t new_slots = 0;
+    esch_alloc* alloc = NULL;
+    esch_log* log = NULL;
+    esch_value* new_array = NULL;
+    esch_value* slot = NULL;
+    ESCH_CHECK_PARAM_INTERNAL(vec != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(value != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_VECTOR(vec));
+
+    ESCH_CHECK_PARAM_INTERNAL(value->type > ESCH_VALUE_TYPE_UNKNOWN);
+    ESCH_CHECK_PARAM_INTERNAL(value->type < ESCH_VALUE_TYPE_END);
+
+    alloc = ESCH_OBJECT_GET_ALLOC(ESCH_CAST_TO_OBJECT(vec));
+    log = ESCH_OBJECT_GET_LOG(ESCH_CAST_TO_OBJECT(vec));
+
+    if (vec->next == vec->begin + vec->slots) {
+        /* vector buffer is full */
+        if (vec->enlarge) {
+            new_slots = vec->slots * 2;
+            ESCH_ASSERT(alloc != NULL);
+            ESCH_ASSERT(ESCH_IS_VALID_ALLOC(alloc));
+
+            ret = esch_alloc_realloc(alloc, vec->begin,
+                             sizeof(esch_value) * (new_slots + 1),
+                             (void**)&new_array);
+            ESCH_CHECK(ret == ESCH_OK, log,
+                       "vec:append:Failed to reallocate vec", ret);
+
+            vec->begin = new_array;
+            vec->next = vec->begin + vec->slots;
+            vec->slots = new_slots;
+        } else {
+            /* Enlarge is by default not allowed. */
+            esch_log_error(log, "vec:append:Enlarge is disabled.");
+            ret = ESCH_ERROR_CONTAINER_FULL;
+            goto Exit;
+        }
+    }
+    slot = vec->next;
+    vec->next += 1;
+    ret = esch_value_check[value->type](value);
+    esch_value_assign[ret == ESCH_OK? 0: 1](slot, value);
+Exit:
+    return ret;
+}
+
+static esch_error
+esch_vector_get_value_i(esch_vector* vec, int index,
+                        esch_value_type expected_type,
+                        esch_value* value)
+{
+    esch_error ret = ESCH_OK;
+    int real_index = 0;
+    esch_log* log = NULL;
+
+    ESCH_CHECK_PARAM_INTERNAL(vec != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(value != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_VECTOR(vec));
+    ESCH_CHECK_PARAM_INTERNAL(expected_type > ESCH_VALUE_TYPE_UNKNOWN);
+    ESCH_CHECK_PARAM_INTERNAL(expected_type <= ESCH_VALUE_TYPE_END);
+    log = ESCH_OBJECT_GET_LOG(ESCH_CAST_TO_OBJECT(vec));
+    real_index = index;
+    if (real_index < 0) {
+        if (real_index >= -((int)(vec->next - vec->begin))) {
+            real_index += (vec->next - vec->begin);
+            ESCH_ASSERT(real_index >= 0);
+        } else {
+            esch_log_info(log, "vec:obj = 0x%x, idx = %d", vec, index);
+            ret = ESCH_ERROR_OUT_OF_BOUND;
+            goto Exit;
+        }
+    }
+    if (real_index >= 0 && vec->next - vec->begin > real_index) {
+        esch_value_type real_type = vec->begin[real_index].type;
+        ret = esch_value_type_check[expected_type][real_type];
+        esch_value_assign[ret == ESCH_OK? 0: 1](value,
+                                             &(vec->begin[real_index]));
+    } else {
+        esch_log_info(log, "vec:obj = 0x%x, idx = %d", vec, index);
+        ret = ESCH_ERROR_OUT_OF_BOUND;
+    }
+Exit:
+    return ret;
+}
+static esch_error
+esch_vector_set_value_i(esch_vector* vec, int index, esch_value* value)
+{
+    esch_error ret = ESCH_OK;
+    int real_index = 0;
+    esch_log* log = NULL;
+
+    ESCH_CHECK_PARAM_INTERNAL(vec != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(value != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_VECTOR(vec));
+    log = ESCH_OBJECT_GET_LOG(ESCH_CAST_TO_OBJECT(vec));
+    real_index = index;
+    if (real_index < 0) {
+        if (real_index >= -((int)(vec->next - vec->begin))) {
+            real_index += (vec->next - vec->begin);
+            ESCH_ASSERT(real_index >= 0);
+        } else {
+            esch_log_info(log, "vec:obj = 0x%x, idx = %d", vec, index);
+            ret = ESCH_ERROR_OUT_OF_BOUND;
+            goto Exit;
+        }
+    }
+    if (real_index >= 0 && vec->next - vec->begin > real_index) {
+        esch_value_type real_type = vec->begin[real_index].type;
+        ESCH_CHECK_PARAM_INTERNAL(real_type > ESCH_VALUE_TYPE_UNKNOWN);
+        ESCH_CHECK_PARAM_INTERNAL(real_type < ESCH_VALUE_TYPE_END);
+        ret = esch_value_check[real_type](value);
+        esch_value_assign[ret == ESCH_OK? 0: 1](&(vec->begin[real_index]),
+                                             value);
+    } else {
+        esch_log_info(log, "vec:obj = 0x%x, idx = %d", vec, index);
+        ret = ESCH_ERROR_OUT_OF_BOUND;
+    }
+Exit:
+    return ret;
+}
+
+esch_error
+esch_vector_append_value(esch_vector* vec, esch_value* value)
+{
+    esch_error ret = ESCH_OK;
+
+    ESCH_CHECK_PARAM_PUBLIC(vec != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value->type > ESCH_VALUE_TYPE_UNKNOWN);
+    ESCH_CHECK_PARAM_PUBLIC(value->type < ESCH_VALUE_TYPE_END);
+
+    ret = esch_vector_append_value_i(vec, value);
+Exit:
+    return ret;
+}
+
+esch_error
+esch_vector_get_value(esch_vector* vec, int index,
+                      esch_value_type expected_type, esch_value* value)
+{
+    esch_error ret = ESCH_OK;
+
+    ESCH_CHECK_PARAM_PUBLIC(vec != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(expected_type > ESCH_VALUE_TYPE_UNKNOWN);
+    ESCH_CHECK_PARAM_PUBLIC(expected_type <= ESCH_VALUE_TYPE_END);
+
+    ret = esch_vector_get_value_i(vec, index, expected_type, value);
+Exit:
+    return ret;
+}
+esch_error
+esch_vector_set_value(esch_vector* vec, int index, esch_value* value)
+{
+    esch_error ret = ESCH_OK;
+
+    ESCH_CHECK_PARAM_PUBLIC(vec != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value->type > ESCH_VALUE_TYPE_UNKNOWN);
+    ESCH_CHECK_PARAM_PUBLIC(value->type < ESCH_VALUE_TYPE_END);
+
+    ret = esch_vector_set_value_i(vec, index, value);
+Exit:
+    return ret;
+}
+
+/*
+ * Auto generated code to define getter and setter.
+ */
+#define ESCH_VECTOR_DEF_GET(suffix, vt, ot) \
+esch_error \
+esch_vector_get_##suffix(esch_vector* vec, int index, ot* value) \
+{ \
+    esch_error ret = ESCH_OK; \
+    esch_value slot_value; \
+    ret = esch_vector_get_value(vec, index, vt, &slot_value); \
+    esch_value_get_##suffix((void*)value, &slot_value); \
+    return ret; \
+}
+
+#define ESCH_VECTOR_DEF_SET(suffix, vt, ot) \
+esch_error \
+esch_vector_set_##suffix(esch_vector* vec, int index, ot value) \
+{ \
+    esch_error ret = ESCH_OK; \
+    esch_value new_value; \
+    new_value.type = vt; \
+    esch_value_set_##suffix(&new_value, (void*)(&value)); \
+    ret = esch_vector_set_value(vec, index, &new_value); \
+    return ret; \
+}
+
+#define ESCH_VECTOR_DEF_APPEND(suffix, ot, vt, field) \
+esch_error \
+esch_vector_append_##suffix(esch_vector* vec, ot value) \
+{ \
+    esch_error ret = ESCH_OK; \
+    esch_value new_value; \
+    new_value.type = vt; \
+    new_value.val. field = value; \
+    return esch_vector_append_value(vec, &new_value); \
+}
+
+ESCH_VECTOR_DEF_GET(byte, ESCH_VALUE_TYPE_BYTE, esch_byte);
+ESCH_VECTOR_DEF_GET(unicode, ESCH_VALUE_TYPE_UNICODE, esch_unicode);
+ESCH_VECTOR_DEF_GET(integer, ESCH_VALUE_TYPE_INTEGER, int);
+ESCH_VECTOR_DEF_GET(float, ESCH_VALUE_TYPE_FLOAT, double);
+ESCH_VECTOR_DEF_GET(object, ESCH_VALUE_TYPE_OBJECT, esch_object*);
+
+ESCH_VECTOR_DEF_SET(byte, ESCH_VALUE_TYPE_BYTE, esch_byte);
+ESCH_VECTOR_DEF_SET(unicode, ESCH_VALUE_TYPE_UNICODE, esch_unicode);
+ESCH_VECTOR_DEF_SET(integer, ESCH_VALUE_TYPE_INTEGER, int);
+ESCH_VECTOR_DEF_SET(float, ESCH_VALUE_TYPE_FLOAT, double);
+
+ESCH_VECTOR_DEF_APPEND(byte, esch_byte, ESCH_VALUE_TYPE_BYTE, b);
+ESCH_VECTOR_DEF_APPEND(unicode, esch_unicode, ESCH_VALUE_TYPE_UNICODE, u);
+ESCH_VECTOR_DEF_APPEND(integer, int, ESCH_VALUE_TYPE_INTEGER, i);
+ESCH_VECTOR_DEF_APPEND(float, double, ESCH_VALUE_TYPE_FLOAT, f);
+
+/* NOTE: object setter/appender can't be automatically generated,
+ * because we want to add an additional check to make sure the value
+ * won't be set as NULL. */
+
+esch_error
+esch_vector_set_object(esch_vector* vec, int index, esch_object* obj)
+{
+    esch_error ret = ESCH_OK;
+    esch_value new_value;
+    ESCH_CHECK_PARAM_PUBLIC(obj != NULL);
+    new_value.type = ESCH_VALUE_TYPE_OBJECT;
+    new_value.val.o = obj;
+    ret = esch_vector_set_value(vec, index, &new_value);
+Exit:
+    return ret;
+}
+esch_error
+esch_vector_append_object(esch_vector* vec, esch_object* obj)
+{
+    esch_error ret = ESCH_OK;
+    esch_value new_value;
+    ESCH_CHECK_PARAM_PUBLIC(obj != NULL);
+    new_value.type = ESCH_VALUE_TYPE_OBJECT;
+    new_value.val.o = obj;
+    ret = esch_vector_append_value(vec, &new_value);
 Exit:
     return ret;
 }

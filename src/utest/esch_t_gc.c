@@ -146,8 +146,17 @@ esch_error test_gcRecycleLogic(esch_config* config)
     esch_log_info(g_testLog, "2. Scope may hold non-conainer types.");
     ret = esch_type_new(config, &tt);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create tt", ret);
-    ret = esch_vector_append(root_scope, ESCH_CAST_TO_OBJECT(tt));
+    ret = esch_vector_append_object(root_scope, ESCH_CAST_TO_OBJECT(tt));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to touch tt to scope", ret);
+    ret = esch_vector_append_integer(root_scope, 100);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to add int to scope", ret);
+    ret = esch_vector_append_float(root_scope, 100.1234);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to add float scope", ret);
+    ret = esch_vector_append_byte(root_scope, 'a');
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to add byte scope", ret);
+    ret = esch_vector_append_unicode(root_scope, (esch_unicode)0x4f60);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to add unicode scope", ret);
+
     ret = esch_type_new(config, &tt2);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create tt2", ret);
     /* Structure:
@@ -165,22 +174,25 @@ esch_error test_gcRecycleLogic(esch_config* config)
     esch_log_info(g_testLog, "3. Scope may hold container objects.");
     ret = esch_vector_new(config, &child_scope_1_1);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create scope11", ret);
-    ret = esch_vector_append(root_scope, ESCH_CAST_TO_OBJECT(child_scope_1_1));
+    ret = esch_vector_append_object(root_scope,
+                                    ESCH_CAST_TO_OBJECT(child_scope_1_1));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append scope11", ret);
 
     ret = esch_vector_new(config, &child_scope_1_2);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create scope12", ret);
-    ret = esch_vector_append(root_scope, ESCH_CAST_TO_OBJECT(child_scope_1_2));
+    ret = esch_vector_append_object(root_scope,
+                                    ESCH_CAST_TO_OBJECT(child_scope_1_2));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append scope12", ret);
 
     ret = esch_vector_new(config, &child_scope_2_1);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create scope21", ret);
-    ret = esch_vector_append(child_scope_1_1, ESCH_CAST_TO_OBJECT(str1));
+    ret = esch_vector_append_object(child_scope_1_1,
+                                    ESCH_CAST_TO_OBJECT(str1));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append scope12", ret);
 
 
     esch_log_info(g_testLog, "4. A child scope may hold child container.");
-    ret = esch_vector_append(child_scope_1_2,
+    ret = esch_vector_append_object(child_scope_1_2,
                              ESCH_CAST_TO_OBJECT(child_scope_2_1));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append scope21", ret);
 
@@ -196,17 +208,18 @@ esch_error test_gcRecycleLogic(esch_config* config)
     ret = esch_vector_new(config, &circle4);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create circle4", ret);
 
-    ret = esch_vector_append(child_scope_2_1, ESCH_CAST_TO_OBJECT(circle1));
+    ret = esch_vector_append_object(child_scope_2_1,
+                                    ESCH_CAST_TO_OBJECT(circle1));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append circle2", ret);
 
-    ret = esch_vector_append(circle1, ESCH_CAST_TO_OBJECT(circle2));
+    ret = esch_vector_append_object(circle1, ESCH_CAST_TO_OBJECT(circle2));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append circle2", ret);
-    ret = esch_vector_append(circle2, ESCH_CAST_TO_OBJECT(circle1));
+    ret = esch_vector_append_object(circle2, ESCH_CAST_TO_OBJECT(circle1));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append circle1", ret);
 
-    ret = esch_vector_append(circle3, ESCH_CAST_TO_OBJECT(circle4));
+    ret = esch_vector_append_object(circle3, ESCH_CAST_TO_OBJECT(circle4));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append circle4", ret);
-    ret = esch_vector_append(circle4, ESCH_CAST_TO_OBJECT(circle3));
+    ret = esch_vector_append_object(circle4, ESCH_CAST_TO_OBJECT(circle3));
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to append circle3", ret);
 
     ret = esch_gc_recycle(gc);

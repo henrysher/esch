@@ -63,7 +63,7 @@ libesch_src = [ \
         'esch_alloc.c', 'esch_log.c', \
         'esch_config.c', 'esch_gc.c', \
         'esch_string.c', 'esch_range.c', \
-        'esch_vector.c'
+        'esch_vector.c', 'esch_value.c', \
         ]
 esch = env.StaticLibrary('esch', libesch_src)
 # Unit test
