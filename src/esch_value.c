@@ -75,8 +75,8 @@ esch_value_check_object(esch_value* value)
 }
 
 esch_value_assign_f esch_value_assign[2] = {
-    esch_value_do_assign, /* status: ESCH_OK */
-    esch_value_type_error, /* status: ESCH_ERROR_BAD_VALUE_TYPE */
+    esch_value_do_assign, /* type check: 0 = ESCH_OK */
+    esch_value_type_error, /* type check: 1 = ESCH_ERROR_BAD_VALUE_TYPE */
 };
 
 esch_value_check_f esch_value_check[8] = {
