@@ -463,7 +463,8 @@ esch_error test_vectorDifferentValues(esch_config* config)
         ret = esch_vector_get_value(vec, i,
                                     ESCH_VALUE_TYPE_OBJECT, &value);
         ESCH_TEST_CHECK(ret == ESCH_ERROR_BAD_VALUE_TYPE,
-                        "Query with bad type should be rejected", ret);
+                        "Query with bad type should be rejected",
+                        ESCH_ERROR_INVALID_STATE);
     }
     for (i = 0; i < 5; ++i) {
         ret = esch_vector_get_value(vec, i, vt[i], &value);

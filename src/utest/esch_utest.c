@@ -73,13 +73,6 @@ int main(int argc, char* argv[])
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorResizeFlag() failed", ret);
     esch_log_info(testLog, "[PASSED] test_vectorResizeFlag()");
 
-    esch_log_info(testLog, "Start: test_vectorDifferentValues()");
-    ret = test_vectorDifferentValues(config);
-    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorDifferentValues() failed",
-                    ret);
-    esch_log_info(testLog, "[PASSED] test_vectorDifferentValues()");
-
-
     esch_log_info(testLog, "Start: test_gcCreateDelete()");
     ret = test_gcCreateDelete(config);
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_gcCreateDelete() failed", ret);
@@ -99,6 +92,14 @@ int main(int argc, char* argv[])
     ret = test_gcExpand(config);
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_gcExpand() failed", ret);
     esch_log_info(testLog, "[PASSED]: test_gcExpand()");
+
+    /* Put it here for catching a bug in vector.c, that it does not
+     * handle default size correctly. */
+    esch_log_info(testLog, "Start: test_vectorDifferentValues()");
+    ret = test_vectorDifferentValues(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_vectorDifferentValues() failed",
+                    ret);
+    esch_log_info(testLog, "[PASSED] test_vectorDifferentValues()");
 
     /*
     ret = test_config();

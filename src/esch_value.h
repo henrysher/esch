@@ -10,10 +10,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
-typedef void (*esch_value_assign_f)(esch_value*, esch_value*);
+typedef esch_error (*esch_value_assign_f)(esch_value*, esch_value*);
 typedef esch_error (*esch_value_check_f)(esch_value*);
 
-extern esch_error esch_value_type_check[8][8]; /* match every value */
+extern int esch_value_type_check[8][8]; /* match every value */
 extern esch_value_check_f esch_value_check[8];
 extern esch_value_assign_f esch_value_assign[2];
 

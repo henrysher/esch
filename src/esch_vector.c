@@ -116,7 +116,9 @@ esch_vector_new_i(esch_config* config, esch_vector** vec)
     ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_LOG(log));
 
     initial_length = ESCH_CONFIG_GET_VECOTR_LENGTH(config);
-    if (initial_length < ESCH_VECTOR_MINIMAL_INITIAL_LENGTH) {
+    if (initial_length < 0 ||
+            (size_t)initial_length < ESCH_VECTOR_MINIMAL_INITIAL_LENGTH)
+    {
         initial_length = ESCH_VECTOR_MINIMAL_INITIAL_LENGTH;
     }
 
@@ -363,8 +365,12 @@ esch_vector_append_value_i(esch_vector* vec, esch_value* value)
     }
     slot = vec->next;
     vec->next += 1;
-    ret = esch_value_check[value->type](value);
-    esch_value_assign[ret == ESCH_OK? 0: 1](slot, value);
+    /* NOTE: Use function table instead of if-type check to avoid
+     * runtime cost.
+     */
+    ret = esch_value_assign[
+                 esch_value_check[value->type](value)
+                 ](slot, value);
 Exit:
     return ret;
 }
@@ -397,9 +403,11 @@ esch_vector_get_value_i(esch_vector* vec, int index,
     }
     if (real_index >= 0 && vec->next - vec->begin > real_index) {
         esch_value_type real_type = vec->begin[real_index].type;
-        ret = esch_value_type_check[expected_type][real_type];
-        esch_value_assign[ret == ESCH_OK? 0: 1](value,
-                                             &(vec->begin[real_index]));
+        /* NOTE: Use function table instead of if-type check to avoid
+         * runtime cost. */
+        ret = esch_value_assign[
+                esch_value_type_check[expected_type][real_type]
+            ](value, &(vec->begin[real_index]));
     } else {
         esch_log_info(log, "vec:obj = 0x%x, idx = %d", vec, index);
         ret = ESCH_ERROR_OUT_OF_BOUND;
@@ -433,9 +441,11 @@ esch_vector_set_value_i(esch_vector* vec, int index, esch_value* value)
         esch_value_type real_type = vec->begin[real_index].type;
         ESCH_CHECK_PARAM_INTERNAL(real_type > ESCH_VALUE_TYPE_UNKNOWN);
         ESCH_CHECK_PARAM_INTERNAL(real_type < ESCH_VALUE_TYPE_END);
-        ret = esch_value_check[real_type](value);
-        esch_value_assign[ret == ESCH_OK? 0: 1](&(vec->begin[real_index]),
-                                             value);
+        /* NOTE: Use function table instead of if-type check to avoid
+         * runtime cost.  */
+        ret = esch_value_assign[
+                esch_value_type_check[ESCH_VALUE_TYPE_END][real_type]
+            ](&(vec->begin[real_index]), value);
     } else {
         esch_log_info(log, "vec:obj = 0x%x, idx = %d", vec, index);
         ret = ESCH_ERROR_OUT_OF_BOUND;

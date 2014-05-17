@@ -5,13 +5,14 @@
 #include "esch_value.h"
 #include "esch_debug.h"
 
-static void
-esch_value_do_nothing(esch_value* to, esch_value* from)
+static esch_error
+esch_value_type_error(esch_value* to, esch_value* from)
 {
     ESCH_CHECK_PARAM_INTERNAL(to != NULL);
     ESCH_CHECK_PARAM_INTERNAL(from != NULL);
+    return ESCH_ERROR_BAD_VALUE_TYPE;
 }
-static void
+static esch_error
 esch_value_do_assign(esch_value* to, esch_value* from)
 {
     ESCH_CHECK_PARAM_INTERNAL(to != NULL);
@@ -21,6 +22,7 @@ esch_value_do_assign(esch_value* to, esch_value* from)
 
     to->type = from->type;
     to->val = from->val;
+    return ESCH_OK;
 }
 
 #define ESCH_VALUE_DEFINE_GET(suffix, vt, ot, field) \
@@ -74,7 +76,7 @@ esch_value_check_object(esch_value* value)
 
 esch_value_assign_f esch_value_assign[2] = {
     esch_value_do_assign, /* status: ESCH_OK */
-    esch_value_do_nothing, /* status: ESCH_ERROR_BAD_VALUE_TYPE */
+    esch_value_type_error, /* status: ESCH_ERROR_BAD_VALUE_TYPE */
 };
 
 esch_value_check_f esch_value_check[8] = {
@@ -88,85 +90,31 @@ esch_value_check_f esch_value_check[8] = {
     esch_value_fail, /* expect: ESCH_VALUE_TYPE_END */
 };
 
-esch_error esch_value_type_check[8][8] = {
+int esch_value_type_check[8][8] = {
     /* expect: ESCH_VALUE_TYPE_UNKNOWN */ {
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
+        1, 1, 1, 1, 1, 1, 1, 1
     },
     /* expect: ESCH_VALUE_TYPE_BYTE */ {
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_OK,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
+        1, 0, 1, 1, 1, 1, 1, 1
     },
     /* expect: ESCH_VALUE_TYPE_UNICODE */ {
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_OK,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
+        1, 1, 0, 1, 1, 1, 1, 1
     },
     /* expect: ESCH_VALUE_TYPE_INTEGER */ {
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_OK,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
+        1, 1, 1, 0, 1, 1, 1, 1
     },
     /* expect: ESCH_VALUE_TYPE_FLOAT */ {
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_OK,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
+        1, 1, 1, 1, 0, 1, 1, 1
     },
     /* expect: ESCH_VALUE_TYPE_OBJECT */ {
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_OK,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
+        1, 1, 1, 1, 1, 0, 1, 1
     },
     /* expect: ESCH_VALUE_TYPE_NIL */ {
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_ERROR_BAD_VALUE_TYPE,
-        ESCH_OK,
-        ESCH_ERROR_BAD_VALUE_TYPE,
+        1, 1, 1, 1, 1, 1, 0, 1
     },
     /* expect: ESCH_VALUE_TYPE_END */ {
-        ESCH_OK,
-        ESCH_OK,
-        ESCH_OK,
-        ESCH_OK,
-        ESCH_OK,
-        ESCH_OK,
-        ESCH_OK, /* Always ignore type check if user passes END */
+        0, 0, 0, 0, 0, 0, 0, 0
+        /* Always ignore type check if user passes END */
     }
 };
 
