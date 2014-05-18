@@ -55,8 +55,8 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
 
 * Implement list type (requires GC for verification)
   - Update esch_string to allow iteration.
-  - Implement list/pair type with GC.
-  - Implement null type.
+  - [DONE] Implement list/pair type with GC.
+  - [DONE] Implement null type (via esch_list_new_empty())
   - [DONE] Set vector slots resizing configurable.
 
 * [DONE] Allow vector store primitive types.

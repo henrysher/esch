@@ -64,6 +64,7 @@ libesch_src = [ \
         'esch_config.c', 'esch_gc.c', \
         'esch_string.c', 'esch_range.c', \
         'esch_vector.c', 'esch_value.c', \
+        'esch_pair.c', \
         ]
 esch = env.StaticLibrary('esch', libesch_src)
 # Unit test
@@ -71,7 +72,8 @@ utest_src = [ 'utest/esch_utest.c', \
               'utest/esch_t_alloc.c', \
               'utest/esch_t_string.c', \
               'utest/esch_t_gc.c', \
-              'utest/esch_t_vector.c' \
+              'utest/esch_t_vector.c', \
+              'utest/esch_t_pair.c' \
             ]
 esch_utest = env.Program('esch_utest', utest_src, LIBS=[ 'esch' ], \
                          LIBPATH=[ '.' ])

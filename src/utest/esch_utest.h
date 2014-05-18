@@ -28,6 +28,7 @@ extern esch_error test_gcCreateDelete(esch_config* config);
 extern esch_error test_gcRecycleLogic(esch_config* config);
 extern esch_error test_gcNoExpand(esch_config* config);
 extern esch_error test_gcExpand(esch_config* config);
+extern esch_error test_pairBase(esch_config* config);
 
 #ifdef __cplusplus
 }

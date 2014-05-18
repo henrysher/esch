@@ -101,6 +101,11 @@ int main(int argc, char* argv[])
                     ret);
     esch_log_info(testLog, "[PASSED] test_vectorDifferentValues()");
 
+    esch_log_info(testLog, "Start: test_pairBase()");
+    ret = test_pairBase(config);
+    ESCH_TEST_CHECK(ret == ESCH_OK, "test_pairBase() failed", ret);
+    esch_log_info(testLog, "[PASSED] test_pairBase()");
+
     /*
     ret = test_config();
     ESCH_TEST_CHECK(ret == ESCH_OK, "test_config() failed", ret);

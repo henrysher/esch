@@ -137,6 +137,7 @@ typedef struct esch_parser_callback esch_parser_callback;
 typedef struct esch_ast             esch_ast;
 typedef struct esch_string          esch_string;
 typedef struct esch_vector          esch_vector;
+typedef struct esch_pair            esch_pair;
 typedef char                        esch_utf8;
 typedef int32_t                     esch_unicode;
 typedef unsigned char               esch_bool;
@@ -668,6 +669,28 @@ esch_error esch_vector_set_integer(esch_vector* vec, int index, int i);
  * @return Return code. ESCH_OK if success.
  */
 esch_error esch_vector_set_float(esch_vector* vec, int index, double f);
+
+/* --- Pair --- */
+/**
+ * Create a new pair.
+ * @param config Given config object.
+ * @param head Head object.
+ * @param tail Tail object.
+ * @param pair Out parameter of created pair.
+ * @return ESCH_OK if correct.
+ */
+esch_error esch_pair_new(esch_config* config,
+                         esch_value* head, esch_value* tail,
+                         esch_pair** pair);
+/**
+ * Create an empty list.
+ * @param config Given config object.
+ * @param head Head object.
+ * @param tail Tail object.
+ * @param pair Out parameter of created pair.
+ * @return ESCH_OK if correct.
+ */
+esch_error esch_pair_new_empty(esch_config* config, esch_pair** pair);
 
 
 /* --- Number -- */
