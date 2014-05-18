@@ -88,4 +88,8 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
       creating an object in this thread, the values may be changed.
     * Extend esch_object for lock support.
 
+* Performance tuning
+  - Measure the impact to GC when we allow enumeration on list.
+  - Define concept of "enumeratable" and "ignore by GC".
+
 * Implement a big integer.
