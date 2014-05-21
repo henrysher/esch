@@ -12,7 +12,7 @@ esch_error test_pairBase(esch_config* config)
     esch_gc* gc = NULL;
     esch_vector* root = NULL;
     const size_t len = 10; 
-    esch_pair* pairs[len];
+    esch_pair* pairs[10];
     size_t i = 0, count = 0;
     esch_value value1, value2, data;
     esch_iterator iter;

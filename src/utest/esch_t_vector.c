@@ -351,6 +351,7 @@ esch_error test_vectorDifferentValues(esch_config* config)
     esch_byte bval = '\0';
     esch_unicode uval = 0;
     esch_value value2;
+    esch_iterator iter;
 
     ret = esch_vector_new(config, &vec);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Failed to create vector", ret);
@@ -437,7 +438,6 @@ esch_error test_vectorDifferentValues(esch_config* config)
                     "Bad value: element 4", ESCH_ERROR_INVALID_STATE);
 
     esch_log_info(g_testLog, "Case 3: Enumerate via iterator");
-    esch_iterator iter;
     ret = esch_object_get_iterator(ESCH_CAST_TO_OBJECT(vec), &iter);
     ESCH_TEST_CHECK(ret == ESCH_OK, "Can't get iterator", ret);
     for (i = 0; i < 5; ++i) {
