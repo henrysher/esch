@@ -58,6 +58,7 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
   - [DONE] Implement list/pair type with GC.
   - [DONE] Implement null type (via esch_list_new_empty())
   - [DONE] Set vector slots resizing configurable.
+  - [DONE] Add support functions.
 
 * [DONE] Allow vector store primitive types.
   - [DONE] Update esch_element to esch_value
@@ -75,6 +76,10 @@ https://bitbucket.org/fuzhouch/esch/issues?status=new&status=open
   - Implement define variable.
   - Implement lambda.
   - Implement function call.
+
+* Implement macro expanding.
+
+=== We may consider release 0.1 from here.
 
 * Implement syntax definition.
 

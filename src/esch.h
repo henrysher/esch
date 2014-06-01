@@ -692,6 +692,42 @@ esch_error esch_pair_new(esch_config* config,
  */
 esch_error esch_pair_new_empty(esch_config* config, esch_pair** pair);
 
+/**
+ * Get head of pair.
+ * @param pair Given pair object.
+ * @param value Returned value.
+ * @return ESCH_OK if correct.
+ */
+esch_error esch_pair_get_head(esch_pair* pair, esch_value* value);
+/**
+ * Get tail of pair.
+ * @param pair Given pair object.
+ * @param value Returned value.
+ * @return ESCH_OK if correct.
+ */
+esch_error esch_pair_get_tail(esch_pair* pair, esch_value* value);
+/**
+ * Set head of pair.
+ * @param pair Given pair object.
+ * @param value New value to set.
+ * @return ESCH_OK if correct.
+ */
+esch_error esch_pair_set_head(esch_pair* pair, esch_value* value);
+/**
+ * Set tail of pair.
+ * @param pair Given pair object.
+ * @param value New value to set.
+ * @return ESCH_OK if correct.
+ */
+esch_error esch_pair_set_tail(esch_pair* pair, esch_value* value);
+
+/**
+ * Check if given pair is a list.
+ * @param pair Given pair object.
+ * @param is_list Bool value to indicate if it's a list.
+ * @return ESCH_OK if correct.
+ */
+esch_error esch_pair_is_list(esch_pair* pair, esch_bool* is_list);
 
 /* --- Number -- */
 

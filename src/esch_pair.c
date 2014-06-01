@@ -281,3 +281,86 @@ esch_pair_get_iterator_i(esch_object* obj, esch_iterator* iter)
 Exit:
     return ret;
 }
+
+esch_error
+esch_pair_get_head(esch_pair* pair, esch_value* value)
+{
+    esch_error ret = ESCH_OK;
+    ESCH_CHECK_PARAM_PUBLIC(pair != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_PAIR(pair));
+    value->type = HEAD(pair).type;
+    value->val = HEAD(pair).val;
+Exit:
+    return ret;
+}
+esch_error
+esch_pair_get_tail(esch_pair* pair, esch_value* value)
+{
+    esch_error ret = ESCH_OK;
+    ESCH_CHECK_PARAM_PUBLIC(pair != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_PAIR(pair));
+    value->type = TAIL(pair).type;
+    value->val = TAIL(pair).val;
+Exit:
+    return ret;
+}
+esch_error
+esch_pair_set_head(esch_pair* pair, esch_value* value)
+{
+    esch_error ret = ESCH_OK;
+    ESCH_CHECK_PARAM_PUBLIC(pair != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value->type > ESCH_VALUE_TYPE_UNICODE &&
+                            value->type <= ESCH_VALUE_TYPE_END);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_PAIR(pair));
+    HEAD(pair).type = value->type;
+    HEAD(pair).val = value->val;
+Exit:
+    return ret;
+}
+esch_error
+esch_pair_set_tail(esch_pair* pair, esch_value* value)
+{
+    esch_error ret = ESCH_OK;
+    ESCH_CHECK_PARAM_PUBLIC(pair != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(value->type > ESCH_VALUE_TYPE_UNICODE &&
+                            value->type <= ESCH_VALUE_TYPE_END);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_PAIR(pair));
+    TAIL(pair).type = value->type;
+    TAIL(pair).val = value->val;
+    if (TAIL(pair).type == ESCH_VALUE_TYPE_OBJECT &&
+            ESCH_OBJECT_GET_TYPE(TAIL(pair).val.o) == &(esch_pair_type.type))
+    {
+        pair->next_is_pair = 1;
+    } else {
+        pair->next_is_pair = 0;
+    }
+Exit:
+    return ret;
+}
+esch_error esch_pair_is_list(esch_pair* pair, esch_bool* is_list)
+{
+    esch_error ret = ESCH_OK;
+    esch_pair* each = NULL;
+    ESCH_CHECK_PARAM_PUBLIC(pair != NULL);
+    ESCH_CHECK_PARAM_PUBLIC(is_list != NULL);
+    ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_PAIR(pair));
+
+    each = pair;
+    while(each->next_is_pair) {
+        each = ESCH_CAST_FROM_OBJECT(TAIL(each).val.o, esch_pair);
+        ESCH_CHECK_PARAM_INTERNAL(ESCH_IS_VALID_PAIR(each));
+    }
+    /* Check every element until we reach the first non-pair. A valid
+     * list should always use empty as last element. */
+    (*is_list) = ((HEAD(each).type == ESCH_VALUE_TYPE_END &&
+                      TAIL(each).type == ESCH_VALUE_TYPE_END)?
+                  ESCH_TRUE: ESCH_FALSE);
+Exit:
+    return ret;
+
+}
+

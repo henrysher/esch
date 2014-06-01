@@ -15,9 +15,12 @@ esch_error test_pairBase(esch_config* config)
     esch_pair* pairs[10];
     size_t i = 0, count = 0;
     esch_value value1, value2, data;
+    esch_value value_head, value_tail;
     esch_iterator iter;
     esch_pair* bad_pair = NULL;
     esch_pair* short_pair = NULL;
+    esch_pair* empty_pair = NULL;
+    esch_bool is_list = ESCH_FALSE;
 
     /* To simplify the work we just keep it with GC */
     ret = esch_vector_new(config, &root);
@@ -47,7 +50,21 @@ esch_error test_pairBase(esch_config* config)
         ret = esch_pair_new(config, &value1, &value2, &pairs[i]);
         ESCH_TEST_CHECK(ret == ESCH_OK && pairs[i] != NULL,
                         "pair:Can't set pair", ret);
+        ret = esch_pair_get_head(pairs[i], &value_head);
+        ESCH_TEST_CHECK(ret == ESCH_OK, "pair:Can't get head", ret);
+        ret = esch_pair_get_tail(pairs[i], &value_tail);
+        ESCH_TEST_CHECK(ret == ESCH_OK, "pair:Can't get tail", ret);
+        ESCH_TEST_CHECK((value1.type == value_head.type &&
+                         value1.val.i == value_head.val.i),
+                        "pair: head not match", ret);
+        ESCH_TEST_CHECK((value2.type == value_tail.type &&
+                         value2.val.o == value_tail.val.o),
+                        "pair: tail not match", ret);
     }
+    ret = esch_pair_is_list(pairs[len - 1], &is_list);
+    ESCH_TEST_CHECK(ret == ESCH_OK && !is_list,
+                    "pair: long pair is not list",
+                    ESCH_ERROR_INVALID_STATE);
 
     /* Enumerate everything */
     count = 0;
@@ -117,11 +134,6 @@ esch_error test_pairBase(esch_config* config)
         if (data.type == ESCH_VALUE_TYPE_END) {
             break;
         }
-        /*
-        ESCH_TEST_CHECK(data.type == ESCH_VALUE_TYPE_OBJECT,
-                        "pair:data is not object",
-                        ESCH_ERROR_INVALID_STATE);
-                        */
         ret = iter.get_next(&iter);
         ESCH_TEST_CHECK(ret == ESCH_OK, "pair:Can't get next data",
                         ESCH_ERROR_BAD_VALUE_TYPE);
@@ -129,6 +141,60 @@ esch_error test_pairBase(esch_config* config)
     }
     ESCH_TEST_CHECK(count == 1, "pair:Total count is not correct",
                     ESCH_ERROR_BAD_VALUE_TYPE);
+
+    esch_log_info(g_testLog, "Case 4: Check if it's a list.");
+    /* Empty pair is a list */
+    ret = esch_pair_new_empty(config, &empty_pair);
+    ret = esch_pair_is_list(empty_pair, &is_list);
+    ESCH_TEST_CHECK(ret == ESCH_OK && is_list, "pair: Empty is list", ret);
+
+    /* Regular pair is NOT a list */
+    value1.type = ESCH_VALUE_TYPE_INTEGER;
+    value1.val.i = 0;
+    value2.type = ESCH_VALUE_TYPE_INTEGER;
+    value2.val.i = 12345;
+    ret = esch_pair_new(config, &value1, &value2, &bad_pair);
+    ret = esch_pair_is_list(bad_pair, &is_list);
+    ESCH_TEST_CHECK(ret == ESCH_OK && !is_list,
+                    "pair: pair is not list", ESCH_ERROR_INVALID_STATE);
+
+    /* A pair ends with empty is a list. */
+    value1.type = ESCH_VALUE_TYPE_INTEGER;
+    value1.val.i = 0;
+    value2.type = ESCH_VALUE_TYPE_OBJECT;
+    value2.val.o = ESCH_CAST_TO_OBJECT(empty_pair);
+    ret = esch_pair_new(config, &value1, &value2, &short_pair);
+    ret = esch_pair_is_list(short_pair, &is_list);
+    ESCH_TEST_CHECK(ret == ESCH_OK && is_list,
+                    "pair: pair is not list", ESCH_ERROR_INVALID_STATE);
+
+    esch_log_info(g_testLog, "Case 5: Set head/tail.");
+    ret = esch_pair_new_empty(config, &empty_pair);
+    ESCH_TEST_CHECK(ret == ESCH_OK,
+                    "pair: Can't create empty",
+                    ESCH_ERROR_INVALID_STATE);
+    value2.type = ESCH_VALUE_TYPE_OBJECT;
+    value2.val.o = ESCH_CAST_TO_OBJECT(short_pair);
+    ret = esch_pair_set_tail(empty_pair, &value2);
+    ESCH_TEST_CHECK(ret == ESCH_OK,
+                    "pair: Can't set tail", ESCH_ERROR_INVALID_STATE);
+    ret = esch_pair_get_tail(empty_pair, &value_tail);
+    ESCH_TEST_CHECK(ret == ESCH_OK,
+                    "pair: Can't get tail", ESCH_ERROR_INVALID_STATE);
+    ESCH_TEST_CHECK((value2.type == value_tail.type &&
+                     value2.val.o == value_tail.val.o),
+                    "pair: Can't get tail", ESCH_ERROR_INVALID_STATE);
+    value1.type = ESCH_VALUE_TYPE_OBJECT;
+    value1.val.o = ESCH_CAST_TO_OBJECT(short_pair);
+    ret = esch_pair_set_head(empty_pair, &value1);
+    ESCH_TEST_CHECK(ret == ESCH_OK,
+                    "pair: Can't set tail", ESCH_ERROR_INVALID_STATE);
+    ret = esch_pair_get_head(empty_pair, &value_head);
+    ESCH_TEST_CHECK(ret == ESCH_OK,
+                    "pair: Can't get tail", ESCH_ERROR_INVALID_STATE);
+    ESCH_TEST_CHECK((value1.type == value_head.type &&
+                     value1.val.o == value_head.val.o),
+                    "pair: Can't get tail", ESCH_ERROR_INVALID_STATE);
 
 
 Exit:
